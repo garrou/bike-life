@@ -11,7 +11,11 @@ class SignupPage extends StatelessWidget {
     return Scaffold(
         resizeToAvoidBottomInset: false,
         appBar: AppBar(title: const Text(title), backgroundColor: mainColor),
-        body: Column(children: const <Widget>[BuildTitle(), BuildForm()]));
+        body: LayoutBuilder(builder: (context, constraints) {
+          return Center(
+              child:
+                  Column(children: const <Widget>[BuildTitle(), BuildForm()]));
+        }));
   }
 }
 
@@ -21,8 +25,9 @@ class BuildTitle extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-        padding: const EdgeInsets.symmetric(vertical: 10.0),
-        child: Text("S'inscrire", style: GoogleFonts.acme(fontSize: 30.0)));
+        padding: const EdgeInsets.symmetric(vertical: paddingSize),
+        child:
+            Text("S'inscrire", style: GoogleFonts.acme(fontSize: titleSize)));
   }
 }
 
@@ -44,7 +49,7 @@ class _SignupFormState extends State<BuildForm> {
 
   Padding _buildEmailField() {
     return Padding(
-        padding: const EdgeInsets.all(8.0),
+        padding: const EdgeInsets.all(paddingSize),
         child: TextFormField(
             focusNode: _emailFocus,
             controller: _email,
@@ -72,7 +77,7 @@ class _SignupFormState extends State<BuildForm> {
 
   Padding _buildPasswordField() {
     return Padding(
-        padding: const EdgeInsets.all(8.0),
+        padding: const EdgeInsets.all(paddingSize),
         child: TextFormField(
             focusNode: _passwordFocus,
             controller: _password,
@@ -106,7 +111,7 @@ class _SignupFormState extends State<BuildForm> {
             backgroundColor: MaterialStateProperty.all<Color>(mainColor),
             shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                 RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(20.0),
+                    borderRadius: BorderRadius.circular(radiusSize),
                     side: const BorderSide(color: secondColor)))));
   }
 

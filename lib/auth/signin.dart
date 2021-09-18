@@ -1,4 +1,4 @@
-import 'package:bike_life/user/account.dart';
+import 'package:bike_life/user/account_bottom_bar.dart';
 import 'package:bike_life/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -9,9 +9,12 @@ class SigninPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        resizeToAvoidBottomInset: false,
         appBar: AppBar(title: const Text(title), backgroundColor: mainColor),
-        body: Column(children: const <Widget>[BuildTitle(), BuildForm()]));
+        body: LayoutBuilder(builder: (context, constraints) {
+          return Center(
+              child:
+                  Column(children: const <Widget>[BuildTitle(), BuildForm()]));
+        }));
   }
 }
 
@@ -21,8 +24,9 @@ class BuildTitle extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-        padding: const EdgeInsets.symmetric(vertical: 10.0),
-        child: Text('Se connecter', style: GoogleFonts.acme(fontSize: 30.0)));
+        padding: const EdgeInsets.all(paddingSize),
+        child:
+            Text('Se connecter', style: GoogleFonts.acme(fontSize: titleSize)));
   }
 }
 
@@ -44,7 +48,7 @@ class _BuildFormState extends State<BuildForm> {
 
   Padding _buildEmailField() {
     return Padding(
-        padding: const EdgeInsets.all(8.0),
+        padding: const EdgeInsets.all(paddingSize),
         child: TextFormField(
             focusNode: _emailFocus,
             controller: _email,
@@ -72,7 +76,7 @@ class _BuildFormState extends State<BuildForm> {
 
   Padding _buildPasswordField() {
     return Padding(
-        padding: const EdgeInsets.all(8.0),
+        padding: const EdgeInsets.all(paddingSize),
         child: TextFormField(
             focusNode: _passwordFocus,
             controller: _password,
@@ -91,7 +95,7 @@ class _BuildFormState extends State<BuildForm> {
                 hintText: 'Entrer un mot de passe valide'),
             cursorColor: mainColor,
             validator: (value) {
-              if (value == null || value.isEmpty) {
+              if (value == null || value.isEmpty || value.length < 8) {
                 return 'Mot de passe invalide';
               }
             },
@@ -106,7 +110,7 @@ class _BuildFormState extends State<BuildForm> {
             backgroundColor: MaterialStateProperty.all<Color>(mainColor),
             shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                 RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(20.0),
+                    borderRadius: BorderRadius.circular(radiusSize),
                     side: const BorderSide(color: secondColor)))));
   }
 
@@ -125,8 +129,10 @@ class _BuildFormState extends State<BuildForm> {
     if (_keyForm.currentState!.validate()) {
       _keyForm.currentState!.save();
       // TODO: Auth
-      Navigator.push(context,
-          MaterialPageRoute(builder: (context) => const AccountPage()));
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => const AccountBottomBarPage()));
     }
   }
 }

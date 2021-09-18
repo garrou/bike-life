@@ -14,16 +14,19 @@ class HomePage extends StatelessWidget {
           title: const Text(title, textAlign: TextAlign.center),
           backgroundColor: mainColor,
         ),
-        body: Center(
-          child: Column(
-            children: const <Widget>[
-              BuildTitle(),
-              BuildQuote(),
-              BuildImage(),
-              BuildSigninButton(),
-              BuildSignupButton()
-            ],
-          ),
+        body: LayoutBuilder(
+          builder: (context, constraint) {
+            return Center(
+                child: Column(
+              children: const <Widget>[
+                BuildTitle(),
+                BuildQuote(),
+                BuildImage(),
+                BuildSigninButton(),
+                BuildSignupButton()
+              ],
+            ));
+          },
         ));
   }
 }
@@ -34,8 +37,8 @@ class BuildTitle extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-        padding: const EdgeInsets.only(top: 20.0),
-        child: Text(title, style: GoogleFonts.acme(fontSize: 30)));
+        padding: const EdgeInsets.all(paddingSize),
+        child: Text(title, style: GoogleFonts.acme(fontSize: titleSize)));
   }
 }
 
@@ -45,7 +48,7 @@ class BuildQuote extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-        padding: const EdgeInsets.only(top: 20.0),
+        padding: const EdgeInsets.all(paddingSize),
         child: Text('La santé de votre vélo se surveille de près.',
             style:
                 GoogleFonts.acme(fontSize: 20, fontStyle: FontStyle.italic)));
@@ -58,7 +61,7 @@ class BuildImage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const Padding(
-        padding: EdgeInsets.only(bottom: 20.0),
+        padding: EdgeInsets.all(paddingSize),
         child: Image(image: AssetImage('assets/bike.png')));
   }
 }
@@ -80,7 +83,7 @@ class _BuildSigninButtonState extends State<BuildSigninButton> {
             backgroundColor: MaterialStateProperty.all<Color>(mainColor),
             shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                 RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10.0),
+                    borderRadius: BorderRadius.circular(radiusSize),
                     side: const BorderSide(color: secondColor)))));
   }
 
@@ -103,7 +106,7 @@ class BuildSignupButton extends StatelessWidget {
             backgroundColor: MaterialStateProperty.all<Color>(mainColor),
             shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                 RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10.0),
+                    borderRadius: BorderRadius.circular(radiusSize),
                     side: const BorderSide(color: secondColor)))));
   }
 }

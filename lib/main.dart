@@ -11,6 +11,9 @@ class App extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(title: title, home: HomePage());
+    return MaterialApp(
+        title: title,
+        theme: ThemeData(visualDensity: VisualDensity.adaptivePlatformDensity),
+        home: const HomePage());
   }
 }
