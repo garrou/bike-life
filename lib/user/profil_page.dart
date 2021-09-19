@@ -41,7 +41,7 @@ class _SignupFormState extends State<BuildForm> {
   final _passwordFocus = FocusNode();
   final _password = TextEditingController();
 
-  Padding _buildEmailField() {
+  Padding buildEmailField() {
     return Padding(
         padding: const EdgeInsets.all(thirdSize),
         child: TextFormField(
@@ -69,7 +69,7 @@ class _SignupFormState extends State<BuildForm> {
             onSaved: (value) => {}));
   }
 
-  Padding _buildPasswordField() {
+  Padding buildPasswordField() {
     return Padding(
         padding: const EdgeInsets.all(thirdSize),
         child: TextFormField(
@@ -97,7 +97,7 @@ class _SignupFormState extends State<BuildForm> {
             onSaved: (value) => {}));
   }
 
-  ElevatedButton _buildSigninButton() {
+  ElevatedButton buildSigninButton() {
     return ElevatedButton(
         onPressed: () => _onUpdate(),
         child: Text("Modifier mon profil", style: secondTextStyle),
@@ -114,9 +114,9 @@ class _SignupFormState extends State<BuildForm> {
     return Form(
         key: _keyForm,
         child: Column(children: <Widget>[
-          _buildEmailField(),
-          _buildPasswordField(),
-          _buildSigninButton()
+          buildEmailField(),
+          buildPasswordField(),
+          buildSigninButton()
         ]));
   }
 

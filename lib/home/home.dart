@@ -15,18 +15,32 @@ class HomePage extends StatelessWidget {
         ),
         body: LayoutBuilder(
           builder: (context, constraint) {
-            return Center(
-                child: Column(
-              children: const <Widget>[
-                BuildTitle(),
-                BuildQuote(),
-                BuildImage(),
-                BuildSigninButton(),
-                BuildSignupButton()
-              ],
-            ));
+            if (constraint.maxWidth > maxSize) {
+              return narrowLayout();
+            } else {
+              return wideLayout();
+            }
           },
         ));
+  }
+
+  Padding narrowLayout() {
+    return Padding(
+        padding: const EdgeInsets.symmetric(horizontal: maxPadding),
+        child: wideLayout());
+  }
+
+  Center wideLayout() {
+    return Center(
+        child: Column(
+      children: const <Widget>[
+        BuildTitle(),
+        BuildQuote(),
+        BuildImage(),
+        BuildSigninButton(),
+        BuildSignupButton()
+      ],
+    ));
   }
 }
 

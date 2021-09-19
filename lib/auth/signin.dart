@@ -10,10 +10,23 @@ class SigninPage extends StatelessWidget {
     return Scaffold(
         appBar: AppBar(title: const Text(title), backgroundColor: mainColor),
         body: LayoutBuilder(builder: (context, constraints) {
-          return Center(
-              child:
-                  Column(children: const <Widget>[BuildTitle(), BuildForm()]));
+          if (constraints.maxWidth > maxSize) {
+            return narrowLayout();
+          } else {
+            return wideLayout();
+          }
         }));
+  }
+
+  Center wideLayout() {
+    return Center(
+        child: Column(children: const <Widget>[BuildTitle(), BuildForm()]));
+  }
+
+  Padding narrowLayout() {
+    return Padding(
+        padding: const EdgeInsets.symmetric(horizontal: maxPadding),
+        child: wideLayout());
   }
 }
 
@@ -44,7 +57,7 @@ class _BuildFormState extends State<BuildForm> {
   final _passwordFocus = FocusNode();
   final _password = TextEditingController();
 
-  Padding _buildEmailField() {
+  Padding buildEmailField() {
     return Padding(
         padding: const EdgeInsets.all(thirdSize),
         child: TextFormField(
@@ -72,7 +85,7 @@ class _BuildFormState extends State<BuildForm> {
             onSaved: (value) => {}));
   }
 
-  Padding _buildPasswordField() {
+  Padding buildPasswordField() {
     return Padding(
         padding: const EdgeInsets.all(thirdSize),
         child: TextFormField(
@@ -100,7 +113,7 @@ class _BuildFormState extends State<BuildForm> {
             onSaved: (value) => {}));
   }
 
-  ElevatedButton _buildSigninButton() {
+  ElevatedButton buildSigninButton() {
     return ElevatedButton(
         onPressed: () => _onSignin(),
         child: Text('Connexion', style: secondTextStyle),
@@ -117,9 +130,9 @@ class _BuildFormState extends State<BuildForm> {
     return Form(
         key: _keyForm,
         child: Column(children: <Widget>[
-          _buildEmailField(),
-          _buildPasswordField(),
-          _buildSigninButton()
+          buildEmailField(),
+          buildPasswordField(),
+          buildSigninButton()
         ]));
   }
 

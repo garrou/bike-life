@@ -6,6 +6,9 @@ const String quote = "La santé de votre vélo se surveille de près.";
 
 const String devServer = "http://localhost:8080";
 
+const double maxPadding = 100.0;
+const double maxSize = 600.0;
+
 const double mainSize = 30.0;
 const double secondSize = 20.0;
 const double thirdSize = 10.0;

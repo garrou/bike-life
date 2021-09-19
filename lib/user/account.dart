@@ -1,6 +1,7 @@
 import 'package:bike_life/constants.dart';
 import 'package:bike_life/models/bike.dart';
 import 'package:bike_life/user/add_bike.dart';
+import 'package:bike_life/user/bike_details.dart';
 import 'package:flutter/material.dart';
 
 final List bikeList = [
@@ -59,14 +60,14 @@ class _AccountPageState extends State<AccountPage> {
       floatingActionButton: FloatingActionButton(
         backgroundColor: mainColor,
         splashColor: secondColor,
-        onPressed: () => Navigator.of(context).push(_addBikeRoute()),
+        onPressed: () => Navigator.of(context).push(addBikeRoute()),
         tooltip: 'Ajouter un vélo',
         child: const Icon(Icons.add),
       ),
     );
   }
 
-  Route _addBikeRoute() {
+  Route addBikeRoute() {
     return PageRouteBuilder(
         pageBuilder: (context, animation, secondaryAnimation) =>
             const AddBikePage(),
@@ -90,7 +91,7 @@ class BikeTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-        onTap: () => Navigator.of(context).push(_bikeDetailsRoute()),
+        onTap: () => Navigator.of(context).push(bikeDetailsRoute()),
         child: Card(
           margin: const EdgeInsets.all(thirdSize),
           elevation: thirdSize,
@@ -101,7 +102,7 @@ class BikeTile extends StatelessWidget {
         ));
   }
 
-  Route _bikeDetailsRoute() {
+  Route bikeDetailsRoute() {
     return PageRouteBuilder(
         pageBuilder: (context, animation, secondaryAnimation) =>
             BikeDetails(bike: bike),
@@ -112,28 +113,5 @@ class BikeTile extends StatelessWidget {
                       .chain(CurveTween(curve: Curves.easeInOut))),
               child: child);
         });
-  }
-}
-
-class BikeDetails extends StatelessWidget {
-  final Bike bike;
-  const BikeDetails({Key? key, required this.bike}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: AppBar(title: Text(bike.name), backgroundColor: mainColor),
-        body: Center(
-            child: Column(children: [
-          Padding(
-              padding: const EdgeInsets.all(thirdSize),
-              child: Image.network(bike.image)),
-          Padding(
-              padding: const EdgeInsets.symmetric(horizontal: thirdSize),
-              child: Text(bike.name, style: mainTextStyle)),
-          Padding(
-              padding: const EdgeInsets.symmetric(horizontal: thirdSize),
-              child: Text(bike.details, style: thirdTextStyle))
-        ])));
   }
 }
