@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 
 const String title = "Bike's life";
 
+const String devServer = "http://localhost:8080";
+
 const double titleSize = 30.0;
 const double paddingSize = 10.0;
 

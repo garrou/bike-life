@@ -48,6 +48,11 @@ class _BuildBottomBarState extends State<BuildBottomBar> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      body: PageView(
+        children: _tabPages,
+        onPageChanged: _onPageChanged,
+        controller: _pageController,
+      ),
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _pageIndex,
         onTap: _onTabTapped,
@@ -58,11 +63,6 @@ class _BuildBottomBarState extends State<BuildBottomBar> {
               icon: Icon(Icons.shopping_cart), label: 'Marché'),
           BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Profil'),
         ],
-      ),
-      body: PageView(
-        children: _tabPages,
-        onPageChanged: _onPageChanged,
-        controller: _pageController,
       ),
     );
   }
