@@ -2,7 +2,6 @@ import 'package:bike_life/auth/signin.dart';
 import 'package:bike_life/auth/signup.dart';
 import 'package:bike_life/constants.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -37,8 +36,8 @@ class BuildTitle extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-        padding: const EdgeInsets.all(paddingSize),
-        child: Text(title, style: GoogleFonts.acme(fontSize: titleSize)));
+        padding: const EdgeInsets.all(thirdSize),
+        child: Text(title, style: mainTextStyle));
   }
 }
 
@@ -48,10 +47,8 @@ class BuildQuote extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-        padding: const EdgeInsets.all(paddingSize),
-        child: Text('La santé de votre vélo se surveille de près.',
-            style:
-                GoogleFonts.acme(fontSize: 20, fontStyle: FontStyle.italic)));
+        padding: const EdgeInsets.all(thirdSize),
+        child: Text(quote, style: italicTextStyle));
   }
 }
 
@@ -61,7 +58,7 @@ class BuildImage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const Padding(
-        padding: EdgeInsets.all(paddingSize),
+        padding: EdgeInsets.all(thirdSize),
         child: Image(image: AssetImage('assets/bike.png')));
   }
 }
@@ -76,15 +73,18 @@ class BuildSigninButton extends StatefulWidget {
 class _BuildSigninButtonState extends State<BuildSigninButton> {
   @override
   Widget build(BuildContext context) {
-    return ElevatedButton(
-        onPressed: () => _toSigninPage(),
-        child: const Text("Se connecter"),
-        style: ButtonStyle(
-            backgroundColor: MaterialStateProperty.all<Color>(mainColor),
-            shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(radiusSize),
-                    side: const BorderSide(color: secondColor)))));
+    return Padding(
+      padding: const EdgeInsets.only(top: thirdSize),
+      child: ElevatedButton(
+          onPressed: () => _toSigninPage(),
+          child: Text("Se connecter", style: secondTextStyle),
+          style: ButtonStyle(
+              backgroundColor: MaterialStateProperty.all<Color>(mainColor),
+              shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                  RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(thirdSize),
+                      side: const BorderSide(color: secondColor))))),
+    );
   }
 
   void _toSigninPage() {
@@ -98,15 +98,18 @@ class BuildSignupButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ElevatedButton(
-        onPressed: () => Navigator.push(context,
-            MaterialPageRoute(builder: (context) => const SignupPage())),
-        child: const Text("S'inscrire"),
-        style: ButtonStyle(
-            backgroundColor: MaterialStateProperty.all<Color>(mainColor),
-            shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(radiusSize),
-                    side: const BorderSide(color: secondColor)))));
+    return Padding(
+      padding: const EdgeInsets.only(top: thirdSize),
+      child: ElevatedButton(
+          onPressed: () => Navigator.push(context,
+              MaterialPageRoute(builder: (context) => const SignupPage())),
+          child: Text("S'inscrire", style: secondTextStyle),
+          style: ButtonStyle(
+              backgroundColor: MaterialStateProperty.all<Color>(mainColor),
+              shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                  RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(thirdSize),
+                      side: const BorderSide(color: secondColor))))),
+    );
   }
 }

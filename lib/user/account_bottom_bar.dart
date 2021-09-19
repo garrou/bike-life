@@ -57,8 +57,12 @@ class _BuildBottomBarState extends State<BuildBottomBar> {
         currentIndex: _pageIndex,
         onTap: _onTabTapped,
         backgroundColor: Colors.white,
+        selectedItemColor: mainColor,
         items: const <BottomNavigationBarItem>[
-          BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Accueil'),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.home),
+              label: 'Accueil',
+              backgroundColor: mainColor),
           BottomNavigationBarItem(
               icon: Icon(Icons.shopping_cart), label: 'Marché'),
           BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Profil'),

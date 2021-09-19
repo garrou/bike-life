@@ -1,7 +1,6 @@
 import 'package:bike_life/auth/signin.dart';
 import 'package:bike_life/constants.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 class SignupPage extends StatelessWidget {
   const SignupPage({Key? key}) : super(key: key);
@@ -25,9 +24,8 @@ class BuildTitle extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-        padding: const EdgeInsets.symmetric(vertical: paddingSize),
-        child:
-            Text("S'inscrire", style: GoogleFonts.acme(fontSize: titleSize)));
+        padding: const EdgeInsets.symmetric(vertical: thirdSize),
+        child: Text("S'inscrire", style: mainTextStyle));
   }
 }
 
@@ -49,7 +47,7 @@ class _SignupFormState extends State<BuildForm> {
 
   Padding _buildEmailField() {
     return Padding(
-        padding: const EdgeInsets.all(paddingSize),
+        padding: const EdgeInsets.all(thirdSize),
         child: TextFormField(
             focusNode: _emailFocus,
             controller: _email,
@@ -77,7 +75,7 @@ class _SignupFormState extends State<BuildForm> {
 
   Padding _buildPasswordField() {
     return Padding(
-        padding: const EdgeInsets.all(paddingSize),
+        padding: const EdgeInsets.all(thirdSize),
         child: TextFormField(
             focusNode: _passwordFocus,
             controller: _password,
@@ -106,12 +104,12 @@ class _SignupFormState extends State<BuildForm> {
   ElevatedButton _buildSigninButton() {
     return ElevatedButton(
         onPressed: () => _onSignin(),
-        child: Text("S'inscrire", style: GoogleFonts.acme()),
+        child: Text("S'inscrire", style: secondTextStyle),
         style: ButtonStyle(
             backgroundColor: MaterialStateProperty.all<Color>(mainColor),
             shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                 RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(radiusSize),
+                    borderRadius: BorderRadius.circular(thirdSize),
                     side: const BorderSide(color: secondColor)))));
   }
 

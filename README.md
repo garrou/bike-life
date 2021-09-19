@@ -31,7 +31,7 @@ flutter config --enable-linux-desktop
 - Run in chrome     
 
 ```sh
-flutter run -d chrome
+flutter run -d chrome --web-renderer html
 ```
 
 [See](https://flutter.dev/docs/development/ui/layout/adaptive-responsive)

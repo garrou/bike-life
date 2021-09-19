@@ -1,20 +1,35 @@
 import 'package:bike_life/constants.dart';
 import 'package:bike_life/models/bike.dart';
+import 'package:bike_life/user/add_bike.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 final List bikeList = [
   {
-    "name": "Rockrider",
+    "name": "Cannondale",
     "image":
-        "https://media.alltricks.com/medium/2128588613b0b36614520.18988153.jpg?frz-v=298",
-    "details": "VTT de descente pour se vautrer"
+        "https://media.alltricks.com/medium/15040135e664c68e5b9f1.87060551.jpg?frz-v=298",
+    "details":
+        "VTT TOUT SUSPENDU ELECTRIQUE CANNONDALE MOTERRA 3 29'' SRAM SX EAGLE 12V BBQ"
+  },
+  {
+    "name": "BH",
+    "image":
+        "https://media.alltricks.com/medium/207966460b0dea6267e91.07700740.jpg?frz-v=298",
+    "details":
+        "VTT TOUT SUSPENDU ÉLECTRIQUE BH ATOMX CARBON LYNX 5.5 PRO-S SHIMANO SLX / XT 12V 720 WH 29'' NOIR 2021"
   },
   {
     "name": "Trek",
     "image":
-        "https://media.alltricks.com/medium/18289255f917c33c11fe3.92156231.jpg?frz-v=298",
-    "details": "VTT de Flo pour draguer une certaine minette"
+        "https://media.alltricks.com/medium/15733025ea82a4d88c7f6.42261302.jpg?frz-v=298",
+    "details": "GRAVEL BIKE TREK CHECKPOINT ALR 5 SHIMANO GRX 11V 2021 TEAL"
+  },
+  {
+    "name": "BMC",
+    "image":
+        "https://media.alltricks.com/medium/209144760d45110a22941.59883979.jpg?frz-v=298",
+    "details":
+        "VÉLO DE ROUTE BMC ROADMACHINE SEVEN SHIMANO 105 11V 700 MM BLEU PETROL 2022"
   }
 ];
 
@@ -36,8 +51,37 @@ class _AccountPageState extends State<AccountPage> {
 
   @override
   Widget build(BuildContext context) {
-    return ListView(
-        children: <Widget>[for (Bike bike in _bikes) BikeTile(bike: bike)]);
+    return Scaffold(
+      body: ListView(children: <Widget>[
+        Center(child: Text("Mes vélos", style: mainTextStyle)),
+        for (Bike bike in _bikes) BikeTile(bike: bike)
+      ]),
+      floatingActionButton: FloatingActionButton(
+        backgroundColor: mainColor,
+        splashColor: secondColor,
+        onPressed: () => Navigator.of(context).push(_addBikeRoute()),
+        tooltip: 'Ajouter un vélo',
+        child: const Icon(Icons.add),
+      ),
+    );
+  }
+
+  Route _addBikeRoute() {
+    return PageRouteBuilder(
+        pageBuilder: (context, animation, secondaryAnimation) =>
+            const AddBikePage(),
+        transitionsBuilder: (context, animation, secondaryAnimation, child) {
+          final tween = Tween(begin: const Offset(0.0, 1.0), end: Offset.zero);
+          final curvedAnimation = CurvedAnimation(
+            parent: animation,
+            curve: Curves.ease,
+          );
+
+          return SlideTransition(
+            position: tween.animate(curvedAnimation),
+            child: child,
+          );
+        });
   }
 }
 
@@ -47,12 +91,29 @@ class BikeTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListTile(
-        leading: Image.network(bike.image),
-        title: Text(bike.name),
-        subtitle: Text(bike.details),
-        onTap: () => Navigator.of(context).push(
-            MaterialPageRoute(builder: (context) => BikeDetails(bike: bike))));
+    return GestureDetector(
+        onTap: () => Navigator.of(context).push(_bikeDetailsRoute()),
+        child: Card(
+          margin: const EdgeInsets.all(thirdSize),
+          elevation: thirdSize,
+          child: ListTile(
+              leading: Image.network(bike.image),
+              title: Text(bike.name),
+              subtitle: Text(bike.details)),
+        ));
+  }
+
+  Route _bikeDetailsRoute() {
+    return PageRouteBuilder(
+        pageBuilder: (context, animation, secondaryAnimation) =>
+            BikeDetails(bike: bike),
+        transitionsBuilder: (context, animation, secondaryAnimation, child) {
+          return SlideTransition(
+              position: animation.drive(
+                  Tween(begin: const Offset(0.0, 1.0), end: Offset.zero)
+                      .chain(CurveTween(curve: Curves.easeInOut))),
+              child: child);
+        });
   }
 }
 
@@ -63,13 +124,18 @@ class BikeDetails extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        appBar: AppBar(title: Text(bike.name), backgroundColor: mainColor),
         body: Center(
-            child: Padding(
-                padding: const EdgeInsets.only(top: paddingSize),
-                child: Column(children: [
-                  Image.network(bike.image),
-                  Text(bike.name, style: GoogleFonts.acme(fontSize: 30.0)),
-                  Text(bike.details, style: GoogleFonts.acme(fontSize: 20.0))
-                ]))));
+            child: Column(children: [
+          Padding(
+              padding: const EdgeInsets.all(thirdSize),
+              child: Image.network(bike.image)),
+          Padding(
+              padding: const EdgeInsets.symmetric(horizontal: thirdSize),
+              child: Text(bike.name, style: mainTextStyle)),
+          Padding(
+              padding: const EdgeInsets.symmetric(horizontal: thirdSize),
+              child: Text(bike.details, style: thirdTextStyle))
+        ])));
   }
 }
