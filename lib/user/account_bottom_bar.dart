@@ -33,6 +33,17 @@ class _BuildBottomBarState extends State<BuildBottomBar> {
     const ProfilPage(),
   ];
 
+  void _onPageChanged(int page) {
+    setState(() {
+      _pageIndex = page;
+    });
+  }
+
+  void _onTabTapped(int index) {
+    _pageController.animateToPage(index,
+        duration: const Duration(milliseconds: 500), curve: Curves.easeInOut);
+  }
+
   @override
   void initState() {
     super.initState();
@@ -64,21 +75,10 @@ class _BuildBottomBarState extends State<BuildBottomBar> {
               label: 'Accueil',
               backgroundColor: mainColor),
           BottomNavigationBarItem(
-              icon: Icon(Icons.shopping_cart), label: 'Marché'),
+              icon: Icon(Icons.shopping_cart), label: 'Marketplace'),
           BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Profil'),
         ],
       ),
     );
-  }
-
-  void _onPageChanged(int page) {
-    setState(() {
-      _pageIndex = page;
-    });
-  }
-
-  void _onTabTapped(int index) {
-    _pageController.animateToPage(index,
-        duration: const Duration(milliseconds: 500), curve: Curves.easeInOut);
   }
 }

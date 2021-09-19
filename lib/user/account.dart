@@ -71,14 +71,12 @@ class _AccountPageState extends State<AccountPage> {
         pageBuilder: (context, animation, secondaryAnimation) =>
             const AddBikePage(),
         transitionsBuilder: (context, animation, secondaryAnimation, child) {
-          final tween = Tween(begin: const Offset(0.0, 1.0), end: Offset.zero);
-          final curvedAnimation = CurvedAnimation(
-            parent: animation,
-            curve: Curves.ease,
-          );
-
           return SlideTransition(
-            position: tween.animate(curvedAnimation),
+            position: Tween(begin: const Offset(0.0, 1.0), end: Offset.zero)
+                .animate(CurvedAnimation(
+              parent: animation,
+              curve: Curves.ease,
+            )),
             child: child,
           );
         });

@@ -1,5 +1,4 @@
 import 'package:bike_life/constants.dart';
-import 'package:bike_life/main.dart';
 import 'package:flutter/material.dart';
 
 class AddBikePage extends StatelessWidget {

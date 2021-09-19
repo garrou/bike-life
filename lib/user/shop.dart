@@ -7,13 +7,25 @@ class ShopPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      color: Colors.yellow,
-      child: const Center(child: Text("Screen 2")),
+    return Scaffold(
+      body: Center(
+        child: Column(children: const <Widget>[BuildTitle()]),
+      ),
     );
   }
 }
 
-Future<http.Response> fetchAlbum() {
+class BuildTitle extends StatelessWidget {
+  const BuildTitle({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+        padding: const EdgeInsets.symmetric(vertical: thirdSize),
+        child: Text("Marketplace", style: mainTextStyle));
+  }
+}
+
+Future<http.Response> fetch() {
   return http.get(Uri.parse(devServer));
 }
