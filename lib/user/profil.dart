@@ -29,20 +29,19 @@ class BuildTitle extends StatelessWidget {
   }
 }
 
-class DisconnectButton extends StatefulWidget {
+class DisconnectButton extends StatelessWidget {
   const DisconnectButton({Key? key}) : super(key: key);
 
-  @override
-  _DisconnectButtonState createState() => _DisconnectButtonState();
-}
-
-class _DisconnectButtonState extends State<DisconnectButton> {
   @override
   Widget build(BuildContext context) {
     return Padding(
         padding: const EdgeInsets.only(bottom: paddingTop),
         child: ElevatedButton(
-            onPressed: _onDisconnect,
+            onPressed: () {
+              // TODO: Disconnect
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => const HomePage()));
+            },
             child: Text("Se déconnecter", style: secondTextStyle),
             style: ButtonStyle(
                 backgroundColor: MaterialStateProperty.all<Color>(mainColor),
@@ -50,12 +49,6 @@ class _DisconnectButtonState extends State<DisconnectButton> {
                     RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(thirdSize),
                         side: const BorderSide(color: secondColor))))));
-  }
-
-  void _onDisconnect() {
-    // TODO: Disconnect
-    Navigator.push(
-        context, MaterialPageRoute(builder: (context) => const HomePage()));
   }
 }
 
