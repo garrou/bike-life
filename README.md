@@ -9,21 +9,13 @@ flutter devices
 ## Add config on existing project
 
 ```sh
-flutter create --platforms=windows,macos,linux .
+flutter create --platforms=linux .
 ```
 
-## Add developpeur mode
+## Add developper mode
 
 ```sh
 start ms-settings:developers
-```
-
-## Config desktop app
-
-```sh
-flutter config --enable-windows-desktop
-flutter config --enable-macos-desktop
-flutter config --enable-linux-desktop
 ```
 
 ## Run
