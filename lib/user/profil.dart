@@ -1,4 +1,5 @@
 import 'package:bike_life/constants.dart';
+import 'package:bike_life/home/home.dart';
 import 'package:flutter/material.dart';
 
 class ProfilPage extends StatelessWidget {
@@ -8,8 +9,11 @@ class ProfilPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
         body: Center(
-            child:
-                Column(children: const <Widget>[BuildTitle(), BuildForm()])));
+            child: Column(children: const <Widget>[
+      BuildTitle(),
+      DisconnectButton(),
+      BuildForm()
+    ])));
   }
 }
 
@@ -22,6 +26,26 @@ class BuildTitle extends StatelessWidget {
       padding: const EdgeInsets.only(top: paddingTop),
       child: Text("Profil", style: mainTextStyle),
     );
+  }
+}
+
+class DisconnectButton extends StatelessWidget {
+  const DisconnectButton({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+        padding: const EdgeInsets.only(bottom: paddingTop),
+        child: ElevatedButton(
+            onPressed: () => Navigator.push(context,
+                MaterialPageRoute(builder: (context) => const HomePage())),
+            child: Text("Se déconnecter", style: secondTextStyle),
+            style: ButtonStyle(
+                backgroundColor: MaterialStateProperty.all<Color>(mainColor),
+                shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                    RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(thirdSize),
+                        side: const BorderSide(color: secondColor))))));
   }
 }
 
@@ -115,12 +139,21 @@ class _SignupFormState extends State<BuildForm> {
 
   @override
   Widget build(BuildContext context) {
-    return Form(
-        key: _keyForm,
+    return Card(
+        shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(mainSize)),
+        elevation: thirdSize,
         child: Column(children: <Widget>[
-          buildEmailField(),
-          buildPasswordField(),
-          buildSigninButton()
+          Text("Modifier mon profil", style: secondTextStyle),
+          Padding(
+              padding: const EdgeInsets.symmetric(vertical: paddingTop),
+              child: Form(
+                  key: _keyForm,
+                  child: Column(children: <Widget>[
+                    buildEmailField(),
+                    buildPasswordField(),
+                    buildSigninButton()
+                  ])))
         ]));
   }
 
