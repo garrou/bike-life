@@ -12,7 +12,7 @@ flutter devices
 flutter create --platforms=windows,macos,linux .
 ```
 
-## Add developpeur mode
+## Add developper mode
 
 ```sh
 start ms-settings:developers
