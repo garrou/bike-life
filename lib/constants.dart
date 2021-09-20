@@ -6,6 +6,9 @@ const String quote = "La santé de votre vélo se surveille de près.";
 
 const String devServer = "http://localhost:8080";
 
+const double imageSize = 500.0;
+
+const double paddingTop = 30.0;
 const double maxPadding = 100.0;
 const double maxSize = 600.0;
 
@@ -21,3 +24,4 @@ TextStyle secondTextStyle = GoogleFonts.baloo(fontSize: secondSize);
 TextStyle thirdTextStyle = GoogleFonts.baloo(fontSize: thirdSize);
 TextStyle italicTextStyle =
     GoogleFonts.baloo(fontSize: secondSize, fontStyle: FontStyle.italic);
+TextStyle linkTextStyle = GoogleFonts.baloo(fontSize: secondSize);

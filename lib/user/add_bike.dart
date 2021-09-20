@@ -6,9 +6,17 @@ class AddBikePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: AppBar(
-            title: const Text("Ajouter un vélo"), backgroundColor: mainColor),
-        body: Container(color: Colors.green));
+    return Scaffold(body: Column(children: const <Widget>[BuildTitle()]));
+  }
+}
+
+class BuildTitle extends StatelessWidget {
+  const BuildTitle({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+        padding: const EdgeInsets.only(top: paddingTop),
+        child: Center(child: Text("Ajouter un vélo", style: mainTextStyle)));
   }
 }

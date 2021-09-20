@@ -19,7 +19,7 @@ class BuildTitle extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: thirdSize),
+      padding: const EdgeInsets.only(top: paddingTop),
       child: Text("Profil", style: mainTextStyle),
     );
   }
@@ -50,12 +50,14 @@ class _SignupFormState extends State<BuildForm> {
             style: const TextStyle(color: mainColor),
             keyboardType: TextInputType.emailAddress,
             decoration: InputDecoration(
-                focusedBorder: const OutlineInputBorder(
-                    borderSide: BorderSide(color: secondColor)),
+                focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(mainSize),
+                    borderSide: const BorderSide(color: secondColor)),
                 prefixIcon: Icon(Icons.email,
                     color: _emailFocus.hasFocus ? secondColor : mainColor),
-                border: const OutlineInputBorder(
-                    borderSide: BorderSide(color: secondColor)),
+                border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(mainSize),
+                    borderSide: const BorderSide(color: secondColor)),
                 labelText: 'Email',
                 labelStyle: TextStyle(
                     color: _emailFocus.hasFocus ? secondColor : mainColor),
@@ -78,12 +80,14 @@ class _SignupFormState extends State<BuildForm> {
             style: const TextStyle(color: mainColor),
             obscureText: true,
             decoration: InputDecoration(
-                focusedBorder: const OutlineInputBorder(
-                    borderSide: BorderSide(color: secondColor)),
+                focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(mainSize),
+                    borderSide: const BorderSide(color: secondColor)),
                 prefixIcon: Icon(Icons.lock,
                     color: _passwordFocus.hasFocus ? secondColor : mainColor),
-                border: const OutlineInputBorder(
-                    borderSide: BorderSide(color: secondColor)),
+                border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(mainSize),
+                    borderSide: const BorderSide(color: secondColor)),
                 labelText: 'Mot de passe',
                 labelStyle: TextStyle(
                     color: _passwordFocus.hasFocus ? secondColor : mainColor),

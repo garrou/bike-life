@@ -53,18 +53,17 @@ class _AccountPageState extends State<AccountPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: ListView(children: <Widget>[
-        Center(child: Text("Mes vélos", style: mainTextStyle)),
-        for (Bike bike in _bikes) BikeTile(bike: bike)
-      ]),
-      floatingActionButton: FloatingActionButton(
-        backgroundColor: mainColor,
-        splashColor: secondColor,
-        onPressed: () => Navigator.of(context).push(addBikeRoute()),
-        tooltip: 'Ajouter un vélo',
-        child: const Icon(Icons.add),
-      ),
-    );
+        body: ListView(children: <Widget>[
+          const BuildTitle(),
+          for (Bike bike in _bikes) BikeTile(bike: bike)
+        ]),
+        floatingActionButton: FloatingActionButton(
+          backgroundColor: mainColor,
+          splashColor: secondColor,
+          onPressed: () => Navigator.of(context).push(addBikeRoute()),
+          tooltip: 'Ajouter un vélo',
+          child: const Icon(Icons.add),
+        ));
   }
 
   Route addBikeRoute() {
@@ -81,6 +80,17 @@ class _AccountPageState extends State<AccountPage> {
             child: child,
           );
         });
+  }
+}
+
+class BuildTitle extends StatelessWidget {
+  const BuildTitle({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+        padding: const EdgeInsets.only(top: paddingTop),
+        child: Center(child: Text("Mes vélos", style: mainTextStyle)));
   }
 }
 

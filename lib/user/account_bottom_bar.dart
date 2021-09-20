@@ -1,6 +1,6 @@
 import 'package:bike_life/constants.dart';
 import 'package:bike_life/user/account.dart';
-import 'package:bike_life/user/profil_page.dart';
+import 'package:bike_life/user/profil.dart';
 import 'package:bike_life/user/shop.dart';
 import 'package:flutter/animation.dart';
 import 'package:flutter/material.dart';
@@ -10,9 +10,7 @@ class AccountBottomBarPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: AppBar(title: const Text(title), backgroundColor: mainColor),
-        body: const BuildBottomBar());
+    return const Scaffold(body: BuildBottomBar());
   }
 }
 

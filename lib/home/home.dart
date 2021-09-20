@@ -8,20 +8,15 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: AppBar(
-          title: const Text(title, textAlign: TextAlign.center),
-          backgroundColor: mainColor,
-        ),
-        body: LayoutBuilder(
-          builder: (context, constraint) {
-            if (constraint.maxWidth > maxSize) {
-              return narrowLayout();
-            } else {
-              return wideLayout();
-            }
-          },
-        ));
+    return Scaffold(body: LayoutBuilder(
+      builder: (context, constraint) {
+        if (constraint.maxWidth > maxSize) {
+          return narrowLayout();
+        } else {
+          return wideLayout();
+        }
+      },
+    ));
   }
 
   Padding narrowLayout() {
@@ -30,17 +25,21 @@ class HomePage extends StatelessWidget {
         child: wideLayout());
   }
 
-  Center wideLayout() {
-    return Center(
-        child: Column(
-      children: const <Widget>[
-        BuildTitle(),
-        BuildQuote(),
-        BuildImage(),
-        BuildSigninButton(),
-        BuildSignupButton()
-      ],
-    ));
+  Padding wideLayout() {
+    return Padding(
+        padding: const EdgeInsets.only(top: paddingTop),
+        child: ListView(children: <Widget>[
+          Center(
+              child: Column(
+            children: const <Widget>[
+              BuildTitle(),
+              BuildQuote(),
+              BuildImage(),
+              BuildSigninButton(),
+              BuildSignupButton()
+            ],
+          ))
+        ]));
   }
 }
 
@@ -73,7 +72,10 @@ class BuildImage extends StatelessWidget {
   Widget build(BuildContext context) {
     return const Padding(
         padding: EdgeInsets.all(thirdSize),
-        child: Image(image: AssetImage('assets/bike.png')));
+        child: Image(
+            image: AssetImage('assets/bike.png'),
+            height: imageSize,
+            width: imageSize));
   }
 }
 

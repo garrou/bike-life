@@ -1,3 +1,4 @@
+import 'package:bike_life/auth/signup.dart';
 import 'package:bike_life/user/account_bottom_bar.dart';
 import 'package:bike_life/constants.dart';
 import 'package:flutter/material.dart';
@@ -7,20 +8,24 @@ class SigninPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: AppBar(title: const Text(title), backgroundColor: mainColor),
-        body: LayoutBuilder(builder: (context, constraints) {
-          if (constraints.maxWidth > maxSize) {
-            return narrowLayout();
-          } else {
-            return wideLayout();
-          }
-        }));
+    return Scaffold(body: LayoutBuilder(builder: (context, constraints) {
+      if (constraints.maxWidth > maxSize) {
+        return narrowLayout();
+      } else {
+        return wideLayout();
+      }
+    }));
   }
 
-  Center wideLayout() {
-    return Center(
-        child: Column(children: const <Widget>[BuildTitle(), BuildForm()]));
+  Padding wideLayout() {
+    return Padding(
+        padding: const EdgeInsets.only(top: paddingTop),
+        child: Center(
+            child: Column(children: const <Widget>[
+          BuildTitle(),
+          BuildForm(),
+          LinkSignup()
+        ])));
   }
 
   Padding narrowLayout() {
@@ -66,12 +71,14 @@ class _BuildFormState extends State<BuildForm> {
             style: const TextStyle(color: mainColor),
             keyboardType: TextInputType.emailAddress,
             decoration: InputDecoration(
-                focusedBorder: const OutlineInputBorder(
-                    borderSide: BorderSide(color: secondColor)),
+                focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(mainSize),
+                    borderSide: const BorderSide(color: secondColor)),
                 prefixIcon: Icon(Icons.email,
                     color: _emailFocus.hasFocus ? secondColor : mainColor),
-                border: const OutlineInputBorder(
-                    borderSide: BorderSide(color: secondColor)),
+                border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(mainSize),
+                    borderSide: const BorderSide(color: secondColor)),
                 labelText: 'Email',
                 labelStyle: TextStyle(
                     color: _emailFocus.hasFocus ? secondColor : mainColor),
@@ -94,12 +101,14 @@ class _BuildFormState extends State<BuildForm> {
             style: const TextStyle(color: mainColor),
             obscureText: true,
             decoration: InputDecoration(
-                focusedBorder: const OutlineInputBorder(
-                    borderSide: BorderSide(color: secondColor)),
+                focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(mainSize),
+                    borderSide: const BorderSide(color: secondColor)),
                 prefixIcon: Icon(Icons.lock,
                     color: _passwordFocus.hasFocus ? secondColor : mainColor),
-                border: const OutlineInputBorder(
-                    borderSide: BorderSide(color: secondColor)),
+                border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(mainSize),
+                    borderSide: const BorderSide(color: secondColor)),
                 labelText: 'Mot de passe',
                 labelStyle: TextStyle(
                     color: _passwordFocus.hasFocus ? secondColor : mainColor),
@@ -145,5 +154,23 @@ class _BuildFormState extends State<BuildForm> {
           MaterialPageRoute(
               builder: (context) => const AccountBottomBarPage()));
     }
+  }
+}
+
+class LinkSignup extends StatelessWidget {
+  const LinkSignup({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+        padding: const EdgeInsets.all(mainSize),
+        child: InkWell(
+            child: const Text("Nouveau ? Créer un compte",
+                style: TextStyle(
+                    decoration: TextDecoration.underline,
+                    color: Colors.blue,
+                    fontSize: secondSize)),
+            onTap: () => Navigator.push(context,
+                MaterialPageRoute(builder: (context) => const SignupPage()))));
   }
 }
