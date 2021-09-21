@@ -5,8 +5,8 @@ import 'package:bike_life/user/shop.dart';
 import 'package:flutter/animation.dart';
 import 'package:flutter/material.dart';
 
-class AccountBottomBarPage extends StatelessWidget {
-  const AccountBottomBarPage({Key? key}) : super(key: key);
+class UserHome extends StatelessWidget {
+  const UserHome({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

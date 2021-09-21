@@ -1,6 +1,5 @@
 import 'package:bike_life/constants.dart';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
 
 class ShopPage extends StatelessWidget {
   const ShopPage({Key? key}) : super(key: key);
@@ -24,8 +23,4 @@ class BuildTitle extends StatelessWidget {
         padding: const EdgeInsets.symmetric(vertical: paddingTop),
         child: Text("Marketplace", style: mainTextStyle));
   }
-}
-
-Future<http.Response> fetch() {
-  return http.get(Uri.parse(devServer));
 }

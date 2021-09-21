@@ -93,7 +93,7 @@ class _BuildSigninButtonState extends State<BuildSigninButton> {
                   backgroundColor: MaterialStateProperty.all<Color>(mainColor),
                   shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                       RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(thirdSize),
+                          borderRadius: BorderRadius.circular(mainSize),
                           side: const BorderSide(color: mainColor)))))),
     );
   }
@@ -120,7 +120,7 @@ class BuildSignupButton extends StatelessWidget {
                 backgroundColor: MaterialStateProperty.all<Color>(mainColor),
                 shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                     RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(thirdSize),
+                        borderRadius: BorderRadius.circular(mainSize),
                         side: const BorderSide(color: mainColor))))));
   }
 }

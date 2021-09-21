@@ -36,19 +36,23 @@ class DisconnectButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
         padding: const EdgeInsets.only(bottom: paddingTop),
-        child: ElevatedButton(
-            onPressed: () {
-              // TODO: Disconnect
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => const HomePage()));
-            },
-            child: Text("Se déconnecter", style: secondTextStyle),
-            style: ButtonStyle(
-                backgroundColor: MaterialStateProperty.all<Color>(mainColor),
-                shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                    RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(thirdSize),
-                        side: const BorderSide(color: secondColor))))));
+        child: SizedBox(
+          height: buttonHeight,
+          width: buttonWidth,
+          child: ElevatedButton(
+              onPressed: () {
+                // TODO: Disconnect
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => const HomePage()));
+              },
+              child: Text("Se déconnecter", style: secondTextStyle),
+              style: ButtonStyle(
+                  backgroundColor: MaterialStateProperty.all<Color>(mainColor),
+                  shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                      RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(mainSize),
+                          side: const BorderSide(color: secondColor))))),
+        ));
   }
 }
 
@@ -128,16 +132,20 @@ class _SignupFormState extends State<BuildForm> {
             onSaved: (value) => {}));
   }
 
-  ElevatedButton buildSigninButton() {
-    return ElevatedButton(
-        onPressed: () => _onUpdate(),
-        child: Text("Modifier mon profil", style: secondTextStyle),
-        style: ButtonStyle(
-            backgroundColor: MaterialStateProperty.all<Color>(mainColor),
-            shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(thirdSize),
-                    side: const BorderSide(color: secondColor)))));
+  SizedBox buildSigninButton() {
+    return SizedBox(
+      height: buttonHeight,
+      width: buttonWidth,
+      child: ElevatedButton(
+          onPressed: () => _onUpdate(),
+          child: Text("Modifier", style: secondTextStyle),
+          style: ButtonStyle(
+              backgroundColor: MaterialStateProperty.all<Color>(mainColor),
+              shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                  RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(mainSize),
+                      side: const BorderSide(color: secondColor))))),
+    );
   }
 
   @override

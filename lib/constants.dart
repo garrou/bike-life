@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-const String devServer = "http://localhost:8080";
+const String webEndpoint = "http://localhost:8080/api/v1";
+const String androidEndpoint = "http://10.0.2.2:8080/api/v1";
 
 const String title = "Bike's life";
 const String quote = "La santé de votre vélo se surveille de près.";
