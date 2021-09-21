@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+const String devServer = "http://localhost:8080";
+
 const String title = "Bike's life";
 const String quote = "La santé de votre vélo se surveille de près.";
+const String homeImg = "assets/bike.png";
 
-const String devServer = "http://localhost:8080";
+const double buttonWidth = 200.0;
+const double buttonHeight = 50;
 
 const double imageSize = 500.0;
 
@@ -19,9 +23,9 @@ const double thirdSize = 10.0;
 const Color mainColor = Color.fromARGB(255, 53, 143, 128);
 const Color secondColor = Color.fromARGB(255, 3, 102, 102);
 
-TextStyle mainTextStyle = GoogleFonts.baloo(fontSize: mainSize);
-TextStyle secondTextStyle = GoogleFonts.baloo(fontSize: secondSize);
-TextStyle thirdTextStyle = GoogleFonts.baloo(fontSize: thirdSize);
+TextStyle mainTextStyle = GoogleFonts.roboto(fontSize: mainSize);
+TextStyle secondTextStyle = GoogleFonts.roboto(fontSize: secondSize);
+TextStyle thirdTextStyle = GoogleFonts.roboto(fontSize: thirdSize);
 TextStyle italicTextStyle =
-    GoogleFonts.baloo(fontSize: secondSize, fontStyle: FontStyle.italic);
-TextStyle linkTextStyle = GoogleFonts.baloo(fontSize: secondSize);
+    GoogleFonts.roboto(fontSize: secondSize, fontStyle: FontStyle.italic);
+TextStyle linkTextStyle = GoogleFonts.roboto(fontSize: secondSize);

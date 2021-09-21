@@ -25,21 +25,19 @@ class HomePage extends StatelessWidget {
         child: wideLayout());
   }
 
-  Padding wideLayout() {
-    return Padding(
-        padding: const EdgeInsets.only(top: paddingTop),
-        child: ListView(children: <Widget>[
-          Center(
-              child: Column(
-            children: const <Widget>[
-              BuildTitle(),
-              BuildQuote(),
-              BuildImage(),
-              BuildSigninButton(),
-              BuildSignupButton()
-            ],
-          ))
-        ]));
+  ListView wideLayout() {
+    return ListView(children: <Widget>[
+      Center(
+          child: Column(
+        children: const <Widget>[
+          BuildTitle(),
+          BuildQuote(),
+          BuildImage(),
+          BuildSigninButton(),
+          BuildSignupButton()
+        ],
+      ))
+    ]);
   }
 }
 
@@ -49,7 +47,7 @@ class BuildTitle extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-        padding: const EdgeInsets.all(thirdSize),
+        padding: const EdgeInsets.symmetric(vertical: secondSize),
         child: Text(title, style: mainTextStyle));
   }
 }
@@ -59,9 +57,7 @@ class BuildQuote extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-        padding: const EdgeInsets.all(thirdSize),
-        child: Text(quote, style: italicTextStyle));
+    return Text(quote, style: italicTextStyle);
   }
 }
 
@@ -70,12 +66,8 @@ class BuildImage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Padding(
-        padding: EdgeInsets.all(thirdSize),
-        child: Image(
-            image: AssetImage('assets/bike.png'),
-            height: imageSize,
-            width: imageSize));
+    return const Image(
+        image: AssetImage(homeImg), height: imageSize, width: imageSize);
   }
 }
 
@@ -90,16 +82,19 @@ class _BuildSigninButtonState extends State<BuildSigninButton> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(top: thirdSize),
-      child: ElevatedButton(
-          onPressed: () => _toSigninPage(),
-          child: Text("Se connecter", style: secondTextStyle),
-          style: ButtonStyle(
-              backgroundColor: MaterialStateProperty.all<Color>(mainColor),
-              shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                  RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(thirdSize),
-                      side: const BorderSide(color: secondColor))))),
+      padding: const EdgeInsets.all(thirdSize),
+      child: SizedBox(
+          height: buttonHeight,
+          width: buttonWidth,
+          child: ElevatedButton(
+              onPressed: () => _toSigninPage(),
+              child: Text("Se connecter", style: secondTextStyle),
+              style: ButtonStyle(
+                  backgroundColor: MaterialStateProperty.all<Color>(mainColor),
+                  shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                      RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(thirdSize),
+                          side: const BorderSide(color: mainColor)))))),
     );
   }
 
@@ -114,18 +109,18 @@ class BuildSignupButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(top: thirdSize),
-      child: ElevatedButton(
-          onPressed: () => Navigator.push(context,
-              MaterialPageRoute(builder: (context) => const SignupPage())),
-          child: Text("S'inscrire", style: secondTextStyle),
-          style: ButtonStyle(
-              backgroundColor: MaterialStateProperty.all<Color>(mainColor),
-              shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                  RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(thirdSize),
-                      side: const BorderSide(color: secondColor))))),
-    );
+    return SizedBox(
+        height: buttonHeight,
+        width: buttonWidth,
+        child: ElevatedButton(
+            onPressed: () => Navigator.push(context,
+                MaterialPageRoute(builder: (context) => const SignupPage())),
+            child: Text("S'inscrire", style: secondTextStyle),
+            style: ButtonStyle(
+                backgroundColor: MaterialStateProperty.all<Color>(mainColor),
+                shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                    RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(thirdSize),
+                        side: const BorderSide(color: mainColor))))));
   }
 }
