@@ -1,7 +1,10 @@
+import 'dart:convert';
+
 import 'package:bike_life/auth/signup.dart';
-import 'package:bike_life/user/account_bottom_bar.dart';
 import 'package:bike_life/constants.dart';
+import 'package:bike_life/user/account_bottom_bar.dart';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 
 class SigninPage extends StatelessWidget {
   const SigninPage({Key? key}) : super(key: key);
@@ -85,7 +88,8 @@ class _BuildFormState extends State<BuildForm> {
                 hintText: 'Entrer un email valide'),
             cursorColor: mainColor,
             validator: (value) {
-              if (value == null || value.isEmpty) {
+              // TODO: Extract
+              if (value == null || value.isEmpty || !value.contains("@")) {
                 return 'Email invalide';
               }
             },
@@ -115,6 +119,7 @@ class _BuildFormState extends State<BuildForm> {
                 hintText: 'Entrer un mot de passe valide'),
             cursorColor: mainColor,
             validator: (value) {
+              // TODO: Extract
               if (value == null || value.isEmpty || value.length < 8) {
                 return 'Mot de passe invalide';
               }
@@ -152,11 +157,25 @@ class _BuildFormState extends State<BuildForm> {
   void _onSignin() {
     if (_keyForm.currentState!.validate()) {
       _keyForm.currentState!.save();
-      // TODO: Auth
+      _authUser(_email.text, _password.text);
+    }
+  }
+
+  void _authUser(String email, String password) async {
+    // TODO: Auth
+    final response = await http.post(
+      Uri.parse("$androidEndpoint/members"),
+      headers: <String, String>{
+        "Content-Type": "application/json; charset=UTF-8"
+      },
+      body: jsonEncode(<String, String>{"email": email, "password": password}),
+    );
+
+    if (response.statusCode == 200) {
       Navigator.push(
-          context,
-          MaterialPageRoute(
-              builder: (context) => const AccountBottomBarPage()));
+          context, MaterialPageRoute(builder: (context) => const UserHome()));
+    } else {
+      throw Exception("Failed to login");
     }
   }
 }

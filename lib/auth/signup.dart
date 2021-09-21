@@ -1,6 +1,9 @@
+import 'dart:convert';
+
 import 'package:bike_life/auth/signin.dart';
 import 'package:bike_life/constants.dart';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 
 class SignupPage extends StatelessWidget {
   const SignupPage({Key? key}) : super(key: key);
@@ -151,9 +154,25 @@ class _SignupFormState extends State<BuildForm> {
   void _onSignin() {
     if (_keyForm.currentState!.validate()) {
       _keyForm.currentState!.save();
-      // TODO: Auth
+      _createUser(_email.text, _password.text);
+    }
+  }
+
+  void _createUser(String email, String password) async {
+    final response = await http.post(
+      Uri.parse("$androidEndpoint/members"),
+      headers: <String, String>{
+        "Content-Type": "application/json; charset=UTF-8"
+      },
+      body: jsonEncode(<String, String>{"email": email, "password": password}),
+    );
+
+    if (response.statusCode == 200) {
+      // TODO: Success signup
       Navigator.push(
           context, MaterialPageRoute(builder: (context) => const SigninPage()));
+    } else {
+      // TODO: Error signup
     }
   }
 }
@@ -173,5 +192,18 @@ class LinkSignin extends StatelessWidget {
                     fontSize: secondSize)),
             onTap: () => Navigator.push(context,
                 MaterialPageRoute(builder: (context) => const SigninPage()))));
+  }
+}
+
+class AuthMessage extends StatelessWidget {
+  const AuthMessage({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return SnackBar(
+      backgroundColor: Colors.red,
+      content: const Text("Erreur durant la création du compte"),
+      action: SnackBarAction(label: 'Ok', onPressed: () {}),
+    );
   }
 }
