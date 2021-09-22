@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:bike_life/auth/signup.dart';
 import 'package:bike_life/constants.dart';
-import 'package:bike_life/user/account_bottom_bar.dart';
+import 'package:bike_life/user/user_home.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
