@@ -126,18 +126,12 @@ class _SignupFormState extends State<BuildForm> {
 
   SizedBox buildSigninButton() {
     return SizedBox(
-      height: buttonHeight,
-      width: buttonWidth,
-      child: ElevatedButton(
-          onPressed: () => _onSignin(),
-          child: Text("S'inscrire", style: secondTextStyle),
-          style: ButtonStyle(
-              backgroundColor: MaterialStateProperty.all<Color>(mainColor),
-              shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                  RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(mainSize),
-                      side: const BorderSide(color: secondColor))))),
-    );
+        height: buttonHeight,
+        width: buttonWidth,
+        child: ElevatedButton(
+            onPressed: () => _onSignin(),
+            child: Text("S'inscrire", style: secondTextStyle),
+            style: roundedButtonStyle(mainColor)));
   }
 
   @override

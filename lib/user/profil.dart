@@ -37,22 +37,18 @@ class DisconnectButton extends StatelessWidget {
     return Padding(
         padding: const EdgeInsets.only(bottom: paddingTop),
         child: SizedBox(
-          height: buttonHeight,
-          width: buttonWidth,
-          child: ElevatedButton(
-              onPressed: () {
-                // TODO: Disconnect
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => const HomePage()));
-              },
-              child: Text("Se déconnecter", style: secondTextStyle),
-              style: ButtonStyle(
-                  backgroundColor: MaterialStateProperty.all<Color>(mainColor),
-                  shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                      RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(mainSize),
-                          side: const BorderSide(color: secondColor))))),
-        ));
+            height: buttonHeight,
+            width: buttonWidth,
+            child: ElevatedButton(
+                onPressed: () {
+                  // TODO: Disconnect
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const HomePage()));
+                },
+                child: Text("Se déconnecter", style: secondTextStyle),
+                style: roundedButtonStyle(mainColor))));
   }
 }
 
@@ -134,18 +130,12 @@ class _SignupFormState extends State<BuildForm> {
 
   SizedBox buildSigninButton() {
     return SizedBox(
-      height: buttonHeight,
-      width: buttonWidth,
-      child: ElevatedButton(
-          onPressed: () => _onUpdate(),
-          child: Text("Modifier", style: secondTextStyle),
-          style: ButtonStyle(
-              backgroundColor: MaterialStateProperty.all<Color>(mainColor),
-              shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                  RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(mainSize),
-                      side: const BorderSide(color: secondColor))))),
-    );
+        height: buttonHeight,
+        width: buttonWidth,
+        child: ElevatedButton(
+            onPressed: () => _onUpdate(),
+            child: Text("Modifier", style: secondTextStyle),
+            style: roundedButtonStyle(mainColor)));
   }
 
   @override
