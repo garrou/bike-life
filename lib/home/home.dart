@@ -82,20 +82,15 @@ class _BuildSigninButtonState extends State<BuildSigninButton> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(thirdSize),
-      child: SizedBox(
+        padding: const EdgeInsets.all(thirdSize),
+        child: SizedBox(
           height: buttonHeight,
           width: buttonWidth,
           child: ElevatedButton(
               onPressed: () => _toSigninPage(),
               child: Text("Se connecter", style: secondTextStyle),
-              style: ButtonStyle(
-                  backgroundColor: MaterialStateProperty.all<Color>(mainColor),
-                  shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                      RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(mainSize),
-                          side: const BorderSide(color: mainColor)))))),
-    );
+              style: roundedButtonStyle(mainColor)),
+        ));
   }
 
   void _toSigninPage() {
@@ -116,11 +111,6 @@ class BuildSignupButton extends StatelessWidget {
             onPressed: () => Navigator.push(context,
                 MaterialPageRoute(builder: (context) => const SignupPage())),
             child: Text("S'inscrire", style: secondTextStyle),
-            style: ButtonStyle(
-                backgroundColor: MaterialStateProperty.all<Color>(mainColor),
-                shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                    RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(mainSize),
-                        side: const BorderSide(color: mainColor))))));
+            style: roundedButtonStyle(mainColor)));
   }
 }

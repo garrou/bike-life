@@ -129,18 +129,13 @@ class _BuildFormState extends State<BuildForm> {
 
   SizedBox buildSigninButton() {
     return SizedBox(
-      height: buttonHeight,
-      width: buttonWidth,
-      child: ElevatedButton(
+        height: buttonHeight,
+        width: buttonWidth,
+        child: ElevatedButton(
           onPressed: () => _onSignin(),
           child: Text('Connexion', style: secondTextStyle),
-          style: ButtonStyle(
-              backgroundColor: MaterialStateProperty.all<Color>(mainColor),
-              shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                  RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(mainSize),
-                      side: const BorderSide(color: secondColor))))),
-    );
+          style: roundedButtonStyle(mainColor),
+        ));
   }
 
   @override
@@ -175,7 +170,7 @@ class _BuildFormState extends State<BuildForm> {
       Navigator.push(
           context, MaterialPageRoute(builder: (context) => const UserHome()));
     } else {
-      throw Exception("Failed to login");
+      // TODO: Error
     }
   }
 }

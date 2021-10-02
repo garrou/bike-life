@@ -32,6 +32,12 @@ final List bikeList = [
         "https://media.alltricks.com/medium/209144760d45110a22941.59883979.jpg?frz-v=298",
     "details":
         "VÉLO DE ROUTE BMC ROADMACHINE SEVEN SHIMANO 105 11V 700 MM BLEU PETROL 2022"
+  },
+  {
+    "name": "N",
+    "image":
+        "https://media.alltricks.com/medium/209144760d45110a22941.59883979.jpg?frz-v=298",
+    "details": "VÉLO DE ROUTE"
   }
 ];
 
