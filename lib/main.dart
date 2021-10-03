@@ -13,7 +13,10 @@ class App extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
         title: title,
-        theme: ThemeData(visualDensity: VisualDensity.adaptivePlatformDensity),
+        theme: ThemeData(
+            visualDensity: VisualDensity.adaptivePlatformDensity,
+            primaryColor: mainColor,
+            brightness: Brightness.light),
         home: const HomePage());
   }
 }

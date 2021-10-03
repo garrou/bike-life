@@ -117,7 +117,9 @@ class _SignupFormState extends State<BuildForm> {
                 hintText: 'Entrer un mot de passe valide'),
             cursorColor: mainColor,
             validator: (value) {
-              if (value == null || value.isEmpty) {
+              if (value == null ||
+                  value.isEmpty ||
+                  value.length < minPasswordSize) {
                 return 'Mot de passe invalide';
               }
             },
@@ -153,21 +155,31 @@ class _SignupFormState extends State<BuildForm> {
   }
 
   void _createUser(String email, String password) async {
-    final response = await http.post(
+    final response = await _auth(email, password);
+    late Color statusColor;
+    late String statusMsg;
+
+    if (response.statusCode == 201) {
+      statusColor = Theme.of(context).primaryColor;
+      statusMsg = 'Compte créé avec succés !';
+      Navigator.push(
+          context, MaterialPageRoute(builder: (context) => const SigninPage()));
+    } else if (response.statusCode == 409) {
+      statusColor = Theme.of(context).errorColor;
+      statusMsg = 'Un compte est déjà associé à cet email.';
+    }
+    ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(statusMsg), backgroundColor: statusColor));
+  }
+
+  Future<http.Response> _auth(String email, String password) {
+    return http.post(
       Uri.parse("$androidEndpoint/members"),
       headers: <String, String>{
         "Content-Type": "application/json; charset=UTF-8"
       },
       body: jsonEncode(<String, String>{"email": email, "password": password}),
     );
-
-    if (response.statusCode == 200) {
-      // TODO: Success signup
-      Navigator.push(
-          context, MaterialPageRoute(builder: (context) => const SigninPage()));
-    } else {
-      // TODO: Error signup
-    }
   }
 }
 
