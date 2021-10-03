@@ -88,7 +88,6 @@ class _BuildFormState extends State<BuildForm> {
                 hintText: 'Entrer un email valide'),
             cursorColor: mainColor,
             validator: (value) {
-              // TODO: Extract
               if (value == null || value.isEmpty || !value.contains("@")) {
                 return 'Email invalide';
               }
@@ -119,8 +118,9 @@ class _BuildFormState extends State<BuildForm> {
                 hintText: 'Entrer un mot de passe valide'),
             cursorColor: mainColor,
             validator: (value) {
-              // TODO: Extract
-              if (value == null || value.isEmpty || value.length < 8) {
+              if (value == null ||
+                  value.isEmpty ||
+                  value.length < minPasswordSize) {
                 return 'Mot de passe invalide';
               }
             },
@@ -157,21 +157,30 @@ class _BuildFormState extends State<BuildForm> {
   }
 
   void _authUser(String email, String password) async {
-    // TODO: Auth
-    final response = await http.post(
+    /*
+    final response = await _auth(email, password);
+
+    if (response.statusCode == 200) {
+      Navigator.push(
+          context, MaterialPageRoute(builder: (context) => const UserHome()));
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: const Text('Email ou mot de passe incorrect'),
+          backgroundColor: Theme.of(context).errorColor));
+    }
+    */
+    Navigator.push(
+        context, MaterialPageRoute(builder: (context) => const UserHome()));
+  }
+
+  Future<http.Response> _auth(String email, String password) {
+    return http.post(
       Uri.parse("$androidEndpoint/members"),
       headers: <String, String>{
         "Content-Type": "application/json; charset=UTF-8"
       },
       body: jsonEncode(<String, String>{"email": email, "password": password}),
     );
-
-    if (response.statusCode == 200) {
-      Navigator.push(
-          context, MaterialPageRoute(builder: (context) => const UserHome()));
-    } else {
-      // TODO: Error
-    }
   }
 }
 
