@@ -17,6 +17,6 @@ class BuildTitle extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
         padding: const EdgeInsets.only(top: paddingTop),
-        child: Center(child: Text("Ajouter un vélo", style: mainTextStyle)));
+        child: Center(child: Text('Ajouter un vélo', style: mainTextStyle)));
   }
 }

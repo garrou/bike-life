@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-const String webEndpoint = "http://localhost:8080/api/v1";
-const String androidEndpoint = "http://10.0.2.2:8080/api/v1";
+const String webEndpoint = "http://localhost:8100";
+const String androidEndpoint = "http://10.0.2.2:8100";
 
 const String title = "Bike's life";
 const String quote = "La santé de votre vélo se surveille de près.";
@@ -41,4 +41,10 @@ ButtonStyle roundedButtonStyle(Color colorToSet) {
               borderRadius: BorderRadius.circular(mainSize),
               side: BorderSide(color: colorToSet))),
       backgroundColor: MaterialStateProperty.all(colorToSet));
+}
+
+OutlineInputBorder focusTextfieldBorder(double radius, Color borderColor) {
+  return OutlineInputBorder(
+      borderRadius: BorderRadius.circular(radius),
+      borderSide: BorderSide(color: borderColor));
 }

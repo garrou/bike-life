@@ -1,12 +1,12 @@
 import 'package:bike_life/constants.dart';
-import 'package:bike_life/user/account.dart';
-import 'package:bike_life/user/profil.dart';
-import 'package:bike_life/user/shop.dart';
+import 'package:bike_life/views/member/account.dart';
+import 'package:bike_life/views/member/profil.dart';
+import 'package:bike_life/views/member/shop.dart';
 import 'package:flutter/animation.dart';
 import 'package:flutter/material.dart';
 
-class UserHome extends StatelessWidget {
-  const UserHome({Key? key}) : super(key: key);
+class MemberHome extends StatelessWidget {
+  const MemberHome({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

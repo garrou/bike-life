@@ -1,5 +1,5 @@
-import 'package:bike_life/auth/signin.dart';
-import 'package:bike_life/auth/signup.dart';
+import 'package:bike_life/views/auth/signin.dart';
+import 'package:bike_life/views/auth/signup.dart';
 import 'package:bike_life/constants.dart';
 import 'package:flutter/material.dart';
 
@@ -27,8 +27,9 @@ class HomePage extends StatelessWidget {
 
   ListView wideLayout() {
     return ListView(children: <Widget>[
-      Center(
-          child: Column(
+      Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: const <Widget>[
           BuildTitle(),
           BuildQuote(),
@@ -36,7 +37,7 @@ class HomePage extends StatelessWidget {
           BuildSigninButton(),
           BuildSignupButton()
         ],
-      ))
+      )
     ]);
   }
 }
@@ -88,7 +89,7 @@ class _BuildSigninButtonState extends State<BuildSigninButton> {
           width: buttonWidth,
           child: ElevatedButton(
               onPressed: () => _toSigninPage(),
-              child: Text("Se connecter", style: secondTextStyle),
+              child: Text('Se connecter', style: secondTextStyle),
               style: roundedButtonStyle(mainColor)),
         ));
   }

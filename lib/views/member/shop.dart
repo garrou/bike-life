@@ -21,6 +21,6 @@ class BuildTitle extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
         padding: const EdgeInsets.symmetric(vertical: paddingTop),
-        child: Text("Marketplace", style: mainTextStyle));
+        child: Text('Marketplace', style: mainTextStyle));
   }
 }
