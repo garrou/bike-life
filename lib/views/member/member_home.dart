@@ -1,7 +1,7 @@
-import 'package:bike_life/constants.dart';
 import 'package:bike_life/views/member/account.dart';
 import 'package:bike_life/views/member/profil.dart';
 import 'package:bike_life/views/member/shop.dart';
+import 'package:bike_life/views/styles/general.dart';
 import 'package:flutter/animation.dart';
 import 'package:flutter/material.dart';
 
@@ -11,6 +11,7 @@ class MemberHome extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const Scaffold(body: BuildBottomBar());
+    // TODO: Remove paddingTop
   }
 }
 

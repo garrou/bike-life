@@ -1,11 +1,10 @@
 import 'package:bike_life/constants.dart';
 import 'package:flutter/material.dart';
 
-class LinkToOtherPage extends StatelessWidget {
+class AppLinkToPage extends StatelessWidget {
   final String text;
   final Widget destination;
-  const LinkToOtherPage(
-      {Key? key, required this.text, required this.destination})
+  const AppLinkToPage({Key? key, required this.text, required this.destination})
       : super(key: key);
 
   @override

@@ -1,5 +1,8 @@
 import 'package:bike_life/constants.dart';
 import 'package:bike_life/models/bike.dart';
+import 'package:bike_life/views/styles/general.dart';
+import 'package:bike_life/views/styles/rounded_button_style.dart';
+import 'package:bike_life/views/widgets/title.dart';
 import 'package:flutter/material.dart';
 
 class BikeDetails extends StatelessWidget {
@@ -12,7 +15,7 @@ class BikeDetails extends StatelessWidget {
         body: Column(children: <Widget>[
       const ButtonsBackAndDelete(),
       BikeImage(bike: bike),
-      BikeName(bike: bike),
+      AppTitle(text: bike.name),
       BikeDescription(bike: bike)
     ]));
   }
@@ -27,18 +30,6 @@ class BikeImage extends StatelessWidget {
     return Padding(
         padding: const EdgeInsets.all(thirdSize),
         child: Image.network(bike.image));
-  }
-}
-
-class BikeName extends StatelessWidget {
-  final Bike bike;
-  const BikeName({Key? key, required this.bike}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-        padding: const EdgeInsets.symmetric(vertical: thirdSize),
-        child: Text(bike.name, style: mainTextStyle));
   }
 }
 

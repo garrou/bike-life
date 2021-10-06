@@ -22,3 +22,15 @@ Future<http.Response> signup(String email, String password) {
     body: jsonEncode(<String, String>{"email": email, "password": password}),
   );
 }
+
+String? passwordValidator(String? value) {
+  if (value == null || value.isEmpty || value.length < minPasswordSize) {
+    return 'Mot de passe invalide';
+  }
+}
+
+String? emailValidator(String? value) {
+  if (value == null || value.isEmpty || !value.contains('@')) {
+    return 'Email invalide';
+  }
+}
