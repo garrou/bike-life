@@ -1,5 +1,5 @@
 import 'package:bike_life/constants.dart';
-import 'package:bike_life/home/home.dart';
+import 'package:bike_life/views/home/home.dart';
 import 'package:flutter/material.dart';
 
 void main() {

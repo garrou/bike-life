@@ -1,7 +1,7 @@
 import 'package:bike_life/constants.dart';
 import 'package:bike_life/models/bike.dart';
-import 'package:bike_life/user/add_bike.dart';
-import 'package:bike_life/user/bike_details.dart';
+import 'package:bike_life/views/member/add_bike.dart';
+import 'package:bike_life/views/member/bike_details.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -97,7 +97,7 @@ class BuildTitle extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
         padding: const EdgeInsets.only(top: paddingTop),
-        child: Center(child: Text("Mes vélos", style: mainTextStyle)));
+        child: Center(child: Text('Mes vélos', style: mainTextStyle)));
   }
 }
 

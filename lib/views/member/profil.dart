@@ -1,40 +1,19 @@
-import 'dart:convert';
-
-import 'package:bike_life/auth/signup.dart';
 import 'package:bike_life/constants.dart';
-import 'package:bike_life/user/user_home.dart';
+import 'package:bike_life/views/home/home.dart';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
 
-class SigninPage extends StatelessWidget {
-  const SigninPage({Key? key}) : super(key: key);
+class ProfilPage extends StatelessWidget {
+  const ProfilPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(body: LayoutBuilder(builder: (context, constraints) {
-      if (constraints.maxWidth > maxSize) {
-        return narrowLayout();
-      } else {
-        return wideLayout();
-      }
-    }));
-  }
-
-  Padding wideLayout() {
-    return Padding(
-        padding: const EdgeInsets.only(top: paddingTop),
-        child: Center(
+    return Scaffold(
+        body: Center(
             child: Column(children: const <Widget>[
-          BuildTitle(),
-          BuildForm(),
-          LinkSignup()
-        ])));
-  }
-
-  Padding narrowLayout() {
-    return Padding(
-        padding: const EdgeInsets.symmetric(horizontal: maxPadding),
-        child: wideLayout());
+      BuildTitle(),
+      DisconnectButton(),
+      BuildForm()
+    ])));
   }
 }
 
@@ -44,8 +23,32 @@ class BuildTitle extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-        padding: const EdgeInsets.all(thirdSize),
-        child: Text('Se connecter', style: mainTextStyle));
+      padding: const EdgeInsets.only(top: paddingTop),
+      child: Text('Profil', style: mainTextStyle),
+    );
+  }
+}
+
+class DisconnectButton extends StatelessWidget {
+  const DisconnectButton({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+        padding: const EdgeInsets.only(bottom: paddingTop),
+        child: SizedBox(
+            height: buttonHeight,
+            width: buttonWidth,
+            child: ElevatedButton(
+                onPressed: () {
+                  // TODO: Disconnect
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const HomePage()));
+                },
+                child: Text('Se déconnecter', style: secondTextStyle),
+                style: roundedButtonStyle(mainColor))));
   }
 }
 
@@ -53,10 +56,10 @@ class BuildForm extends StatefulWidget {
   const BuildForm({Key? key}) : super(key: key);
 
   @override
-  _BuildFormState createState() => _BuildFormState();
+  _SignupFormState createState() => _SignupFormState();
 }
 
-class _BuildFormState extends State<BuildForm> {
+class _SignupFormState extends State<BuildForm> {
   final _keyForm = GlobalKey<FormState>();
 
   final _emailFocus = FocusNode();
@@ -88,7 +91,7 @@ class _BuildFormState extends State<BuildForm> {
                 hintText: 'Entrer un email valide'),
             cursorColor: mainColor,
             validator: (value) {
-              if (value == null || value.isEmpty || !value.contains("@")) {
+              if (value == null || value.isEmpty) {
                 return 'Email invalide';
               }
             },
@@ -118,9 +121,7 @@ class _BuildFormState extends State<BuildForm> {
                 hintText: 'Entrer un mot de passe valide'),
             cursorColor: mainColor,
             validator: (value) {
-              if (value == null ||
-                  value.isEmpty ||
-                  value.length < minPasswordSize) {
+              if (value == null || value.isEmpty) {
                 return 'Mot de passe invalide';
               }
             },
@@ -132,72 +133,35 @@ class _BuildFormState extends State<BuildForm> {
         height: buttonHeight,
         width: buttonWidth,
         child: ElevatedButton(
-          onPressed: () => _onSignin(),
-          child: Text('Connexion', style: secondTextStyle),
-          style: roundedButtonStyle(mainColor),
-        ));
+            onPressed: () => _onUpdate(),
+            child: Text('Modifier', style: secondTextStyle),
+            style: roundedButtonStyle(mainColor)));
   }
 
   @override
   Widget build(BuildContext context) {
-    return Form(
-        key: _keyForm,
+    return Card(
+        shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(mainSize)),
+        elevation: thirdSize,
         child: Column(children: <Widget>[
-          buildEmailField(),
-          buildPasswordField(),
-          buildSigninButton()
+          Text('Modifier mon profil', style: secondTextStyle),
+          Padding(
+              padding: const EdgeInsets.symmetric(vertical: paddingTop),
+              child: Form(
+                  key: _keyForm,
+                  child: Column(children: <Widget>[
+                    buildEmailField(),
+                    buildPasswordField(),
+                    buildSigninButton()
+                  ])))
         ]));
   }
 
-  void _onSignin() {
+  void _onUpdate() {
     if (_keyForm.currentState!.validate()) {
       _keyForm.currentState!.save();
-      _authUser(_email.text, _password.text);
+      // TODO: Update profil
     }
-  }
-
-  void _authUser(String email, String password) async {
-    /*
-    final response = await _auth(email, password);
-
-    if (response.statusCode == 200) {
-      Navigator.push(
-          context, MaterialPageRoute(builder: (context) => const UserHome()));
-    } else {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-          content: const Text('Email ou mot de passe incorrect'),
-          backgroundColor: Theme.of(context).errorColor));
-    }
-    */
-    Navigator.push(
-        context, MaterialPageRoute(builder: (context) => const UserHome()));
-  }
-
-  Future<http.Response> _auth(String email, String password) {
-    return http.post(
-      Uri.parse("$androidEndpoint/members"),
-      headers: <String, String>{
-        "Content-Type": "application/json; charset=UTF-8"
-      },
-      body: jsonEncode(<String, String>{"email": email, "password": password}),
-    );
-  }
-}
-
-class LinkSignup extends StatelessWidget {
-  const LinkSignup({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-        padding: const EdgeInsets.all(mainSize),
-        child: InkWell(
-            child: const Text("Nouveau ? Créer un compte",
-                style: TextStyle(
-                    decoration: TextDecoration.underline,
-                    color: Colors.blue,
-                    fontSize: secondSize)),
-            onTap: () => Navigator.push(context,
-                MaterialPageRoute(builder: (context) => const SignupPage()))));
   }
 }

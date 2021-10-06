@@ -1,9 +1,9 @@
-import 'dart:convert';
-
-import 'package:bike_life/auth/signin.dart';
+import 'package:bike_life/auth.dart';
+import 'package:bike_life/views/widgets/button.dart';
+import 'package:bike_life/views/widgets/link_other_page.dart';
+import 'package:bike_life/views/auth/signin.dart';
 import 'package:bike_life/constants.dart';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
 
 class SignupPage extends StatelessWidget {
   const SignupPage({Key? key}) : super(key: key);
@@ -22,12 +22,15 @@ class SignupPage extends StatelessWidget {
   Padding wideLayout() {
     return Padding(
         padding: const EdgeInsets.only(top: paddingTop),
-        child: Center(
-            child: Column(children: const <Widget>[
-          BuildTitle(),
-          BuildForm(),
-          LinkSignin()
-        ])));
+        child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: const <Widget>[
+              BuildTitle(),
+              BuildForm(),
+              LinkToOtherPage(
+                  text: 'Déjà membre ? Se connecter', destination: SigninPage())
+            ]));
   }
 
   Padding narrowLayout() {
@@ -73,14 +76,10 @@ class _SignupFormState extends State<BuildForm> {
             style: const TextStyle(color: mainColor),
             keyboardType: TextInputType.emailAddress,
             decoration: InputDecoration(
-                focusedBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(mainSize),
-                    borderSide: const BorderSide(color: secondColor)),
+                focusedBorder: focusTextfieldBorder(mainSize, secondColor),
                 prefixIcon: Icon(Icons.email,
                     color: _emailFocus.hasFocus ? secondColor : mainColor),
-                border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(mainSize),
-                    borderSide: const BorderSide(color: secondColor)),
+                border: focusTextfieldBorder(mainSize, secondColor),
                 labelText: 'Email',
                 labelStyle: TextStyle(
                     color: _emailFocus.hasFocus ? secondColor : mainColor),
@@ -103,14 +102,10 @@ class _SignupFormState extends State<BuildForm> {
             style: const TextStyle(color: mainColor),
             obscureText: true,
             decoration: InputDecoration(
-                focusedBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(mainSize),
-                    borderSide: const BorderSide(color: secondColor)),
+                focusedBorder: focusTextfieldBorder(mainSize, secondColor),
                 prefixIcon: Icon(Icons.lock,
                     color: _passwordFocus.hasFocus ? secondColor : mainColor),
-                border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(mainSize),
-                    borderSide: const BorderSide(color: secondColor)),
+                border: focusTextfieldBorder(mainSize, secondColor),
                 labelText: 'Mot de passe',
                 labelStyle: TextStyle(
                     color: _passwordFocus.hasFocus ? secondColor : mainColor),
@@ -126,16 +121,6 @@ class _SignupFormState extends State<BuildForm> {
             onSaved: (value) => {}));
   }
 
-  SizedBox buildSigninButton() {
-    return SizedBox(
-        height: buttonHeight,
-        width: buttonWidth,
-        child: ElevatedButton(
-            onPressed: () => _onSignin(),
-            child: Text("S'inscrire", style: secondTextStyle),
-            style: roundedButtonStyle(mainColor)));
-  }
-
   @override
   Widget build(BuildContext context) {
     return Form(
@@ -143,11 +128,11 @@ class _SignupFormState extends State<BuildForm> {
         child: Column(children: <Widget>[
           buildEmailField(),
           buildPasswordField(),
-          buildSigninButton()
+          AppButton(text: "S'inscrire", callback: onSignin)
         ]));
   }
 
-  void _onSignin() {
+  void onSignin() {
     if (_keyForm.currentState!.validate()) {
       _keyForm.currentState!.save();
       _createUser(_email.text, _password.text);
@@ -155,7 +140,7 @@ class _SignupFormState extends State<BuildForm> {
   }
 
   void _createUser(String email, String password) async {
-    final response = await _auth(email, password);
+    final response = await signup(email, password);
     late Color statusColor;
     late String statusMsg;
 
@@ -167,49 +152,11 @@ class _SignupFormState extends State<BuildForm> {
     } else if (response.statusCode == 409) {
       statusColor = Theme.of(context).errorColor;
       statusMsg = 'Un compte est déjà associé à cet email.';
+    } else {
+      statusColor = Theme.of(context).errorColor;
+      statusMsg = 'Impossible de créer un compte.';
     }
     ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text(statusMsg), backgroundColor: statusColor));
-  }
-
-  Future<http.Response> _auth(String email, String password) {
-    return http.post(
-      Uri.parse("$androidEndpoint/members"),
-      headers: <String, String>{
-        "Content-Type": "application/json; charset=UTF-8"
-      },
-      body: jsonEncode(<String, String>{"email": email, "password": password}),
-    );
-  }
-}
-
-class LinkSignin extends StatelessWidget {
-  const LinkSignin({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-        padding: const EdgeInsets.all(mainSize),
-        child: InkWell(
-            child: const Text("Déjà un compte ? Se connecter",
-                style: TextStyle(
-                    decoration: TextDecoration.underline,
-                    color: Colors.blue,
-                    fontSize: secondSize)),
-            onTap: () => Navigator.push(context,
-                MaterialPageRoute(builder: (context) => const SigninPage()))));
-  }
-}
-
-class AuthMessage extends StatelessWidget {
-  const AuthMessage({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return SnackBar(
-      backgroundColor: Colors.red,
-      content: const Text("Erreur durant la création du compte"),
-      action: SnackBarAction(label: 'Ok', onPressed: () {}),
-    );
   }
 }
