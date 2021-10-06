@@ -11,15 +11,13 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(body: LayoutBuilder(
-      builder: (context, constraint) {
-        if (constraint.maxWidth > maxSize) {
-          return narrowLayout();
-        } else {
-          return wideLayout();
-        }
-      },
-    ));
+    return Scaffold(body: LayoutBuilder(builder: (context, constraint) {
+      if (constraint.maxWidth > maxSize) {
+        return narrowLayout();
+      } else {
+        return wideLayout();
+      }
+    }));
   }
 
   Padding narrowLayout() {

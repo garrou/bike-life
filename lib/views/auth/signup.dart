@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:bike_life/auth.dart';
 import 'package:bike_life/views/widgets/button.dart';
 import 'package:bike_life/views/widgets/link_page.dart';
@@ -23,7 +25,7 @@ class SignupPage extends StatelessWidget {
 
   Padding wideLayout() {
     return Padding(
-        padding: const EdgeInsets.only(top: paddingTop),
+        padding: const EdgeInsets.only(top: mainSize),
         child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
@@ -76,13 +78,13 @@ class _SignupFormState extends State<BuildForm> {
                   'Entrer un mot de passe avec $minPasswordSize caractères minimum',
               focusNode: _passwordFocus,
               textfieldController: _password,
-              validator: emailValidator,
+              validator: passwordValidator,
               obscureText: true),
-          AppButton(text: "S'inscrire", callback: onSignin)
+          AppButton(text: "S'inscrire", callback: _onSignin)
         ]));
   }
 
-  void onSignin() {
+  void _onSignin() {
     if (_keyForm.currentState!.validate()) {
       _keyForm.currentState!.save();
       _createUser(_email.text, _password.text);
@@ -91,22 +93,15 @@ class _SignupFormState extends State<BuildForm> {
 
   void _createUser(String email, String password) async {
     final response = await signup(email, password);
-    late Color statusColor;
-    late String statusMsg;
+    final jsonResponse = jsonDecode(response.body);
+    Color statusColor = Theme.of(context).errorColor;
 
     if (response.statusCode == 201) {
       statusColor = Theme.of(context).primaryColor;
-      statusMsg = 'Compte créé avec succés !';
       Navigator.push(
           context, MaterialPageRoute(builder: (context) => const SigninPage()));
-    } else if (response.statusCode == 409) {
-      statusColor = Theme.of(context).errorColor;
-      statusMsg = 'Un compte est déjà associé à cet email.';
-    } else {
-      statusColor = Theme.of(context).errorColor;
-      statusMsg = 'Impossible de créer un compte.';
     }
-    ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(statusMsg), backgroundColor: statusColor));
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text(jsonResponse['confirm']), backgroundColor: statusColor));
   }
 }

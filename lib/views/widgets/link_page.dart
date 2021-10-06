@@ -12,8 +12,8 @@ class AppLinkToPage extends StatelessWidget {
     return Padding(
         padding: const EdgeInsets.all(mainSize),
         child: InkWell(
-            child: const Text('Nouveau ? Créer un compte',
-                style: TextStyle(
+            child: Text(text,
+                style: const TextStyle(
                     decoration: TextDecoration.underline,
                     color: Colors.blue,
                     fontSize: secondSize)),

@@ -5,7 +5,7 @@ import 'package:http/http.dart' as http;
 
 Future<http.Response> login(String email, String password) {
   return http.post(
-    Uri.parse("$androidEndpoint/login"),
+    Uri.parse("$endpoint/login"),
     headers: <String, String>{
       "Content-Type": "application/json; charset=UTF-8"
     },
@@ -15,7 +15,7 @@ Future<http.Response> login(String email, String password) {
 
 Future<http.Response> signup(String email, String password) {
   return http.post(
-    Uri.parse("$androidEndpoint/signup"),
+    Uri.parse("$endpoint/signup"),
     headers: <String, String>{
       "Content-Type": "application/json; charset=UTF-8"
     },

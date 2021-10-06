@@ -1,3 +1,4 @@
+import 'package:bike_life/constants.dart';
 import 'package:bike_life/models/bike.dart';
 import 'package:bike_life/views/member/add_bike.dart';
 import 'package:bike_life/views/styles/general.dart';
@@ -60,6 +61,22 @@ class _AccountPageState extends State<AccountPage> {
 
   @override
   Widget build(BuildContext context) {
+    return LayoutBuilder(builder: (context, constraints) {
+      if (constraints.maxWidth > maxSize) {
+        return narrowLayout();
+      } else {
+        return wideLayout();
+      }
+    });
+  }
+
+  Widget narrowLayout() {
+    return Padding(
+        padding: const EdgeInsets.symmetric(horizontal: maxPadding),
+        child: wideLayout());
+  }
+
+  Widget wideLayout() {
     return Scaffold(
         body: ListView(children: <Widget>[
           const AppTitle(text: 'Mes vélos'),
@@ -68,13 +85,13 @@ class _AccountPageState extends State<AccountPage> {
         floatingActionButton: FloatingActionButton(
           backgroundColor: mainColor,
           splashColor: secondColor,
-          onPressed: () => Navigator.of(context).push(_addBikeRoute()),
+          onPressed: () => Navigator.of(context).push(addBikeRoute()),
           tooltip: 'Ajouter un vélo',
           child: const Icon(Icons.add),
         ));
   }
 
-  Route _addBikeRoute() {
+  Route addBikeRoute() {
     return PageRouteBuilder(
         pageBuilder: (context, animation, secondaryAnimation) =>
             const AddBikePage(),

@@ -10,14 +10,14 @@ class AppBikeTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-        onTap: () => Navigator.of(context).push(_bikeDetailsRoute()),
+        onTap: () => Navigator.of(context).push(bikeDetailsRoute()),
         child: Card(
             shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(mainSize)),
             margin: const EdgeInsets.all(thirdSize),
             elevation: thirdSize,
             child: Padding(
-              padding: const EdgeInsets.symmetric(vertical: paddingTop),
+              padding: const EdgeInsets.symmetric(vertical: mainSize),
               child: ListTile(
                   leading: Image.network(bike.image),
                   title: Padding(
@@ -28,7 +28,7 @@ class AppBikeTile extends StatelessWidget {
             )));
   }
 
-  Route _bikeDetailsRoute() {
+  Route bikeDetailsRoute() {
     return PageRouteBuilder(
         pageBuilder: (context, animation, secondaryAnimation) =>
             BikeDetails(bike: bike),

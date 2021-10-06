@@ -28,7 +28,7 @@ class SigninPage extends StatelessWidget {
 
   Padding wideLayout() {
     return Padding(
-        padding: const EdgeInsets.only(top: paddingTop),
+        padding: const EdgeInsets.only(top: mainSize),
         child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
@@ -103,8 +103,9 @@ class _BuildFormState extends State<BuildForm> {
       Navigator.push(
           context, MaterialPageRoute(builder: (context) => const MemberHome()));
     } else {
+      _password.text = '';
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-          content: const Text('Email ou mot de passe incorrect !'),
+          content: Text(jsonResponse['confirm']),
           backgroundColor: Theme.of(context).errorColor));
     }
   }
