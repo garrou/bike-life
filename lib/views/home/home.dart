@@ -1,6 +1,9 @@
+import 'package:bike_life/constants.dart';
 import 'package:bike_life/views/auth/signin.dart';
 import 'package:bike_life/views/auth/signup.dart';
-import 'package:bike_life/constants.dart';
+import 'package:bike_life/views/styles/general.dart';
+import 'package:bike_life/views/widgets/nav_button.dart';
+import 'package:bike_life/views/widgets/title.dart';
 import 'package:flutter/material.dart';
 
 class HomePage extends StatelessWidget {
@@ -8,15 +11,13 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(body: LayoutBuilder(
-      builder: (context, constraint) {
-        if (constraint.maxWidth > maxSize) {
-          return narrowLayout();
-        } else {
-          return wideLayout();
-        }
-      },
-    ));
+    return Scaffold(body: LayoutBuilder(builder: (context, constraint) {
+      if (constraint.maxWidth > maxSize) {
+        return narrowLayout();
+      } else {
+        return wideLayout();
+      }
+    }));
   }
 
   Padding narrowLayout() {
@@ -25,31 +26,17 @@ class HomePage extends StatelessWidget {
         child: wideLayout());
   }
 
-  ListView wideLayout() {
-    return ListView(children: <Widget>[
-      Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: const <Widget>[
-          BuildTitle(),
-          BuildQuote(),
-          BuildImage(),
-          BuildSigninButton(),
-          BuildSignupButton()
-        ],
-      )
-    ]);
-  }
-}
-
-class BuildTitle extends StatelessWidget {
-  const BuildTitle({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-        padding: const EdgeInsets.symmetric(vertical: secondSize),
-        child: Text(title, style: mainTextStyle));
+  Column wideLayout() {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: const <Widget>[
+        AppTitle(text: title),
+        BuildQuote(),
+        AppNavButton(text: 'Se connecter', destination: SigninPage()),
+        AppNavButton(text: "S'inscrire", destination: SignupPage())
+      ],
+    );
   }
 }
 
@@ -58,7 +45,10 @@ class BuildQuote extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Text(quote, style: italicTextStyle);
+    return Center(
+        child: Padding(
+            padding: const EdgeInsets.only(bottom: thirdSize),
+            child: Text(quote, style: italicTextStyle)));
   }
 }
 
@@ -69,49 +59,5 @@ class BuildImage extends StatelessWidget {
   Widget build(BuildContext context) {
     return const Image(
         image: AssetImage(homeImg), height: imageSize, width: imageSize);
-  }
-}
-
-class BuildSigninButton extends StatefulWidget {
-  const BuildSigninButton({Key? key}) : super(key: key);
-
-  @override
-  _BuildSigninButtonState createState() => _BuildSigninButtonState();
-}
-
-class _BuildSigninButtonState extends State<BuildSigninButton> {
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-        padding: const EdgeInsets.all(thirdSize),
-        child: SizedBox(
-          height: buttonHeight,
-          width: buttonWidth,
-          child: ElevatedButton(
-              onPressed: () => _toSigninPage(),
-              child: Text('Se connecter', style: secondTextStyle),
-              style: roundedButtonStyle(mainColor)),
-        ));
-  }
-
-  void _toSigninPage() {
-    Navigator.push(
-        context, MaterialPageRoute(builder: (context) => const SigninPage()));
-  }
-}
-
-class BuildSignupButton extends StatelessWidget {
-  const BuildSignupButton({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return SizedBox(
-        height: buttonHeight,
-        width: buttonWidth,
-        child: ElevatedButton(
-            onPressed: () => Navigator.push(context,
-                MaterialPageRoute(builder: (context) => const SignupPage())),
-            child: Text("S'inscrire", style: secondTextStyle),
-            style: roundedButtonStyle(mainColor)));
   }
 }

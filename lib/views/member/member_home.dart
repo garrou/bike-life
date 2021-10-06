@@ -2,26 +2,18 @@ import 'package:bike_life/constants.dart';
 import 'package:bike_life/views/member/account.dart';
 import 'package:bike_life/views/member/profil.dart';
 import 'package:bike_life/views/member/shop.dart';
+import 'package:bike_life/views/styles/general.dart';
 import 'package:flutter/animation.dart';
 import 'package:flutter/material.dart';
 
-class MemberHome extends StatelessWidget {
+class MemberHome extends StatefulWidget {
   const MemberHome({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return const Scaffold(body: BuildBottomBar());
-  }
+  _MemberHomeState createState() => _MemberHomeState();
 }
 
-class BuildBottomBar extends StatefulWidget {
-  const BuildBottomBar({Key? key}) : super(key: key);
-
-  @override
-  _BuildBottomBarState createState() => _BuildBottomBarState();
-}
-
-class _BuildBottomBarState extends State<BuildBottomBar> {
+class _MemberHomeState extends State<MemberHome> {
   int _pageIndex = 0;
   late PageController _pageController;
 
@@ -56,27 +48,42 @@ class _BuildBottomBarState extends State<BuildBottomBar> {
 
   @override
   Widget build(BuildContext context) {
+    return LayoutBuilder(builder: (context, constraints) {
+      if (constraints.maxWidth > maxSize) {
+        return narrowLayout();
+      } else {
+        return wideLayout();
+      }
+    });
+  }
+
+  Widget narrowLayout() {
+    return Padding(
+        padding: const EdgeInsets.symmetric(horizontal: maxPadding),
+        child: wideLayout());
+  }
+
+  Widget wideLayout() {
     return Scaffold(
-      body: PageView(
-        children: _tabPages,
-        onPageChanged: _onPageChanged,
-        controller: _pageController,
-      ),
-      bottomNavigationBar: BottomNavigationBar(
-        currentIndex: _pageIndex,
-        onTap: _onTabTapped,
-        backgroundColor: Colors.white,
-        selectedItemColor: mainColor,
-        items: const <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-              icon: Icon(Icons.home),
-              label: 'Accueil',
-              backgroundColor: mainColor),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.shopping_cart), label: 'Marketplace'),
-          BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Profil'),
-        ],
-      ),
-    );
+        body: PageView(
+          children: _tabPages,
+          onPageChanged: _onPageChanged,
+          controller: _pageController,
+        ),
+        bottomNavigationBar: BottomNavigationBar(
+          currentIndex: _pageIndex,
+          onTap: _onTabTapped,
+          backgroundColor: Colors.white,
+          selectedItemColor: mainColor,
+          items: const <BottomNavigationBarItem>[
+            BottomNavigationBarItem(
+                icon: Icon(Icons.home),
+                label: 'Accueil',
+                backgroundColor: mainColor),
+            BottomNavigationBarItem(
+                icon: Icon(Icons.shopping_cart), label: 'Marketplace'),
+            BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Profil'),
+          ],
+        ));
   }
 }

@@ -5,26 +5,16 @@
 // gestures. You can also use WidgetTester to find child widgets in the widget
 // tree, read text, and verify that the values of widget properties are correct.
 
-import 'package:flutter/material.dart';
+import 'package:bike_life/views/widgets/nav_button.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import 'package:bike_life/main.dart';
 
 void main() {
-  testWidgets('Counter increments smoke test', (WidgetTester tester) async {
-    // Build our app and trigger a frame.
+  testWidgets('Test home actions', (WidgetTester tester) async {
     await tester.pumpWidget(const App());
-
-    // Verify that our counter starts at 0.
-    expect(find.text('0'), findsOneWidget);
-    expect(find.text('1'), findsNothing);
-
-    // Tap the '+' icon and trigger a frame.
-    await tester.tap(find.byIcon(Icons.add));
+    expect(find.widgetWithText(AppNavButton, 'Se connecter'), findsOneWidget);
+    await tester.tap(find.widgetWithText(AppNavButton, 'Se connecter'));
     await tester.pump();
-
-    // Verify that our counter has incremented.
-    expect(find.text('0'), findsNothing);
-    expect(find.text('1'), findsOneWidget);
   });
 }
