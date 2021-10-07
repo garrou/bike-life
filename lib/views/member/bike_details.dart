@@ -30,7 +30,7 @@ class BikeDetails extends StatelessWidget {
     return Column(children: <Widget>[
       const ButtonsBackAndDelete(),
       BikeImage(bike: bike),
-      AppTitle(text: bike.name),
+      AppTitle(text: bike.name, paddingTop: 0),
       BikeDescription(bike: bike)
     ]);
   }
@@ -79,5 +79,7 @@ class ButtonsBackAndDelete extends StatelessWidget {
         ]);
   }
 
-  void _onDelete() {}
+  void _onDelete() {
+    // TODO: Delete bike
+  }
 }

@@ -1,8 +1,10 @@
 import 'dart:convert';
 
-import 'package:bike_life/auth.dart';
+import 'package:bike_life/utils/auth.dart';
 import 'package:bike_life/constants.dart';
+import 'package:bike_life/utils/validator.dart';
 import 'package:bike_life/views/widgets/button.dart';
+import 'package:bike_life/views/widgets/card.dart';
 import 'package:bike_life/views/widgets/link_page.dart';
 import 'package:bike_life/views/auth/signup.dart';
 import 'package:bike_life/views/member/member_home.dart';
@@ -26,18 +28,15 @@ class SigninPage extends StatelessWidget {
     }));
   }
 
-  Padding wideLayout() {
-    return Padding(
-        padding: const EdgeInsets.only(top: mainSize),
-        child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: const <Widget>[
-              AppTitle(text: 'Se connecter'),
-              BuildForm(),
-              AppLinkToPage(
-                  text: 'Nouveau ? Créer un compte', destination: SignupPage())
-            ]));
+  Center wideLayout() {
+    return Center(
+        child: SingleChildScrollView(
+            child: Column(children: const <Widget>[
+      AppTitle(text: 'Se connecter', paddingTop: secondSize),
+      AppCard(child: BuildForm()),
+      AppLinkToPage(
+          text: 'Nouveau ? Créer un compte', destination: SignupPage())
+    ])));
   }
 
   Padding narrowLayout() {
@@ -68,20 +67,24 @@ class _BuildFormState extends State<BuildForm> {
     return Form(
         key: _keyForm,
         child: Column(children: <Widget>[
-          AppTextfield(
+          AppTextField(
               label: 'Email',
               hintText: 'Entrer un email valide',
               focusNode: _emailFocus,
               textfieldController: _email,
               validator: emailValidator,
-              obscureText: false),
-          AppTextfield(
+              obscureText: false,
+              icon: Icons.alternate_email,
+              maxLines: 1),
+          AppTextField(
               label: 'Mot de passe',
               hintText: 'Entrer votre mot de passe',
               focusNode: _passwordFocus,
               textfieldController: _password,
               validator: passwordValidator,
-              obscureText: true),
+              obscureText: true,
+              icon: Icons.lock,
+              maxLines: 1),
           AppButton(text: 'Connexion', callback: _onSignin)
         ]));
   }

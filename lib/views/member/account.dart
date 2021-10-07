@@ -79,7 +79,7 @@ class _AccountPageState extends State<AccountPage> {
   Widget wideLayout() {
     return Scaffold(
         body: ListView(children: <Widget>[
-          const AppTitle(text: 'Mes vélos'),
+          const AppTitle(text: 'Mes vélos', paddingTop: secondSize),
           for (Bike bike in _bikes) AppBikeTile(bike: bike)
         ]),
         floatingActionButton: FloatingActionButton(

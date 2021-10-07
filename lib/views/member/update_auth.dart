@@ -1,6 +1,7 @@
-import 'package:bike_life/auth.dart';
 import 'package:bike_life/constants.dart';
+import 'package:bike_life/utils/validator.dart';
 import 'package:bike_life/views/widgets/button.dart';
+import 'package:bike_life/views/widgets/card.dart';
 import 'package:bike_life/views/widgets/textfield.dart';
 import 'package:bike_life/views/widgets/title.dart';
 import 'package:flutter/material.dart';
@@ -30,8 +31,8 @@ class UpdateAuth extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: const <Widget>[
-          AppTitle(text: 'Modifier mon profil'),
-          BuildForm()
+          AppTitle(text: 'Modifier mon profil', paddingTop: secondSize),
+          AppCard(child: BuildForm())
         ]);
   }
 }
@@ -54,18 +55,12 @@ class _SignupFormState extends State<BuildForm> {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-        shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(mainSize)),
-        elevation: thirdSize,
-        child: Padding(
-            padding: const EdgeInsets.symmetric(vertical: mainSize),
-            child: FormUpdateProfil(
-                keyForm: _keyForm,
-                email: _email,
-                emailFocus: _emailFocus,
-                password: _password,
-                passwordFocus: _passwordFocus)));
+    return FormUpdateProfil(
+        keyForm: _keyForm,
+        email: _email,
+        emailFocus: _emailFocus,
+        password: _password,
+        passwordFocus: _passwordFocus);
   }
 }
 
@@ -89,21 +84,25 @@ class FormUpdateProfil extends StatelessWidget {
     return Form(
         key: keyForm,
         child: Column(children: <Widget>[
-          AppTextfield(
+          AppTextField(
               label: 'Email',
               hintText: 'Entrer un email valide',
               focusNode: emailFocus,
               textfieldController: email,
               validator: emailValidator,
-              obscureText: false),
-          AppTextfield(
+              obscureText: false,
+              icon: Icons.alternate_email,
+              maxLines: 1),
+          AppTextField(
               label: 'Mot de passe',
               hintText:
                   'Entrer un mot de passe de minimum $minPasswordSize caractères',
               focusNode: passwordFocus,
               textfieldController: password,
               validator: passwordValidator,
-              obscureText: true),
+              obscureText: true,
+              icon: Icons.lock,
+              maxLines: 1),
           AppButton(text: 'Modifier', callback: _onUpdate)
         ]));
   }

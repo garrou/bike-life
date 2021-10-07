@@ -1,7 +1,9 @@
 import 'dart:convert';
 
-import 'package:bike_life/auth.dart';
+import 'package:bike_life/utils/auth.dart';
+import 'package:bike_life/utils/validator.dart';
 import 'package:bike_life/views/widgets/button.dart';
+import 'package:bike_life/views/widgets/card.dart';
 import 'package:bike_life/views/widgets/link_page.dart';
 import 'package:bike_life/views/auth/signin.dart';
 import 'package:bike_life/constants.dart';
@@ -23,18 +25,15 @@ class SignupPage extends StatelessWidget {
     }));
   }
 
-  Padding wideLayout() {
-    return Padding(
-        padding: const EdgeInsets.only(top: mainSize),
-        child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: const <Widget>[
-              AppTitle(text: "S'inscrire"),
-              BuildForm(),
-              AppLinkToPage(
-                  text: 'Déjà membre ? Se connecter', destination: SigninPage())
-            ]));
+  Center wideLayout() {
+    return Center(
+        child: SingleChildScrollView(
+            child: Column(children: const <Widget>[
+      AppTitle(text: "S'inscrire", paddingTop: secondSize),
+      AppCard(child: BuildForm()),
+      AppLinkToPage(
+          text: 'Déjà membre ? Se connecter', destination: SigninPage())
+    ])));
   }
 
   Padding narrowLayout() {
@@ -65,21 +64,25 @@ class _SignupFormState extends State<BuildForm> {
     return Form(
         key: _keyForm,
         child: Column(children: <Widget>[
-          AppTextfield(
+          AppTextField(
               label: 'Email',
               hintText: 'Entrer un email valide',
               focusNode: _emailFocus,
               textfieldController: _email,
               validator: emailValidator,
-              obscureText: false),
-          AppTextfield(
+              obscureText: false,
+              icon: Icons.alternate_email,
+              maxLines: 1),
+          AppTextField(
               label: 'Mot de passe',
               hintText:
                   'Entrer un mot de passe avec $minPasswordSize caractères minimum',
               focusNode: _passwordFocus,
               textfieldController: _password,
               validator: passwordValidator,
-              obscureText: true),
+              obscureText: true,
+              icon: Icons.lock,
+              maxLines: 1),
           AppButton(text: "S'inscrire", callback: _onSignin)
         ]));
   }

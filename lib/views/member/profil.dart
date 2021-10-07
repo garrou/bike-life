@@ -28,7 +28,7 @@ class ProfilPage extends StatelessWidget {
     return Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: const <Widget>[
-          AppTitle(text: 'Profil'),
+          AppTitle(text: 'Profil', paddingTop: secondSize),
           AppLinkToPage(text: 'Modifier mon profil', destination: UpdateAuth())
         ]);
   }
