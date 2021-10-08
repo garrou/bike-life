@@ -22,7 +22,12 @@ class BikeRepository {
       }),
     );
     dynamic jsonResponse = jsonDecode(response.body);
-
     return [response.statusCode == httpCodeCreated, jsonResponse];
+  }
+
+  Future<dynamic> getBikes(int memberId) async {
+    Response response =
+        await client.get(Uri.parse('$endpoint/bikes?memberId=$memberId'));
+    return jsonDecode(response.body);
   }
 }

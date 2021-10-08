@@ -24,7 +24,7 @@ class AppBikeTile extends StatelessWidget {
                       padding: const EdgeInsets.only(bottom: thirdSize),
                       child: Text(bike.name,
                           style: const TextStyle(fontWeight: FontWeight.bold))),
-                  subtitle: Text(bike.details)),
+                  subtitle: Text(bike.description)),
             )));
   }
 

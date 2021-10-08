@@ -56,7 +56,7 @@ class BikeDescription extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
         padding: const EdgeInsets.symmetric(vertical: thirdSize),
-        child: Text(bike.details, style: thirdTextStyle));
+        child: Text(bike.description, style: thirdTextStyle));
   }
 }
 

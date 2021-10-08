@@ -11,7 +11,7 @@ class HttpAccountInterceptor implements InterceptorContract {
     data.headers['Content-Type'] = 'application/json';
 
     if (accessToken != null) {
-      data.headers['Authorization'] = accessToken;
+      data.headers['authorization'] = 'Bearer $accessToken';
     }
 
     return data;
@@ -19,7 +19,6 @@ class HttpAccountInterceptor implements InterceptorContract {
 
   @override
   Future<ResponseData> interceptResponse({required ResponseData data}) async {
-    print(data);
     return data;
   }
 }
