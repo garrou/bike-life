@@ -1,6 +1,5 @@
-import 'dart:convert';
-
-import 'package:bike_life/utils/auth.dart';
+import 'package:bike_life/models/member.dart';
+import 'package:bike_life/repositories/member_repository.dart';
 import 'package:bike_life/constants.dart';
 import 'package:bike_life/utils/validator.dart';
 import 'package:bike_life/views/widgets/button.dart';
@@ -10,9 +9,7 @@ import 'package:bike_life/views/auth/signup.dart';
 import 'package:bike_life/views/member/member_home.dart';
 import 'package:bike_life/views/widgets/textfield.dart';
 import 'package:bike_life/views/widgets/title.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
 
 class SigninPage extends StatelessWidget {
   const SigninPage({Key? key}) : super(key: key);
@@ -97,14 +94,14 @@ class _BuildFormState extends State<BuildForm> {
   }
 
   void _authUser(String email, String password) async {
-    const storage = FlutterSecureStorage();
-    http.Response response = await login(email, password);
-    dynamic jsonResponse = jsonDecode(response.body);
+    MemberRepository memberRepository = MemberRepository();
+    List<dynamic> response = await memberRepository.login(email, password);
+    Member? member = response[0];
+    dynamic jsonResponse = response[1];
 
-    if (response.statusCode == 200) {
-      await storage.write(key: 'jwt', value: jsonResponse['accessToken']);
-      Navigator.push(
-          context, MaterialPageRoute(builder: (context) => const MemberHome()));
+    if (member != null) {
+      Navigator.push(context,
+          MaterialPageRoute(builder: (context) => MemberHome(member: member)));
     } else {
       _password.text = '';
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(

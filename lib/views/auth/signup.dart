@@ -1,6 +1,4 @@
-import 'dart:convert';
-
-import 'package:bike_life/utils/auth.dart';
+import 'package:bike_life/repositories/member_repository.dart';
 import 'package:bike_life/utils/validator.dart';
 import 'package:bike_life/views/widgets/button.dart';
 import 'package:bike_life/views/widgets/card.dart';
@@ -95,11 +93,13 @@ class _SignupFormState extends State<BuildForm> {
   }
 
   void _createUser(String email, String password) async {
-    final response = await signup(email, password);
-    final jsonResponse = jsonDecode(response.body);
+    MemberRepository memberRepository = MemberRepository();
+    List<dynamic> response = await memberRepository.signup(email, password);
+    bool created = response[0];
+    dynamic jsonResponse = response[1];
     Color statusColor = Theme.of(context).errorColor;
 
-    if (response.statusCode == 201) {
+    if (created) {
       statusColor = Theme.of(context).primaryColor;
       Navigator.push(
           context, MaterialPageRoute(builder: (context) => const SigninPage()));

@@ -1,11 +1,13 @@
 import 'package:bike_life/constants.dart';
+import 'package:bike_life/models/member.dart';
 import 'package:bike_life/views/member/update_auth.dart';
 import 'package:bike_life/views/widgets/link_page.dart';
 import 'package:bike_life/views/widgets/title.dart';
 import 'package:flutter/material.dart';
 
 class ProfilPage extends StatelessWidget {
-  const ProfilPage({Key? key}) : super(key: key);
+  final Member member;
+  const ProfilPage({Key? key, required this.member}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

@@ -1,12 +1,12 @@
-class User {
+class Member {
+  final int id;
   final String email;
-  final String password;
 
-  User(this.email, this.password);
+  Member(this.id, this.email);
 
-  User.fromJson(Map<String, dynamic> json)
-      : email = json['email'],
-        password = json['password'];
+  Member.fromJson(Map<String, dynamic> json)
+      : id = json['id'],
+        email = json['email'];
 
-  Map<String, dynamic> toJson() => {'email': email, 'password': password};
+  Map<String, dynamic> toJson() => {'id': id, 'email': email};
 }

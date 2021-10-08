@@ -75,7 +75,7 @@ class ButtonsBackAndDelete extends StatelessWidget {
           AppRoundButton(
               icon: Icons.delete_forever,
               callback: _onDelete,
-              color: deleteColor),
+              color: Theme.of(context).errorColor),
         ]);
   }
 
