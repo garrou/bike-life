@@ -18,3 +18,6 @@ const double secondSize = 20.0;
 const double thirdSize = 10.0;
 
 const int minPasswordSize = 8;
+
+const int httpCodeOk = 200;
+const int httpCodeCreated = 201;

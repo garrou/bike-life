@@ -1,5 +1,4 @@
 import 'package:bike_life/constants.dart';
-import 'package:bike_life/views/styles/general.dart';
 import 'package:bike_life/views/widgets/title.dart';
 import 'package:flutter/material.dart';
 
@@ -26,6 +25,8 @@ class ShopPage extends StatelessWidget {
   Widget wideLayout() {
     return Column(
         crossAxisAlignment: CrossAxisAlignment.center,
-        children: const <Widget>[AppTitle(text: 'Marketplace')]);
+        children: const <Widget>[
+          AppTitle(text: 'Marketplace', paddingTop: secondSize)
+        ]);
   }
 }

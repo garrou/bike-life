@@ -1,4 +1,5 @@
 import 'package:bike_life/constants.dart';
+import 'package:bike_life/models/member.dart';
 import 'package:bike_life/views/member/account.dart';
 import 'package:bike_life/views/member/profil.dart';
 import 'package:bike_life/views/member/shop.dart';
@@ -7,7 +8,8 @@ import 'package:flutter/animation.dart';
 import 'package:flutter/material.dart';
 
 class MemberHome extends StatefulWidget {
-  const MemberHome({Key? key}) : super(key: key);
+  final Member member;
+  const MemberHome({Key? key, required this.member}) : super(key: key);
 
   @override
   _MemberHomeState createState() => _MemberHomeState();
@@ -16,12 +18,6 @@ class MemberHome extends StatefulWidget {
 class _MemberHomeState extends State<MemberHome> {
   int _pageIndex = 0;
   late PageController _pageController;
-
-  final List<Widget> _tabPages = [
-    const AccountPage(),
-    const ShopPage(),
-    const ProfilPage(),
-  ];
 
   void _onPageChanged(int page) {
     setState(() {
@@ -66,7 +62,11 @@ class _MemberHomeState extends State<MemberHome> {
   Widget wideLayout() {
     return Scaffold(
         body: PageView(
-          children: _tabPages,
+          children: [
+            AccountPage(member: widget.member),
+            const ShopPage(),
+            ProfilPage(member: widget.member)
+          ],
           onPageChanged: _onPageChanged,
           controller: _pageController,
         ),

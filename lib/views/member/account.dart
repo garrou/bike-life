@@ -1,5 +1,6 @@
 import 'package:bike_life/constants.dart';
 import 'package:bike_life/models/bike.dart';
+import 'package:bike_life/models/member.dart';
 import 'package:bike_life/views/member/add_bike.dart';
 import 'package:bike_life/views/styles/general.dart';
 import 'package:bike_life/views/widgets/bike_tile.dart';
@@ -44,7 +45,8 @@ final List bikeList = [
 ];
 
 class AccountPage extends StatefulWidget {
-  const AccountPage({Key? key}) : super(key: key);
+  final Member member;
+  const AccountPage({Key? key, required this.member}) : super(key: key);
 
   @override
   _AccountPageState createState() => _AccountPageState();
@@ -79,7 +81,7 @@ class _AccountPageState extends State<AccountPage> {
   Widget wideLayout() {
     return Scaffold(
         body: ListView(children: <Widget>[
-          const AppTitle(text: 'Mes vélos'),
+          const AppTitle(text: 'Mes vélos', paddingTop: secondSize),
           for (Bike bike in _bikes) AppBikeTile(bike: bike)
         ]),
         floatingActionButton: FloatingActionButton(
@@ -94,7 +96,7 @@ class _AccountPageState extends State<AccountPage> {
   Route addBikeRoute() {
     return PageRouteBuilder(
         pageBuilder: (context, animation, secondaryAnimation) =>
-            const AddBikePage(),
+            AddBikePage(member: widget.member),
         transitionsBuilder: (context, animation, secondaryAnimation, child) {
           return SlideTransition(
             position: Tween(begin: const Offset(0.0, 1.0), end: Offset.zero)
