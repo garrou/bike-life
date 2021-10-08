@@ -2,7 +2,7 @@ import 'package:bike_life/constants.dart';
 import 'package:bike_life/models/member.dart';
 import 'package:bike_life/repositories/bike_repository.dart';
 import 'package:bike_life/utils/validator.dart';
-import 'package:bike_life/views/member/account.dart';
+import 'package:bike_life/views/member/member_home.dart';
 import 'package:bike_life/views/styles/general.dart';
 import 'package:bike_life/views/widgets/button.dart';
 import 'package:bike_life/views/widgets/round_button.dart';
@@ -117,7 +117,7 @@ class _AddBikeFormState extends State<AddBikeForm> {
       Navigator.push(
           context,
           MaterialPageRoute(
-              builder: (context) => AccountPage(member: widget.member)));
+              builder: (context) => MemberHome(member: widget.member)));
     }
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
         content: Text(jsonResponse['confirm']), backgroundColor: statusColor));
