@@ -6,7 +6,7 @@ const String quote = "La santé de votre vélo se surveille de près.";
 const String homeImg = "assets/bike.png";
 
 const double buttonWidth = 200.0;
-const double buttonHeight = 50;
+const double buttonHeight = 50.0;
 
 const double imageSize = 500.0;
 

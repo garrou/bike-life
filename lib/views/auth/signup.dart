@@ -1,5 +1,6 @@
 import 'package:bike_life/repositories/member_repository.dart';
 import 'package:bike_life/utils/validator.dart';
+import 'package:bike_life/views/styles/general.dart';
 import 'package:bike_life/views/widgets/button.dart';
 import 'package:bike_life/views/widgets/card.dart';
 import 'package:bike_life/views/widgets/link_page.dart';
@@ -27,8 +28,8 @@ class SignupPage extends StatelessWidget {
     return Center(
         child: SingleChildScrollView(
             child: Column(children: const <Widget>[
-      AppTitle(text: "S'inscrire", paddingTop: secondSize),
-      AppCard(child: BuildForm()),
+      AppTitle(text: "S'inscrire", paddingTop: 0),
+      AppCard(child: BuildForm(), elevation: secondSize),
       AppLinkToPage(
           text: 'Déjà membre ? Se connecter', destination: SigninPage())
     ])));
@@ -81,7 +82,7 @@ class _SignupFormState extends State<BuildForm> {
               obscureText: true,
               icon: Icons.lock,
               maxLines: 1),
-          AppButton(text: "S'inscrire", callback: _onSignin)
+          AppButton(text: "S'inscrire", callback: _onSignin, color: mainColor)
         ]));
   }
 
@@ -101,8 +102,7 @@ class _SignupFormState extends State<BuildForm> {
 
     if (created) {
       statusColor = Theme.of(context).primaryColor;
-      Navigator.push(
-          context, MaterialPageRoute(builder: (context) => const SigninPage()));
+      Navigator.pushNamed(context, '/login');
     }
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
         content: Text(jsonResponse['confirm']), backgroundColor: statusColor));

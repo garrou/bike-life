@@ -31,10 +31,12 @@ class HomePage extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: const <Widget>[
-        AppTitle(text: title, paddingTop: secondSize),
+        AppTitle(text: title, paddingTop: 0),
         BuildQuote(),
-        AppNavButton(text: 'Se connecter', destination: SigninPage()),
-        AppNavButton(text: "S'inscrire", destination: SignupPage())
+        AppNavButton(
+            text: 'Se connecter', destination: SigninPage(), color: mainColor),
+        AppNavButton(
+            text: "S'inscrire", destination: SignupPage(), color: mainColor)
       ],
     );
   }
@@ -49,15 +51,5 @@ class BuildQuote extends StatelessWidget {
         child: Padding(
             padding: const EdgeInsets.only(bottom: thirdSize),
             child: Text(quote, style: italicTextStyle)));
-  }
-}
-
-class BuildImage extends StatelessWidget {
-  const BuildImage({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return const Image(
-        image: AssetImage(homeImg), height: imageSize, width: imageSize);
   }
 }

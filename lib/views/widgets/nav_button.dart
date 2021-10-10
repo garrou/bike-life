@@ -6,7 +6,12 @@ import 'package:flutter/material.dart';
 class AppNavButton extends StatelessWidget {
   final String text;
   final Widget destination;
-  const AppNavButton({Key? key, required this.text, required this.destination})
+  final Color color;
+  const AppNavButton(
+      {Key? key,
+      required this.text,
+      required this.destination,
+      required this.color})
       : super(key: key);
 
   @override
@@ -20,6 +25,6 @@ class AppNavButton extends StatelessWidget {
                 onPressed: () => Navigator.push(context,
                     MaterialPageRoute(builder: (context) => destination)),
                 child: Text(text, style: secondTextStyle),
-                style: roundedButtonStyle(mainColor))));
+                style: roundedButtonStyle(color))));
   }
 }

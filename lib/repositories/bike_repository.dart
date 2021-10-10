@@ -30,4 +30,11 @@ class BikeRepository {
         await client.get(Uri.parse('$endpoint/bikes?memberId=$memberId'));
     return jsonDecode(response.body);
   }
+
+  Future<List<dynamic>> deleteBike(int bikeId) async {
+    Response response =
+        await client.delete(Uri.parse('$endpoint/bikes/$bikeId'));
+    dynamic jsonResponse = jsonDecode(response.body);
+    return [response.statusCode == httpCodeOk, jsonResponse];
+  }
 }

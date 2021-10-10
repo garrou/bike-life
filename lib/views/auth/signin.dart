@@ -1,12 +1,14 @@
 import 'package:bike_life/models/member.dart';
 import 'package:bike_life/repositories/member_repository.dart';
 import 'package:bike_life/constants.dart';
+import 'package:bike_life/routes/member_home_route.dart';
 import 'package:bike_life/utils/validator.dart';
+import 'package:bike_life/routes/member_argument.dart';
+import 'package:bike_life/views/styles/general.dart';
 import 'package:bike_life/views/widgets/button.dart';
 import 'package:bike_life/views/widgets/card.dart';
 import 'package:bike_life/views/widgets/link_page.dart';
 import 'package:bike_life/views/auth/signup.dart';
-import 'package:bike_life/views/member/member_home.dart';
 import 'package:bike_life/views/widgets/textfield.dart';
 import 'package:bike_life/views/widgets/title.dart';
 import 'package:flutter/material.dart';
@@ -29,8 +31,8 @@ class SigninPage extends StatelessWidget {
     return Center(
         child: SingleChildScrollView(
             child: Column(children: const <Widget>[
-      AppTitle(text: 'Se connecter', paddingTop: secondSize),
-      AppCard(child: BuildForm()),
+      AppTitle(text: 'Se connecter', paddingTop: 0),
+      AppCard(child: BuildForm(), elevation: secondSize),
       AppLinkToPage(
           text: 'Nouveau ? Créer un compte', destination: SignupPage())
     ])));
@@ -82,7 +84,7 @@ class _BuildFormState extends State<BuildForm> {
               obscureText: true,
               icon: Icons.lock,
               maxLines: 1),
-          AppButton(text: 'Connexion', callback: _onSignin)
+          AppButton(text: 'Connexion', callback: _onSignin, color: mainColor)
         ]));
   }
 
@@ -100,8 +102,8 @@ class _BuildFormState extends State<BuildForm> {
     dynamic jsonResponse = response[1];
 
     if (member != null) {
-      Navigator.push(context,
-          MaterialPageRoute(builder: (context) => MemberHome(member: member)));
+      Navigator.pushNamed(context, MemberHomeRoute.routeName,
+          arguments: MemberArgument(member));
     } else {
       _password.text = '';
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(

@@ -1,4 +1,9 @@
 import 'package:bike_life/constants.dart';
+import 'package:bike_life/routes/add_bike_route.dart';
+import 'package:bike_life/routes/all_components_route.dart';
+import 'package:bike_life/routes/member_home_route.dart';
+import 'package:bike_life/views/auth/signin.dart';
+import 'package:bike_life/views/auth/signup.dart';
 import 'package:bike_life/views/home/home.dart';
 import 'package:bike_life/views/styles/general.dart';
 import 'package:flutter/material.dart';
@@ -18,6 +23,14 @@ class App extends StatelessWidget {
             visualDensity: VisualDensity.adaptivePlatformDensity,
             primaryColor: mainColor,
             brightness: Brightness.light),
-        home: const HomePage());
+        initialRoute: '/',
+        routes: {
+          '/': (context) => const HomePage(),
+          '/login': (context) => const SigninPage(),
+          '/signup': (context) => const SignupPage(),
+          MemberHomeRoute.routeName: (context) => const MemberHomeRoute(),
+          AddBikeRoute.routeName: (context) => const AddBikeRoute(),
+          AllComponentsRoute.routeName: (context) => const AllComponentsRoute()
+        });
   }
 }

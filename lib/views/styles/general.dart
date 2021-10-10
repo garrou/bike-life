@@ -4,6 +4,7 @@ import 'package:google_fonts/google_fonts.dart';
 
 const Color mainColor = Color.fromARGB(255, 53, 143, 128);
 const Color secondColor = Color.fromARGB(255, 3, 102, 102);
+const Color errorColor = Color.fromARGB(255, 255, 0, 0);
 
 TextStyle mainTextStyle = GoogleFonts.roboto(fontSize: mainSize);
 TextStyle secondTextStyle = GoogleFonts.roboto(fontSize: secondSize);
