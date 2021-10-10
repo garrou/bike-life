@@ -11,7 +11,7 @@ class AppBackButton extends StatelessWidget {
     return Align(
         alignment: Alignment.topLeft,
         child: Padding(
-            padding: const EdgeInsets.all(secondSize),
+            padding: const EdgeInsets.fromLTRB(secondSize, secondSize, 0, 0),
             child: IconButton(
                 onPressed: callback,
                 icon: const Icon(Icons.arrow_back),

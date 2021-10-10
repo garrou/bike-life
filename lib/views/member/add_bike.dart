@@ -4,6 +4,7 @@ import 'package:bike_life/repositories/bike_repository.dart';
 import 'package:bike_life/routes/member_argument.dart';
 import 'package:bike_life/routes/member_home_route.dart';
 import 'package:bike_life/utils/validator.dart';
+import 'package:bike_life/views/styles/general.dart';
 import 'package:bike_life/views/widgets/button.dart';
 import 'package:bike_life/views/widgets/back_button.dart';
 import 'package:bike_life/views/widgets/textfield.dart';
@@ -94,7 +95,7 @@ class _AddBikeFormState extends State<AddBikeForm> {
               obscureText: false,
               icon: Icons.image,
               maxLines: 1),
-          AppButton(text: 'Ajouter', callback: _onAddBike)
+          AppButton(text: 'Ajouter', callback: _onAddBike, color: mainColor)
         ]));
   }
 

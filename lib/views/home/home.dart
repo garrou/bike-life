@@ -31,10 +31,12 @@ class HomePage extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: const <Widget>[
-        AppTitle(text: title, paddingTop: secondSize),
+        AppTitle(text: title, paddingTop: 0),
         BuildQuote(),
-        AppNavButton(text: 'Se connecter', destination: SigninPage()),
-        AppNavButton(text: "S'inscrire", destination: SignupPage())
+        AppNavButton(
+            text: 'Se connecter', destination: SigninPage(), color: mainColor),
+        AppNavButton(
+            text: "S'inscrire", destination: SignupPage(), color: mainColor)
       ],
     );
   }

@@ -1,13 +1,14 @@
 import 'package:bike_life/constants.dart';
 import 'package:bike_life/utils/validator.dart';
+import 'package:bike_life/views/styles/general.dart';
 import 'package:bike_life/views/widgets/button.dart';
 import 'package:bike_life/views/widgets/card.dart';
 import 'package:bike_life/views/widgets/textfield.dart';
 import 'package:bike_life/views/widgets/title.dart';
 import 'package:flutter/material.dart';
 
-class UpdateAuth extends StatelessWidget {
-  const UpdateAuth({Key? key}) : super(key: key);
+class UpdateAuthPage extends StatelessWidget {
+  const UpdateAuthPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -103,7 +104,7 @@ class FormUpdateProfil extends StatelessWidget {
               obscureText: true,
               icon: Icons.lock,
               maxLines: 1),
-          AppButton(text: 'Modifier', callback: _onUpdate)
+          AppButton(text: 'Modifier', callback: _onUpdate, color: mainColor)
         ]));
   }
 

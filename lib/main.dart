@@ -1,5 +1,6 @@
 import 'package:bike_life/constants.dart';
 import 'package:bike_life/routes/add_bike_route.dart';
+import 'package:bike_life/routes/all_components_route.dart';
 import 'package:bike_life/routes/member_home_route.dart';
 import 'package:bike_life/views/auth/signin.dart';
 import 'package:bike_life/views/auth/signup.dart';
@@ -28,7 +29,8 @@ class App extends StatelessWidget {
           '/login': (context) => const SigninPage(),
           '/signup': (context) => const SignupPage(),
           MemberHomeRoute.routeName: (context) => const MemberHomeRoute(),
-          AddBikeRoute.routeName: (context) => const AddBikeRoute()
+          AddBikeRoute.routeName: (context) => const AddBikeRoute(),
+          AllComponentsRoute.routeName: (context) => const AllComponentsRoute()
         });
   }
 }

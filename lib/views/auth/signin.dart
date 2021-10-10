@@ -4,6 +4,7 @@ import 'package:bike_life/constants.dart';
 import 'package:bike_life/routes/member_home_route.dart';
 import 'package:bike_life/utils/validator.dart';
 import 'package:bike_life/routes/member_argument.dart';
+import 'package:bike_life/views/styles/general.dart';
 import 'package:bike_life/views/widgets/button.dart';
 import 'package:bike_life/views/widgets/card.dart';
 import 'package:bike_life/views/widgets/link_page.dart';
@@ -30,7 +31,7 @@ class SigninPage extends StatelessWidget {
     return Center(
         child: SingleChildScrollView(
             child: Column(children: const <Widget>[
-      AppTitle(text: 'Se connecter', paddingTop: secondSize),
+      AppTitle(text: 'Se connecter', paddingTop: 0),
       AppCard(child: BuildForm(), elevation: secondSize),
       AppLinkToPage(
           text: 'Nouveau ? Créer un compte', destination: SignupPage())
@@ -83,7 +84,7 @@ class _BuildFormState extends State<BuildForm> {
               obscureText: true,
               icon: Icons.lock,
               maxLines: 1),
-          AppButton(text: 'Connexion', callback: _onSignin)
+          AppButton(text: 'Connexion', callback: _onSignin, color: mainColor)
         ]));
   }
 

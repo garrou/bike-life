@@ -56,7 +56,7 @@ class _MemberBikesPageState extends State<MemberBikesPage> {
   Widget wideLayout() {
     return Scaffold(
         body: ListView(children: <Widget>[
-          const AppTitle(text: 'Mes vélos', paddingTop: secondSize),
+          const AppTitle(text: 'Mes vélos', paddingTop: 0.0),
           for (Bike bike in _bikes)
             AppBikeTile(bike: bike, member: widget.member)
         ]),

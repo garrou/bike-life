@@ -8,15 +8,15 @@ import 'package:bike_life/views/styles/general.dart';
 import 'package:flutter/animation.dart';
 import 'package:flutter/material.dart';
 
-class MemberHome extends StatefulWidget {
+class MemberHomePage extends StatefulWidget {
   final Member member;
-  const MemberHome({Key? key, required this.member}) : super(key: key);
+  const MemberHomePage({Key? key, required this.member}) : super(key: key);
 
   @override
-  _MemberHomeState createState() => _MemberHomeState();
+  _MemberHomePageState createState() => _MemberHomePageState();
 }
 
-class _MemberHomeState extends State<MemberHome> {
+class _MemberHomePageState extends State<MemberHomePage> {
   int _pageIndex = 0;
   late PageController _pageController;
 

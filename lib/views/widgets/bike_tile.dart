@@ -34,7 +34,7 @@ class AppBikeTile extends StatelessWidget {
   Route bikeDetailsRoute() {
     return PageRouteBuilder(
         pageBuilder: (context, animation, secondaryAnimation) =>
-            BikeDetails(bike: bike, member: member),
+            BikeDetailsPage(bike: bike, member: member),
         transitionsBuilder: (context, animation, secondaryAnimation, child) {
           return SlideTransition(
               position: animation.drive(

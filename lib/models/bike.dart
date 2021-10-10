@@ -7,7 +7,7 @@ class Bike {
   Bike(this.id, this.name, this.image, this.description);
 
   Bike.fromJson(Map<String, dynamic> json)
-      : id = json['bike_id'],
+      : id = json['id'],
         name = json['name'],
         image = json['image'],
         description = json['description'];
