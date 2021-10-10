@@ -1,11 +1,11 @@
 import 'package:bike_life/constants.dart';
 import 'package:bike_life/models/member.dart';
 import 'package:bike_life/repositories/bike_repository.dart';
+import 'package:bike_life/routes/member_argument.dart';
+import 'package:bike_life/routes/member_home_route.dart';
 import 'package:bike_life/utils/validator.dart';
-import 'package:bike_life/views/member/member_home.dart';
-import 'package:bike_life/views/styles/general.dart';
 import 'package:bike_life/views/widgets/button.dart';
-import 'package:bike_life/views/widgets/round_button.dart';
+import 'package:bike_life/views/widgets/back_button.dart';
 import 'package:bike_life/views/widgets/textfield.dart';
 import 'package:bike_life/views/widgets/title.dart';
 import 'package:flutter/material.dart';
@@ -33,11 +33,7 @@ class AddBikePage extends StatelessWidget {
 
   Widget wideLayout() {
     return SingleChildScrollView(
-        child: Column(children: <Widget>[
-      const WrapperRoundButton(),
-      const AppTitle(text: 'Ajouter un vélo', paddingTop: 0),
-      AddBikeForm(member: member)
-    ]));
+        child: Column(children: <Widget>[AddBikeForm(member: member)]));
   }
 }
 
@@ -66,6 +62,11 @@ class _AddBikeFormState extends State<AddBikeForm> {
     return Form(
         key: _keyForm,
         child: Column(children: <Widget>[
+          AppBackButton(
+              callback: () => Navigator.pushNamed(
+                  context, MemberHomeRoute.routeName,
+                  arguments: MemberArgument(widget.member))),
+          const AppTitle(text: 'Ajouter un vélo', paddingTop: 0),
           AppTextField(
               focusNode: _nameFocus,
               textfieldController: _name,
@@ -110,30 +111,13 @@ class _AddBikeFormState extends State<AddBikeForm> {
         widget.member.id, name, description, image);
     bool created = response[0];
     dynamic jsonResponse = response[1];
-    Color statusColor = Theme.of(context).errorColor;
 
     if (created) {
-      statusColor = Theme.of(context).primaryColor;
-      Navigator.push(
-          context,
-          MaterialPageRoute(
-              builder: (context) => MemberHome(member: widget.member)));
+      Navigator.pushNamed(context, MemberHomeRoute.routeName,
+          arguments: MemberArgument(widget.member));
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: Text(jsonResponse['confirm']),
+          backgroundColor: Theme.of(context).primaryColor));
     }
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: Text(jsonResponse['confirm']), backgroundColor: statusColor));
-  }
-}
-
-class WrapperRoundButton extends StatelessWidget {
-  const WrapperRoundButton({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Align(
-        alignment: Alignment.topLeft,
-        child: AppRoundButton(
-            icon: Icons.arrow_back,
-            callback: () => Navigator.of(context).pop(),
-            color: mainColor));
   }
 }

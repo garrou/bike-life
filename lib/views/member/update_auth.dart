@@ -32,7 +32,7 @@ class UpdateAuth extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: const <Widget>[
           AppTitle(text: 'Modifier mon profil', paddingTop: secondSize),
-          AppCard(child: BuildForm())
+          AppCard(child: BuildForm(), elevation: secondSize)
         ]);
   }
 }

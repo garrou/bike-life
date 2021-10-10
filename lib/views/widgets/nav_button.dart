@@ -17,7 +17,7 @@ class AppNavButton extends StatelessWidget {
             height: buttonHeight,
             width: buttonWidth,
             child: ElevatedButton(
-                onPressed: () => Navigator.push(context,
+                onPressed: () => Navigator.pushReplacement(context,
                     MaterialPageRoute(builder: (context) => destination)),
                 child: Text(text, style: secondTextStyle),
                 style: roundedButtonStyle(mainColor))));

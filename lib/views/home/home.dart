@@ -51,13 +51,3 @@ class BuildQuote extends StatelessWidget {
             child: Text(quote, style: italicTextStyle)));
   }
 }
-
-class BuildImage extends StatelessWidget {
-  const BuildImage({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return const Image(
-        image: AssetImage(homeImg), height: imageSize, width: imageSize);
-  }
-}

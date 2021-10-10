@@ -1,11 +1,14 @@
 import 'package:bike_life/constants.dart';
 import 'package:bike_life/models/bike.dart';
+import 'package:bike_life/models/member.dart';
 import 'package:bike_life/views/member/bike_details.dart';
 import 'package:flutter/material.dart';
 
 class AppBikeTile extends StatelessWidget {
+  final Member member;
   final Bike bike;
-  const AppBikeTile({Key? key, required this.bike}) : super(key: key);
+  const AppBikeTile({Key? key, required this.bike, required this.member})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -31,7 +34,7 @@ class AppBikeTile extends StatelessWidget {
   Route bikeDetailsRoute() {
     return PageRouteBuilder(
         pageBuilder: (context, animation, secondaryAnimation) =>
-            BikeDetails(bike: bike),
+            BikeDetails(bike: bike, member: member),
         transitionsBuilder: (context, animation, secondaryAnimation, child) {
           return SlideTransition(
               position: animation.drive(

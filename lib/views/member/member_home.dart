@@ -1,6 +1,7 @@
 import 'package:bike_life/constants.dart';
 import 'package:bike_life/models/member.dart';
 import 'package:bike_life/views/member/account.dart';
+import 'package:bike_life/views/member/member_bikes.dart';
 import 'package:bike_life/views/member/profil.dart';
 import 'package:bike_life/views/member/shop.dart';
 import 'package:bike_life/views/styles/general.dart';
@@ -63,6 +64,7 @@ class _MemberHomeState extends State<MemberHome> {
     return Scaffold(
         body: PageView(
           children: [
+            MemberBikesPage(member: widget.member),
             AccountPage(member: widget.member),
             const ShopPage(),
             ProfilPage(member: widget.member)
@@ -74,15 +76,24 @@ class _MemberHomeState extends State<MemberHome> {
           currentIndex: _pageIndex,
           onTap: _onTabTapped,
           backgroundColor: Colors.white,
-          selectedItemColor: mainColor,
+          selectedItemColor: Colors.black,
           items: const <BottomNavigationBarItem>[
             BottomNavigationBarItem(
-                icon: Icon(Icons.home),
-                label: 'Accueil',
+                icon: Icon(Icons.pedal_bike),
+                label: 'Mes vélos',
                 backgroundColor: mainColor),
             BottomNavigationBarItem(
-                icon: Icon(Icons.shopping_cart), label: 'Marketplace'),
-            BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Profil'),
+                icon: Icon(Icons.gradient),
+                label: 'Compte',
+                backgroundColor: mainColor),
+            BottomNavigationBarItem(
+                icon: Icon(Icons.shopping_cart),
+                label: 'Marketplace',
+                backgroundColor: mainColor),
+            BottomNavigationBarItem(
+                icon: Icon(Icons.person),
+                label: 'Profil',
+                backgroundColor: mainColor)
           ],
         ));
   }

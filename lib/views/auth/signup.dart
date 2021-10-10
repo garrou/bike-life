@@ -28,7 +28,7 @@ class SignupPage extends StatelessWidget {
         child: SingleChildScrollView(
             child: Column(children: const <Widget>[
       AppTitle(text: "S'inscrire", paddingTop: secondSize),
-      AppCard(child: BuildForm()),
+      AppCard(child: BuildForm(), elevation: secondSize),
       AppLinkToPage(
           text: 'Déjà membre ? Se connecter', destination: SigninPage())
     ])));
@@ -101,8 +101,7 @@ class _SignupFormState extends State<BuildForm> {
 
     if (created) {
       statusColor = Theme.of(context).primaryColor;
-      Navigator.push(
-          context, MaterialPageRoute(builder: (context) => const SigninPage()));
+      Navigator.pushNamed(context, '/login');
     }
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
         content: Text(jsonResponse['confirm']), backgroundColor: statusColor));
