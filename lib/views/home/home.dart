@@ -30,26 +30,20 @@ class HomePage extends StatelessWidget {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.center,
-      children: const <Widget>[
-        AppTitle(text: title, paddingTop: 0),
-        BuildQuote(),
-        AppNavButton(
+      children: <Widget>[
+        const AppTitle(text: title, paddingTop: 0),
+        appQuote(),
+        const AppNavButton(
             text: 'Se connecter', destination: SigninPage(), color: mainColor),
-        AppNavButton(
+        const AppNavButton(
             text: "S'inscrire", destination: SignupPage(), color: mainColor)
       ],
     );
   }
-}
 
-class BuildQuote extends StatelessWidget {
-  const BuildQuote({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Center(
-        child: Padding(
-            padding: const EdgeInsets.only(bottom: thirdSize),
-            child: Text(quote, style: italicTextStyle)));
+  Padding appQuote() {
+    return Padding(
+        padding: const EdgeInsets.symmetric(vertical: thirdSize),
+        child: Text(quote, style: italicTextStyle));
   }
 }

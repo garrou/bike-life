@@ -42,22 +42,28 @@ class _BikeDetailsPageState extends State<BikeDetailsPage> {
 
   SingleChildScrollView wideLayout() {
     return SingleChildScrollView(
-        child: Column(children: <Widget>[
-      AppBackButton(
-          callback: () => Navigator.pushNamed(
-              context, MemberHomeRoute.routeName,
-              arguments: MemberArgument(widget.member))),
-      AppTitle(text: widget.bike.name, paddingTop: 0.0),
-      BikeImage(image: widget.bike.image),
-      BikeDescription(description: widget.bike.description),
-      Column(children: <Widget>[
-        AppNavButton(
-            text: 'Composants',
-            destination: AllComponentsPage(member: widget.member),
-            color: mainColor),
-        AppButton(text: 'Supprimer', callback: _onDeleteBike, color: errorColor)
-      ])
-    ]));
+        child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: thirdSize),
+            child: Column(children: <Widget>[
+              AppBackButton(
+                  callback: () => Navigator.pushNamed(
+                      context, MemberHomeRoute.routeName,
+                      arguments: MemberArgument(widget.member))),
+              AppTitle(text: widget.bike.name, paddingTop: 0.0),
+              Image.network(widget.bike.image),
+              Text(widget.bike.description, style: secondTextStyle),
+              Text(widget.bike.dateOfPurchase, style: secondTextStyle),
+              Column(children: <Widget>[
+                AppNavButton(
+                    text: 'Composants',
+                    destination: AllComponentsPage(member: widget.member),
+                    color: mainColor),
+                AppButton(
+                    text: 'Supprimer',
+                    callback: _onDeleteBike,
+                    color: errorColor)
+              ])
+            ])));
   }
 
   void _onDeleteBike() async {
@@ -72,29 +78,5 @@ class _BikeDetailsPageState extends State<BikeDetailsPage> {
       Navigator.pushNamed(context, MemberHomeRoute.routeName,
           arguments: MemberArgument(widget.member));
     }
-  }
-}
-
-class BikeImage extends StatelessWidget {
-  final String image;
-  const BikeImage({Key? key, required this.image}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-        padding: const EdgeInsets.all(thirdSize), child: Image.network(image));
-  }
-}
-
-class BikeDescription extends StatelessWidget {
-  final String description;
-  const BikeDescription({Key? key, required this.description})
-      : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-        padding: const EdgeInsets.symmetric(vertical: thirdSize),
-        child: Text(description, style: secondTextStyle));
   }
 }
