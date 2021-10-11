@@ -10,5 +10,5 @@ TextStyle mainTextStyle = GoogleFonts.roboto(fontSize: mainSize);
 TextStyle secondTextStyle = GoogleFonts.roboto(fontSize: secondSize);
 TextStyle thirdTextStyle = GoogleFonts.roboto(fontSize: thirdSize);
 TextStyle italicTextStyle =
-    GoogleFonts.roboto(fontSize: secondSize, fontStyle: FontStyle.italic);
+    GoogleFonts.roboto(fontSize: 20.0, fontStyle: FontStyle.italic);
 TextStyle linkTextStyle = GoogleFonts.roboto(fontSize: secondSize);

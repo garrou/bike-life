@@ -10,6 +10,7 @@ import 'package:bike_life/views/widgets/back_button.dart';
 import 'package:bike_life/views/widgets/textfield.dart';
 import 'package:bike_life/views/widgets/title.dart';
 import 'package:flutter/material.dart';
+import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 
 class AddBikePage extends StatelessWidget {
   final Member member;
@@ -58,58 +59,68 @@ class _AddBikeFormState extends State<AddBikeForm> {
   final _imageFocus = FocusNode();
   final _image = TextEditingController();
 
+  String _dateOfPurchase = DateTime.now().toString().split(' ')[0];
+
   @override
   Widget build(BuildContext context) {
     return Form(
         key: _keyForm,
-        child: Column(children: <Widget>[
-          AppBackButton(
-              callback: () => Navigator.pushNamed(
-                  context, MemberHomeRoute.routeName,
-                  arguments: MemberArgument(widget.member))),
-          const AppTitle(text: 'Ajouter un vélo', paddingTop: 0),
-          AppTextField(
-              focusNode: _nameFocus,
-              textfieldController: _name,
-              validator: fieldValidator,
-              hintText: 'Entrer un nom de vélo',
-              label: 'Nom du vélo',
-              obscureText: false,
-              icon: Icons.pedal_bike,
-              maxLines: 1),
-          AppTextField(
-              focusNode: _descriptionFocus,
-              textfieldController: _description,
-              validator: fieldValidator,
-              hintText: 'Entrer une description valide',
-              label: 'Description du vélo',
-              obscureText: false,
-              icon: Icons.article,
-              maxLines: 8),
-          AppTextField(
-              focusNode: _imageFocus,
-              textfieldController: _image,
-              validator: fieldValidator,
-              hintText: "Lien de l'image du vélo",
-              label: 'Image du vélo',
-              obscureText: false,
-              icon: Icons.image,
-              maxLines: 1),
-          AppButton(text: 'Ajouter', callback: _onAddBike, color: mainColor)
-        ]));
+        child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: thirdSize),
+            child: Column(children: <Widget>[
+              AppBackButton(
+                  callback: () => Navigator.pushNamed(
+                      context, MemberHomeRoute.routeName,
+                      arguments: MemberArgument(widget.member))),
+              const AppTitle(text: 'Ajouter un vélo', paddingTop: 0),
+              AppTextField(
+                  focusNode: _nameFocus,
+                  textfieldController: _name,
+                  validator: fieldValidator,
+                  hintText: 'Entrer un nom de vélo',
+                  label: 'Nom du vélo',
+                  obscureText: false,
+                  icon: Icons.pedal_bike,
+                  maxLines: 1),
+              AppTextField(
+                  focusNode: _descriptionFocus,
+                  textfieldController: _description,
+                  validator: fieldValidator,
+                  hintText: 'Entrer une description valide',
+                  label: 'Description du vélo',
+                  obscureText: false,
+                  icon: Icons.article,
+                  maxLines: 8),
+              AppTextField(
+                  focusNode: _imageFocus,
+                  textfieldController: _image,
+                  validator: fieldValidator,
+                  hintText: "Lien de l'image du vélo",
+                  label: 'Image du vélo',
+                  obscureText: false,
+                  icon: Icons.image,
+                  maxLines: 1),
+              Text("Date d'achat", style: secondTextStyle),
+              SfDateRangePicker(
+                  view: DateRangePickerView.month,
+                  selectionMode: DateRangePickerSelectionMode.single,
+                  onSelectionChanged: _onDateChanged),
+              AppButton(text: 'Ajouter', callback: _onAddBike, color: mainColor)
+            ])));
   }
 
   void _onAddBike() {
     if (_keyForm.currentState!.validate()) {
       _keyForm.currentState!.save();
-      _addBike(_name.text, _description.text, _image.text);
+      _addBike(_name.text, _description.text, _image.text, _dateOfPurchase);
     }
   }
 
-  void _addBike(String name, String description, String image) async {
+  void _addBike(String name, String description, String image,
+      String dateOfPurchase) async {
     BikeRepository bikeRepository = BikeRepository();
     List<dynamic> response = await bikeRepository.addBike(
-        widget.member.id, name, description, image);
+        widget.member.id, name, description, image, dateOfPurchase);
     bool created = response[0];
     dynamic jsonResponse = response[1];
 
@@ -120,5 +131,9 @@ class _AddBikeFormState extends State<AddBikeForm> {
           content: Text(jsonResponse['confirm']),
           backgroundColor: Theme.of(context).primaryColor));
     }
+  }
+
+  void _onDateChanged(DateRangePickerSelectionChangedArgs args) {
+    _dateOfPurchase = args.value.toString().split(' ')[0];
   }
 }
