@@ -20,30 +20,26 @@ class HomePage extends StatelessWidget {
     }));
   }
 
-  Padding narrowLayout() {
-    return Padding(
-        padding: const EdgeInsets.symmetric(horizontal: maxPadding),
-        child: wideLayout());
-  }
+  Padding narrowLayout() => Padding(
+      padding: const EdgeInsets.symmetric(horizontal: maxPadding),
+      child: wideLayout());
 
-  Column wideLayout() {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: <Widget>[
-        const AppTitle(text: title, paddingTop: 0),
-        appQuote(),
-        const AppNavButton(
-            text: 'Se connecter', destination: SigninPage(), color: mainColor),
-        const AppNavButton(
-            text: "S'inscrire", destination: SignupPage(), color: mainColor)
-      ],
-    );
-  }
+  Column wideLayout() => Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: <Widget>[
+          const AppTitle(text: title, paddingTop: 0),
+          appQuote(),
+          const AppNavButton(
+              text: 'Se connecter',
+              destination: SigninPage(),
+              color: mainColor),
+          const AppNavButton(
+              text: "S'inscrire", destination: SignupPage(), color: mainColor)
+        ],
+      );
 
-  Padding appQuote() {
-    return Padding(
-        padding: const EdgeInsets.symmetric(vertical: thirdSize),
-        child: Text(quote, style: italicTextStyle));
-  }
+  Padding appQuote() => Padding(
+      padding: const EdgeInsets.symmetric(vertical: thirdSize),
+      child: Text(quote, style: italicTextStyle));
 }

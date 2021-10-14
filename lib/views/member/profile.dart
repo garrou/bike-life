@@ -8,24 +8,24 @@ import 'package:bike_life/views/widgets/title.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
-class ProfilPage extends StatefulWidget {
+class ProfilePage extends StatefulWidget {
   final Member member;
-  const ProfilPage({Key? key, required this.member}) : super(key: key);
+  const ProfilePage({Key? key, required this.member}) : super(key: key);
 
   @override
-  _ProfilPageState createState() => _ProfilPageState();
+  _ProfilePageState createState() => _ProfilePageState();
 }
 
-class _ProfilPageState extends State<ProfilPage> {
+class _ProfilePageState extends State<ProfilePage> {
   @override
   Widget build(BuildContext context) {
-    return LayoutBuilder(builder: (context, constraints) {
+    return Scaffold(body: LayoutBuilder(builder: (context, constraints) {
       if (constraints.maxWidth > maxSize) {
         return narrowLayout();
       } else {
         return wideLayout();
       }
-    });
+    }));
   }
 
   Widget narrowLayout() {

@@ -8,7 +8,6 @@ import 'package:bike_life/views/styles/general.dart';
 import 'package:bike_life/views/widgets/button.dart';
 import 'package:bike_life/views/widgets/back_button.dart';
 import 'package:bike_life/views/widgets/textfield.dart';
-import 'package:bike_life/views/widgets/title.dart';
 import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 
@@ -66,13 +65,12 @@ class _AddBikeFormState extends State<AddBikeForm> {
     return Form(
         key: _keyForm,
         child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: thirdSize),
+            padding: const EdgeInsets.all(thirdSize),
             child: Column(children: <Widget>[
               AppBackButton(
                   callback: () => Navigator.pushNamed(
                       context, MemberHomeRoute.routeName,
                       arguments: MemberArgument(widget.member))),
-              const AppTitle(text: 'Ajouter un vélo', paddingTop: 0),
               AppTextField(
                   focusNode: _nameFocus,
                   textfieldController: _name,
