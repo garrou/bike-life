@@ -1,17 +1,17 @@
 import 'package:flip_card/flip_card.dart';
 import 'package:flutter/material.dart';
 
-class AppFlipCard extends StatefulWidget {
+class AppFlip extends StatefulWidget {
   final Widget front;
   final Widget back;
-  const AppFlipCard({Key? key, required this.front, required this.back})
+  const AppFlip({Key? key, required this.front, required this.back})
       : super(key: key);
 
   @override
-  _AppFlipCardState createState() => _AppFlipCardState();
+  _AppFlipState createState() => _AppFlipState();
 }
 
-class _AppFlipCardState extends State<AppFlipCard> {
+class _AppFlipState extends State<AppFlip> {
   @override
   Widget build(BuildContext context) {
     return FlipCard(

@@ -11,7 +11,7 @@ class BikeRepository {
   ]);
 
   Future<List<dynamic>> addBike(int memberId, String name, String description,
-      String urlImage, String dateOfPurchase) async {
+      String urlImage, String dateOfPurchase, String nbKm) async {
     Response response = await client.post(
       Uri.parse('$endpoint/bikes'),
       body: jsonEncode(<String, dynamic>{
@@ -19,7 +19,8 @@ class BikeRepository {
         'name': name,
         'description': description,
         'image': urlImage,
-        'dateOfPurchase': dateOfPurchase
+        'dateOfPurchase': dateOfPurchase,
+        'nbKm': nbKm
       }),
     );
     dynamic jsonResponse = jsonDecode(response.body);

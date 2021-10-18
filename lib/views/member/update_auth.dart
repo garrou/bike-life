@@ -1,14 +1,19 @@
 import 'package:bike_life/constants.dart';
+import 'package:bike_life/models/member.dart';
+import 'package:bike_life/routes/member_argument.dart';
+import 'package:bike_life/routes/profile_page_route.dart';
 import 'package:bike_life/utils/validator.dart';
 import 'package:bike_life/views/styles/general.dart';
 import 'package:bike_life/views/widgets/button.dart';
 import 'package:bike_life/views/widgets/card.dart';
 import 'package:bike_life/views/widgets/textfield.dart';
 import 'package:bike_life/views/widgets/title.dart';
+import 'package:bike_life/views/widgets/top_left_button.dart';
 import 'package:flutter/material.dart';
 
 class UpdateAccountPage extends StatefulWidget {
-  const UpdateAccountPage({Key? key}) : super(key: key);
+  final Member member;
+  const UpdateAccountPage({Key? key, required this.member}) : super(key: key);
 
   @override
   _UpdateAccountPageState createState() => _UpdateAccountPageState();
@@ -42,6 +47,7 @@ class _UpdateAccountPageState extends State<UpdateAccountPage> {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
+            AppTopLeftButton(callback: _onClickBackButton),
             const AppTitle(text: 'Modifier mon profil', paddingTop: secondSize),
             AppCard(child: buildForm(), elevation: secondSize)
           ]);
@@ -76,5 +82,10 @@ class _UpdateAccountPageState extends State<UpdateAccountPage> {
       _keyForm.currentState!.save();
       // TODO: Update profile
     }
+  }
+
+  void _onClickBackButton() {
+    Navigator.pushNamed(context, ProfilePageRoute.routeName,
+        arguments: MemberArgument(widget.member));
   }
 }

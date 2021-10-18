@@ -16,17 +16,13 @@ class TipsPage extends StatelessWidget {
     }));
   }
 
-  Widget narrowLayout() {
-    return Padding(
-        padding: const EdgeInsets.symmetric(horizontal: maxPadding),
-        child: wideLayout());
-  }
+  Widget narrowLayout() => Padding(
+      padding: const EdgeInsets.symmetric(horizontal: maxPadding),
+      child: wideLayout());
 
-  Widget wideLayout() {
-    return Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: const <Widget>[
-          AppTitle(text: 'Conseils', paddingTop: secondSize)
-        ]);
-  }
+  Widget wideLayout() => Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: const <Widget>[
+            AppTitle(text: 'Conseils', paddingTop: secondSize)
+          ]);
 }

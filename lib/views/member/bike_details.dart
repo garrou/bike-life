@@ -34,37 +34,31 @@ class _BikeDetailsPageState extends State<BikeDetailsPage> {
     }));
   }
 
-  Widget narrowLayout() {
-    return Padding(
-        padding: const EdgeInsets.symmetric(horizontal: maxPadding),
-        child: wideLayout());
-  }
+  Widget narrowLayout() => Padding(
+      padding: const EdgeInsets.symmetric(horizontal: maxPadding),
+      child: wideLayout());
 
-  SingleChildScrollView wideLayout() {
-    return SingleChildScrollView(
-        child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: thirdSize),
-            child: Column(children: <Widget>[
-              AppTopLeftButton(
-                  callback: () => Navigator.pushNamed(
-                      context, MemberHomeRoute.routeName,
-                      arguments: MemberArgument(widget.member))),
-              AppTitle(text: widget.bike.name, paddingTop: 0.0),
-              Image.network(widget.bike.image),
-              Text(widget.bike.description, style: secondTextStyle),
-              Text(widget.bike.dateOfPurchase, style: secondTextStyle),
-              Column(children: <Widget>[
-                AppNavButton(
-                    text: 'Composants',
-                    destination: AllComponentsPage(member: widget.member),
-                    color: mainColor),
-                AppButton(
-                    text: 'Supprimer',
-                    callback: _onDeleteBike,
-                    color: errorColor)
-              ])
-            ])));
-  }
+  SingleChildScrollView wideLayout() => SingleChildScrollView(
+      child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: thirdSize),
+          child: Column(children: <Widget>[
+            AppTopLeftButton(
+                callback: () => Navigator.pushNamed(
+                    context, MemberHomeRoute.routeName,
+                    arguments: MemberArgument(widget.member))),
+            AppTitle(text: widget.bike.name, paddingTop: 0.0),
+            Image.network(widget.bike.image),
+            Text(widget.bike.description, style: secondTextStyle),
+            Text(widget.bike.dateOfPurchase, style: secondTextStyle),
+            Column(children: <Widget>[
+              AppNavButton(
+                  text: 'Composants',
+                  destination: AllComponentsPage(member: widget.member),
+                  color: mainColor),
+              AppButton(
+                  text: 'Supprimer', callback: _onDeleteBike, color: errorColor)
+            ])
+          ])));
 
   void _onDeleteBike() async {
     BikeRepository bikeRepository = BikeRepository();

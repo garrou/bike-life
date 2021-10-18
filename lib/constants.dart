@@ -3,7 +3,8 @@ const String endpoint = "http://10.0.2.2:8100";
 
 const String title = "Bike's life";
 const String quote = "La santé de votre vélo se surveille de près.";
-const String homeImg = "assets/bike.png";
+
+const double ratio = 200.0;
 
 const double buttonWidth = 200.0;
 const double buttonHeight = 50.0;
