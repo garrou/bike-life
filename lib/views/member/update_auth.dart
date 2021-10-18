@@ -7,8 +7,21 @@ import 'package:bike_life/views/widgets/textfield.dart';
 import 'package:bike_life/views/widgets/title.dart';
 import 'package:flutter/material.dart';
 
-class UpdateAuthPage extends StatelessWidget {
-  const UpdateAuthPage({Key? key}) : super(key: key);
+class UpdateAccountPage extends StatefulWidget {
+  const UpdateAccountPage({Key? key}) : super(key: key);
+
+  @override
+  _UpdateAccountPageState createState() => _UpdateAccountPageState();
+}
+
+class _UpdateAccountPageState extends State<UpdateAccountPage> {
+  final _keyForm = GlobalKey<FormState>();
+
+  final _emailFocus = FocusNode();
+  final _email = TextEditingController();
+
+  final _passwordFocus = FocusNode();
+  final _password = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -21,96 +34,46 @@ class UpdateAuthPage extends StatelessWidget {
     }));
   }
 
-  Widget narrowLayout() {
-    return Padding(
-        padding: const EdgeInsets.symmetric(horizontal: maxPadding),
-        child: wideLayout());
-  }
+  Widget narrowLayout() => Padding(
+      padding: const EdgeInsets.symmetric(horizontal: maxPadding),
+      child: wideLayout());
 
-  Widget wideLayout() {
-    return Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: const <Widget>[
-          AppTitle(text: 'Modifier mon profil', paddingTop: secondSize),
-          AppCard(child: BuildForm(), elevation: secondSize)
-        ]);
-  }
-}
+  Widget wideLayout() => Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: <Widget>[
+            const AppTitle(text: 'Modifier mon profil', paddingTop: secondSize),
+            AppCard(child: buildForm(), elevation: secondSize)
+          ]);
 
-class BuildForm extends StatefulWidget {
-  const BuildForm({Key? key}) : super(key: key);
-
-  @override
-  _SignupFormState createState() => _SignupFormState();
-}
-
-class _SignupFormState extends State<BuildForm> {
-  final _keyForm = GlobalKey<FormState>();
-
-  final _emailFocus = FocusNode();
-  final _email = TextEditingController();
-
-  final _passwordFocus = FocusNode();
-  final _password = TextEditingController();
-
-  @override
-  Widget build(BuildContext context) {
-    return FormUpdateProfil(
-        keyForm: _keyForm,
-        email: _email,
-        emailFocus: _emailFocus,
-        password: _password,
-        passwordFocus: _passwordFocus);
-  }
-}
-
-class FormUpdateProfil extends StatelessWidget {
-  final GlobalKey<FormState> keyForm;
-  final FocusNode emailFocus;
-  final TextEditingController email;
-  final FocusNode passwordFocus;
-  final TextEditingController password;
-  const FormUpdateProfil(
-      {Key? key,
-      required this.keyForm,
-      required this.emailFocus,
-      required this.email,
-      required this.passwordFocus,
-      required this.password})
-      : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Form(
-        key: keyForm,
-        child: Column(children: <Widget>[
-          AppTextField(
-              label: 'Email',
-              hintText: 'Entrer un email valide',
-              focusNode: emailFocus,
-              textfieldController: email,
-              validator: emailValidator,
-              obscureText: false,
-              icon: Icons.alternate_email,
-              maxLines: 1),
-          AppTextField(
-              label: 'Mot de passe',
-              hintText:
-                  'Entrer un mot de passe de minimum $minPasswordSize caractères',
-              focusNode: passwordFocus,
-              textfieldController: password,
-              validator: passwordValidator,
-              obscureText: true,
-              icon: Icons.lock,
-              maxLines: 1),
-          AppButton(text: 'Modifier', callback: _onUpdate, color: mainColor)
-        ]));
-  }
+  Widget buildForm() => Form(
+      key: _keyForm,
+      child: Column(children: <Widget>[
+        AppTextField(
+            label: 'Email',
+            hintText: 'Entrer un email valide',
+            focusNode: _emailFocus,
+            textfieldController: _email,
+            validator: emailValidator,
+            obscureText: false,
+            icon: Icons.alternate_email,
+            maxLines: 1),
+        AppTextField(
+            label: 'Mot de passe',
+            hintText:
+                'Entrer un mot de passe de minimum $minPasswordSize caractères',
+            focusNode: _passwordFocus,
+            textfieldController: _password,
+            validator: passwordValidator,
+            obscureText: true,
+            icon: Icons.lock,
+            maxLines: 1),
+        AppButton(text: 'Modifier', callback: _onUpdate, color: mainColor)
+      ]));
 
   void _onUpdate() {
-    if (keyForm.currentState!.validate()) {
-      keyForm.currentState!.save();
+    if (_keyForm.currentState!.validate()) {
+      _keyForm.currentState!.save();
       // TODO: Update profile
     }
   }

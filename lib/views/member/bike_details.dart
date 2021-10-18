@@ -6,7 +6,7 @@ import 'package:bike_life/routes/member_argument.dart';
 import 'package:bike_life/routes/member_home_route.dart';
 import 'package:bike_life/views/member/all_components.dart';
 import 'package:bike_life/views/styles/general.dart';
-import 'package:bike_life/views/widgets/back_button.dart';
+import 'package:bike_life/views/widgets/top_left_button.dart';
 import 'package:bike_life/views/widgets/button.dart';
 import 'package:bike_life/views/widgets/nav_button.dart';
 import 'package:bike_life/views/widgets/title.dart';
@@ -45,7 +45,7 @@ class _BikeDetailsPageState extends State<BikeDetailsPage> {
         child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: thirdSize),
             child: Column(children: <Widget>[
-              AppBackButton(
+              AppTopLeftButton(
                   callback: () => Navigator.pushNamed(
                       context, MemberHomeRoute.routeName,
                       arguments: MemberArgument(widget.member))),

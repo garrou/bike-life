@@ -24,22 +24,18 @@ class SignupPage extends StatelessWidget {
     }));
   }
 
-  Center wideLayout() {
-    return Center(
-        child: SingleChildScrollView(
-            child: Column(children: const <Widget>[
-      AppTitle(text: "S'inscrire", paddingTop: 0),
-      AppCard(child: BuildForm(), elevation: secondSize),
-      AppLinkToPage(
-          text: 'Déjà membre ? Se connecter', destination: SigninPage())
-    ])));
-  }
+  Center wideLayout() => Center(
+          child: SingleChildScrollView(
+              child: Column(children: const <Widget>[
+        AppTitle(text: "S'inscrire", paddingTop: 0),
+        AppCard(child: BuildForm(), elevation: secondSize),
+        AppLinkToPage(
+            text: 'Déjà membre ? Se connecter', destination: SigninPage())
+      ])));
 
-  Padding narrowLayout() {
-    return Padding(
-        padding: const EdgeInsets.symmetric(horizontal: maxPadding),
-        child: wideLayout());
-  }
+  Padding narrowLayout() => Padding(
+      padding: const EdgeInsets.symmetric(horizontal: maxPadding),
+      child: wideLayout());
 }
 
 class BuildForm extends StatefulWidget {

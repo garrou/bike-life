@@ -1,9 +1,9 @@
 import 'package:bike_life/models/member.dart';
 import 'package:bike_life/repositories/member_repository.dart';
 import 'package:bike_life/constants.dart';
+import 'package:bike_life/routes/member_argument.dart';
 import 'package:bike_life/routes/member_home_route.dart';
 import 'package:bike_life/utils/validator.dart';
-import 'package:bike_life/routes/member_argument.dart';
 import 'package:bike_life/views/styles/general.dart';
 import 'package:bike_life/views/widgets/button.dart';
 import 'package:bike_life/views/widgets/card.dart';
@@ -27,22 +27,18 @@ class SigninPage extends StatelessWidget {
     }));
   }
 
-  Center wideLayout() {
-    return Center(
-        child: SingleChildScrollView(
-            child: Column(children: const <Widget>[
-      AppTitle(text: 'Se connecter', paddingTop: 0),
-      AppCard(child: BuildForm(), elevation: secondSize),
-      AppLinkToPage(
-          text: 'Nouveau ? Créer un compte', destination: SignupPage())
-    ])));
-  }
+  Center wideLayout() => Center(
+          child: SingleChildScrollView(
+              child: Column(children: const <Widget>[
+        AppTitle(text: 'Se connecter', paddingTop: 0),
+        AppCard(child: BuildForm(), elevation: secondSize),
+        AppLinkToPage(
+            text: 'Nouveau ? Créer un compte', destination: SignupPage())
+      ])));
 
-  Padding narrowLayout() {
-    return Padding(
-        padding: const EdgeInsets.symmetric(horizontal: maxPadding),
-        child: wideLayout());
-  }
+  Padding narrowLayout() => Padding(
+      padding: const EdgeInsets.symmetric(horizontal: maxPadding),
+      child: wideLayout());
 }
 
 class BuildForm extends StatefulWidget {

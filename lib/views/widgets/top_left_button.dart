@@ -2,9 +2,9 @@ import 'package:bike_life/constants.dart';
 import 'package:bike_life/views/styles/general.dart';
 import 'package:flutter/material.dart';
 
-class AppBackButton extends StatelessWidget {
+class AppTopLeftButton extends StatelessWidget {
   final VoidCallback callback;
-  const AppBackButton({Key? key, required this.callback}) : super(key: key);
+  const AppTopLeftButton({Key? key, required this.callback}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
