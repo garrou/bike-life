@@ -50,7 +50,9 @@ class _AllBikesPageState extends State<AllBikesPage> {
   }
 
   Widget _buildCarousel() => CarouselSlider.builder(
-      options: CarouselOptions(height: 500.0, enableInfiniteScroll: false),
+      options: CarouselOptions(
+          height: MediaQuery.of(context).size.height - ratio,
+          enableInfiniteScroll: false),
       itemCount: _cards.length,
       itemBuilder: (BuildContext context, int index, int realIndex) =>
           _cards.elementAt(index));

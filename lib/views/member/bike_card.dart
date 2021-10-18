@@ -2,7 +2,7 @@ import 'package:bike_life/constants.dart';
 import 'package:bike_life/models/bike.dart';
 import 'package:bike_life/views/styles/general.dart';
 import 'package:bike_life/views/widgets/card.dart';
-import 'package:bike_life/views/widgets/flip_card.dart';
+import 'package:bike_life/views/widgets/flip.dart';
 import 'package:flutter/material.dart';
 
 class BikeCard extends StatefulWidget {
@@ -16,36 +16,29 @@ class BikeCard extends StatefulWidget {
 class _BikeCardState extends State<BikeCard> {
   @override
   Widget build(BuildContext context) {
-    return AppFlipCard(
+    return AppFlip(
         front: _buildFrontCard(widget.bike), back: _buildBackCard(widget.bike));
   }
 
   Widget _buildFrontCard(Bike bike) => AppCard(
-      child: Column(children: <Widget>[
+      child:
+          ListView(padding: const EdgeInsets.all(thirdSize), children: <Widget>[
+        Image.network(bike.image, fit: BoxFit.cover),
+        Center(
+            child: Padding(
+                child: Text(bike.name, style: secondTextStyle),
+                padding: const EdgeInsets.only(top: thirdSize))),
+        Text('Description', style: boldSubTitleStyle),
+        Text(bike.description, style: thirdTextStyle),
         Padding(
-            padding: const EdgeInsets.all(thirdSize),
-            child: Image.network(bike.image, fit: BoxFit.cover)),
-        Padding(
-            child: Text(bike.name, style: secondTextStyle),
-            padding: const EdgeInsets.all(thirdSize)),
-        Row(mainAxisAlignment: MainAxisAlignment.center, children: <Widget>[
-          IconButton(
-              onPressed: () {
-                /* TODO: see bike ( see details) */
-              },
-              icon: const Icon(Icons.remove_red_eye)),
-          IconButton(
-              onPressed: () {/* TODO: edit bike */},
-              icon: const Icon(Icons.edit)),
-          IconButton(
-              onPressed: () {/* TODO: edit bike */},
-              icon: const Icon(Icons.delete))
-        ])
+            child: Text('Distance parcourue', style: boldSubTitleStyle),
+            padding: const EdgeInsets.only(top: thirdSize)),
+        Text('${bike.nbKm} km', style: thirdTextStyle)
       ]),
       elevation: secondSize);
 
   Widget _buildBackCard(Bike bike) => AppCard(
       elevation: secondSize,
-      child: Padding(
-          padding: EdgeInsets.all(thirdSize), child: Text(bike.description)));
+      child: ListView(
+          padding: const EdgeInsets.all(thirdSize), children: <Widget>[]));
 }

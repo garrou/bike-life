@@ -1,10 +1,13 @@
 import 'package:bike_life/constants.dart';
 import 'package:bike_life/models/member.dart';
+import 'package:bike_life/routes/member_argument.dart';
+import 'package:bike_life/routes/member_home_route.dart';
 import 'package:bike_life/views/member/update_auth.dart';
 import 'package:bike_life/views/styles/general.dart';
 import 'package:bike_life/views/widgets/button.dart';
 import 'package:bike_life/views/widgets/link_page.dart';
 import 'package:bike_life/views/widgets/title.dart';
+import 'package:bike_life/views/widgets/top_left_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
@@ -28,27 +31,29 @@ class _ProfilePageState extends State<ProfilePage> {
     }));
   }
 
-  Widget narrowLayout() {
-    return Padding(
-        padding: const EdgeInsets.symmetric(horizontal: maxPadding),
-        child: wideLayout());
-  }
+  Widget narrowLayout() => Padding(
+      padding: const EdgeInsets.symmetric(horizontal: maxPadding),
+      child: wideLayout());
 
-  Widget wideLayout() {
-    return Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: <Widget>[
-          const AppTitle(text: 'Profil', paddingTop: secondSize),
-          const AppLinkToPage(
-              text: 'Modifier mon profil', destination: UpdateAccountPage()),
-          AppButton(
-              text: 'Déconnexion', callback: _onDisconnect, color: mainColor)
-        ]);
-  }
+  Widget wideLayout() =>
+      Column(crossAxisAlignment: CrossAxisAlignment.center, children: <Widget>[
+        AppTopLeftButton(callback: _onClickBackButton),
+        const AppTitle(text: 'Profil', paddingTop: secondSize),
+        AppLinkToPage(
+            text: 'Modifier mon profil',
+            destination: UpdateAccountPage(member: widget.member)),
+        AppButton(
+            text: 'Déconnexion', callback: _onDisconnect, color: mainColor)
+      ]);
 
   void _onDisconnect() {
     const storage = FlutterSecureStorage();
     storage.delete(key: 'jwt');
     Navigator.pushNamed(context, '/login');
+  }
+
+  void _onClickBackButton() {
+    Navigator.pushNamed(context, MemberHomeRoute.routeName,
+        arguments: MemberArgument(widget.member));
   }
 }
