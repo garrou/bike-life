@@ -6,7 +6,7 @@ import 'package:bike_life/routes/member_home_route.dart';
 import 'package:bike_life/utils/validator.dart';
 import 'package:bike_life/views/styles/general.dart';
 import 'package:bike_life/views/widgets/button.dart';
-import 'package:bike_life/views/widgets/back_button.dart';
+import 'package:bike_life/views/widgets/top_left_button.dart';
 import 'package:bike_life/views/widgets/textfield.dart';
 import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
@@ -67,7 +67,7 @@ class _AddBikeFormState extends State<AddBikeForm> {
         child: Padding(
             padding: const EdgeInsets.all(thirdSize),
             child: Column(children: <Widget>[
-              AppBackButton(
+              AppTopLeftButton(
                   callback: () => Navigator.pushNamed(
                       context, MemberHomeRoute.routeName,
                       arguments: MemberArgument(widget.member))),

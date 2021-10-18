@@ -40,7 +40,7 @@ class _ProfilePageState extends State<ProfilePage> {
         children: <Widget>[
           const AppTitle(text: 'Profil', paddingTop: secondSize),
           const AppLinkToPage(
-              text: 'Modifier mon profil', destination: UpdateAuthPage()),
+              text: 'Modifier mon profil', destination: UpdateAccountPage()),
           AppButton(
               text: 'Déconnexion', callback: _onDisconnect, color: mainColor)
         ]);

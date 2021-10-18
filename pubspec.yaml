@@ -40,6 +40,7 @@ dependencies:
   http_interceptor: ^1.0.2
   syncfusion_flutter_datepicker: ^19.3.44
   carousel_slider: ^4.0.0
+  flip_card: ^0.6.0
 
 dev_dependencies:
   flutter_test:

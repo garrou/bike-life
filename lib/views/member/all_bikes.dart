@@ -5,8 +5,9 @@ import 'package:bike_life/repositories/bike_repository.dart';
 import 'package:bike_life/routes/add_bike_route.dart';
 import 'package:bike_life/routes/member_argument.dart';
 import 'package:bike_life/routes/profile_page_route.dart';
+import 'package:bike_life/views/member/bike_card.dart';
 import 'package:bike_life/views/styles/general.dart';
-import 'package:bike_life/views/widgets/action_button.dart';
+import 'package:bike_life/views/widgets/top_right_button.dart';
 import 'package:bike_life/views/widgets/card.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
@@ -28,8 +29,8 @@ class _AllBikesPageState extends State<AllBikesPage> {
     dynamic jsonBikes = await _bikeRepository.getBikes(widget.member.id);
     setState(() {
       _bikes = createSeveralBikes(jsonBikes['bikes']);
-      Future.wait(_bikes.map((bike) async => _cards.add(buildBikeCard(bike))));
-      _cards.add(buildAddBikeCard());
+      Future.wait(_bikes.map((bike) async => _cards.add(BikeCard(bike: bike))));
+      _cards.add(_buildAddBikeCard());
     });
   }
 
@@ -43,25 +44,22 @@ class _AllBikesPageState extends State<AllBikesPage> {
   Widget build(BuildContext context) {
     return Scaffold(
         body: ListView(children: <Widget>[
-      AppActionButton(callback: _onClickProfile, icon: Icons.person),
-      Center(child: buildCarousel())
+      AppTopRightButton(callback: _onClickProfile, icon: Icons.person),
+      Center(child: _buildCarousel())
     ]));
   }
 
-  Widget buildCarousel() => CarouselSlider.builder(
+  Widget _buildCarousel() => CarouselSlider.builder(
       options: CarouselOptions(height: 500.0, enableInfiniteScroll: false),
       itemCount: _cards.length,
-      itemBuilder: (BuildContext context, int index, int realIndex) {
-        return _cards.elementAt(index);
-      });
+      itemBuilder: (BuildContext context, int index, int realIndex) =>
+          _cards.elementAt(index));
 
-  Widget buildBikeCard(Bike bike) => SizedBox(
-      width: double.infinity,
-      child: AppCard(
-          child: Column(children: <Widget>[buildBikeImage(bike)]),
-          elevation: secondSize));
+  void _onClickProfile() =>
+      Navigator.pushNamed(context, ProfilePageRoute.routeName,
+          arguments: MemberArgument(widget.member));
 
-  Widget buildAddBikeCard() => SizedBox(
+  Widget _buildAddBikeCard() => SizedBox(
       width: double.infinity,
       child: AppCard(
           child: IconButton(
@@ -69,14 +67,6 @@ class _AllBikesPageState extends State<AllBikesPage> {
               onPressed: _onClickAddBike),
           elevation: secondSize));
 
-  Widget buildBikeImage(Bike bike) => Padding(
-      padding: const EdgeInsets.all(10.0),
-      child: Image.network(bike.image, fit: BoxFit.cover));
-
   void _onClickAddBike() => Navigator.pushNamed(context, AddBikeRoute.routeName,
       arguments: MemberArgument(widget.member));
-
-  void _onClickProfile() =>
-      Navigator.pushNamed(context, ProfilePageRoute.routeName,
-          arguments: MemberArgument(widget.member));
 }

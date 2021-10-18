@@ -1,6 +1,6 @@
 import 'package:bike_life/constants.dart';
 import 'package:bike_life/models/member.dart';
-import 'package:bike_life/views/widgets/back_button.dart';
+import 'package:bike_life/views/widgets/top_left_button.dart';
 import 'package:bike_life/views/widgets/title.dart';
 import 'package:flutter/material.dart';
 
@@ -26,7 +26,7 @@ class _AllComponentsPageState extends State<AllComponentsPage> {
 
   Widget wideLayout() {
     return Column(children: <Widget>[
-      AppBackButton(callback: () => Navigator.pop(context)),
+      AppTopLeftButton(callback: () => Navigator.pop(context)),
       const AppTitle(text: 'Tous les composants', paddingTop: 0.0)
       // TODO; Add all components
     ]);
