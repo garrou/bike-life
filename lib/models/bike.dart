@@ -16,6 +16,15 @@ class Bike {
         description = json['description'],
         nbKm = json['nb_km'],
         dateOfPurchase = json['date_of_purchase'];
+
+  Map<String, dynamic> toJson() => {
+        'id': id,
+        'name': name,
+        'image': image,
+        'description': description,
+        'nbKm': nbKm,
+        'dateOfPurchase': dateOfPurchase
+      };
 }
 
 List<Bike> createSeveralBikes(List record) {
