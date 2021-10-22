@@ -17,3 +17,10 @@ String? fieldValidator(String? value) {
     return 'Saisie invalide';
   }
 }
+
+bool kmValivdator(String? value) {
+  if (value == null || value.isEmpty || int.parse(value) < 0) {
+    return false;
+  }
+  return true;
+}
