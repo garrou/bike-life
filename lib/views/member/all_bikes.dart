@@ -29,7 +29,8 @@ class _AllBikesPageState extends State<AllBikesPage> {
     dynamic jsonBikes = await _bikeRepository.getBikes(widget.member.id);
     setState(() {
       _bikes = createSeveralBikes(jsonBikes['bikes']);
-      Future.wait(_bikes.map((bike) async => _cards.add(BikeCard(bike: bike))));
+      Future.wait(_bikes.map((bike) async =>
+          _cards.add(BikeCard(bike: bike, member: widget.member))));
       _cards.add(_buildAddBikeCard());
     });
   }
