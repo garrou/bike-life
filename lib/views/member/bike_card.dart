@@ -1,7 +1,7 @@
 import 'package:bike_life/constants.dart';
 import 'package:bike_life/models/bike.dart';
 import 'package:bike_life/models/member.dart';
-import 'package:bike_life/views/member/add_km_form.dart';
+import 'package:bike_life/views/member/forms/add_km_form.dart';
 import 'package:bike_life/views/styles/general.dart';
 import 'package:bike_life/views/styles/rounded_button_style.dart';
 import 'package:bike_life/views/widgets/card.dart';
@@ -53,6 +53,8 @@ class _BikeCardState extends State<BikeCard> {
   }
 
   Widget _buildPopUp(BuildContext context) => AlertDialog(
+        shape: const RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(Radius.circular(mainSize))),
         title: const Text('Ajouter des km'),
         content: AddKmForm(bike: widget.bike, member: widget.member),
         actions: <Widget>[

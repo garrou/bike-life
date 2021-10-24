@@ -13,7 +13,6 @@ class HttpAccountInterceptor implements InterceptorContract {
     if (accessToken != null) {
       data.headers['authorization'] = 'Bearer $accessToken';
     }
-
     return data;
   }
 
