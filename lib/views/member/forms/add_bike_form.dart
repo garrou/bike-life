@@ -1,7 +1,7 @@
 import 'package:bike_life/constants.dart';
 import 'package:bike_life/models/member.dart';
 import 'package:bike_life/repositories/bike_repository.dart';
-import 'package:bike_life/routes/member_argument.dart';
+import 'package:bike_life/routes/args/member_argument.dart';
 import 'package:bike_life/routes/member_home_route.dart';
 import 'package:bike_life/utils/validator.dart';
 import 'package:bike_life/views/styles/general.dart';
@@ -82,7 +82,7 @@ class _AddBikeFormState extends State<AddBikeForm> {
               AppTextField(
                   focusNode: _nbKmFocus,
                   textfieldController: _nbKm,
-                  validator: fieldValidator,
+                  validator: kmValidator,
                   hintText: 'Nombre de kilomètres du vélo',
                   label: 'Nombre de km',
                   obscureText: false,
@@ -104,7 +104,12 @@ class _AddBikeFormState extends State<AddBikeForm> {
       String dateOfPurchase, String nbKm) async {
     BikeRepository bikeRepository = BikeRepository();
     List<dynamic> response = await bikeRepository.addBike(
-        widget.member.id, name, description, image, dateOfPurchase, nbKm);
+        widget.member.id,
+        name,
+        description,
+        image,
+        dateOfPurchase,
+        double.parse(nbKm.replaceAll(",", ".")));
     bool created = response[0];
     dynamic jsonResponse = response[1];
 

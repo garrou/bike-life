@@ -3,7 +3,7 @@ import 'package:bike_life/models/bike.dart';
 import 'package:bike_life/models/member.dart';
 import 'package:bike_life/repositories/bike_repository.dart';
 import 'package:bike_life/routes/add_bike_route.dart';
-import 'package:bike_life/routes/member_argument.dart';
+import 'package:bike_life/routes/args/member_argument.dart';
 import 'package:bike_life/routes/profile_page_route.dart';
 import 'package:bike_life/views/member/bike_card.dart';
 import 'package:bike_life/views/styles/general.dart';
@@ -45,7 +45,8 @@ class _AllBikesPageState extends State<AllBikesPage> {
   Widget build(BuildContext context) {
     return Scaffold(
         body: ListView(children: <Widget>[
-      AppTopRightButton(callback: _onClickProfile, icon: Icons.person),
+      AppTopRightButton(
+          callback: _onClickProfile, icon: Icons.person, padding: thirdSize),
       Center(child: _buildCarousel())
     ]));
   }

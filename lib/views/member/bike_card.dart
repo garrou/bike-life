@@ -1,11 +1,14 @@
 import 'package:bike_life/constants.dart';
 import 'package:bike_life/models/bike.dart';
 import 'package:bike_life/models/member.dart';
+import 'package:bike_life/routes/args/bike_argument.dart';
+import 'package:bike_life/routes/bike_details_route.dart';
 import 'package:bike_life/views/member/forms/add_km_form.dart';
 import 'package:bike_life/views/styles/general.dart';
 import 'package:bike_life/views/styles/rounded_button_style.dart';
 import 'package:bike_life/views/widgets/card.dart';
 import 'package:bike_life/views/widgets/flip.dart';
+import 'package:bike_life/views/widgets/top_right_button.dart';
 import 'package:flutter/material.dart';
 
 class BikeCard extends StatefulWidget {
@@ -32,7 +35,7 @@ class _BikeCardState extends State<BikeCard> {
         Center(
             child: Padding(
                 child: Text(bike.name, style: secondTextStyle),
-                padding: const EdgeInsets.only(top: thirdSize))),
+                padding: const EdgeInsets.symmetric(vertical: thirdSize))),
         Text('Description', style: boldSubTitleStyle),
         Text(bike.description, style: thirdTextStyle),
         Padding(
@@ -68,7 +71,15 @@ class _BikeCardState extends State<BikeCard> {
 
   Widget _buildBackCard(Bike bike) => AppCard(
       elevation: secondSize,
-      child: ListView(
-          padding: const EdgeInsets.all(thirdSize),
-          children: const <Widget>[/* TODO: Add composants */]));
+      child:
+          ListView(padding: const EdgeInsets.all(thirdSize), children: <Widget>[
+        AppTopRightButton(
+            callback: _onBikeDetailsClick, icon: Icons.info, padding: 0.0),
+        Center(child: Text('À changer bientôt', style: secondTextStyle))
+      ]));
+
+  void _onBikeDetailsClick() async {
+    Navigator.pushNamed(context, BikeDetailsRoute.routeName,
+        arguments: BikeArgument(widget.bike));
+  }
 }

@@ -1,7 +1,7 @@
 import 'package:bike_life/models/bike.dart';
 import 'package:bike_life/models/member.dart';
 import 'package:bike_life/repositories/bike_repository.dart';
-import 'package:bike_life/routes/member_argument.dart';
+import 'package:bike_life/routes/args/member_argument.dart';
 import 'package:bike_life/routes/member_home_route.dart';
 import 'package:bike_life/utils/validator.dart';
 import 'package:bike_life/views/styles/general.dart';
@@ -48,16 +48,17 @@ class _AddKmFormState extends State<AddKmForm> {
   }
 
   void _onAddBike(String newKm) async {
-    if (!kmValivdator(newKm)) {
+    if (!isValidKm(newKm)) {
       return;
     }
+    double km = double.parse(newKm.replaceAll(",", "."));
     BikeRepository bikeRepository = BikeRepository();
     Bike toUpdate = Bike(
         widget.bike.id,
         widget.bike.name,
         widget.bike.image,
         widget.bike.description,
-        widget.bike.nbKm + int.parse(newKm),
+        widget.bike.nbKm + km,
         widget.bike.dateOfPurchase);
     List<dynamic> response = await bikeRepository.updateBike(toUpdate);
     bool updated = response[0];
