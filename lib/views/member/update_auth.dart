@@ -1,6 +1,6 @@
 import 'package:bike_life/constants.dart';
 import 'package:bike_life/models/member.dart';
-import 'package:bike_life/routes/member_argument.dart';
+import 'package:bike_life/routes/args/member_argument.dart';
 import 'package:bike_life/routes/profile_page_route.dart';
 import 'package:bike_life/utils/validator.dart';
 import 'package:bike_life/views/styles/general.dart';

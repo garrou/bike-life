@@ -41,6 +41,7 @@ dependencies:
   syncfusion_flutter_datepicker: ^19.3.44
   carousel_slider: ^4.0.0
   flip_card: ^0.6.0
+  percent_indicator: ^3.4.0
 
 dev_dependencies:
   flutter_test:

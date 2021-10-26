@@ -6,8 +6,9 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
 
 class MemberRepository {
+  final storage = const FlutterSecureStorage();
+
   Future<List<dynamic>> login(String email, String password) async {
-    const storage = FlutterSecureStorage();
     Member? member;
     http.Response response = await http.post(
       Uri.parse('$endpoint/login'),

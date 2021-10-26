@@ -5,8 +5,12 @@ import 'package:flutter/material.dart';
 class AppTopRightButton extends StatelessWidget {
   final VoidCallback callback;
   final IconData icon;
+  final double padding;
   const AppTopRightButton(
-      {Key? key, required this.callback, required this.icon})
+      {Key? key,
+      required this.callback,
+      required this.icon,
+      required this.padding})
       : super(key: key);
 
   @override
@@ -14,7 +18,7 @@ class AppTopRightButton extends StatelessWidget {
     return Align(
         alignment: Alignment.topRight,
         child: Padding(
-            padding: const EdgeInsets.fromLTRB(0, secondSize, secondSize, 0),
+            padding: EdgeInsets.fromLTRB(0, padding, padding, 0),
             child: IconButton(
                 onPressed: callback,
                 icon: Icon(icon),
