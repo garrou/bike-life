@@ -40,7 +40,12 @@ class _ProfilePageState extends State<ProfilePage> {
         AppTopLeftButton(callback: _onClickBackButton),
         const AppTitle(text: 'Profil', paddingTop: secondSize),
         AppLinkToPage(
-            text: 'Modifier mon profil',
+            padding: mainSize,
+            child: const Text('Modifier mon profil',
+                style: TextStyle(
+                    decoration: TextDecoration.underline,
+                    color: Colors.blue,
+                    fontSize: secondSize)),
             destination: UpdateAccountPage(member: widget.member)),
         AppButton(
             text: 'Déconnexion', callback: _onDisconnect, color: mainColor)

@@ -21,16 +21,15 @@ String? fieldValidator(String? value) {
 bool isValidKm(String? value) {
   return value != null &&
       value.isNotEmpty &&
-      (value.allMatches(".").length < 2 || value.allMatches(",").length < 2) &&
-      double.parse(value.replaceAll(",", ".")) >= 0.0;
+      int.tryParse(value) != null &&
+      int.tryParse(value)! >= 0;
 }
 
 String? kmValidator(String? value) {
   if (value == null ||
       value.isEmpty ||
-      value.allMatches(",").length > 1 ||
-      value.allMatches(".").length > 1 ||
-      double.parse(value.replaceAll(",", ".")) < 0.0) {
+      int.tryParse(value) == null ||
+      int.tryParse(value)! < 0) {
     return 'Saisie invalide';
   }
 }

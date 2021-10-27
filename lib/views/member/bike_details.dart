@@ -1,10 +1,13 @@
 import 'package:bike_life/constants.dart';
 import 'package:bike_life/models/bike.dart';
-import 'package:bike_life/models/components.dart';
+import 'package:bike_life/models/component.dart';
 import 'package:bike_life/repositories/bike_repository.dart';
+import 'package:bike_life/views/member/component_details.dart';
 import 'package:bike_life/views/styles/general.dart';
 import 'package:bike_life/views/widgets/button.dart';
+import 'package:bike_life/views/widgets/link_page.dart';
 import 'package:bike_life/views/widgets/top_left_button.dart';
+import 'package:bike_life/views/widgets/top_right_button.dart';
 import 'package:flutter/material.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
 
@@ -18,13 +21,28 @@ class BikeDetails extends StatefulWidget {
 
 class _BikeDetailsState extends State<BikeDetails> {
   final BikeRepository _bikeRepository = BikeRepository();
-  Components? components;
+  List<Component> components = [];
 
   void _loadComponents() async {
     dynamic jsonComponents =
         await _bikeRepository.getComponents(widget.bike.id);
     setState(() {
-      components = Components.fromJson(jsonComponents);
+      components = [
+        Component.fromJson(jsonComponents, 'frame', 'Cadre'),
+        Component.fromJson(jsonComponents, 'fork', 'Fourche'),
+        Component.fromJson(jsonComponents, 'string', 'Chaîne'),
+        Component.fromJson(
+            jsonComponents, 'air_chamber_forward', 'Chambre à air avant'),
+        Component.fromJson(
+            jsonComponents, 'air_chamber_backward', 'Chambre à air arrière'),
+        Component.fromJson(jsonComponents, 'brake_forward', 'Frein avant'),
+        Component.fromJson(jsonComponents, 'brake_backward', 'Frein arrière'),
+        Component.fromJson(jsonComponents, 'tire_forward', 'Pneu avant'),
+        Component.fromJson(jsonComponents, 'tire_backward', 'Pneu arrière'),
+        Component.fromJson(jsonComponents, 'transmission', 'Transmission'),
+        Component.fromJson(jsonComponents, 'wheel_forward', 'Roue avant'),
+        Component.fromJson(jsonComponents, 'wheel_backward', 'Roue arrière')
+      ];
     });
   }
 
@@ -48,34 +66,16 @@ class _BikeDetailsState extends State<BikeDetails> {
   Widget wideLayout() => Padding(
       padding: const EdgeInsets.symmetric(horizontal: thirdSize),
       child: ListView(children: <Widget>[
-        AppTopLeftButton(callback: () => Navigator.pop(context)),
-        Center(child: Text(widget.bike.name, style: secondTextStyle)),
-        _buildPercentBar(
-            'Cadre', components!.frameKm, components!.frameDuration),
-        _buildPercentBar(
-            'Fourche', components!.forkKm, components!.forkDuration),
-        _buildPercentBar(
-            'Chaîne', components!.stringKm, components!.stringDuration),
-        _buildPercentBar('Transmission', components!.transmissionKm,
-            components!.transmissionDuration),
-        _buildPercentBar('Roue avant', components!.wheelForwardKm,
-            components!.wheelForwardDuration),
-        _buildPercentBar('Roue arrière', components!.wheelBackwardKm,
-            components!.wheelBackwardDuration),
-        _buildPercentBar('Pneu avant', components!.tireForwardKm,
-            components!.tireForwardDuration),
-        _buildPercentBar('Pneu arrière', components!.tireBackwardKm,
-            components!.tireBackwardDuration),
-        _buildPercentBar('Chambre à air avant', components!.airChamberForwardKm,
-            components!.airChamberForwardDuration),
-        _buildPercentBar(
-            'Chambre à air arrière',
-            components!.airChamberBackwardKm,
-            components!.airChamberBackwardDuration),
-        _buildPercentBar('Frein avant', components!.brakeForwardKm,
-            components!.brakeForwardDuration),
-        _buildPercentBar('Frein arrière', components!.brakeBackwardKm,
-            components!.brakeBackwardDuration),
+        Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              AppTopLeftButton(callback: () => Navigator.pop(context)),
+              AppTopRightButton(
+                  callback: () {}, icon: Icons.help, padding: secondSize)
+            ]),
+        Center(
+            child: Text('Utilisation des composants', style: secondTextStyle)),
+        for (Component component in components) _buildPercentBar(component),
         AppButton(text: 'Supprimer', callback: _onDeleteBike, color: errorColor)
       ]));
 
@@ -84,8 +84,7 @@ class _BikeDetailsState extends State<BikeDetails> {
       child: wideLayout());
 
   void _onDeleteBike() async {
-    BikeRepository bikeRepository = BikeRepository();
-    List<dynamic> response = await bikeRepository.deleteBike(widget.bike.id);
+    List<dynamic> response = await _bikeRepository.deleteBike(widget.bike.id);
     bool deleted = response[0];
     dynamic jsonResponse = response[1];
 
@@ -96,20 +95,25 @@ class _BikeDetailsState extends State<BikeDetails> {
     }
   }
 
-  Widget _buildPercentBar(String label, double km, double duration) => Padding(
-      padding: const EdgeInsets.only(top: thirdSize),
+  Widget _buildPercentBar(Component component) => Padding(
+      padding: const EdgeInsets.only(top: secondSize),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          Text(label, style: thirdTextStyle),
-          LinearPercentIndicator(
-              center:
-                  Text(components != null ? km.toString() + " km" : "0.0 km"),
-              lineHeight: secondSize,
-              linearStrokeCap: LinearStrokeCap.roundAll,
-              percent: components != null ? km / duration : 0.0,
-              backgroundColor: mainColor,
-              progressColor: Colors.amber)
+          Center(child: Text(component.label, style: thirdTextStyle)),
+          AppLinkToPage(
+              padding: 0.0,
+              child: LinearPercentIndicator(
+                  center: Text(component.km.toString() + " km"),
+                  lineHeight: secondSize,
+                  linearStrokeCap: LinearStrokeCap.roundAll,
+                  percent: component.km / component.duration,
+                  backgroundColor: mainColor,
+                  progressColor:
+                      (component.duration - component.km) <= limitDuration
+                          ? Colors.red
+                          : Colors.amber),
+              destination: ComponentDetailPage(component: component))
         ],
       ));
 }
