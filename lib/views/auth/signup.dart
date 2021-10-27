@@ -26,11 +26,13 @@ class SignupPage extends StatelessWidget {
 
   Center wideLayout() => Center(
           child: SingleChildScrollView(
-              child: Column(children: const <Widget>[
-        AppTitle(text: "S'inscrire", paddingTop: 0),
-        AppCard(child: BuildForm(), elevation: secondSize),
+              child: Column(children: <Widget>[
+        const AppTitle(text: "S'inscrire", paddingTop: 0),
+        const AppCard(child: BuildForm(), elevation: secondSize),
         AppLinkToPage(
-            text: 'Déjà membre ? Se connecter', destination: SigninPage())
+            padding: mainSize,
+            child: Text('Déjà membre ? Se connecter', style: linkStyle),
+            destination: const SigninPage())
       ])));
 
   Padding narrowLayout() => Padding(

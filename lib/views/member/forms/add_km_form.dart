@@ -51,7 +51,7 @@ class _AddKmFormState extends State<AddKmForm> {
     if (!isValidKm(newKm)) {
       return;
     }
-    double km = double.parse(newKm.replaceAll(",", "."));
+    int km = int.parse(newKm);
     BikeRepository bikeRepository = BikeRepository();
     Bike toUpdate = Bike(
         widget.bike.id,

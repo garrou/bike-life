@@ -1,6 +1,7 @@
 import 'package:bike_life/constants.dart';
 import 'package:bike_life/routes/add_bike_route.dart';
 import 'package:bike_life/routes/bike_details_route.dart';
+import 'package:bike_life/routes/component_details_route.dart';
 import 'package:bike_life/routes/member_home_route.dart';
 import 'package:bike_life/routes/profile_page_route.dart';
 import 'package:bike_life/views/auth/signin.dart';
@@ -8,6 +9,7 @@ import 'package:bike_life/views/auth/signup.dart';
 import 'package:bike_life/views/home/home.dart';
 import 'package:bike_life/views/member/tips.dart';
 import 'package:bike_life/views/styles/general.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -34,7 +36,9 @@ class App extends StatelessWidget {
           AddBikeRoute.routeName: (context) => const AddBikeRoute(),
           BikeDetailsRoute.routeName: (context) => const BikeDetailsRoute(),
           ProfilePageRoute.routeName: (context) => const ProfilePageRoute(),
-          '/tips': (context) => const TipsPage()
+          '/tips': (context) => const TipsPage(),
+          ComponentDetailsRoute.routeName: (context) =>
+              const ComponentDetailsRoute()
         });
   }
 }

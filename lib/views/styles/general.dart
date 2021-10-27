@@ -6,6 +6,10 @@ const Color mainColor = Color.fromARGB(255, 53, 143, 128);
 const Color secondColor = Color.fromARGB(255, 3, 102, 102);
 const Color errorColor = Color.fromARGB(255, 255, 0, 0);
 
+TextStyle linkStyle = const TextStyle(
+    decoration: TextDecoration.underline,
+    color: Colors.blue,
+    fontSize: secondSize);
 TextStyle mainTextStyle = GoogleFonts.roboto(fontSize: mainSize);
 TextStyle secondTextStyle = GoogleFonts.roboto(fontSize: secondSize);
 TextStyle thirdTextStyle = GoogleFonts.roboto(fontSize: 15.0);
