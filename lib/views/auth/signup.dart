@@ -67,9 +67,7 @@ class _SignupFormState extends State<BuildForm> {
               focusNode: _emailFocus,
               textfieldController: _email,
               validator: emailValidator,
-              obscureText: false,
-              icon: Icons.alternate_email,
-              maxLines: 1),
+              icon: Icons.alternate_email),
           AppTextField(
               label: 'Mot de passe',
               hintText:
@@ -78,8 +76,7 @@ class _SignupFormState extends State<BuildForm> {
               textfieldController: _password,
               validator: passwordValidator,
               obscureText: true,
-              icon: Icons.lock,
-              maxLines: 1),
+              icon: Icons.lock),
           AppButton(text: "S'inscrire", callback: _onSignin, color: mainColor)
         ]));
   }

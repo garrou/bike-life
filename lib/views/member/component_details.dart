@@ -1,6 +1,6 @@
 import 'package:bike_life/constants.dart';
 import 'package:bike_life/models/component.dart';
-import 'package:bike_life/views/styles/general.dart';
+import 'package:bike_life/views/member/forms/update_bike_component.dart';
 import 'package:bike_life/views/widgets/top_left_button.dart';
 import 'package:flutter/material.dart';
 
@@ -31,10 +31,10 @@ class _ComponentDetailPageState extends State<ComponentDetailPage> {
 
   Widget wideLayout() => Padding(
       padding: const EdgeInsets.symmetric(horizontal: thirdSize),
-      child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: <
-          Widget>[
-        AppTopLeftButton(callback: () => Navigator.of(context).pop()),
-        Center(child: Text(widget.component.label, style: secondTextStyle)),
+      child: ListView(children: <Widget>[
+        AppTopLeftButton(
+            title: widget.component.label,
+            callback: () => Navigator.of(context).pop()),
         Padding(
             child:
                 Text('Marque : ${widget.component.brand ?? "Non spécifiée"}'),
@@ -45,6 +45,11 @@ class _ComponentDetailPageState extends State<ComponentDetailPage> {
             padding: const EdgeInsets.only(top: thirdSize)),
         Padding(
             child: Text('Nombre de kilomètres : ${widget.component.km} km'),
-            padding: const EdgeInsets.only(top: thirdSize))
+            padding: const EdgeInsets.only(top: thirdSize)),
+        const Divider(
+          color: Colors.black,
+          height: mainSize,
+        ),
+        UpdateBikeComponentForm(component: widget.component)
       ]));
 }

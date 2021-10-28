@@ -11,14 +11,13 @@ class BikeRepository {
     HttpAccountInterceptor(),
   ]);
 
-  Future<List<dynamic>> addBike(int memberId, String name, String description,
-      String urlImage, String dateOfPurchase, double nbKm) async {
+  Future<List<dynamic>> addBike(int memberId, String name, String urlImage,
+      String dateOfPurchase, double nbKm) async {
     Response response = await client.post(
       Uri.parse('$endpoint/bikes'),
       body: jsonEncode(<String, dynamic>{
         'memberId': memberId,
         'name': name,
-        'description': description,
         'image': urlImage,
         'dateOfPurchase': dateOfPurchase,
         'nbKm': nbKm

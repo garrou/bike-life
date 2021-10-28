@@ -7,7 +7,6 @@ import 'package:bike_life/views/styles/general.dart';
 import 'package:bike_life/views/widgets/button.dart';
 import 'package:bike_life/views/widgets/card.dart';
 import 'package:bike_life/views/widgets/textfield.dart';
-import 'package:bike_life/views/widgets/title.dart';
 import 'package:bike_life/views/widgets/top_left_button.dart';
 import 'package:flutter/material.dart';
 
@@ -47,8 +46,8 @@ class _UpdateAccountPageState extends State<UpdateAccountPage> {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
-            AppTopLeftButton(callback: _onClickBackButton),
-            const AppTitle(text: 'Modifier mon profil', paddingTop: secondSize),
+            AppTopLeftButton(
+                title: 'Modifier mon profil', callback: _onClickBackButton),
             AppCard(child: buildForm(), elevation: secondSize)
           ]);
 
@@ -61,9 +60,7 @@ class _UpdateAccountPageState extends State<UpdateAccountPage> {
             focusNode: _emailFocus,
             textfieldController: _email,
             validator: emailValidator,
-            obscureText: false,
-            icon: Icons.alternate_email,
-            maxLines: 1),
+            icon: Icons.alternate_email),
         AppTextField(
             label: 'Mot de passe',
             hintText:
@@ -72,8 +69,7 @@ class _UpdateAccountPageState extends State<UpdateAccountPage> {
             textfieldController: _password,
             validator: passwordValidator,
             obscureText: true,
-            icon: Icons.lock,
-            maxLines: 1),
+            icon: Icons.lock),
         AppButton(text: 'Modifier', callback: _onUpdate, color: mainColor)
       ]));
 
