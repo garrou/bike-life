@@ -13,7 +13,7 @@ class AppPercentBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-        padding: const EdgeInsets.only(top: secondSize),
+        padding: const EdgeInsets.only(bottom: secondSize),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[

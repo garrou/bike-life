@@ -16,6 +16,7 @@ const double maxSize = 600.0;
 
 const double mainSize = 30.0;
 const double secondSize = 20.0;
+const double intermediateSize = 15.0;
 const double thirdSize = 10.0;
 
 const int minPasswordSize = 8;

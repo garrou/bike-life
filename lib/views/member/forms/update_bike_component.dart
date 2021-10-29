@@ -1,5 +1,6 @@
 import 'package:bike_life/constants.dart';
 import 'package:bike_life/models/component.dart';
+import 'package:bike_life/repositories/bike_repository.dart';
 import 'package:bike_life/utils/validator.dart';
 import 'package:bike_life/views/styles/general.dart';
 import 'package:bike_life/views/widgets/account_button.dart';
@@ -24,6 +25,11 @@ class _UpdateBikeComponentFormState extends State<UpdateBikeComponentForm> {
 
   final _brandFocus = FocusNode();
   late final TextEditingController _brand;
+
+  final _durationFocus = FocusNode();
+  late final TextEditingController _duration;
+
+  final BikeRepository _bikeRepository = BikeRepository();
 
   @override
   void initState() {
@@ -54,6 +60,13 @@ class _UpdateBikeComponentFormState extends State<UpdateBikeComponentForm> {
                   hintText: 'Nombre de km du composant',
                   label: 'Kilomètres',
                   icon: Icons.add_road),
+              AppTextField(
+                  focusNode: _durationFocus,
+                  textfieldController: _duration,
+                  validator: kmValidator,
+                  hintText: 'Durée de vie',
+                  label: 'Kilomètres',
+                  icon: Icons.health_and_safety),
               AppAccountButton(
                   callback: _updateComponent,
                   text: 'Modifier',
@@ -61,7 +74,26 @@ class _UpdateBikeComponentFormState extends State<UpdateBikeComponentForm> {
             ])));
   }
 
-  void _updateComponent() {
-    // TODO; Update component
+  void _updateComponent() async {
+    if (_keyForm.currentState!.validate()) {
+      _keyForm.currentState!.save();
+      Component toUpdate = Component(
+          widget.component.label,
+          widget.component.field,
+          widget.component.id,
+          _brand.text,
+          int.parse(_km.text),
+          int.parse(_duration.text));
+      List<dynamic> response = await _bikeRepository.updateComponent(toUpdate);
+      bool updated = response[0];
+      dynamic jsonResponse = response[1];
+
+      if (updated) {
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+            content: Text(jsonResponse['confirm']),
+            backgroundColor: mainColor));
+        // TODO; navigate
+      }
+    }
   }
 }

@@ -23,6 +23,8 @@ class _AddKmFormState extends State<AddKmForm> {
   final _keyForm = GlobalKey<FormState>();
   final _kmFocus = FocusNode();
   final _km = TextEditingController();
+  final BikeRepository _bikeRepository = BikeRepository();
+
   @override
   Widget build(BuildContext context) {
     return Form(
@@ -46,22 +48,21 @@ class _AddKmFormState extends State<AddKmForm> {
   }
 
   void _onAddBike(String newKm) async {
-    if (!isValidKm(newKm)) {
-      return;
-    }
-    int km = int.parse(newKm);
-    BikeRepository bikeRepository = BikeRepository();
-    Bike toUpdate = Bike(widget.bike.id, widget.bike.name, widget.bike.image,
-        widget.bike.nbKm + km, widget.bike.dateOfPurchase);
-    List<dynamic> response = await bikeRepository.updateBike(toUpdate);
-    bool updated = response[0];
-    dynamic jsonResponse = response[1];
+    if (_keyForm.currentState!.validate()) {
+      _keyForm.currentState!.save();
+      Bike toUpdate = Bike(widget.bike.id, widget.bike.name, widget.bike.image,
+          widget.bike.nbKm + int.parse(newKm), widget.bike.dateOfPurchase);
+      List<dynamic> response = await _bikeRepository.updateBike(toUpdate);
+      bool updated = response[0];
+      dynamic jsonResponse = response[1];
 
-    if (updated) {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-          content: Text(jsonResponse['confirm']), backgroundColor: mainColor));
-      Navigator.pushNamed(context, MemberHomeRoute.routeName,
-          arguments: MemberArgument(widget.member));
+      if (updated) {
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+            content: Text(jsonResponse['confirm']),
+            backgroundColor: mainColor));
+        Navigator.pushNamed(context, MemberHomeRoute.routeName,
+            arguments: MemberArgument(widget.member));
+      }
     }
   }
 }

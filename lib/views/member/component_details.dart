@@ -1,6 +1,7 @@
 import 'package:bike_life/constants.dart';
 import 'package:bike_life/models/component.dart';
 import 'package:bike_life/views/member/forms/update_bike_component.dart';
+import 'package:bike_life/views/styles/general.dart';
 import 'package:bike_life/views/widgets/top_left_button.dart';
 import 'package:flutter/material.dart';
 
@@ -35,21 +36,26 @@ class _ComponentDetailPageState extends State<ComponentDetailPage> {
         AppTopLeftButton(
             title: widget.component.label,
             callback: () => Navigator.of(context).pop()),
-        Padding(
-            child:
-                Text('Marque : ${widget.component.brand ?? "Non spécifiée"}'),
-            padding: const EdgeInsets.only(top: thirdSize)),
-        Padding(
-            child:
-                Text('Durée moyenne de vie : ${widget.component.duration} km'),
-            padding: const EdgeInsets.only(top: thirdSize)),
-        Padding(
-            child: Text('Nombre de kilomètres : ${widget.component.km} km'),
-            padding: const EdgeInsets.only(top: thirdSize)),
+        _buildComponentsInfo(widget.component),
         const Divider(
           color: Colors.black,
           height: mainSize,
         ),
         UpdateBikeComponentForm(component: widget.component)
       ]));
+
+  Widget _buildComponentsInfo(Component component) => Column(children: <Widget>[
+        Padding(
+            child: Text('Marque : ${component.brand ?? "Non spécifiée"}',
+                style: thirdTextStyle),
+            padding: const EdgeInsets.only(top: thirdSize)),
+        Padding(
+            child: Text('Durée moyenne de vie : ${component.duration} km',
+                style: thirdTextStyle),
+            padding: const EdgeInsets.only(top: thirdSize)),
+        Padding(
+            child: Text('Nombre de kilomètres : ${component.km} km',
+                style: thirdTextStyle),
+            padding: const EdgeInsets.only(top: thirdSize))
+      ]);
 }

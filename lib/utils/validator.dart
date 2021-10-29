@@ -28,10 +28,3 @@ String? kmValidator(String? value) {
 }
 
 String? emptyValidator(String? value) {}
-
-bool isValidKm(String? value) {
-  return value != null &&
-      value.isNotEmpty &&
-      int.tryParse(value) != null &&
-      int.tryParse(value)! >= 0;
-}

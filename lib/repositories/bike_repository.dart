@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:bike_life/constants.dart';
 import 'package:bike_life/models/bike.dart';
+import 'package:bike_life/models/component.dart';
 import 'package:bike_life/utils/http_account_interceptor.dart';
 import 'package:http/http.dart';
 import 'package:http_interceptor/http/http.dart';
@@ -23,8 +24,7 @@ class BikeRepository {
         'nbKm': nbKm
       }),
     );
-    dynamic jsonResponse = jsonDecode(response.body);
-    return [response.statusCode == httpCodeCreated, jsonResponse];
+    return [response.statusCode == httpCodeCreated, jsonDecode(response.body)];
   }
 
   Future<dynamic> getBikes(int memberId) async {
@@ -36,21 +36,26 @@ class BikeRepository {
   Future<List<dynamic>> deleteBike(int bikeId) async {
     Response response =
         await client.delete(Uri.parse('$endpoint/bikes/$bikeId'));
-    dynamic jsonResponse = jsonDecode(response.body);
-    return [response.statusCode == httpCodeOk, jsonResponse];
+    return [response.statusCode == httpCodeOk, jsonDecode(response.body)];
   }
 
   Future<List<dynamic>> updateBike(Bike bike) async {
     Response response = await client.put(
         Uri.parse('$endpoint/bikes/${bike.id}'),
-        body: jsonEncode(<String, dynamic>{'bike': jsonEncode(bike)}));
-    dynamic jsonResponse = jsonDecode(response.body);
-    return [response.statusCode == httpCodeOk, jsonResponse];
+        body: {'bike': jsonEncode(bike)});
+    return [response.statusCode == httpCodeOk, jsonDecode(response.body)];
   }
 
   Future<dynamic> getComponents(int bikeId) async {
     Response response =
         await client.get(Uri.parse('$endpoint/components/$bikeId'));
     return jsonDecode(response.body);
+  }
+
+  Future<dynamic> updateComponent(Component component) async {
+    Response response = await client.put(
+        Uri.parse('$endpoint/components/${component.id}'),
+        body: {'component': jsonEncode(component)});
+    return [response.statusCode == httpCodeOk, jsonDecode(response.body)];
   }
 }

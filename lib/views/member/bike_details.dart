@@ -1,20 +1,15 @@
 import 'package:bike_life/constants.dart';
 import 'package:bike_life/models/bike.dart';
-import 'package:bike_life/models/component.dart';
 import 'package:bike_life/repositories/bike_repository.dart';
 import 'package:bike_life/views/styles/general.dart';
 import 'package:bike_life/views/widgets/account_button.dart';
-import 'package:bike_life/views/widgets/percent_bar.dart';
 import 'package:bike_life/views/widgets/top_left_button.dart';
 import 'package:bike_life/views/widgets/top_right_button.dart';
 import 'package:flutter/material.dart';
 
 class BikeDetailsPage extends StatefulWidget {
   final Bike bike;
-  final List<Component> components;
-  const BikeDetailsPage(
-      {Key? key, required this.components, required this.bike})
-      : super(key: key);
+  const BikeDetailsPage({Key? key, required this.bike}) : super(key: key);
 
   @override
   _BikeDetailsPageState createState() => _BikeDetailsPageState();
@@ -41,12 +36,11 @@ class _BikeDetailsPageState extends State<BikeDetailsPage> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
               AppTopLeftButton(
-                  title: 'Composants', callback: () => Navigator.pop(context)),
+                  title: 'Paramètres du vélo',
+                  callback: () => Navigator.pop(context)),
               AppTopRightButton(
                   callback: () {}, icon: Icons.help, padding: secondSize)
             ]),
-        for (Component component in widget.components)
-          AppPercentBar(component: component),
         AppAccountButton(
             text: 'Supprimer', callback: _onDeleteBike, color: errorColor)
       ]));
