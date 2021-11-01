@@ -42,7 +42,7 @@ class BikeRepository {
   Future<List<dynamic>> updateBike(Bike bike) async {
     Response response = await client.put(
         Uri.parse('$endpoint/bikes/${bike.id}'),
-        body: {'bike': jsonEncode(bike)});
+        body: jsonEncode(<String, dynamic>{'bike': jsonEncode(bike)}));
     return [response.statusCode == httpCodeOk, jsonDecode(response.body)];
   }
 
@@ -55,7 +55,8 @@ class BikeRepository {
   Future<dynamic> updateComponent(Component component) async {
     Response response = await client.put(
         Uri.parse('$endpoint/components/${component.id}'),
-        body: {'component': jsonEncode(component)});
+        body:
+            jsonEncode(<String, dynamic>{'component': jsonEncode(component)}));
     return [response.statusCode == httpCodeOk, jsonDecode(response.body)];
   }
 }

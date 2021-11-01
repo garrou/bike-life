@@ -3,9 +3,8 @@ import 'package:bike_life/models/bike.dart';
 import 'package:bike_life/models/component.dart';
 import 'package:bike_life/models/member.dart';
 import 'package:bike_life/repositories/bike_repository.dart';
-import 'package:bike_life/routes/add_bike_route.dart';
 import 'package:bike_life/routes/args/bike_argument.dart';
-import 'package:bike_life/views/member/bike_details.dart';
+import 'package:bike_life/routes/bike_details_route.dart';
 import 'package:bike_life/views/member/forms/add_km_form.dart';
 import 'package:bike_life/views/styles/general.dart';
 import 'package:bike_life/views/widgets/account_button.dart';
@@ -103,16 +102,14 @@ class _BikeCardState extends State<BikeCard> {
                   icon: Icons.info,
                   padding: 0.0),
               for (Component component in components)
-                AppPercentBar(component: component),
+                AppPercentBar(component: component)
             ]));
   }
 
-  void _onBikeDetailsClick() async {
-    Navigator.pushNamed(context, AddBikeRoute.routeName,
-        arguments: BikeArgument(widget.bike));
-  }
+  void _onBikeDetailsClick() =>
+      Navigator.pushNamed(context, BikeDetailsRoute.routeName,
+          arguments: BikeArgument(widget.bike));
 
-  void _onDemandPopUp() {
-    showDialog(context: context, builder: (context) => _buildPopUp(context));
-  }
+  void _onDemandPopUp() =>
+      showDialog(context: context, builder: (context) => _buildPopUp(context));
 }

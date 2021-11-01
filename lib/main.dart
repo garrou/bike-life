@@ -1,5 +1,6 @@
 import 'package:bike_life/constants.dart';
 import 'package:bike_life/routes/add_bike_route.dart';
+import 'package:bike_life/routes/bike_details_route.dart';
 import 'package:bike_life/routes/component_details_route.dart';
 import 'package:bike_life/routes/member_home_route.dart';
 import 'package:bike_life/routes/profile_page_route.dart';
@@ -36,7 +37,8 @@ class App extends StatelessWidget {
           ProfilePageRoute.routeName: (context) => const ProfilePageRoute(),
           '/tips': (context) => const TipsPage(),
           ComponentDetailsRoute.routeName: (context) =>
-              const ComponentDetailsRoute()
+              const ComponentDetailsRoute(),
+          BikeDetailsRoute.routeName: (context) => const BikeDetailsRoute()
         });
   }
 }

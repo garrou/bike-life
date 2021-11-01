@@ -36,6 +36,7 @@ class _UpdateBikeComponentFormState extends State<UpdateBikeComponentForm> {
     super.initState();
     _km = TextEditingController(text: '${widget.component.km}');
     _brand = TextEditingController(text: widget.component.brand ?? '');
+    _duration = TextEditingController(text: '${widget.component.duration}');
   }
 
   @override
@@ -65,7 +66,7 @@ class _UpdateBikeComponentFormState extends State<UpdateBikeComponentForm> {
                   textfieldController: _duration,
                   validator: kmValidator,
                   hintText: 'Durée de vie',
-                  label: 'Kilomètres',
+                  label: 'Durée de vie du composant (km)',
                   icon: Icons.health_and_safety),
               AppAccountButton(
                   callback: _updateComponent,
