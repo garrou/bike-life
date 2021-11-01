@@ -6,6 +6,7 @@ import 'package:bike_life/routes/member_home_route.dart';
 import 'package:bike_life/utils/validator.dart';
 import 'package:bike_life/views/styles/general.dart';
 import 'package:bike_life/views/widgets/button.dart';
+import 'package:bike_life/views/widgets/calendar.dart';
 import 'package:bike_life/views/widgets/textfield.dart';
 import 'package:bike_life/views/widgets/top_left_button.dart';
 import 'package:flutter/material.dart';
@@ -30,6 +31,8 @@ class _AddBikeFormState extends State<AddBikeForm> {
 
   final _nbKmFocus = FocusNode();
   final _nbKm = TextEditingController();
+
+  final BikeRepository _bikeRepository = BikeRepository();
 
   String _dateOfPurchase = DateTime.now().toString().split(' ')[0];
 
@@ -69,13 +72,8 @@ class _AddBikeFormState extends State<AddBikeForm> {
                     hintText: 'Nombre de kilomètres du vélo',
                     label: 'Nombre de km',
                     icon: Icons.add_road),
-                Padding(
-                    padding: const EdgeInsets.only(top: thirdSize),
-                    child: Text("Date d'achat", style: secondTextStyle)),
-                SfDateRangePicker(
-                    view: DateRangePickerView.month,
-                    selectionMode: DateRangePickerSelectionMode.single,
-                    onSelectionChanged: _onDateChanged),
+                AppCalendar(
+                    callback: _onDateChanged, selectedDate: _dateOfPurchase),
                 AppButton(
                     text: 'Ajouter', callback: _onAddBike, color: mainColor)
               ]))
@@ -91,19 +89,17 @@ class _AddBikeFormState extends State<AddBikeForm> {
 
   void _addBike(
       String name, String image, String dateOfPurchase, String nbKm) async {
-    BikeRepository bikeRepository = BikeRepository();
-    List<dynamic> response = await bikeRepository.addBike(widget.member.id,
+    List<dynamic> response = await _bikeRepository.addBike(widget.member.id,
         name, image, dateOfPurchase, double.parse(nbKm.replaceAll(",", ".")));
-    bool created = response[0];
+    bool isCreated = response[0];
     dynamic jsonResponse = response[1];
 
-    if (created) {
+    if (isCreated) {
       Navigator.pushNamed(context, MemberHomeRoute.routeName,
           arguments: MemberArgument(widget.member));
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-          content: Text(jsonResponse['confirm']),
-          backgroundColor: Theme.of(context).primaryColor));
     }
+    ScaffoldMessenger.of(context)
+        .showSnackBar(SnackBar(content: Text(jsonResponse['confirm'])));
   }
 
   void _onDateChanged(DateRangePickerSelectionChangedArgs args) {

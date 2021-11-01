@@ -1,6 +1,6 @@
 import 'package:bike_life/constants.dart';
 import 'package:bike_life/models/member.dart';
-import 'package:bike_life/views/member/forms/add_bike_form.dart';
+import 'package:bike_life/views/forms/add_bike_form.dart';
 import 'package:flutter/material.dart';
 
 class AddBikePage extends StatelessWidget {

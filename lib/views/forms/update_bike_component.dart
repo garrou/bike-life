@@ -69,32 +69,35 @@ class _UpdateBikeComponentFormState extends State<UpdateBikeComponentForm> {
                   label: 'Durée de vie du composant (km)',
                   icon: Icons.health_and_safety),
               AppAccountButton(
-                  callback: _updateComponent,
+                  callback: _onUpdateComponent,
                   text: 'Modifier',
                   color: mainColor)
             ])));
   }
 
-  void _updateComponent() async {
+  void _onUpdateComponent() {
     if (_keyForm.currentState!.validate()) {
       _keyForm.currentState!.save();
-      Component toUpdate = Component(
-          widget.component.label,
-          widget.component.field,
-          widget.component.id,
-          _brand.text,
-          int.parse(_km.text),
-          int.parse(_duration.text));
-      List<dynamic> response = await _bikeRepository.updateComponent(toUpdate);
-      bool updated = response[0];
-      dynamic jsonResponse = response[1];
-
-      if (updated) {
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-            content: Text(jsonResponse['confirm']),
-            backgroundColor: mainColor));
-        // TODO; navigate
-      }
+      _updateComponent(
+          _brand.text, int.parse(_km.text), int.parse(_duration.text));
     }
+  }
+
+  void _updateComponent(String newBrand, int newKm, int newDuration) async {
+    List<dynamic> response = await _bikeRepository.updateComponent(Component(
+        widget.component.label,
+        widget.component.field,
+        widget.component.id,
+        newBrand,
+        newKm,
+        newDuration));
+    bool updated = response[0];
+    dynamic jsonResponse = response[1];
+
+    if (updated) {
+      Navigator.of(context).pop();
+    }
+    ScaffoldMessenger.of(context)
+        .showSnackBar(SnackBar(content: Text(jsonResponse['confirm'])));
   }
 }

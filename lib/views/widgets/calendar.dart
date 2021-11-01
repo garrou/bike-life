@@ -1,0 +1,43 @@
+import 'package:bike_life/views/styles/general.dart';
+import 'package:flutter/material.dart';
+import 'package:syncfusion_flutter_datepicker/datepicker.dart';
+
+class AppCalendar extends StatefulWidget {
+  final String selectedDate;
+  final Function(DateRangePickerSelectionChangedArgs args) callback;
+  const AppCalendar(
+      {Key? key, required this.callback, required this.selectedDate})
+      : super(key: key);
+
+  @override
+  _AppCalendarState createState() => _AppCalendarState();
+}
+
+class _AppCalendarState extends State<AppCalendar> {
+  bool isVisible = false;
+  @override
+  Widget build(BuildContext context) {
+    return Column(children: <Widget>[
+      GestureDetector(
+        child: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+          const Icon(Icons.arrow_drop_down),
+          Text("Date d'achat", style: secondTextStyle)
+        ]),
+        onTap: () {
+          setState(() {
+            isVisible = isVisible ? false : true;
+          });
+        },
+      ),
+      Visibility(
+          visible: isVisible,
+          child: SfDateRangePicker(
+              initialSelectedDate: DateTime.parse(widget.selectedDate),
+              todayHighlightColor: mainColor,
+              selectionColor: mainColor,
+              view: DateRangePickerView.month,
+              selectionMode: DateRangePickerSelectionMode.single,
+              onSelectionChanged: widget.callback))
+    ]);
+  }
+}

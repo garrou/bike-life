@@ -5,7 +5,7 @@ import 'package:bike_life/models/member.dart';
 import 'package:bike_life/repositories/bike_repository.dart';
 import 'package:bike_life/routes/args/bike_argument.dart';
 import 'package:bike_life/routes/bike_details_route.dart';
-import 'package:bike_life/views/member/forms/add_km_form.dart';
+import 'package:bike_life/views/forms/add_km_form.dart';
 import 'package:bike_life/views/styles/general.dart';
 import 'package:bike_life/views/widgets/account_button.dart';
 import 'package:bike_life/views/widgets/card.dart';

@@ -29,7 +29,7 @@ class AppPercentBar extends StatelessWidget {
   Widget _buildLinearPercentBar(Component component) => LinearPercentIndicator(
       center: Text('${component.km} / ${component.duration} km',
           style: whiteThirdTextStyle),
-      lineHeight: secondSize,
+      lineHeight: mainSize,
       linearStrokeCap: LinearStrokeCap.roundAll,
       percent: (component.km / component.duration) > 1
           ? 1.0

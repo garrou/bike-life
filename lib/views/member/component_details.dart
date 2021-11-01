@@ -1,6 +1,6 @@
 import 'package:bike_life/constants.dart';
 import 'package:bike_life/models/component.dart';
-import 'package:bike_life/views/member/forms/update_bike_component.dart';
+import 'package:bike_life/views/forms/update_bike_component.dart';
 import 'package:bike_life/views/styles/general.dart';
 import 'package:bike_life/views/widgets/top_left_button.dart';
 import 'package:flutter/material.dart';

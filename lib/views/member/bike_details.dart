@@ -1,8 +1,9 @@
 import 'package:bike_life/constants.dart';
 import 'package:bike_life/models/bike.dart';
 import 'package:bike_life/repositories/bike_repository.dart';
+import 'package:bike_life/views/forms/update_bike_form.dart';
 import 'package:bike_life/views/styles/general.dart';
-import 'package:bike_life/views/widgets/account_button.dart';
+import 'package:bike_life/views/widgets/button.dart';
 import 'package:bike_life/views/widgets/top_left_button.dart';
 import 'package:bike_life/views/widgets/top_right_button.dart';
 import 'package:flutter/material.dart';
@@ -41,8 +42,9 @@ class _BikeDetailsPageState extends State<BikeDetailsPage> {
               AppTopRightButton(
                   callback: () {}, icon: Icons.help, padding: secondSize)
             ]),
-        AppAccountButton(
-            text: 'Supprimer', callback: _onDeleteBike, color: errorColor)
+        UpdateBikeForm(bike: widget.bike),
+        const Divider(color: Colors.black),
+        AppButton(text: 'Supprimer', callback: _onDeleteBike, color: errorColor)
       ]));
 
   Widget narrowLayout() => Padding(
@@ -55,9 +57,9 @@ class _BikeDetailsPageState extends State<BikeDetailsPage> {
     dynamic jsonResponse = response[1];
 
     if (deleted) {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-          content: Text(jsonResponse['confirm']), backgroundColor: mainColor));
       Navigator.pushNamed(context, '/tips');
     }
+    ScaffoldMessenger.of(context)
+        .showSnackBar(SnackBar(content: Text(jsonResponse['confirm'])));
   }
 }
