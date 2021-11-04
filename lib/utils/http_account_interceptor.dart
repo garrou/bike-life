@@ -8,7 +8,7 @@ class HttpAccountInterceptor implements InterceptorContract {
   Future<RequestData> interceptRequest({required RequestData data}) async {
     String? accessToken = await storage.read(key: 'jwt');
 
-    data.headers['Content-Type'] = 'application/json';
+    data.headers['Content-Type'] = 'application/json; charset=UTF-8';
 
     if (accessToken != null) {
       data.headers['authorization'] = 'Bearer $accessToken';

@@ -18,17 +18,6 @@ class _MemberHomePageState extends State<MemberHomePage> {
   int _pageIndex = 0;
   late PageController _pageController;
 
-  void _onPageChanged(int page) {
-    setState(() {
-      _pageIndex = page;
-    });
-  }
-
-  void _onTabTapped(int index) {
-    _pageController.animateToPage(index,
-        duration: const Duration(milliseconds: 500), curve: Curves.easeInOut);
-  }
-
   @override
   void initState() {
     super.initState();
@@ -37,8 +26,8 @@ class _MemberHomePageState extends State<MemberHomePage> {
 
   @override
   void dispose() {
-    _pageController.dispose();
     super.dispose();
+    _pageController.dispose();
   }
 
   @override
@@ -81,5 +70,16 @@ class _MemberHomePageState extends State<MemberHomePage> {
                 backgroundColor: mainColor)
           ],
         ));
+  }
+
+  void _onPageChanged(int page) {
+    setState(() {
+      _pageIndex = page;
+    });
+  }
+
+  void _onTabTapped(int index) {
+    _pageController.animateToPage(index,
+        duration: const Duration(milliseconds: 500), curve: Curves.easeInOut);
   }
 }

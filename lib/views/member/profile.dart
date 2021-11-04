@@ -19,6 +19,8 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
+  final _storage = const FlutterSecureStorage();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(body: LayoutBuilder(builder: (context, constraints) {
@@ -49,9 +51,9 @@ class _ProfilePageState extends State<ProfilePage> {
             text: 'Déconnexion', callback: _onDisconnect, color: mainColor)
       ]);
 
-  void _onDisconnect() {
-    const storage = FlutterSecureStorage();
-    storage.delete(key: 'jwt');
+  void _onDisconnect() async {
+    await _storage.delete(key: 'jwt');
+    await _storage.delete(key: 'member_id');
     Navigator.pushNamed(context, '/login');
   }
 
