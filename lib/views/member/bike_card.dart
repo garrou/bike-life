@@ -1,13 +1,16 @@
 import 'package:bike_life/constants.dart';
 import 'package:bike_life/models/bike.dart';
+import 'package:bike_life/models/component.dart';
 import 'package:bike_life/models/member.dart';
+import 'package:bike_life/repositories/bike_repository.dart';
 import 'package:bike_life/routes/args/bike_argument.dart';
 import 'package:bike_life/routes/bike_details_route.dart';
-import 'package:bike_life/views/member/forms/add_km_form.dart';
+import 'package:bike_life/views/forms/add_km_form.dart';
 import 'package:bike_life/views/styles/general.dart';
-import 'package:bike_life/views/styles/rounded_button_style.dart';
+import 'package:bike_life/views/widgets/account_button.dart';
 import 'package:bike_life/views/widgets/card.dart';
 import 'package:bike_life/views/widgets/flip.dart';
+import 'package:bike_life/views/widgets/percent_bar.dart';
 import 'package:bike_life/views/widgets/top_right_button.dart';
 import 'package:flutter/material.dart';
 
@@ -22,10 +25,39 @@ class BikeCard extends StatefulWidget {
 }
 
 class _BikeCardState extends State<BikeCard> {
+  final BikeRepository _bikeRepository = BikeRepository();
+  List<Component> components = [];
+
   @override
   Widget build(BuildContext context) {
     return AppFlip(
         front: _buildFrontCard(widget.bike), back: _buildBackCard(widget.bike));
+  }
+
+  void _loadComponents() async {
+    dynamic jsonComponents =
+        await _bikeRepository.getComponents(widget.bike.id);
+
+    if (jsonComponents != null) {
+      setState(() {
+        components = [
+          Component.fromJson(jsonComponents, 'frame', 'Cadre'),
+          Component.fromJson(jsonComponents, 'fork', 'Fourche'),
+          Component.fromJson(jsonComponents, 'string', 'Chaîne'),
+          Component.fromJson(
+              jsonComponents, 'air_chamber_forward', 'Chambre à air avant'),
+          Component.fromJson(
+              jsonComponents, 'air_chamber_backward', 'Chambre à air arrière'),
+          Component.fromJson(jsonComponents, 'brake_forward', 'Frein avant'),
+          Component.fromJson(jsonComponents, 'brake_backward', 'Frein arrière'),
+          Component.fromJson(jsonComponents, 'tire_forward', 'Pneu avant'),
+          Component.fromJson(jsonComponents, 'tire_backward', 'Pneu arrière'),
+          Component.fromJson(jsonComponents, 'transmission', 'Transmission'),
+          Component.fromJson(jsonComponents, 'wheel_forward', 'Roue avant'),
+          Component.fromJson(jsonComponents, 'wheel_backward', 'Roue arrière')
+        ];
+      });
+    }
   }
 
   Widget _buildFrontCard(Bike bike) => AppCard(
@@ -36,24 +68,14 @@ class _BikeCardState extends State<BikeCard> {
             child: Padding(
                 child: Text(bike.name, style: secondTextStyle),
                 padding: const EdgeInsets.symmetric(vertical: thirdSize))),
-        Text('Description', style: boldSubTitleStyle),
-        Text(bike.description, style: thirdTextStyle),
         Padding(
             child: Text('Distance parcourue', style: boldSubTitleStyle),
             padding: const EdgeInsets.only(top: thirdSize)),
-        Padding(
-            child: Text('${bike.nbKm} km', style: thirdTextStyle),
-            padding: const EdgeInsets.only(bottom: thirdSize)),
-        ElevatedButton(
-            style: roundedButtonStyle(mainColor),
-            onPressed: _onDemandPopUp,
-            child: const Text('Ajouter des km'))
+        Text('${bike.nbKm} km', style: thirdTextStyle),
+        AppAccountButton(
+            callback: _onDemandPopUp, text: 'Ajouter des km', color: mainColor)
       ]),
       elevation: secondSize);
-
-  void _onDemandPopUp() {
-    showDialog(context: context, builder: (context) => _buildPopUp(context));
-  }
 
   Widget _buildPopUp(BuildContext context) => AlertDialog(
         shape: const RoundedRectangleBorder(
@@ -61,25 +83,33 @@ class _BikeCardState extends State<BikeCard> {
         title: const Text('Ajouter des km'),
         content: AddKmForm(bike: widget.bike, member: widget.member),
         actions: <Widget>[
-          ElevatedButton(
-            style: roundedButtonStyle(mainColor),
-            onPressed: () => Navigator.of(context).pop(),
-            child: const Text('Fermer'),
-          ),
+          AppAccountButton(
+              callback: () => Navigator.of(context).pop(),
+              text: 'Fermer',
+              color: mainColor)
         ],
       );
 
-  Widget _buildBackCard(Bike bike) => AppCard(
-      elevation: secondSize,
-      child:
-          ListView(padding: const EdgeInsets.all(thirdSize), children: <Widget>[
-        AppTopRightButton(
-            callback: _onBikeDetailsClick, icon: Icons.info, padding: 0.0),
-        Center(child: Text('À changer bientôt', style: secondTextStyle))
-      ]));
-
-  void _onBikeDetailsClick() async {
-    Navigator.pushNamed(context, BikeDetailsRoute.routeName,
-        arguments: BikeArgument(widget.bike));
+  Widget _buildBackCard(Bike bike) {
+    _loadComponents();
+    return AppCard(
+        elevation: secondSize,
+        child: ListView(
+            padding: const EdgeInsets.symmetric(horizontal: thirdSize),
+            children: <Widget>[
+              AppTopRightButton(
+                  callback: _onBikeDetailsClick,
+                  icon: Icons.info,
+                  padding: 0.0),
+              for (Component component in components)
+                AppPercentBar(component: component)
+            ]));
   }
+
+  void _onBikeDetailsClick() =>
+      Navigator.pushNamed(context, BikeDetailsRoute.routeName,
+          arguments: BikeArgument(widget.bike));
+
+  void _onDemandPopUp() =>
+      showDialog(context: context, builder: (context) => _buildPopUp(context));
 }

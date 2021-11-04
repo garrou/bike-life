@@ -18,13 +18,6 @@ String? fieldValidator(String? value) {
   }
 }
 
-bool isValidKm(String? value) {
-  return value != null &&
-      value.isNotEmpty &&
-      int.tryParse(value) != null &&
-      int.tryParse(value)! >= 0;
-}
-
 String? kmValidator(String? value) {
   if (value == null ||
       value.isEmpty ||
@@ -33,3 +26,5 @@ String? kmValidator(String? value) {
     return 'Saisie invalide';
   }
 }
+
+String? emptyValidator(String? value) {}

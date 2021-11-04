@@ -6,7 +6,6 @@ import 'package:bike_life/views/member/update_auth.dart';
 import 'package:bike_life/views/styles/general.dart';
 import 'package:bike_life/views/widgets/button.dart';
 import 'package:bike_life/views/widgets/link_page.dart';
-import 'package:bike_life/views/widgets/title.dart';
 import 'package:bike_life/views/widgets/top_left_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -20,6 +19,8 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
+  final _storage = const FlutterSecureStorage();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(body: LayoutBuilder(builder: (context, constraints) {
@@ -37,8 +38,7 @@ class _ProfilePageState extends State<ProfilePage> {
 
   Widget wideLayout() =>
       Column(crossAxisAlignment: CrossAxisAlignment.center, children: <Widget>[
-        AppTopLeftButton(callback: _onClickBackButton),
-        const AppTitle(text: 'Profil', paddingTop: secondSize),
+        AppTopLeftButton(title: 'Profil', callback: _onClickBackButton),
         AppLinkToPage(
             padding: mainSize,
             child: const Text('Modifier mon profil',
@@ -51,9 +51,9 @@ class _ProfilePageState extends State<ProfilePage> {
             text: 'Déconnexion', callback: _onDisconnect, color: mainColor)
       ]);
 
-  void _onDisconnect() {
-    const storage = FlutterSecureStorage();
-    storage.delete(key: 'jwt');
+  void _onDisconnect() async {
+    await _storage.delete(key: 'jwt');
+    await _storage.delete(key: 'member_id');
     Navigator.pushNamed(context, '/login');
   }
 

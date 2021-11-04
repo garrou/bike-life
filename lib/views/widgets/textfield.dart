@@ -19,9 +19,9 @@ class AppTextField extends StatelessWidget {
       required this.validator,
       required this.hintText,
       required this.label,
-      required this.obscureText,
       required this.icon,
-      required this.maxLines})
+      this.obscureText = false,
+      this.maxLines = 1})
       : super(key: key);
 
   @override
