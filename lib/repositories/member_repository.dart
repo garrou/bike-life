@@ -9,7 +9,6 @@ class MemberRepository {
   final storage = const FlutterSecureStorage();
 
   Future<List<dynamic>> login(String email, String password) async {
-    Member? member;
     http.Response response = await http.post(
       Uri.parse('$endpoint/login'),
       headers: <String, String>{
@@ -23,9 +22,8 @@ class MemberRepository {
       await storage.write(key: 'jwt', value: jsonResponse['accessToken']);
       await storage.write(
           key: 'id', value: jsonResponse['member']['id'].toString());
-      member = Member.fromJson(jsonResponse['member']);
     }
-    return [member, jsonResponse];
+    return [response.statusCode == httpCodeOk, jsonResponse];
   }
 
   Future<List<dynamic>> signup(String email, String password) async {
@@ -36,8 +34,7 @@ class MemberRepository {
       },
       body: jsonEncode(<String, String>{'email': email, 'password': password}),
     );
-    dynamic jsonResponse = jsonDecode(response.body);
-    return [response.statusCode == httpCodeCreated, jsonResponse];
+    return [response.statusCode == httpCodeCreated, jsonDecode(response.body)];
   }
 
   Future<Member?> getMemberById(int memberId) async {

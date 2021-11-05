@@ -3,7 +3,7 @@ import 'package:bike_life/views/member/bike_details.dart';
 import 'package:flutter/material.dart';
 
 class BikeDetailsRoute extends StatelessWidget {
-  static const routeName = '/bike-details';
+  static const routeName = '/bike';
 
   const BikeDetailsRoute({Key? key}) : super(key: key);
 

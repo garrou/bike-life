@@ -10,15 +10,14 @@ class HomePage extends StatelessWidget {
   const HomePage({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(body: LayoutBuilder(builder: (context, constraint) {
-      if (constraint.maxWidth > maxSize) {
-        return narrowLayout();
-      } else {
-        return wideLayout();
-      }
-    }));
-  }
+  Widget build(BuildContext context) =>
+      Scaffold(body: LayoutBuilder(builder: (context, constraint) {
+        if (constraint.maxWidth > maxSize) {
+          return narrowLayout();
+        } else {
+          return wideLayout();
+        }
+      }));
 
   Padding narrowLayout() => Padding(
       padding: const EdgeInsets.symmetric(horizontal: maxPadding),

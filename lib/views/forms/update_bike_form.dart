@@ -42,35 +42,33 @@ class _UpdateBikeFormState extends State<UpdateBikeForm> {
   }
 
   @override
-  Widget build(BuildContext context) {
-    return Form(
-        key: _keyForm,
-        child: Column(children: <Widget>[
-          AppTextField(
-              focusNode: _nameFocus,
-              textfieldController: _name,
-              validator: fieldValidator,
-              hintText: 'Entrer un nom de vélo',
-              label: 'Nom du vélo',
-              icon: Icons.pedal_bike),
-          AppTextField(
-              focusNode: _imageFocus,
-              textfieldController: _image,
-              validator: fieldValidator,
-              hintText: "Lien de l'image du vélo",
-              label: 'Image du vélo',
-              icon: Icons.image),
-          AppTextField(
-              focusNode: _nbKmFocus,
-              textfieldController: _nbKm,
-              validator: kmValidator,
-              hintText: 'Nombre de kilomètres du vélo',
-              label: 'Nombre de km',
-              icon: Icons.add_road),
-          AppCalendar(callback: _onDateChanged, selectedDate: _dateOfPurchase),
-          AppButton(text: 'Modifier', callback: _onUpdateBike, color: mainColor)
-        ]));
-  }
+  Widget build(BuildContext context) => Form(
+      key: _keyForm,
+      child: Column(children: <Widget>[
+        AppTextField(
+            focusNode: _nameFocus,
+            textfieldController: _name,
+            validator: fieldValidator,
+            hintText: 'Entrer un nom de vélo',
+            label: 'Nom du vélo',
+            icon: Icons.pedal_bike),
+        AppTextField(
+            focusNode: _imageFocus,
+            textfieldController: _image,
+            validator: fieldValidator,
+            hintText: "Lien de l'image du vélo",
+            label: 'Image du vélo',
+            icon: Icons.image),
+        AppTextField(
+            focusNode: _nbKmFocus,
+            textfieldController: _nbKm,
+            validator: kmValidator,
+            hintText: 'Nombre de kilomètres du vélo',
+            label: 'Nombre de km',
+            icon: Icons.add_road),
+        AppCalendar(callback: _onDateChanged, selectedDate: _dateOfPurchase),
+        AppButton(text: 'Modifier', callback: _onUpdateBike, color: mainColor)
+      ]));
 
   void _onUpdateBike() {
     if (_keyForm.currentState!.validate()) {

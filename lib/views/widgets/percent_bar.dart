@@ -11,20 +11,18 @@ class AppPercentBar extends StatelessWidget {
   const AppPercentBar({Key? key, required this.component}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return Padding(
-        padding: const EdgeInsets.only(bottom: secondSize),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            Center(child: Text(component.label, style: thirdTextStyle)),
-            AppLinkToPage(
-                padding: 0.0,
-                child: _buildLinearPercentBar(component),
-                destination: ComponentDetailPage(component: component))
-          ],
-        ));
-  }
+  Widget build(BuildContext context) => Padding(
+      padding: const EdgeInsets.only(bottom: secondSize),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Center(child: Text(component.label, style: thirdTextStyle)),
+          AppLinkToPage(
+              padding: 0.0,
+              child: _buildLinearPercentBar(component),
+              destination: ComponentDetailPage(component: component))
+        ],
+      ));
 
   Widget _buildLinearPercentBar(Component component) => LinearPercentIndicator(
       center: Text('${component.km} / ${component.duration} km',

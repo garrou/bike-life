@@ -28,40 +28,38 @@ class _SignupFormState extends State<SignupForm> {
   final MemberRepository _memberRepository = MemberRepository();
 
   @override
-  Widget build(BuildContext context) {
-    return Form(
-        key: _keyForm,
-        child: Column(children: <Widget>[
-          AppTextField(
-              label: 'Email',
-              hintText: 'Entrer un email valide',
-              focusNode: _emailFocus,
-              textfieldController: _email,
-              validator: emailValidator,
-              icon: Icons.alternate_email),
-          AppTextField(
-              label: 'Mot de passe',
-              hintText: 'Mot de passe, $minPasswordSize caractères minimum',
-              focusNode: _passwordFocus,
-              textfieldController: _password,
-              validator: passwordValidator,
-              obscureText: true,
-              icon: Icons.lock),
-          AppTextField(
-              label: 'Confirmer le mot de passe',
-              hintText: 'Mot de passe, $minPasswordSize caractères minimum',
-              focusNode: _confirmPasswordFocus,
-              textfieldController: _confirmPassword,
-              validator: (value) {
-                if (value == null || value.isEmpty || _password.text != value) {
-                  return 'Mot de passe incorrect';
-                }
-              },
-              obscureText: true,
-              icon: Icons.lock),
-          AppButton(text: "S'inscrire", callback: _onSignin, color: mainColor)
-        ]));
-  }
+  Widget build(BuildContext context) => Form(
+      key: _keyForm,
+      child: Column(children: <Widget>[
+        AppTextField(
+            label: 'Email',
+            hintText: 'Entrer un email valide',
+            focusNode: _emailFocus,
+            textfieldController: _email,
+            validator: emailValidator,
+            icon: Icons.alternate_email),
+        AppTextField(
+            label: 'Mot de passe',
+            hintText: 'Mot de passe, $minPasswordSize caractères minimum',
+            focusNode: _passwordFocus,
+            textfieldController: _password,
+            validator: passwordValidator,
+            obscureText: true,
+            icon: Icons.lock),
+        AppTextField(
+            label: 'Confirmer le mot de passe',
+            hintText: 'Mot de passe, $minPasswordSize caractères minimum',
+            focusNode: _confirmPasswordFocus,
+            textfieldController: _confirmPassword,
+            validator: (value) {
+              if (value == null || value.isEmpty || _password.text != value) {
+                return 'Mot de passe incorrect';
+              }
+            },
+            obscureText: true,
+            icon: Icons.lock),
+        AppButton(text: "S'inscrire", callback: _onSignin, color: mainColor)
+      ]));
 
   void _onSignin() {
     if (_keyForm.currentState!.validate()) {
@@ -78,7 +76,7 @@ class _SignupFormState extends State<SignupForm> {
     if (created) {
       Navigator.pushNamed(context, '/login');
     }
-    ScaffoldMessenger.of(context)
-        .showSnackBar(SnackBar(content: Text(jsonResponse['confirm'])));
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text(jsonResponse['confirm']), backgroundColor: mainColor));
   }
 }

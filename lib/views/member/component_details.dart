@@ -1,6 +1,6 @@
 import 'package:bike_life/constants.dart';
 import 'package:bike_life/models/component.dart';
-import 'package:bike_life/views/forms/update_bike_component.dart';
+import 'package:bike_life/views/forms/update_bike_component_form.dart';
 import 'package:bike_life/views/styles/general.dart';
 import 'package:bike_life/views/widgets/top_left_button.dart';
 import 'package:flutter/material.dart';
@@ -16,15 +16,14 @@ class ComponentDetailPage extends StatefulWidget {
 
 class _ComponentDetailPageState extends State<ComponentDetailPage> {
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(body: LayoutBuilder(builder: (context, constraints) {
-      if (constraints.maxWidth > maxSize) {
-        return narrowLayout();
-      } else {
-        return wideLayout();
-      }
-    }));
-  }
+  Widget build(BuildContext context) =>
+      Scaffold(body: LayoutBuilder(builder: (context, constraints) {
+        if (constraints.maxWidth > maxSize) {
+          return narrowLayout();
+        } else {
+          return wideLayout();
+        }
+      }));
 
   Widget narrowLayout() => Padding(
       padding: const EdgeInsets.symmetric(horizontal: maxPadding),

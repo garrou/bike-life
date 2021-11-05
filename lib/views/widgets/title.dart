@@ -8,10 +8,8 @@ class AppTitle extends StatelessWidget {
       : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.only(top: paddingTop),
-      child: Center(child: Text(text, style: mainTextStyle)),
-    );
-  }
+  Widget build(BuildContext context) => Padding(
+        padding: EdgeInsets.only(top: paddingTop),
+        child: Center(child: Text(text, style: mainTextStyle)),
+      );
 }

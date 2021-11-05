@@ -1,7 +1,5 @@
 import 'package:bike_life/constants.dart';
-import 'package:bike_life/models/member.dart';
-import 'package:bike_life/routes/args/member_argument.dart';
-import 'package:bike_life/routes/profile_page_route.dart';
+import 'package:bike_life/utils/helper.dart';
 import 'package:bike_life/utils/validator.dart';
 import 'package:bike_life/views/styles/general.dart';
 import 'package:bike_life/views/widgets/button.dart';
@@ -11,8 +9,7 @@ import 'package:bike_life/views/widgets/top_left_button.dart';
 import 'package:flutter/material.dart';
 
 class UpdateAccountPage extends StatefulWidget {
-  final Member member;
-  const UpdateAccountPage({Key? key, required this.member}) : super(key: key);
+  const UpdateAccountPage({Key? key}) : super(key: key);
 
   @override
   _UpdateAccountPageState createState() => _UpdateAccountPageState();
@@ -27,16 +24,23 @@ class _UpdateAccountPageState extends State<UpdateAccountPage> {
   final _passwordFocus = FocusNode();
   final _password = TextEditingController();
 
+  late int _memberId;
+
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(body: LayoutBuilder(builder: (context, constraints) {
-      if (constraints.maxWidth > maxSize) {
-        return narrowLayout();
-      } else {
-        return wideLayout();
-      }
-    }));
+  void initState() {
+    super.initState();
+    _getMemberId();
   }
+
+  @override
+  Widget build(BuildContext context) =>
+      Scaffold(body: LayoutBuilder(builder: (context, constraints) {
+        if (constraints.maxWidth > maxSize) {
+          return narrowLayout();
+        } else {
+          return wideLayout();
+        }
+      }));
 
   Widget narrowLayout() => Padding(
       padding: const EdgeInsets.symmetric(horizontal: maxPadding),
@@ -47,7 +51,8 @@ class _UpdateAccountPageState extends State<UpdateAccountPage> {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
             AppTopLeftButton(
-                title: 'Modifier mon profil', callback: _onClickBackButton),
+                title: 'Modifier mon profil',
+                callback: () => Navigator.pushNamed(context, '/profile')),
             AppCard(child: buildForm(), elevation: secondSize)
           ]);
 
@@ -80,8 +85,8 @@ class _UpdateAccountPageState extends State<UpdateAccountPage> {
     }
   }
 
-  void _onClickBackButton() {
-    Navigator.pushNamed(context, ProfilePageRoute.routeName,
-        arguments: MemberArgument(widget.member));
+  void _getMemberId() async {
+    String? id = await Helper.getMemberId();
+    _memberId = id != null ? int.parse(id) : 0;
   }
 }
