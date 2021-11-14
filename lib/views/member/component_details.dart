@@ -49,7 +49,7 @@ class _ComponentDetailPageState extends State<ComponentDetailPage> {
                 style: thirdTextStyle),
             padding: const EdgeInsets.only(top: thirdSize)),
         Padding(
-            child: Text('Durée moyenne de vie : ${component.duration} km',
+            child: Text('Durée moyenne de km : ${component.duration} km',
                 style: thirdTextStyle),
             padding: const EdgeInsets.only(top: thirdSize)),
         Padding(
