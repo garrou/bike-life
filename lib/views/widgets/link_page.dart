@@ -12,12 +12,10 @@ class AppLinkToPage extends StatelessWidget {
       : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return Padding(
-        padding: EdgeInsets.all(padding),
-        child: InkWell(
-            child: child,
-            onTap: () => Navigator.push(context,
-                MaterialPageRoute(builder: (context) => destination))));
-  }
+  Widget build(BuildContext context) => Padding(
+      padding: EdgeInsets.all(padding),
+      child: InkWell(
+          child: child,
+          onTap: () => Navigator.push(
+              context, MaterialPageRoute(builder: (context) => destination))));
 }

@@ -13,12 +13,10 @@ class AppFlip extends StatefulWidget {
 
 class _AppFlipState extends State<AppFlip> {
   @override
-  Widget build(BuildContext context) {
-    return FlipCard(
-        fill: Fill.fillBack,
-        flipOnTouch: true,
-        direction: FlipDirection.HORIZONTAL,
-        front: widget.front,
-        back: widget.back);
-  }
+  Widget build(BuildContext context) => FlipCard(
+      fill: Fill.fillBack,
+      flipOnTouch: true,
+      direction: FlipDirection.HORIZONTAL,
+      front: widget.front,
+      back: widget.back);
 }

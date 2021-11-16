@@ -14,30 +14,28 @@ class AppCalendar extends StatefulWidget {
 }
 
 class _AppCalendarState extends State<AppCalendar> {
-  bool isVisible = false;
+  bool _isVisible = false;
   @override
-  Widget build(BuildContext context) {
-    return Column(children: <Widget>[
-      GestureDetector(
-        child: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-          const Icon(Icons.arrow_drop_down),
-          Text("Date d'achat", style: secondTextStyle)
-        ]),
-        onTap: () {
-          setState(() {
-            isVisible = isVisible ? false : true;
-          });
-        },
-      ),
-      Visibility(
-          visible: isVisible,
-          child: SfDateRangePicker(
-              initialSelectedDate: DateTime.parse(widget.selectedDate),
-              todayHighlightColor: mainColor,
-              selectionColor: mainColor,
-              view: DateRangePickerView.month,
-              selectionMode: DateRangePickerSelectionMode.single,
-              onSelectionChanged: widget.callback))
-    ]);
-  }
+  Widget build(BuildContext context) => Column(children: <Widget>[
+        GestureDetector(
+          child: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+            Icon(_isVisible ? Icons.arrow_drop_up : Icons.arrow_drop_down),
+            Text("Date d'achat", style: secondTextStyle)
+          ]),
+          onTap: () {
+            setState(() {
+              _isVisible = _isVisible ? false : true;
+            });
+          },
+        ),
+        Visibility(
+            visible: _isVisible,
+            child: SfDateRangePicker(
+                initialSelectedDate: DateTime.parse(widget.selectedDate),
+                todayHighlightColor: mainColor,
+                selectionColor: mainColor,
+                view: DateRangePickerView.month,
+                selectionMode: DateRangePickerSelectionMode.single,
+                onSelectionChanged: widget.callback))
+      ]);
 }

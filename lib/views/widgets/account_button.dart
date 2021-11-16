@@ -14,12 +14,10 @@ class AppAccountButton extends StatelessWidget {
       : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return Padding(
-        child: ElevatedButton(
-            style: roundedButtonStyle(color),
-            onPressed: callback,
-            child: Text(text)),
-        padding: const EdgeInsets.only(top: thirdSize));
-  }
+  Widget build(BuildContext context) => Padding(
+      child: ElevatedButton(
+          style: roundedButtonStyle(color),
+          onPressed: callback,
+          child: Text(text)),
+      padding: const EdgeInsets.only(top: thirdSize));
 }

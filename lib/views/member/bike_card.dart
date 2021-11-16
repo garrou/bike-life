@@ -1,7 +1,6 @@
 import 'package:bike_life/constants.dart';
 import 'package:bike_life/models/bike.dart';
 import 'package:bike_life/models/component.dart';
-import 'package:bike_life/models/member.dart';
 import 'package:bike_life/repositories/bike_repository.dart';
 import 'package:bike_life/routes/args/bike_argument.dart';
 import 'package:bike_life/routes/bike_details_route.dart';
@@ -15,10 +14,8 @@ import 'package:bike_life/views/widgets/top_right_button.dart';
 import 'package:flutter/material.dart';
 
 class BikeCard extends StatefulWidget {
-  final Member member;
   final Bike bike;
-  const BikeCard({Key? key, required this.bike, required this.member})
-      : super(key: key);
+  const BikeCard({Key? key, required this.bike}) : super(key: key);
 
   @override
   _BikeCardState createState() => _BikeCardState();
@@ -26,13 +23,17 @@ class BikeCard extends StatefulWidget {
 
 class _BikeCardState extends State<BikeCard> {
   final BikeRepository _bikeRepository = BikeRepository();
-  List<Component> components = [];
+  List<Component> _components = [];
 
   @override
-  Widget build(BuildContext context) {
-    return AppFlip(
-        front: _buildFrontCard(widget.bike), back: _buildBackCard(widget.bike));
+  void initState() {
+    super.initState();
+    _loadComponents();
   }
+
+  @override
+  Widget build(BuildContext context) => AppFlip(
+      front: _buildFrontCard(widget.bike), back: _buildBackCard(widget.bike));
 
   void _loadComponents() async {
     dynamic jsonComponents =
@@ -40,7 +41,7 @@ class _BikeCardState extends State<BikeCard> {
 
     if (jsonComponents != null) {
       setState(() {
-        components = [
+        _components = [
           Component.fromJson(jsonComponents, 'frame', 'Cadre'),
           Component.fromJson(jsonComponents, 'fork', 'Fourche'),
           Component.fromJson(jsonComponents, 'string', 'Chaîne'),
@@ -81,7 +82,7 @@ class _BikeCardState extends State<BikeCard> {
         shape: const RoundedRectangleBorder(
             borderRadius: BorderRadius.all(Radius.circular(mainSize))),
         title: const Text('Ajouter des km'),
-        content: AddKmForm(bike: widget.bike, member: widget.member),
+        content: AddKmForm(bike: widget.bike),
         actions: <Widget>[
           AppAccountButton(
               callback: () => Navigator.of(context).pop(),
@@ -90,21 +91,16 @@ class _BikeCardState extends State<BikeCard> {
         ],
       );
 
-  Widget _buildBackCard(Bike bike) {
-    _loadComponents();
-    return AppCard(
-        elevation: secondSize,
-        child: ListView(
-            padding: const EdgeInsets.symmetric(horizontal: thirdSize),
-            children: <Widget>[
-              AppTopRightButton(
-                  callback: _onBikeDetailsClick,
-                  icon: Icons.info,
-                  padding: 0.0),
-              for (Component component in components)
-                AppPercentBar(component: component)
-            ]));
-  }
+  Widget _buildBackCard(Bike bike) => AppCard(
+      elevation: secondSize,
+      child: ListView(
+          padding: const EdgeInsets.symmetric(horizontal: thirdSize),
+          children: <Widget>[
+            AppTopRightButton(
+                callback: _onBikeDetailsClick, icon: Icons.info, padding: 0.0),
+            for (Component component in _components)
+              AppPercentBar(component: component)
+          ]));
 
   void _onBikeDetailsClick() =>
       Navigator.pushNamed(context, BikeDetailsRoute.routeName,

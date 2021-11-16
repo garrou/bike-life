@@ -20,15 +20,14 @@ class _BikeDetailsPageState extends State<BikeDetailsPage> {
   final BikeRepository _bikeRepository = BikeRepository();
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(body: LayoutBuilder(builder: (context, constraints) {
-      if (constraints.maxWidth > maxSize) {
-        return narrowLayout();
-      } else {
-        return wideLayout();
-      }
-    }));
-  }
+  Widget build(BuildContext context) =>
+      Scaffold(body: LayoutBuilder(builder: (context, constraints) {
+        if (constraints.maxWidth > maxSize) {
+          return narrowLayout();
+        } else {
+          return wideLayout();
+        }
+      }));
 
   Widget wideLayout() => Padding(
       padding: const EdgeInsets.symmetric(horizontal: thirdSize),

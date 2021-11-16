@@ -11,15 +11,14 @@ class SignupPage extends StatelessWidget {
   const SignupPage({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(body: LayoutBuilder(builder: (context, constraints) {
-      if (constraints.maxWidth > maxSize) {
-        return narrowLayout();
-      } else {
-        return wideLayout();
-      }
-    }));
-  }
+  Widget build(BuildContext context) =>
+      Scaffold(body: LayoutBuilder(builder: (context, constraints) {
+        if (constraints.maxWidth > maxSize) {
+          return narrowLayout();
+        } else {
+          return wideLayout();
+        }
+      }));
 
   Center wideLayout() => Center(
           child: SingleChildScrollView(

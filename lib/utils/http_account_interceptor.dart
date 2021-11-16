@@ -17,7 +17,6 @@ class HttpAccountInterceptor implements InterceptorContract {
   }
 
   @override
-  Future<ResponseData> interceptResponse({required ResponseData data}) async {
-    return data;
-  }
+  Future<ResponseData> interceptResponse({required ResponseData data}) async =>
+      data;
 }

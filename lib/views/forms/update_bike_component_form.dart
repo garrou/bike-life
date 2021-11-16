@@ -40,40 +40,38 @@ class _UpdateBikeComponentFormState extends State<UpdateBikeComponentForm> {
   }
 
   @override
-  Widget build(BuildContext context) {
-    return Padding(
-        padding: const EdgeInsets.all(thirdSize),
-        child: Form(
-            key: _keyForm,
-            child: Column(children: <Widget>[
-              Text('Modifier', style: secondTextStyle),
-              AppTextField(
-                  focusNode: _brandFocus,
-                  textfieldController: _brand,
-                  validator: emptyValidator,
-                  hintText: 'Marque du composant',
-                  label: 'Marque',
-                  icon: Icons.branding_watermark),
-              AppTextField(
-                  focusNode: _kmFocus,
-                  textfieldController: _km,
-                  validator: kmValidator,
-                  hintText: 'Nombre de km du composant',
-                  label: 'Kilomètres',
-                  icon: Icons.add_road),
-              AppTextField(
-                  focusNode: _durationFocus,
-                  textfieldController: _duration,
-                  validator: kmValidator,
-                  hintText: 'Durée de vie',
-                  label: 'Durée de vie du composant (km)',
-                  icon: Icons.health_and_safety),
-              AppAccountButton(
-                  callback: _onUpdateComponent,
-                  text: 'Modifier',
-                  color: mainColor)
-            ])));
-  }
+  Widget build(BuildContext context) => Padding(
+      padding: const EdgeInsets.all(thirdSize),
+      child: Form(
+          key: _keyForm,
+          child: Column(children: <Widget>[
+            Text('Modifier', style: secondTextStyle),
+            AppTextField(
+                focusNode: _brandFocus,
+                textfieldController: _brand,
+                validator: emptyValidator,
+                hintText: 'Marque du composant',
+                label: 'Marque',
+                icon: Icons.branding_watermark),
+            AppTextField(
+                focusNode: _kmFocus,
+                textfieldController: _km,
+                validator: kmValidator,
+                hintText: 'Nombre de km du composant',
+                label: 'Kilomètres',
+                icon: Icons.add_road),
+            AppTextField(
+                focusNode: _durationFocus,
+                textfieldController: _duration,
+                validator: kmValidator,
+                hintText: 'Durée de vie',
+                label: 'Durée de vie du composant (km)',
+                icon: Icons.health_and_safety),
+            AppAccountButton(
+                callback: _onUpdateComponent,
+                text: 'Modifier',
+                color: mainColor)
+          ])));
 
   void _onUpdateComponent() {
     if (_keyForm.currentState!.validate()) {
@@ -95,9 +93,10 @@ class _UpdateBikeComponentFormState extends State<UpdateBikeComponentForm> {
     dynamic jsonResponse = response[1];
 
     if (updated) {
-      Navigator.of(context).pop();
+      Navigator.pushNamedAndRemoveUntil(
+          context, '/home', (Route<dynamic> route) => false);
     }
-    ScaffoldMessenger.of(context)
-        .showSnackBar(SnackBar(content: Text(jsonResponse['confirm'])));
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text(jsonResponse['confirm']), backgroundColor: mainColor));
   }
 }

@@ -15,16 +15,14 @@ class AppNavButton extends StatelessWidget {
       : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return Padding(
-        padding: const EdgeInsets.symmetric(vertical: thirdSize),
-        child: SizedBox(
-            height: buttonHeight,
-            width: buttonWidth,
-            child: ElevatedButton(
-                onPressed: () => Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => destination)),
-                child: Text(text, style: secondTextStyle),
-                style: roundedButtonStyle(color))));
-  }
+  Widget build(BuildContext context) => Padding(
+      padding: const EdgeInsets.symmetric(vertical: thirdSize),
+      child: SizedBox(
+          height: buttonHeight,
+          width: buttonWidth,
+          child: ElevatedButton(
+              onPressed: () => Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => destination)),
+              child: Text(text, style: secondTextStyle),
+              style: roundedButtonStyle(color))));
 }

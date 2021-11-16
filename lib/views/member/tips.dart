@@ -6,15 +6,14 @@ class TipsPage extends StatelessWidget {
   const TipsPage({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(body: LayoutBuilder(builder: (context, constraints) {
-      if (constraints.maxWidth > maxSize) {
-        return narrowLayout();
-      } else {
-        return wideLayout();
-      }
-    }));
-  }
+  Widget build(BuildContext context) =>
+      Scaffold(body: LayoutBuilder(builder: (context, constraints) {
+        if (constraints.maxWidth > maxSize) {
+          return narrowLayout();
+        } else {
+          return wideLayout();
+        }
+      }));
 
   Widget narrowLayout() => Padding(
       padding: const EdgeInsets.symmetric(horizontal: maxPadding),
