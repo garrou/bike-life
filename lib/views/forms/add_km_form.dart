@@ -24,7 +24,7 @@ class _AddKmFormState extends State<AddKmForm> {
   Widget build(BuildContext context) => Form(
       key: _keyForm,
       child: Column(
-        mainAxisSize: MainAxisSize.min,
+        mainAxisSize: MainAxisSize.max,
         children: <Widget>[
           AppTextField(
               focusNode: _kmFocus,

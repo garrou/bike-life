@@ -19,7 +19,7 @@ class _AppCalendarState extends State<AppCalendar> {
   Widget build(BuildContext context) => Column(children: <Widget>[
         GestureDetector(
           child: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-            const Icon(Icons.arrow_drop_down),
+            Icon(_isVisible ? Icons.arrow_drop_up : Icons.arrow_drop_down),
             Text("Date d'achat", style: secondTextStyle)
           ]),
           onTap: () {
