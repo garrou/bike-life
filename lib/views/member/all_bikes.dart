@@ -27,6 +27,11 @@ class _AllBikesPageState extends State<AllBikesPage> {
     _load();
   }
 
+  Future _load() async {
+    await _getMemberId();
+    await _loadBikes();
+  }
+
   Future _getMemberId() async {
     String? id = await Helper.getMemberId();
     setState(() {
@@ -41,11 +46,6 @@ class _AllBikesPageState extends State<AllBikesPage> {
     setState(() {
       _cards.add(_buildAddBikeCard());
     });
-  }
-
-  Future _load() async {
-    await _getMemberId();
-    await _loadBikes();
   }
 
   @override

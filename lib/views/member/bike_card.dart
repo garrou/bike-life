@@ -97,7 +97,9 @@ class _BikeCardState extends State<BikeCard> {
           padding: const EdgeInsets.symmetric(horizontal: thirdSize),
           children: <Widget>[
             AppTopRightButton(
-                callback: _onBikeDetailsClick, icon: Icons.info, padding: 0.0),
+                callback: _onBikeDetailsClick,
+                icon: Icons.settings,
+                padding: 0.0),
             for (Component component in _components)
               AppPercentBar(component: component)
           ]));
