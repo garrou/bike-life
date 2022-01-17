@@ -27,10 +27,11 @@ class _AddKmFormState extends State<AddKmForm> {
         mainAxisSize: MainAxisSize.max,
         children: <Widget>[
           AppTextField(
+              keyboardType: TextInputType.number,
               focusNode: _kmFocus,
               textfieldController: _km,
               validator: kmValidator,
-              hintText: 'Entrer le nombre de km effectués',
+              hintText: 'Nombre de km effectués',
               label: 'Kilomètres',
               icon: Icons.add_road),
           AppButton(

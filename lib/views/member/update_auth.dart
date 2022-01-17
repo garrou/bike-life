@@ -60,6 +60,7 @@ class _UpdateAccountPageState extends State<UpdateAccountPage> {
       key: _keyForm,
       child: Column(children: <Widget>[
         AppTextField(
+            keyboardType: TextInputType.emailAddress,
             label: 'Email',
             hintText: 'Entrer un email valide',
             focusNode: _emailFocus,
@@ -67,6 +68,7 @@ class _UpdateAccountPageState extends State<UpdateAccountPage> {
             validator: emailValidator,
             icon: Icons.alternate_email),
         AppTextField(
+            keyboardType: TextInputType.text,
             label: 'Mot de passe',
             hintText:
                 'Entrer un mot de passe de minimum $minPasswordSize caractères',
@@ -87,5 +89,6 @@ class _UpdateAccountPageState extends State<UpdateAccountPage> {
 
   void _updateAuth(String email, String password) async {
     int id = await Storage.getMemberId();
+    // TODO: Update
   }
 }

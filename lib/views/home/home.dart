@@ -65,7 +65,6 @@ class _HomePageState extends State<HomePage> {
       );
 
   Padding appQuote() => Padding(
-      // TODO: Update keyboard type
       padding: const EdgeInsets.symmetric(vertical: thirdSize),
       child: Text(quote, style: italicTextStyle));
 }

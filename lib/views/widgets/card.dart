@@ -1,4 +1,5 @@
 import 'package:bike_life/constants.dart';
+import 'package:bike_life/views/styles/general.dart';
 import 'package:flutter/material.dart';
 
 class AppCard extends StatelessWidget {
@@ -9,8 +10,10 @@ class AppCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Card(
-      shape:
-          RoundedRectangleBorder(borderRadius: BorderRadius.circular(mainSize)),
+      color: Colors.white,
+      shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(mainSize),
+          side: const BorderSide(color: mainColor)),
       elevation: elevation,
       child: Padding(
           padding: const EdgeInsets.symmetric(vertical: mainSize),

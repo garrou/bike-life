@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:bike_life/constants.dart';
 import 'package:bike_life/models/bike.dart';
 import 'package:bike_life/repositories/bike_repository.dart';
+import 'package:bike_life/utils/storage.dart';
 import 'package:bike_life/views/auth/signin.dart';
 import 'package:bike_life/views/forms/update_bike_form.dart';
 import 'package:bike_life/views/styles/general.dart';
@@ -23,6 +24,17 @@ class BikeDetailsPage extends StatefulWidget {
 class _BikeDetailsPageState extends State<BikeDetailsPage> {
   final BikeRepository _bikeRepository = BikeRepository();
   final StreamController<bool> _authState = StreamController();
+
+  @override
+  void initState() {
+    super.initState();
+    _checkIfLogged();
+  }
+
+  void _checkIfLogged() async {
+    int memberId = await Storage.getMemberId();
+    memberId != -1 ? _authState.add(true) : _authState.add(false);
+  }
 
   @override
   Widget build(BuildContext context) => AuthGuard(

@@ -18,12 +18,10 @@ const double maxSize = 600.0;
 
 const double mainSize = 30.0;
 const double secondSize = 20.0;
-const double intermediateSize = 15.0;
+const double intermediateSize = 18.0;
 const double thirdSize = 10.0;
 
 const int minPasswordSize = 8;
-
-const int limitDuration = 250;
 
 const int httpCodeOk = 200;
 const int httpCodeCreated = 201;

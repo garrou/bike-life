@@ -2,8 +2,10 @@ import 'dart:async';
 
 import 'package:bike_life/constants.dart';
 import 'package:bike_life/utils/storage.dart';
+import 'package:bike_life/views/auth/signin.dart';
 import 'package:bike_life/views/widgets/title.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_guards/flutter_guards.dart';
 
 class TipsPage extends StatefulWidget {
   const TipsPage({Key? key}) : super(key: key);
@@ -27,14 +29,16 @@ class _TipsPageState extends State<TipsPage> {
   }
 
   @override
-  Widget build(BuildContext context) =>
-      Scaffold(body: LayoutBuilder(builder: (context, constraints) {
+  Widget build(BuildContext context) => AuthGuard(
+      authStream: _authState.stream,
+      signedIn: Scaffold(body: LayoutBuilder(builder: (context, constraints) {
         if (constraints.maxWidth > maxSize) {
           return narrowLayout();
         } else {
           return wideLayout();
         }
-      }));
+      })),
+      signedOut: const SigninPage());
 
   Widget narrowLayout() => Padding(
       padding: const EdgeInsets.symmetric(horizontal: maxPadding),

@@ -54,6 +54,7 @@ class _AddBikeFormState extends State<AddBikeForm> {
             key: _keyForm,
             child: Column(children: <Widget>[
               AppTextField(
+                  keyboardType: TextInputType.text,
                   focusNode: _nameFocus,
                   textfieldController: _name,
                   validator: fieldValidator,
@@ -61,6 +62,7 @@ class _AddBikeFormState extends State<AddBikeForm> {
                   label: 'Nom du vélo',
                   icon: Icons.pedal_bike),
               AppTextField(
+                  keyboardType: TextInputType.text,
                   focusNode: _imageFocus,
                   textfieldController: _image,
                   validator: fieldValidator,
@@ -68,6 +70,7 @@ class _AddBikeFormState extends State<AddBikeForm> {
                   label: 'Image du vélo',
                   icon: Icons.image),
               AppTextField(
+                  keyboardType: TextInputType.number,
                   focusNode: _nbKmFocus,
                   textfieldController: _nbKm,
                   validator: kmValidator,

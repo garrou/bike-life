@@ -28,6 +28,7 @@ class _SigninFormState extends State<SigninForm> {
       key: _keyForm,
       child: Column(children: <Widget>[
         AppTextField(
+            keyboardType: TextInputType.emailAddress,
             label: 'Email',
             hintText: 'Entrer un email valide',
             focusNode: _emailFocus,
@@ -35,6 +36,7 @@ class _SigninFormState extends State<SigninForm> {
             validator: emailValidator,
             icon: Icons.alternate_email),
         AppTextField(
+            keyboardType: TextInputType.text,
             label: 'Mot de passe',
             hintText: 'Entrer votre mot de passe',
             focusNode: _passwordFocus,

@@ -32,6 +32,7 @@ class _SignupFormState extends State<SignupForm> {
       key: _keyForm,
       child: Column(children: <Widget>[
         AppTextField(
+            keyboardType: TextInputType.emailAddress,
             label: 'Email',
             hintText: 'Entrer un email valide',
             focusNode: _emailFocus,
@@ -39,6 +40,7 @@ class _SignupFormState extends State<SignupForm> {
             validator: emailValidator,
             icon: Icons.alternate_email),
         AppTextField(
+            keyboardType: TextInputType.text,
             label: 'Mot de passe',
             hintText: 'Mot de passe, $minPasswordSize caractères minimum',
             focusNode: _passwordFocus,
@@ -47,6 +49,7 @@ class _SignupFormState extends State<SignupForm> {
             obscureText: true,
             icon: Icons.lock),
         AppTextField(
+            keyboardType: TextInputType.text,
             label: 'Confirmer le mot de passe',
             hintText: 'Mot de passe, $minPasswordSize caractères minimum',
             focusNode: _confirmPasswordFocus,
