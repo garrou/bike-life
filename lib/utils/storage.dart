@@ -1,28 +1,29 @@
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Storage {
-  static const FlutterSecureStorage _flutterSecureStorage =
-      FlutterSecureStorage();
-
   static Future<String?> getToken() async {
-    return await _flutterSecureStorage.read(key: 'jwt');
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    return prefs.getString('jwt');
   }
 
   static Future<int> getMemberId() async {
-    String? id = await _flutterSecureStorage.read(key: 'id');
-
-    if (id == null) {
-      return -1;
-    }
-    return int.parse(id);
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    return prefs.getInt('id') ?? -1;
   }
 
-  static void disconnect() async {
-    await _flutterSecureStorage.delete(key: 'jwt');
-    await _flutterSecureStorage.delete(key: 'id');
+  static disconnect() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.remove('jwt');
+    prefs.remove('id');
   }
 
-  static write(String key, String value) async {
-    _flutterSecureStorage.write(key: key, value: value);
+  static setString(String key, String value) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setString(key, value);
+  }
+
+  static setInt(String key, int value) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setInt(key, value);
   }
 }

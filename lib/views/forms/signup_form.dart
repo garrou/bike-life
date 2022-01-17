@@ -74,7 +74,8 @@ class _SignupFormState extends State<SignupForm> {
     dynamic jsonResponse = response[1];
 
     if (created) {
-      Navigator.pushNamed(context, '/login');
+      Navigator.pushNamedAndRemoveUntil(
+          context, '/login', (Route<dynamic> route) => false);
     }
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
         content: Text(jsonResponse['confirm']), backgroundColor: mainColor));

@@ -8,7 +8,6 @@ class HttpAccountInterceptor implements InterceptorContract {
 
     data.headers['Content-Type'] = 'application/json; charset=UTF-8';
     data.headers['authorization'] = 'Bearer $accessToken';
-    data.headers['Content-Type'] = 'application/json; charset=UTF-8';
     return data;
   }
 

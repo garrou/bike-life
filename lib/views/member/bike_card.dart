@@ -11,6 +11,7 @@ import 'package:bike_life/views/widgets/card.dart';
 import 'package:bike_life/views/widgets/flip.dart';
 import 'package:bike_life/views/widgets/percent_bar.dart';
 import 'package:bike_life/views/widgets/top_right_button.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
 class BikeCard extends StatefulWidget {
@@ -28,7 +29,9 @@ class _BikeCardState extends State<BikeCard> {
   @override
   void initState() {
     super.initState();
-    _loadComponents();
+    setState(() {
+      _loadComponents();
+    });
   }
 
   @override
@@ -40,31 +43,33 @@ class _BikeCardState extends State<BikeCard> {
         await _bikeRepository.getComponents(widget.bike.id);
 
     if (jsonComponents != null) {
-      setState(() {
-        _components = [
-          Component.fromJson(jsonComponents, 'frame', 'Cadre'),
-          Component.fromJson(jsonComponents, 'fork', 'Fourche'),
-          Component.fromJson(jsonComponents, 'string', 'Chaîne'),
-          Component.fromJson(
-              jsonComponents, 'air_chamber_forward', 'Chambre à air avant'),
-          Component.fromJson(
-              jsonComponents, 'air_chamber_backward', 'Chambre à air arrière'),
-          Component.fromJson(jsonComponents, 'brake_forward', 'Frein avant'),
-          Component.fromJson(jsonComponents, 'brake_backward', 'Frein arrière'),
-          Component.fromJson(jsonComponents, 'tire_forward', 'Pneu avant'),
-          Component.fromJson(jsonComponents, 'tire_backward', 'Pneu arrière'),
-          Component.fromJson(jsonComponents, 'transmission', 'Transmission'),
-          Component.fromJson(jsonComponents, 'wheel_forward', 'Roue avant'),
-          Component.fromJson(jsonComponents, 'wheel_backward', 'Roue arrière')
-        ];
-      });
+      _components = [
+        Component.fromJson(jsonComponents, 'frame', 'Cadre'),
+        Component.fromJson(jsonComponents, 'fork', 'Fourche'),
+        Component.fromJson(jsonComponents, 'string', 'Chaîne'),
+        Component.fromJson(
+            jsonComponents, 'air_chamber_forward', 'Chambre à air avant'),
+        Component.fromJson(
+            jsonComponents, 'air_chamber_backward', 'Chambre à air arrière'),
+        Component.fromJson(jsonComponents, 'brake_forward', 'Frein avant'),
+        Component.fromJson(jsonComponents, 'brake_backward', 'Frein arrière'),
+        Component.fromJson(jsonComponents, 'tire_forward', 'Pneu avant'),
+        Component.fromJson(jsonComponents, 'tire_backward', 'Pneu arrière'),
+        Component.fromJson(jsonComponents, 'transmission', 'Transmission'),
+        Component.fromJson(jsonComponents, 'wheel_forward', 'Roue avant'),
+        Component.fromJson(jsonComponents, 'wheel_backward', 'Roue arrière')
+      ];
     }
   }
 
   Widget _buildFrontCard(Bike bike) => AppCard(
       child:
           ListView(padding: const EdgeInsets.all(thirdSize), children: <Widget>[
-        Image.network(bike.image, fit: BoxFit.cover),
+        CachedNetworkImage(
+            imageUrl: bike.image,
+            progressIndicatorBuilder: (context, url, downloadProgress) =>
+                CircularProgressIndicator(value: downloadProgress.progress),
+            errorWidget: (context, url, error) => const Icon(Icons.error)),
         Center(
             child: Padding(
                 child: Text(bike.name, style: secondTextStyle),
@@ -102,6 +107,7 @@ class _BikeCardState extends State<BikeCard> {
                 padding: 0.0),
             for (Component component in _components)
               AppPercentBar(component: component)
+            // TODO: intermediate color (orange)
           ]));
 
   void _onBikeDetailsClick() =>

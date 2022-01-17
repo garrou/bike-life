@@ -9,13 +9,16 @@ class MemberRepository {
   Future<List<dynamic>> login(String email, String password) async {
     http.Response response = await http.post(
       Uri.parse('$endpoint/login'),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8'
+      },
       body: jsonEncode(<String, String>{'email': email, 'password': password}),
     );
     dynamic jsonResponse = jsonDecode(response.body);
 
     if (response.statusCode == httpCodeOk) {
-      Storage.write('jwt', jsonResponse['accessToken']);
-      Storage.write('id', jsonResponse['member']['id'].toString());
+      Storage.setString('jwt', jsonResponse['accessToken']);
+      Storage.setInt('id', int.parse(jsonResponse['member']['id']));
     }
     return [response.statusCode == httpCodeOk, jsonResponse];
   }
@@ -23,6 +26,9 @@ class MemberRepository {
   Future<List<dynamic>> signup(String email, String password) async {
     http.Response response = await http.post(
       Uri.parse('$endpoint/members'),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8'
+      },
       body: jsonEncode(<String, String>{'email': email, 'password': password}),
     );
     return [response.statusCode == httpCodeCreated, jsonDecode(response.body)];

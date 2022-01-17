@@ -1,5 +1,7 @@
-// const String endpoint = "http://localhost:8100";
-const String endpoint = "http://10.0.2.2:8100";
+import 'package:flutter/foundation.dart' show kIsWeb;
+
+const String endpoint =
+    kIsWeb ? "http://localhost:8100" : "http://10.0.2.2:8100";
 
 const String title = "Bike's life";
 const String quote = "La santé de votre vélo se surveille de près.";

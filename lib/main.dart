@@ -1,18 +1,15 @@
-import 'dart:async';
-
 import 'package:bike_life/constants.dart';
 import 'package:bike_life/routes/bike_details_route.dart';
 import 'package:bike_life/routes/component_details_route.dart';
-import 'package:bike_life/utils/storage.dart';
 import 'package:bike_life/views/auth/signin.dart';
 import 'package:bike_life/views/auth/signup.dart';
+import 'package:bike_life/views/home/home.dart';
 import 'package:bike_life/views/member/add_bike.dart';
 import 'package:bike_life/views/member/member_home.dart';
 import 'package:bike_life/views/member/profile.dart';
 import 'package:bike_life/views/member/tips.dart';
 import 'package:bike_life/views/styles/general.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_guards/flutter_guards.dart';
 
 void main() {
   runApp(const App());
@@ -26,21 +23,6 @@ class App extends StatefulWidget {
 }
 
 class _AppState extends State<App> {
-  final StreamController<bool> _authState = StreamController<bool>.broadcast();
-
-  @override
-  void initState() {
-    super.initState();
-    setState(() {
-      _checkIfLogged();
-    });
-  }
-
-  void _checkIfLogged() async {
-    int memberId = await Storage.getMemberId();
-    memberId != -1 ? _authState.add(true) : _authState.add(false);
-  }
-
   @override
   Widget build(BuildContext context) => MaterialApp(
           title: title,
@@ -50,35 +32,15 @@ class _AppState extends State<App> {
               brightness: Brightness.light),
           initialRoute: '/',
           routes: {
-            '/': (context) => AuthGuard(
-                authStream: _authState.stream,
-                signedIn: const MemberHomePage(),
-                signedOut: const SigninPage()),
+            '/': (context) => const HomePage(),
             '/login': (context) => const SigninPage(),
             '/signup': (context) => const SignupPage(),
-            '/home': (context) => AuthGuard(
-                authStream: _authState.stream,
-                signedIn: const MemberHomePage(),
-                signedOut: const SigninPage()),
-            '/add-bike': (context) => AuthGuard(
-                authStream: _authState.stream,
-                signedIn: const AddBikePage(),
-                signedOut: const SigninPage()),
-            '/profile': (context) => AuthGuard(
-                authStream: _authState.stream,
-                signedIn: const ProfilePage(),
-                signedOut: const SigninPage()),
-            '/tips': (context) => AuthGuard(
-                authStream: _authState.stream,
-                signedIn: const TipsPage(),
-                signedOut: const SigninPage()),
-            ComponentDetailsRoute.routeName: (context) => AuthGuard(
-                authStream: _authState.stream,
-                signedIn: const ComponentDetailsRoute(),
-                signedOut: const SigninPage()),
-            BikeDetailsRoute.routeName: (context) => AuthGuard(
-                authStream: _authState.stream,
-                signedIn: const BikeDetailsRoute(),
-                signedOut: const SigninPage()),
+            '/home': (context) => const MemberHomePage(),
+            '/add-bike': (context) => const AddBikePage(),
+            '/profile': (context) => const ProfilePage(),
+            '/tips': (context) => const TipsPage(),
+            ComponentDetailsRoute.routeName: (context) =>
+                const ComponentDetailsRoute(),
+            BikeDetailsRoute.routeName: (context) => const BikeDetailsRoute()
           });
 }

@@ -36,13 +36,14 @@ dependencies:
   cupertino_icons: ^1.0.2
   google_fonts: ^2.1.0
   http: ^0.13.3
-  flutter_secure_storage: ^4.2.1
   http_interceptor: ^1.0.2
   syncfusion_flutter_datepicker: ^19.3.44
   carousel_slider: ^4.0.0
   flip_card: ^0.6.0
   percent_indicator: ^3.4.0
   flutter_guards: ^0.0.2
+  shared_preferences: ^2.0.12
+  cached_network_image: ^3.2.0
 
 dev_dependencies:
   flutter_test:

@@ -1,8 +1,13 @@
+import 'dart:async';
+
 import 'package:bike_life/constants.dart';
+import 'package:bike_life/utils/storage.dart';
+import 'package:bike_life/views/auth/signin.dart';
 import 'package:bike_life/views/member/all_bikes.dart';
 import 'package:bike_life/views/member/tips.dart';
 import 'package:bike_life/views/styles/general.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_guards/flutter_guards.dart';
 
 class MemberHomePage extends StatefulWidget {
   const MemberHomePage({Key? key}) : super(key: key);
@@ -14,11 +19,18 @@ class MemberHomePage extends StatefulWidget {
 class _MemberHomePageState extends State<MemberHomePage> {
   int _pageIndex = 0;
   late PageController _pageController;
+  final StreamController<bool> _authState = StreamController();
 
   @override
   void initState() {
     super.initState();
     _pageController = PageController(initialPage: _pageIndex);
+    _checkIfLogged();
+  }
+
+  void _checkIfLogged() async {
+    int memberId = await Storage.getMemberId();
+    memberId != -1 ? _authState.add(true) : _authState.add(false);
   }
 
   @override
@@ -28,14 +40,16 @@ class _MemberHomePageState extends State<MemberHomePage> {
   }
 
   @override
-  Widget build(BuildContext context) =>
-      LayoutBuilder(builder: (context, constraints) {
+  Widget build(BuildContext context) => AuthGuard(
+      authStream: _authState.stream,
+      signedIn: LayoutBuilder(builder: (context, constraints) {
         if (constraints.maxWidth > maxSize) {
           return narrowLayout();
         } else {
           return wideLayout();
         }
-      });
+      }),
+      signedOut: const SigninPage());
 
   Widget narrowLayout() => Padding(
       padding: const EdgeInsets.symmetric(horizontal: maxPadding),
@@ -48,6 +62,8 @@ class _MemberHomePageState extends State<MemberHomePage> {
         controller: _pageController,
       ),
       bottomNavigationBar: BottomNavigationBar(
+        showSelectedLabels: false,
+        showUnselectedLabels: false,
         currentIndex: _pageIndex,
         onTap: _onTabTapped,
         backgroundColor: mainColor,
