@@ -18,7 +18,7 @@ class MemberRepository {
 
     if (response.statusCode == httpCodeOk) {
       Storage.setString('jwt', jsonResponse['accessToken']);
-      Storage.setInt('id', int.parse(jsonResponse['member']['id']));
+      Storage.setInt('id', jsonResponse['member']['id']);
     }
     return [response.statusCode == httpCodeOk, jsonResponse];
   }

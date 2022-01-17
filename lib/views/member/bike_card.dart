@@ -29,9 +29,7 @@ class _BikeCardState extends State<BikeCard> {
   @override
   void initState() {
     super.initState();
-    setState(() {
-      _loadComponents();
-    });
+    _loadComponents();
   }
 
   @override
@@ -43,22 +41,24 @@ class _BikeCardState extends State<BikeCard> {
         await _bikeRepository.getComponents(widget.bike.id);
 
     if (jsonComponents != null) {
-      _components = [
-        Component.fromJson(jsonComponents, 'frame', 'Cadre'),
-        Component.fromJson(jsonComponents, 'fork', 'Fourche'),
-        Component.fromJson(jsonComponents, 'string', 'Chaîne'),
-        Component.fromJson(
-            jsonComponents, 'air_chamber_forward', 'Chambre à air avant'),
-        Component.fromJson(
-            jsonComponents, 'air_chamber_backward', 'Chambre à air arrière'),
-        Component.fromJson(jsonComponents, 'brake_forward', 'Frein avant'),
-        Component.fromJson(jsonComponents, 'brake_backward', 'Frein arrière'),
-        Component.fromJson(jsonComponents, 'tire_forward', 'Pneu avant'),
-        Component.fromJson(jsonComponents, 'tire_backward', 'Pneu arrière'),
-        Component.fromJson(jsonComponents, 'transmission', 'Transmission'),
-        Component.fromJson(jsonComponents, 'wheel_forward', 'Roue avant'),
-        Component.fromJson(jsonComponents, 'wheel_backward', 'Roue arrière')
-      ];
+      setState(() {
+        _components = [
+          Component.fromJson(jsonComponents, 'frame', 'Cadre'),
+          Component.fromJson(jsonComponents, 'fork', 'Fourche'),
+          Component.fromJson(jsonComponents, 'string', 'Chaîne'),
+          Component.fromJson(
+              jsonComponents, 'air_chamber_forward', 'Chambre à air avant'),
+          Component.fromJson(
+              jsonComponents, 'air_chamber_backward', 'Chambre à air arrière'),
+          Component.fromJson(jsonComponents, 'brake_forward', 'Frein avant'),
+          Component.fromJson(jsonComponents, 'brake_backward', 'Frein arrière'),
+          Component.fromJson(jsonComponents, 'tire_forward', 'Pneu avant'),
+          Component.fromJson(jsonComponents, 'tire_backward', 'Pneu arrière'),
+          Component.fromJson(jsonComponents, 'transmission', 'Transmission'),
+          Component.fromJson(jsonComponents, 'wheel_forward', 'Roue avant'),
+          Component.fromJson(jsonComponents, 'wheel_backward', 'Roue arrière')
+        ];
+      });
     }
   }
 
@@ -68,8 +68,12 @@ class _BikeCardState extends State<BikeCard> {
         CachedNetworkImage(
             imageUrl: bike.image,
             progressIndicatorBuilder: (context, url, downloadProgress) =>
-                CircularProgressIndicator(value: downloadProgress.progress),
-            errorWidget: (context, url, error) => const Icon(Icons.error)),
+                CircularProgressIndicator(
+                    value: downloadProgress.progress, color: mainColor),
+            errorWidget: (context, url, error) => const Icon(
+                  Icons.error,
+                  color: Colors.red,
+                )),
         Center(
             child: Padding(
                 child: Text(bike.name, style: secondTextStyle),
@@ -107,7 +111,6 @@ class _BikeCardState extends State<BikeCard> {
                 padding: 0.0),
             for (Component component in _components)
               AppPercentBar(component: component)
-            // TODO: intermediate color (orange)
           ]));
 
   void _onBikeDetailsClick() =>
