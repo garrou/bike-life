@@ -11,6 +11,7 @@ import 'package:bike_life/views/widgets/card.dart';
 import 'package:bike_life/views/widgets/flip.dart';
 import 'package:bike_life/views/widgets/percent_bar.dart';
 import 'package:bike_life/views/widgets/top_right_button.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
 class BikeCard extends StatefulWidget {
@@ -64,7 +65,15 @@ class _BikeCardState extends State<BikeCard> {
   Widget _buildFrontCard(Bike bike) => AppCard(
       child:
           ListView(padding: const EdgeInsets.all(thirdSize), children: <Widget>[
-        Image.network(bike.image, fit: BoxFit.cover),
+        CachedNetworkImage(
+            imageUrl: bike.image,
+            progressIndicatorBuilder: (context, url, downloadProgress) =>
+                CircularProgressIndicator(
+                    value: downloadProgress.progress, color: mainColor),
+            errorWidget: (context, url, error) => const Icon(
+                  Icons.error,
+                  color: Colors.red,
+                )),
         Center(
             child: Padding(
                 child: Text(bike.name, style: secondTextStyle),
@@ -97,7 +106,9 @@ class _BikeCardState extends State<BikeCard> {
           padding: const EdgeInsets.symmetric(horizontal: thirdSize),
           children: <Widget>[
             AppTopRightButton(
-                callback: _onBikeDetailsClick, icon: Icons.info, padding: 0.0),
+                callback: _onBikeDetailsClick,
+                icon: Icons.settings,
+                padding: 0.0),
             for (Component component in _components)
               AppPercentBar(component: component)
           ]));

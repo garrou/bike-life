@@ -46,6 +46,7 @@ class _UpdateBikeFormState extends State<UpdateBikeForm> {
       key: _keyForm,
       child: Column(children: <Widget>[
         AppTextField(
+            keyboardType: TextInputType.text,
             focusNode: _nameFocus,
             textfieldController: _name,
             validator: fieldValidator,
@@ -53,6 +54,7 @@ class _UpdateBikeFormState extends State<UpdateBikeForm> {
             label: 'Nom du vélo',
             icon: Icons.pedal_bike),
         AppTextField(
+            keyboardType: TextInputType.text,
             focusNode: _imageFocus,
             textfieldController: _image,
             validator: fieldValidator,
@@ -60,6 +62,7 @@ class _UpdateBikeFormState extends State<UpdateBikeForm> {
             label: 'Image du vélo',
             icon: Icons.image),
         AppTextField(
+            keyboardType: TextInputType.number,
             focusNode: _nbKmFocus,
             textfieldController: _nbKm,
             validator: kmValidator,
@@ -73,7 +76,7 @@ class _UpdateBikeFormState extends State<UpdateBikeForm> {
   void _onUpdateBike() {
     if (_keyForm.currentState!.validate()) {
       _keyForm.currentState!.save();
-      _updateBike(_name.text, _image.text, _nbKm.text, _dateOfPurchase);
+      _updateBike(_name.text, _image.text, _dateOfPurchase, _nbKm.text);
     }
   }
 
@@ -85,10 +88,11 @@ class _UpdateBikeFormState extends State<UpdateBikeForm> {
     dynamic jsonResponse = response[1];
 
     if (isUpdated) {
-      Navigator.of(context).pop();
+      Navigator.pushNamedAndRemoveUntil(
+          context, '/home', (Route<dynamic> route) => false);
     }
-    ScaffoldMessenger.of(context)
-        .showSnackBar(SnackBar(content: Text(jsonResponse['confirm'])));
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text(jsonResponse['confirm']), backgroundColor: mainColor));
   }
 
   void _onDateChanged(DateRangePickerSelectionChangedArgs args) {

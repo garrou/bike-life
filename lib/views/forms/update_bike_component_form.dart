@@ -47,6 +47,7 @@ class _UpdateBikeComponentFormState extends State<UpdateBikeComponentForm> {
           child: Column(children: <Widget>[
             Text('Modifier', style: secondTextStyle),
             AppTextField(
+                keyboardType: TextInputType.text,
                 focusNode: _brandFocus,
                 textfieldController: _brand,
                 validator: emptyValidator,
@@ -54,6 +55,7 @@ class _UpdateBikeComponentFormState extends State<UpdateBikeComponentForm> {
                 label: 'Marque',
                 icon: Icons.branding_watermark),
             AppTextField(
+                keyboardType: TextInputType.number,
                 focusNode: _kmFocus,
                 textfieldController: _km,
                 validator: kmValidator,
@@ -61,6 +63,7 @@ class _UpdateBikeComponentFormState extends State<UpdateBikeComponentForm> {
                 label: 'Kilomètres',
                 icon: Icons.add_road),
             AppTextField(
+                keyboardType: TextInputType.number,
                 focusNode: _durationFocus,
                 textfieldController: _duration,
                 validator: kmValidator,

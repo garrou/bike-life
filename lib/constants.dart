@@ -1,5 +1,7 @@
-// const String endpoint = "http://localhost:8100";
-const String endpoint = "http://10.0.2.2:8100";
+import 'package:flutter/foundation.dart' show kIsWeb;
+
+const String endpoint =
+    kIsWeb ? "http://localhost:8100" : "http://10.0.2.2:8100";
 
 const String title = "Bike's life";
 const String quote = "La santé de votre vélo se surveille de près.";
@@ -16,12 +18,10 @@ const double maxSize = 600.0;
 
 const double mainSize = 30.0;
 const double secondSize = 20.0;
-const double intermediateSize = 15.0;
+const double intermediateSize = 18.0;
 const double thirdSize = 10.0;
 
 const int minPasswordSize = 8;
-
-const int limitDuration = 250;
 
 const int httpCodeOk = 200;
 const int httpCodeCreated = 201;

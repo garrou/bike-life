@@ -1,7 +1,7 @@
 import 'package:bike_life/constants.dart';
 import 'package:bike_life/models/bike.dart';
 import 'package:bike_life/repositories/bike_repository.dart';
-import 'package:bike_life/utils/helper.dart';
+import 'package:bike_life/utils/storage.dart';
 import 'package:bike_life/views/member/bike_card.dart';
 import 'package:bike_life/views/styles/general.dart';
 import 'package:bike_life/views/widgets/top_right_button.dart';
@@ -27,10 +27,15 @@ class _AllBikesPageState extends State<AllBikesPage> {
     _load();
   }
 
+  Future _load() async {
+    await _getMemberId();
+    await _loadBikes();
+  }
+
   Future _getMemberId() async {
-    String? id = await Helper.getMemberId();
+    int id = await Storage.getMemberId();
     setState(() {
-      _memberId = id != null ? int.parse(id) : 0;
+      _memberId = id;
     });
   }
 
@@ -41,11 +46,6 @@ class _AllBikesPageState extends State<AllBikesPage> {
     setState(() {
       _cards.add(_buildAddBikeCard());
     });
-  }
-
-  Future _load() async {
-    await _getMemberId();
-    await _loadBikes();
   }
 
   @override
