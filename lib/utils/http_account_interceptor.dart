@@ -1,18 +1,14 @@
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:bike_life/utils/storage.dart';
 import 'package:http_interceptor/http_interceptor.dart';
 
 class HttpAccountInterceptor implements InterceptorContract {
-  final storage = const FlutterSecureStorage();
-
   @override
   Future<RequestData> interceptRequest({required RequestData data}) async {
-    String? accessToken = await storage.read(key: 'jwt');
+    String? accessToken = await Storage.getToken();
 
     data.headers['Content-Type'] = 'application/json; charset=UTF-8';
-
-    if (accessToken != null) {
-      data.headers['authorization'] = 'Bearer $accessToken';
-    }
+    data.headers['authorization'] = 'Bearer $accessToken';
+    data.headers['Content-Type'] = 'application/json; charset=UTF-8';
     return data;
   }
 

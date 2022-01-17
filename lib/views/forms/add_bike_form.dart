@@ -1,6 +1,6 @@
 import 'package:bike_life/constants.dart';
 import 'package:bike_life/repositories/bike_repository.dart';
-import 'package:bike_life/utils/helper.dart';
+import 'package:bike_life/utils/storage.dart';
 import 'package:bike_life/utils/validator.dart';
 import 'package:bike_life/views/styles/general.dart';
 import 'package:bike_life/views/widgets/button.dart';
@@ -81,8 +81,7 @@ class _AddBikeFormState extends State<AddBikeForm> {
       ]));
 
   void _getMemberId() async {
-    String? id = await Helper.getMemberId();
-    _memberId = id != null ? int.parse(id) : 0;
+    _memberId = await Storage.getMemberId();
   }
 
   void _onAddBike() {

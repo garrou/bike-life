@@ -1,5 +1,5 @@
 import 'package:bike_life/constants.dart';
-import 'package:bike_life/utils/helper.dart';
+import 'package:bike_life/utils/storage.dart';
 import 'package:bike_life/views/member/update_auth.dart';
 import 'package:bike_life/views/styles/general.dart';
 import 'package:bike_life/views/widgets/button.dart';
@@ -47,7 +47,7 @@ class _ProfilePageState extends State<ProfilePage> {
       ]);
 
   void _onDisconnect() {
-    Helper.disconnect();
+    Storage.disconnect();
     Navigator.pushNamed(context, '/login');
   }
 }

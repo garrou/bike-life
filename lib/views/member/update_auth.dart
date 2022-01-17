@@ -1,5 +1,6 @@
 import 'package:bike_life/constants.dart';
-import 'package:bike_life/utils/helper.dart';
+import 'package:bike_life/repositories/member_repository.dart';
+import 'package:bike_life/utils/storage.dart';
 import 'package:bike_life/utils/validator.dart';
 import 'package:bike_life/views/styles/general.dart';
 import 'package:bike_life/views/widgets/button.dart';
@@ -24,12 +25,11 @@ class _UpdateAccountPageState extends State<UpdateAccountPage> {
   final _passwordFocus = FocusNode();
   final _password = TextEditingController();
 
-  late int _memberId;
+  final MemberRepository _memberRepository = MemberRepository();
 
   @override
   void initState() {
     super.initState();
-    _getMemberId();
   }
 
   @override
@@ -81,12 +81,11 @@ class _UpdateAccountPageState extends State<UpdateAccountPage> {
   void _onUpdate() {
     if (_keyForm.currentState!.validate()) {
       _keyForm.currentState!.save();
-      // TODO: Update profile
+      _updateAuth(_email.text, _password.text);
     }
   }
 
-  void _getMemberId() async {
-    String? id = await Helper.getMemberId();
-    _memberId = id != null ? int.parse(id) : 0;
+  void _updateAuth(String email, String password) async {
+    int id = await Storage.getMemberId();
   }
 }

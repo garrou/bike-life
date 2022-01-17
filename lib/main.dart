@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:bike_life/constants.dart';
 import 'package:bike_life/routes/bike_details_route.dart';
 import 'package:bike_life/routes/component_details_route.dart';
-import 'package:bike_life/utils/helper.dart';
+import 'package:bike_life/utils/storage.dart';
 import 'package:bike_life/views/auth/signin.dart';
 import 'package:bike_life/views/auth/signup.dart';
 import 'package:bike_life/views/member/add_bike.dart';
@@ -37,13 +37,8 @@ class _AppState extends State<App> {
   }
 
   void _checkIfLogged() async {
-    String? memberId = await Helper.getMemberId();
-
-    if (memberId != null) {
-      int.parse(memberId) > 0 ? _authState.add(true) : _authState.add(false);
-    } else {
-      _authState.add(false);
-    }
+    int memberId = await Storage.getMemberId();
+    memberId != -1 ? _authState.add(true) : _authState.add(false);
   }
 
   @override
