@@ -140,7 +140,7 @@ class _AddBikeFormState extends State<AddBikeForm> {
   void _addBike(
       String name, String image, String dateOfPurchase, String nbKm) async {
     List<dynamic> response = await _bikeRepository.addBike(
-        _memberId, name, image, dateOfPurchase, int.parse(nbKm));
+        _memberId, name, image, dateOfPurchase, double.parse(nbKm));
 
     if (response[0]) {
       Navigator.pushNamed(context, '/home');

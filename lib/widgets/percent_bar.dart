@@ -29,7 +29,7 @@ class AppPercentBar extends StatelessWidget {
           style: whiteThirdTextStyle),
       lineHeight: mainSize,
       linearStrokeCap: LinearStrokeCap.roundAll,
-      percent: (component.km / component.duration) > 1
+      percent: (component.km / component.duration) > 1.0
           ? 1.0
           : (component.km / component.duration),
       backgroundColor: Colors.grey,

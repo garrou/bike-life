@@ -161,17 +161,13 @@ class _AddKmFormState extends State<AddKmForm> {
   void _onAddKm(String newKm) {
     if (_keyForm.currentState!.validate()) {
       _keyForm.currentState!.save();
-      _addKm(int.parse(_km.text));
+      _addKm(double.parse(_km.text));
     }
   }
 
-  void _addKm(int newKm) async {
-    List<dynamic> response = await _bikeRepository.updateBike(Bike(
-        widget.bike.id,
-        widget.bike.name,
-        widget.bike.image,
-        widget.bike.nbKm + newKm,
-        widget.bike.dateOfPurchase));
+  void _addKm(double toAdd) async {
+    List<dynamic> response =
+        await _bikeRepository.updateBikeKm(widget.bike.id, toAdd);
     Color responseColor = mainColor;
 
     if (response[0]) {

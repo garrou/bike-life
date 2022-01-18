@@ -72,7 +72,8 @@ class _BikeDetailsPageState extends State<BikeDetailsPage> {
     Color responseColor = mainColor;
 
     if (response[0]) {
-      Navigator.pushNamed(context, '/tips');
+      Navigator.pushNamedAndRemoveUntil(
+          context, '/home', (Route<dynamic> route) => false);
     } else {
       responseColor = errorColor;
     }
@@ -156,7 +157,7 @@ class _UpdateBikeFormState extends State<UpdateBikeForm> {
   void _updateBike(
       String name, String image, String dateOfPurchase, String nbKm) async {
     List<dynamic> response = await _bikeRepository.updateBike(
-        Bike(widget.bike.id, name, image, int.parse(nbKm), dateOfPurchase));
+        Bike(widget.bike.id, name, image, double.parse(nbKm), dateOfPurchase));
     Color responseColor = mainColor;
 
     if (response[0]) {

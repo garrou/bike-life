@@ -112,8 +112,6 @@ class _SigninFormState extends State<SigninForm> {
   void _authUser(String email, String password) async {
     List<dynamic> response = await _memberRepository.login(email, password);
 
-    print(response);
-
     if (response[0]) {
       Navigator.pushNamedAndRemoveUntil(
           context, '/home', (Route<dynamic> route) => false);

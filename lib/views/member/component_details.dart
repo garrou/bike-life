@@ -150,11 +150,12 @@ class _UpdateBikeComponentFormState extends State<UpdateBikeComponentForm> {
     if (_keyForm.currentState!.validate()) {
       _keyForm.currentState!.save();
       _updateComponent(
-          _brand.text, int.parse(_km.text), int.parse(_duration.text));
+          _brand.text, double.parse(_km.text), double.parse(_duration.text));
     }
   }
 
-  void _updateComponent(String newBrand, int newKm, int newDuration) async {
+  void _updateComponent(
+      String newBrand, double newKm, double newDuration) async {
     List<dynamic> response = await _bikeRepository.updateComponent(Component(
         widget.component.label,
         widget.component.field,

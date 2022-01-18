@@ -21,8 +21,8 @@ String? fieldValidator(String? value) {
 String? kmValidator(String? value) {
   if (value == null ||
       value.isEmpty ||
-      int.tryParse(value) == null ||
-      int.tryParse(value)! < 0) {
+      double.tryParse(value) == null ||
+      double.tryParse(value)! < 0) {
     return 'Saisie invalide';
   }
 }
