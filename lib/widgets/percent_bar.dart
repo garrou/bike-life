@@ -1,8 +1,8 @@
-import 'package:bike_life/constants.dart';
+import 'package:bike_life/utils/constants.dart';
 import 'package:bike_life/models/component.dart';
 import 'package:bike_life/views/member/component_details.dart';
-import 'package:bike_life/views/styles/general.dart';
-import 'package:bike_life/views/widgets/link_page.dart';
+import 'package:bike_life/styles/general.dart';
+import 'package:bike_life/widgets/link_page.dart';
 import 'package:flutter/material.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
 

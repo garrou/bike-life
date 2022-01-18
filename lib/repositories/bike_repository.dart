@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:bike_life/constants.dart';
+import 'package:bike_life/utils/constants.dart';
 import 'package:bike_life/models/bike.dart';
 import 'package:bike_life/models/component.dart';
 import 'package:bike_life/utils/http_account_interceptor.dart';

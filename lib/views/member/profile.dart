@@ -1,13 +1,14 @@
 import 'dart:async';
 
-import 'package:bike_life/constants.dart';
+import 'package:bike_life/utils/constants.dart';
+import 'package:bike_life/utils/guard_helper.dart';
 import 'package:bike_life/utils/storage.dart';
 import 'package:bike_life/views/auth/signin.dart';
 import 'package:bike_life/views/member/update_auth.dart';
-import 'package:bike_life/views/styles/general.dart';
-import 'package:bike_life/views/widgets/button.dart';
-import 'package:bike_life/views/widgets/link_page.dart';
-import 'package:bike_life/views/widgets/top_left_button.dart';
+import 'package:bike_life/styles/general.dart';
+import 'package:bike_life/widgets/button.dart';
+import 'package:bike_life/widgets/link_page.dart';
+import 'package:bike_life/widgets/top_left_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_guards/flutter_guards.dart';
 
@@ -24,12 +25,7 @@ class _ProfilePageState extends State<ProfilePage> {
   @override
   void initState() {
     super.initState();
-    _checkIfLogged();
-  }
-
-  void _checkIfLogged() async {
-    int memberId = await Storage.getMemberId();
-    memberId != -1 ? _authState.add(true) : _authState.add(false);
+    GuardHelper.checkIfLogged(_authState);
   }
 
   @override

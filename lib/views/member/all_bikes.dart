@@ -1,11 +1,11 @@
-import 'package:bike_life/constants.dart';
+import 'package:bike_life/utils/constants.dart';
 import 'package:bike_life/models/bike.dart';
 import 'package:bike_life/repositories/bike_repository.dart';
 import 'package:bike_life/utils/storage.dart';
 import 'package:bike_life/views/member/bike_card.dart';
-import 'package:bike_life/views/styles/general.dart';
-import 'package:bike_life/views/widgets/top_right_button.dart';
-import 'package:bike_life/views/widgets/card.dart';
+import 'package:bike_life/styles/general.dart';
+import 'package:bike_life/widgets/top_right_button.dart';
+import 'package:bike_life/widgets/card.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 

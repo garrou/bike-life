@@ -26,10 +26,8 @@ flutter config --enable-macos-desktop
 flutter config --enable-linux-desktop
 ```
 
-## Run
-
-- Run in chrome     
+## Run     
 
 ```sh
-flutter run -d chrome --web-renderer html
+flutter run 
 ```

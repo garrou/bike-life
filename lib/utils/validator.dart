@@ -1,4 +1,4 @@
-import 'package:bike_life/constants.dart';
+import 'package:bike_life/utils/constants.dart';
 
 String? passwordValidator(String? value) {
   if (value == null || value.isEmpty || value.length < minPasswordSize) {

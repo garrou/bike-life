@@ -1,9 +1,9 @@
 import 'dart:async';
 
-import 'package:bike_life/constants.dart';
-import 'package:bike_life/utils/storage.dart';
+import 'package:bike_life/utils/constants.dart';
+import 'package:bike_life/utils/guard_helper.dart';
 import 'package:bike_life/views/auth/signin.dart';
-import 'package:bike_life/views/widgets/title.dart';
+import 'package:bike_life/widgets/title.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_guards/flutter_guards.dart';
 
@@ -20,12 +20,7 @@ class _TipsPageState extends State<TipsPage> {
   @override
   void initState() {
     super.initState();
-    _checkIfLogged();
-  }
-
-  void _checkIfLogged() async {
-    int memberId = await Storage.getMemberId();
-    memberId != -1 ? _authState.add(true) : _authState.add(false);
+    GuardHelper.checkIfLogged(_authState);
   }
 
   @override

@@ -1,4 +1,4 @@
-import 'package:bike_life/constants.dart';
+import 'package:bike_life/utils/constants.dart';
 import 'package:flutter/material.dart';
 
 ButtonStyle roundedButtonStyle(Color colorToSet) => ButtonStyle(
