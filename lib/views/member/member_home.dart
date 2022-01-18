@@ -47,7 +47,7 @@ class _MemberHomePageState extends State<MemberHomePage> {
       signedOut: const SigninPage());
 
   Widget narrowLayout() => Padding(
-      padding: const EdgeInsets.symmetric(horizontal: maxPadding),
+      padding: EdgeInsets.symmetric(horizontal: maxPadding),
       child: wideLayout());
 
   Widget wideLayout() => Scaffold(

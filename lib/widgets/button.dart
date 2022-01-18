@@ -22,7 +22,7 @@ class AppButton extends StatelessWidget {
           width: buttonWidth,
           child: ElevatedButton(
             onPressed: callback,
-            child: Text(text, style: secondTextStyle),
+            child: Text(text, style: thirdTextStyle),
             style: roundedButtonStyle(color),
           )));
 }

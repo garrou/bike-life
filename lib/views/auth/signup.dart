@@ -56,7 +56,7 @@ class _SignupPageState extends State<SignupPage> {
       ])));
 
   Padding narrowLayout() => Padding(
-      padding: const EdgeInsets.symmetric(horizontal: maxPadding),
+      padding: EdgeInsets.symmetric(horizontal: maxPadding),
       child: wideLayout());
 }
 

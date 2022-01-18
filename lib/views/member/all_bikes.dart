@@ -41,8 +41,9 @@ class _AllBikesPageState extends State<AllBikesPage> {
 
   Future _loadBikes() async {
     dynamic jsonBikes = await _bikeRepository.getBikes(_memberId);
-    List<Bike> _bikes = createSeveralBikes(jsonBikes['bikes']);
-    Future.wait(_bikes.map((bike) async => _cards.add(BikeCard(bike: bike))));
+    List<Bike> bikes = createSeveralBikes(jsonBikes['bikes']);
+    Future.wait(bikes.map((bike) async => _cards.add(BikeCard(bike: bike))));
+
     setState(() {
       _cards.add(_buildAddBikeCard());
     });
@@ -54,12 +55,13 @@ class _AllBikesPageState extends State<AllBikesPage> {
             callback: () => Navigator.pushNamed(context, '/profile'),
             icon: Icons.person,
             padding: thirdSize),
-        Center(child: _buildCarousel())
+        _buildCarousel()
       ]);
 
   Widget _buildCarousel() => CarouselSlider.builder(
       options: CarouselOptions(
-          height: MediaQuery.of(context).size.height - ratio,
+          enlargeCenterPage: true,
+          height: MediaQuery.of(context).size.height - maxPadding,
           enableInfiniteScroll: false),
       itemCount: _cards.length,
       itemBuilder: (BuildContext context, int index, int realIndex) =>

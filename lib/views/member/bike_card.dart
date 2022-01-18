@@ -67,19 +67,20 @@ class _BikeCardState extends State<BikeCard> {
   Widget _buildFrontCard(Bike bike) => AppCard(
       child:
           ListView(padding: const EdgeInsets.all(thirdSize), children: <Widget>[
-        CachedNetworkImage(
-            imageUrl: bike.image,
-            progressIndicatorBuilder: (context, url, downloadProgress) =>
-                CircularProgressIndicator(
-                    value: downloadProgress.progress, color: mainColor),
-            errorWidget: (context, url, error) => const Icon(
-                  Icons.error,
-                  color: Colors.red,
-                )),
-        Center(
-            child: Padding(
-                child: Text(bike.name, style: secondTextStyle),
-                padding: const EdgeInsets.symmetric(vertical: thirdSize))),
+        ClipRRect(
+            borderRadius: BorderRadius.circular(mainSize),
+            child: CachedNetworkImage(
+                height: 250.0,
+                width: 300.0,
+                imageUrl: bike.image,
+                progressIndicatorBuilder: (context, url, downloadProgress) =>
+                    CircularProgressIndicator(
+                        value: downloadProgress.progress, color: mainColor),
+                errorWidget: (context, url, error) => const Icon(
+                      Icons.error,
+                      color: Colors.red,
+                    ))),
+        Center(child: Text(bike.name, style: secondTextStyle)),
         Padding(
             child: Text('Distance parcourue', style: boldSubTitleStyle),
             padding: const EdgeInsets.only(top: thirdSize)),

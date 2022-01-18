@@ -44,7 +44,7 @@ class _ComponentDetailPageState extends State<ComponentDetailPage> {
       signedOut: const SigninPage());
 
   Widget narrowLayout() => Padding(
-      padding: const EdgeInsets.symmetric(horizontal: maxPadding),
+      padding: EdgeInsets.symmetric(horizontal: maxPadding),
       child: wideLayout());
 
   Widget wideLayout() => Padding(

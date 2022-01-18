@@ -61,11 +61,12 @@ class _IntroPageState extends State<IntroPage> {
       dotsDecorator: const DotsDecorator(
         size: Size(secondSize, secondSize),
         color: mainColor,
-        activeColor: secondColor,
+        activeColor: mainColor,
         activeSize: Size(mainSize, secondSize),
         activeShape: RoundedRectangleBorder(
           borderRadius: BorderRadius.all(Radius.circular(mainSize)),
         ),
       ),
-      onDone: () => _onIntroEnd(context));
+      onDone: () => _onIntroEnd(context),
+      onSkip: () => _onIntroEnd(context));
 }

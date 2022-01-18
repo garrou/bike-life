@@ -14,8 +14,6 @@ class AppCard extends StatelessWidget {
       shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(mainSize),
           side: const BorderSide(color: mainColor)),
-      elevation: elevation,
-      child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: mainSize),
-          child: child));
+      elevation: 0,
+      child: child);
 }

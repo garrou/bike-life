@@ -59,12 +59,11 @@ class _BikeDetailsPageState extends State<BikeDetailsPage> {
                   callback: () {}, icon: Icons.help, padding: secondSize)
             ]),
         UpdateBikeForm(bike: widget.bike),
-        const Divider(color: Colors.black),
-        AppButton(text: 'Supprimer', callback: _onDeleteBike, color: errorColor)
+        AppButton(text: 'Supprimer', callback: _showDialog, color: errorColor)
       ]));
 
   Widget narrowLayout() => Padding(
-      padding: const EdgeInsets.symmetric(horizontal: maxPadding),
+      padding: EdgeInsets.symmetric(horizontal: maxPadding),
       child: wideLayout());
 
   void _onDeleteBike() async {
@@ -79,6 +78,36 @@ class _BikeDetailsPageState extends State<BikeDetailsPage> {
     }
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
         content: Text(response[1]['confirm']), backgroundColor: responseColor));
+  }
+
+  Future<void> _showDialog() async {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(secondSize)),
+          title: const Text('Supprimer ce vélo ?'),
+          actions: <Widget>[
+            TextButton(
+              child:
+                  const Text('Confirmer', style: TextStyle(color: mainColor)),
+              onPressed: () {
+                _onDeleteBike();
+                Navigator.pushNamedAndRemoveUntil(
+                    context, '/home', (route) => false);
+              },
+            ),
+            TextButton(
+              child: const Text('Annuler', style: TextStyle(color: mainColor)),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
   }
 }
 
