@@ -41,7 +41,7 @@ class _HomePageState extends State<HomePage> {
           })));
 
   Padding narrowLayout() => Padding(
-      padding: EdgeInsets.symmetric(horizontal: maxPadding),
+      padding: const EdgeInsets.symmetric(horizontal: maxPadding),
       child: wideLayout());
 
   Column wideLayout() => Column(

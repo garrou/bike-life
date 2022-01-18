@@ -15,11 +15,7 @@ const double buttonHeight = 40.0;
 
 const double imageSize = 500.0;
 
-double maxPadding = [TargetPlatform.android, TargetPlatform.iOS]
-            .contains(defaultTargetPlatform) ||
-        kIsWeb
-    ? 150.0
-    : 20.0;
+const double maxPadding = 150.0;
 const double maxSize = 600.0;
 
 const double mainSize = 30.0;

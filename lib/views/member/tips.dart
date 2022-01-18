@@ -36,7 +36,7 @@ class _TipsPageState extends State<TipsPage> {
       signedOut: const SigninPage());
 
   Widget narrowLayout() => Padding(
-      padding: EdgeInsets.symmetric(horizontal: maxPadding),
+      padding: const EdgeInsets.symmetric(horizontal: maxPadding),
       child: wideLayout());
 
   Widget wideLayout() => Column(

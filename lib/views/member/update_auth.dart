@@ -29,7 +29,7 @@ class _UpdateAccountPageState extends State<UpdateAccountPage> {
       }));
 
   Widget narrowLayout() => Padding(
-      padding: EdgeInsets.symmetric(horizontal: maxPadding),
+      padding: const EdgeInsets.symmetric(horizontal: maxPadding),
       child: wideLayout());
 
   Widget wideLayout() => Column(

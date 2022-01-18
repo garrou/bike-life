@@ -17,9 +17,11 @@ class AllBikesPage extends StatefulWidget {
 }
 
 class _AllBikesPageState extends State<AllBikesPage> {
+  final CarouselController _carouselController = CarouselController();
   final BikeRepository _bikeRepository = BikeRepository();
   final List<Widget> _cards = [];
   late int _memberId;
+  int _current = 0;
 
   @override
   void initState() {
@@ -50,7 +52,7 @@ class _AllBikesPageState extends State<AllBikesPage> {
   }
 
   @override
-  Widget build(BuildContext context) => ListView(children: <Widget>[
+  Widget build(BuildContext context) => Column(children: <Widget>[
         AppTopRightButton(
             callback: () => Navigator.pushNamed(context, '/profile'),
             icon: Icons.person,
@@ -58,14 +60,41 @@ class _AllBikesPageState extends State<AllBikesPage> {
         _buildCarousel()
       ]);
 
-  Widget _buildCarousel() => CarouselSlider.builder(
-      options: CarouselOptions(
-          enlargeCenterPage: true,
-          height: MediaQuery.of(context).size.height - maxPadding,
-          enableInfiniteScroll: false),
-      itemCount: _cards.length,
-      itemBuilder: (BuildContext context, int index, int realIndex) =>
-          _cards.elementAt(index));
+  Widget _buildCarousel() => SingleChildScrollView(
+          child: Column(children: <Widget>[
+        CarouselSlider(
+          items: _cards,
+          carouselController: _carouselController,
+          options: CarouselOptions(
+              enlargeCenterPage: true,
+              height: MediaQuery.of(context).size.height - maxPadding,
+              enableInfiniteScroll: false,
+              onPageChanged: (index, reason) {
+                setState(() {
+                  _current = index;
+                });
+              }),
+        ),
+        Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: _cards.asMap().entries.map((entry) {
+              return GestureDetector(
+                onTap: () => _carouselController.animateToPage(entry.key),
+                child: Container(
+                  width: intermediateSize,
+                  height: intermediateSize,
+                  margin: const EdgeInsets.symmetric(
+                      vertical: thirdSize / 1.5, horizontal: thirdSize / 2),
+                  decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: (Theme.of(context).brightness == Brightness.dark
+                              ? secondColor
+                              : mainColor)
+                          .withOpacity(_current == entry.key ? 0.9 : 0.4)),
+                ),
+              );
+            }).toList())
+      ]));
 
   Widget _buildAddBikeCard() => SizedBox(
       width: double.infinity,

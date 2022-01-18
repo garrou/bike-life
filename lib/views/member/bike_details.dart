@@ -63,7 +63,7 @@ class _BikeDetailsPageState extends State<BikeDetailsPage> {
       ]));
 
   Widget narrowLayout() => Padding(
-      padding: EdgeInsets.symmetric(horizontal: maxPadding),
+      padding: const EdgeInsets.symmetric(horizontal: maxPadding),
       child: wideLayout());
 
   void _onDeleteBike() async {

@@ -46,7 +46,7 @@ class _AddBikePageState extends State<AddBikePage> {
           signedOut: const SigninPage()));
 
   Widget narrowLayout() => Padding(
-      padding: EdgeInsets.symmetric(horizontal: maxPadding),
+      padding: const EdgeInsets.symmetric(horizontal: maxPadding),
       child: wideLayout());
 
   Widget wideLayout() => SingleChildScrollView(

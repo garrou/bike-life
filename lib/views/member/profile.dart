@@ -42,7 +42,7 @@ class _ProfilePageState extends State<ProfilePage> {
           signedOut: const SigninPage()));
 
   Widget narrowLayout() => Padding(
-      padding: EdgeInsets.symmetric(horizontal: maxPadding),
+      padding: const EdgeInsets.symmetric(horizontal: maxPadding),
       child: wideLayout());
 
   Widget wideLayout() =>
