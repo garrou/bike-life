@@ -52,11 +52,11 @@ class _AllBikesPageState extends State<AllBikesPage> {
   }
 
   @override
-  Widget build(BuildContext context) => Column(children: <Widget>[
+  Widget build(BuildContext context) => ListView(children: <Widget>[
         AppTopRightButton(
             callback: () => Navigator.pushNamed(context, '/profile'),
             icon: Icons.person,
-            padding: thirdSize),
+            padding: 0.0),
         _buildCarousel()
       ]);
 
@@ -67,7 +67,7 @@ class _AllBikesPageState extends State<AllBikesPage> {
           carouselController: _carouselController,
           options: CarouselOptions(
               enlargeCenterPage: true,
-              height: MediaQuery.of(context).size.height - maxPadding,
+              height: MediaQuery.of(context).size.height - 200,
               enableInfiniteScroll: false,
               onPageChanged: (index, reason) {
                 setState(() {

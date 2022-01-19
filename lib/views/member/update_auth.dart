@@ -1,4 +1,3 @@
-import 'package:bike_life/models/member.dart';
 import 'package:bike_life/utils/constants.dart';
 import 'package:bike_life/repositories/member_repository.dart';
 import 'package:bike_life/utils/storage.dart';
@@ -54,7 +53,7 @@ class _UpdateAuthFormState extends State<UpdateAuthForm> {
   final _keyForm = GlobalKey<FormState>();
 
   final _emailFocus = FocusNode();
-  late TextEditingController _email;
+  final _email = TextEditingController();
 
   final _passwordFocus = FocusNode();
   final _password = TextEditingController();
@@ -63,25 +62,6 @@ class _UpdateAuthFormState extends State<UpdateAuthForm> {
   final _confirmPass = TextEditingController();
 
   final MemberRepository _memberRepository = MemberRepository();
-  late Member? _member;
-
-  @override
-  void initState() {
-    super.initState();
-    _getMember();
-    setState(() {
-      _email = TextEditingController(text: _member?.email);
-    });
-  }
-
-  void _getMember() async {
-    int id = await Storage.getMemberId();
-    Member? member = await _memberRepository.getMember(id);
-
-    setState(() {
-      _member = member;
-    });
-  }
 
   @override
   Widget build(BuildContext context) => Form(
