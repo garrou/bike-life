@@ -2,7 +2,6 @@ import 'dart:convert';
 
 import 'package:bike_life/utils/constants.dart';
 import 'package:bike_life/models/bike.dart';
-import 'package:bike_life/models/component.dart';
 import 'package:bike_life/utils/http_account_interceptor.dart';
 import 'package:http/http.dart';
 import 'package:http_interceptor/http/http.dart';
@@ -49,20 +48,6 @@ class BikeRepository {
   Future<List<dynamic>> updateBikeKm(int bikeId, double kmToAdd) async {
     Response response = await client.patch(Uri.parse('$endpoint/bikes/$bikeId'),
         body: jsonEncode(<String, dynamic>{'bikeId': bikeId, 'km': kmToAdd}));
-    return [response.statusCode == httpCodeOk, jsonDecode(response.body)];
-  }
-
-  Future<dynamic> getComponents(int bikeId) async {
-    Response response =
-        await client.get(Uri.parse('$endpoint/components/$bikeId'));
-    return jsonDecode(response.body);
-  }
-
-  Future<dynamic> updateComponent(Component component) async {
-    Response response = await client.put(
-        Uri.parse('$endpoint/components/${component.id}'),
-        body:
-            jsonEncode(<String, dynamic>{'component': jsonEncode(component)}));
     return [response.statusCode == httpCodeOk, jsonDecode(response.body)];
   }
 }

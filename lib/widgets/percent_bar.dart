@@ -16,7 +16,7 @@ class AppPercentBar extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          Center(child: Text(component.label, style: thirdTextStyle)),
+          Center(child: Text(component.type, style: thirdTextStyle)),
           AppLinkToPage(
               padding: 0.0,
               child: _buildLinearPercentBar(component),

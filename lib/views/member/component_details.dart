@@ -1,8 +1,8 @@
 import 'dart:async';
 
+import 'package:bike_life/repositories/component_repository.dart';
 import 'package:bike_life/utils/constants.dart';
 import 'package:bike_life/models/component.dart';
-import 'package:bike_life/repositories/bike_repository.dart';
 import 'package:bike_life/utils/guard_helper.dart';
 import 'package:bike_life/utils/validator.dart';
 import 'package:bike_life/views/auth/signin.dart';
@@ -51,7 +51,7 @@ class _ComponentDetailPageState extends State<ComponentDetailPage> {
       padding: const EdgeInsets.symmetric(horizontal: thirdSize),
       child: ListView(children: <Widget>[
         AppTopLeftButton(
-            title: widget.component.label,
+            title: widget.component.type,
             callback: () => Navigator.of(context).pop()),
         _buildComponentsInfo(widget.component),
         const Divider(
@@ -99,7 +99,7 @@ class _UpdateBikeComponentFormState extends State<UpdateBikeComponentForm> {
   final _durationFocus = FocusNode();
   late final TextEditingController _duration;
 
-  final BikeRepository _bikeRepository = BikeRepository();
+  final ComponentRepository _componentRepository = ComponentRepository();
 
   @override
   void initState() {
@@ -149,20 +149,22 @@ class _UpdateBikeComponentFormState extends State<UpdateBikeComponentForm> {
   void _onUpdateComponent() {
     if (_keyForm.currentState!.validate()) {
       _keyForm.currentState!.save();
-      _updateComponent(
-          _brand.text, double.parse(_km.text), double.parse(_duration.text));
+      _updateComponent(_brand.text, double.parse(_km.text),
+          double.parse(_duration.text), 'image', 'date', 'type');
     }
   }
 
-  void _updateComponent(
-      String newBrand, double newKm, double newDuration) async {
-    List<dynamic> response = await _bikeRepository.updateComponent(Component(
-        widget.component.label,
-        widget.component.field,
+  void _updateComponent(String brand, double km, double duration, String image,
+      String date, String type) async {
+    List<dynamic> response = await _componentRepository.update(Component(
         widget.component.id,
-        newBrand,
-        newKm,
-        newDuration));
+        widget.component.bikeId,
+        km,
+        brand,
+        date,
+        duration,
+        image,
+        type));
     Color responseColor = mainColor;
 
     if (response[0]) {

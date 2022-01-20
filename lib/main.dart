@@ -6,6 +6,7 @@ import 'package:bike_life/views/auth/signup.dart';
 import 'package:bike_life/views/home/home.dart';
 import 'package:bike_life/views/home/intro.dart';
 import 'package:bike_life/views/member/add_bike.dart';
+import 'package:bike_life/views/member/add_component.dart';
 import 'package:bike_life/views/member/member_home.dart';
 import 'package:bike_life/views/member/profile.dart';
 import 'package:bike_life/views/member/tips.dart';
@@ -43,6 +44,7 @@ class _AppState extends State<App> {
             '/tips': (context) => const TipsPage(),
             ComponentDetailsRoute.routeName: (context) =>
                 const ComponentDetailsRoute(),
-            BikeDetailsRoute.routeName: (context) => const BikeDetailsRoute()
+            BikeDetailsRoute.routeName: (context) => const BikeDetailsRoute(),
+            '/add-component': (context) => const AddComponentPage()
           });
 }

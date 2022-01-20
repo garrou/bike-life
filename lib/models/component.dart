@@ -1,25 +1,38 @@
 class Component {
-  final String label;
-  final String field;
   final int id;
-  final String? brand;
+  final int bikeId;
   final double km;
+  final String? brand;
+  final String? dateOfPurchase;
   final double duration;
+  final String? image;
+  final String type;
 
-  Component(
-      this.label, this.field, this.id, this.brand, this.km, this.duration);
+  Component(this.id, this.bikeId, this.km, this.brand, this.dateOfPurchase,
+      this.duration, this.image, this.type);
 
-  Component.fromJson(Map<String, dynamic> json, this.field, this.label)
-      : id = json['${field}_id'],
-        brand = json['${field}_brand'],
-        km = double.parse(json['${field}_km']),
-        duration = double.parse(json['${field}_duration']);
+  Component.fromJson(Map<String, dynamic> json)
+      : id = json['component_id'],
+        bikeId = json['bike_id'],
+        km = double.parse(json['nb_km']),
+        duration = double.parse(json['duration']),
+        brand = json['brand'],
+        dateOfPurchase = json['date_of_purchase'],
+        image = json['image'],
+        type = json['component_type'];
 
   Map<String, dynamic> toJson() => {
         'id': id,
-        'brand': brand,
+        'bikeId': bikeId,
         'km': km,
+        'brand': brand,
+        'dateOfPurchase': dateOfPurchase,
         'duration': duration,
-        'detail': field
+        'image': image,
+        'type': type
       };
+}
+
+List<Component> createSeveralComponents(List<dynamic> record) {
+  return record.map((json) => Component.fromJson(json)).toList(growable: false);
 }

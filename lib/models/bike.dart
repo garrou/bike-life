@@ -8,10 +8,10 @@ class Bike {
   Bike(this.id, this.name, this.image, this.nbKm, this.dateOfPurchase);
 
   Bike.fromJson(Map<String, dynamic> json)
-      : id = json['id'],
+      : id = json['bike_id'],
         name = json['name'],
         image = json['image'],
-        nbKm = json['nb_km'],
+        nbKm = double.parse(json['nb_km']),
         dateOfPurchase = json['date_of_purchase'];
 
   Map<String, dynamic> toJson() => {
@@ -24,8 +24,5 @@ class Bike {
 }
 
 List<Bike> createSeveralBikes(List record) {
-  return record
-      .map((bike) => Bike(bike['bike_id'], bike['name'], bike['image'],
-          double.parse(bike['nb_km']), bike['date_of_purchase']))
-      .toList(growable: false);
+  return record.map((json) => Bike.fromJson(json)).toList(growable: false);
 }
