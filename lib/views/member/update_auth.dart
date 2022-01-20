@@ -1,5 +1,5 @@
 import 'package:bike_life/utils/constants.dart';
-import 'package:bike_life/repositories/member_repository.dart';
+import 'package:bike_life/services/member_service.dart';
 import 'package:bike_life/utils/storage.dart';
 import 'package:bike_life/utils/validator.dart';
 import 'package:bike_life/styles/general.dart';
@@ -61,7 +61,7 @@ class _UpdateAuthFormState extends State<UpdateAuthForm> {
   final _confirmPassFocus = FocusNode();
   final _confirmPass = TextEditingController();
 
-  final MemberRepository _memberRepository = MemberRepository();
+  final MemberService _memberService = MemberService();
 
   @override
   Widget build(BuildContext context) => Form(
@@ -110,8 +110,7 @@ class _UpdateAuthFormState extends State<UpdateAuthForm> {
 
   void _updateAuth(String email, String password) async {
     int id = await Storage.getMemberId();
-    List<dynamic> response =
-        await _memberRepository.update(id, email, password);
+    List<dynamic> response = await _memberService.update(id, email, password);
     Color responseColor = mainColor;
 
     if (response[0]) {

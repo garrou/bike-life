@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:bike_life/repositories/member_repository.dart';
+import 'package:bike_life/services/member_service.dart';
 import 'package:bike_life/utils/guard_helper.dart';
 import 'package:bike_life/utils/validator.dart';
 import 'package:bike_life/views/member/member_home.dart';
@@ -79,7 +79,7 @@ class _SignupFormState extends State<SignupForm> {
   final _confirmPasswordFocus = FocusNode();
   final _confirmPassword = TextEditingController();
 
-  final MemberRepository _memberRepository = MemberRepository();
+  final MemberService _memberService = MemberService();
 
   @override
   Widget build(BuildContext context) => Form(
@@ -126,7 +126,7 @@ class _SignupFormState extends State<SignupForm> {
   }
 
   void _createUser(String email, String password) async {
-    List<dynamic> response = await _memberRepository.signup(email, password);
+    List<dynamic> response = await _memberService.signup(email, password);
     Color responseColor = mainColor;
 
     if (response[0]) {

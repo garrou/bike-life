@@ -2,8 +2,8 @@ import 'dart:async';
 
 import 'package:bike_life/models/bike.dart';
 import 'package:bike_life/models/component_type.dart';
-import 'package:bike_life/repositories/component_repository.dart';
-import 'package:bike_life/repositories/component_types_repository.dart';
+import 'package:bike_life/services/component_service.dart';
+import 'package:bike_life/services/component_types_service.dart';
 import 'package:bike_life/styles/general.dart';
 import 'package:bike_life/utils/constants.dart';
 import 'package:bike_life/utils/guard_helper.dart';
@@ -26,8 +26,8 @@ class AddComponentPage extends StatefulWidget {
 }
 
 class _AddComponentPageState extends State<AddComponentPage> {
-  final _componentTypesRepository = ComponentTypesRepository();
-  final _componentRepository = ComponentRepository();
+  final _componentTypesService = ComponentTypesService();
+  final _componentService = ComponentService();
   final StreamController<bool> _authState = StreamController();
   final _keyForm = GlobalKey<FormState>();
 
@@ -55,7 +55,7 @@ class _AddComponentPageState extends State<AddComponentPage> {
   }
 
   void _load() async {
-    dynamic json = await _componentTypesRepository.getTypes();
+    dynamic json = await _componentTypesService.getTypes();
     setState(() {
       _componentTypes = createSeveralComponentTypes(json);
       _dropDownValue = _componentTypes.first.name;
@@ -150,7 +150,7 @@ class _AddComponentPageState extends State<AddComponentPage> {
 
   void _addComponent(String brand, String image, double km, double duration,
       String type, String date) async {
-    List<dynamic> response = await _componentRepository.add(
+    List<dynamic> response = await _componentService.add(
         brand, image, km, duration, type, date, widget.bike.id);
     Color respColor = mainColor;
 

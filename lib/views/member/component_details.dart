@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:bike_life/repositories/component_repository.dart';
+import 'package:bike_life/services/component_service.dart';
 import 'package:bike_life/utils/constants.dart';
 import 'package:bike_life/models/component.dart';
 import 'package:bike_life/utils/guard_helper.dart';
@@ -102,7 +102,7 @@ class _UpdateBikeComponentFormState extends State<UpdateBikeComponentForm> {
   final _durationFocus = FocusNode();
   late final TextEditingController _duration;
 
-  final ComponentRepository _componentRepository = ComponentRepository();
+  final ComponentService _componentService = ComponentService();
 
   @override
   void initState() {
@@ -163,7 +163,7 @@ class _UpdateBikeComponentFormState extends State<UpdateBikeComponentForm> {
 
   void _updateComponent(String brand, double km, double duration, String image,
       String date, String type) async {
-    List<dynamic> response = await _componentRepository.update(Component(
+    List<dynamic> response = await _componentService.update(Component(
         widget.component.id,
         widget.component.bikeId,
         km,

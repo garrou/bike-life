@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:bike_life/utils/constants.dart';
 import 'package:bike_life/models/bike.dart';
-import 'package:bike_life/repositories/bike_repository.dart';
+import 'package:bike_life/services/bike_service.dart';
 import 'package:bike_life/utils/guard_helper.dart';
 import 'package:bike_life/utils/validator.dart';
 import 'package:bike_life/views/auth/signin.dart';
@@ -25,7 +25,7 @@ class BikeDetailsPage extends StatefulWidget {
 }
 
 class _BikeDetailsPageState extends State<BikeDetailsPage> {
-  final BikeRepository _bikeRepository = BikeRepository();
+  final BikeService _bikeService = BikeService();
   final StreamController<bool> _authState = StreamController();
 
   @override
@@ -67,7 +67,7 @@ class _BikeDetailsPageState extends State<BikeDetailsPage> {
       child: wideLayout());
 
   void _onDeleteBike() async {
-    List<dynamic> response = await _bikeRepository.deleteBike(widget.bike.id);
+    List<dynamic> response = await _bikeService.deleteBike(widget.bike.id);
     Color responseColor = mainColor;
 
     if (response[0]) {
@@ -131,7 +131,7 @@ class _UpdateBikeFormState extends State<UpdateBikeForm> {
   final _nbKmFocus = FocusNode();
   late final TextEditingController _nbKm;
 
-  final BikeRepository _bikeRepository = BikeRepository();
+  final BikeService _bikeService = BikeService();
 
   late String _dateOfPurchase;
 
@@ -185,7 +185,7 @@ class _UpdateBikeFormState extends State<UpdateBikeForm> {
 
   void _updateBike(
       String name, String image, String dateOfPurchase, String nbKm) async {
-    List<dynamic> response = await _bikeRepository.updateBike(
+    List<dynamic> response = await _bikeService.updateBike(
         Bike(widget.bike.id, name, image, double.parse(nbKm), dateOfPurchase));
     Color responseColor = mainColor;
 

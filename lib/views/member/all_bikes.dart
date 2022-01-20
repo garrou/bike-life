@@ -1,6 +1,6 @@
 import 'package:bike_life/utils/constants.dart';
 import 'package:bike_life/models/bike.dart';
-import 'package:bike_life/repositories/bike_repository.dart';
+import 'package:bike_life/services/bike_service.dart';
 import 'package:bike_life/utils/storage.dart';
 import 'package:bike_life/views/member/bike_card.dart';
 import 'package:bike_life/styles/general.dart';
@@ -18,7 +18,7 @@ class AllBikesPage extends StatefulWidget {
 
 class _AllBikesPageState extends State<AllBikesPage> {
   final CarouselController _carouselController = CarouselController();
-  final BikeRepository _bikeRepository = BikeRepository();
+  final BikeService _bikeService = BikeService();
   final List<Widget> _cards = [];
   int _current = 0;
 
@@ -30,7 +30,7 @@ class _AllBikesPageState extends State<AllBikesPage> {
 
   Future _loadBikes() async {
     int id = await Storage.getMemberId();
-    dynamic jsonBikes = await _bikeRepository.getBikes(id);
+    dynamic jsonBikes = await _bikeService.getBikes(id);
     List<Bike> bikes = createSeveralBikes(jsonBikes['bikes']);
     Future.wait(bikes.map((bike) async => _cards.add(BikeCard(bike: bike))));
 

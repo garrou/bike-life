@@ -1,9 +1,9 @@
-import 'package:bike_life/repositories/component_repository.dart';
+import 'package:bike_life/services/component_service.dart';
 import 'package:bike_life/routes/add_component_route.dart';
 import 'package:bike_life/utils/constants.dart';
 import 'package:bike_life/models/bike.dart';
 import 'package:bike_life/models/component.dart';
-import 'package:bike_life/repositories/bike_repository.dart';
+import 'package:bike_life/services/bike_service.dart';
 import 'package:bike_life/routes/args/bike_argument.dart';
 import 'package:bike_life/routes/bike_details_route.dart';
 import 'package:bike_life/utils/validator.dart';
@@ -27,7 +27,7 @@ class BikeCard extends StatefulWidget {
 }
 
 class _BikeCardState extends State<BikeCard> {
-  final ComponentRepository _componentRepository = ComponentRepository();
+  final ComponentService _componentService = ComponentService();
   List<Component> _components = [];
 
   @override
@@ -43,7 +43,7 @@ class _BikeCardState extends State<BikeCard> {
 
   void _loadComponents() async {
     List<dynamic> jsonComponents =
-        await _componentRepository.getComponents(widget.bike.id);
+        await _componentService.getComponents(widget.bike.id);
 
     if (jsonComponents.isNotEmpty) {
       setState(() {
@@ -139,7 +139,7 @@ class _AddKmFormState extends State<AddKmForm> {
   final _keyForm = GlobalKey<FormState>();
   final _kmFocus = FocusNode();
   final _km = TextEditingController();
-  final _bikeRepository = BikeRepository();
+  final _bikeService = BikeService();
 
   @override
   Widget build(BuildContext context) => Form(
@@ -171,7 +171,7 @@ class _AddKmFormState extends State<AddKmForm> {
 
   void _addKm(double toAdd) async {
     List<dynamic> response =
-        await _bikeRepository.updateBikeKm(widget.bike.id, toAdd);
+        await _bikeService.updateBikeKm(widget.bike.id, toAdd);
     Color responseColor = mainColor;
 
     if (response[0]) {

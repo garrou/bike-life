@@ -5,7 +5,7 @@ import 'package:bike_life/models/member.dart';
 import 'package:bike_life/utils/storage.dart';
 import 'package:http/http.dart' as http;
 
-class MemberRepository {
+class MemberService {
   Future<List<dynamic>> login(String email, String password) async {
     http.Response response = await http.post(
       Uri.parse('$endpoint/login'),
