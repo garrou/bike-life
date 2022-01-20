@@ -16,7 +16,7 @@ class AppPercentBar extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          Center(child: Text(component.label, style: thirdTextStyle)),
+          Center(child: Text(component.type, style: thirdTextStyle)),
           AppLinkToPage(
               padding: 0.0,
               child: _buildLinearPercentBar(component),
@@ -36,7 +36,7 @@ class AppPercentBar extends StatelessWidget {
       progressColor: component.km >= component.duration / 2 &&
               component.km < component.duration
           ? Colors.orange
-          : component.km > component.duration
+          : component.km >= component.duration
               ? Colors.red
               : mainColor);
 }

@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:bike_life/utils/constants.dart';
 import 'package:bike_life/utils/guard_helper.dart';
 import 'package:bike_life/views/auth/signin.dart';
 import 'package:bike_life/views/member/all_bikes.dart';
@@ -37,23 +36,13 @@ class _MemberHomePageState extends State<MemberHomePage> {
   @override
   Widget build(BuildContext context) => AuthGuard(
       authStream: _authState.stream,
-      signedIn: LayoutBuilder(builder: (context, constraints) {
-        if (constraints.maxWidth > maxSize) {
-          return narrowLayout();
-        } else {
-          return wideLayout();
-        }
-      }),
+      signedIn: layout(),
       signedOut: const SigninPage());
 
-  Widget narrowLayout() => Padding(
-      padding: const EdgeInsets.symmetric(horizontal: maxPadding),
-      child: wideLayout());
-
-  Widget wideLayout() => Scaffold(
+  Widget layout() => Scaffold(
       body: PageView(
         children: const <Widget>[AllBikesPage(), TipsPage()],
-        onPageChanged: _onPageChanged,
+        onPageChanged: (page) => setState(() => _pageIndex = page),
         controller: _pageController,
       ),
       bottomNavigationBar: BottomNavigationBar(
@@ -69,17 +58,11 @@ class _MemberHomePageState extends State<MemberHomePage> {
               label: 'Mes vélos',
               backgroundColor: mainColor),
           BottomNavigationBarItem(
-              icon: Icon(Icons.archive),
+              icon: Icon(Icons.comment),
               label: 'Conseils',
               backgroundColor: mainColor)
         ],
       ));
-
-  void _onPageChanged(int page) {
-    setState(() {
-      _pageIndex = page;
-    });
-  }
 
   void _onTabTapped(int index) {
     _pageController.animateToPage(index,

@@ -1,3 +1,4 @@
+import 'package:bike_life/routes/add_component_route.dart';
 import 'package:bike_life/utils/constants.dart';
 import 'package:bike_life/routes/bike_details_route.dart';
 import 'package:bike_life/routes/component_details_route.dart';
@@ -43,6 +44,7 @@ class _AppState extends State<App> {
             '/tips': (context) => const TipsPage(),
             ComponentDetailsRoute.routeName: (context) =>
                 const ComponentDetailsRoute(),
-            BikeDetailsRoute.routeName: (context) => const BikeDetailsRoute()
+            BikeDetailsRoute.routeName: (context) => const BikeDetailsRoute(),
+            AddComponentRoute.routeName: (context) => const AddComponentRoute()
           });
 }

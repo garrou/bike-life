@@ -1,8 +1,8 @@
 import 'dart:async';
 
+import 'package:bike_life/services/component_service.dart';
 import 'package:bike_life/utils/constants.dart';
 import 'package:bike_life/models/component.dart';
-import 'package:bike_life/repositories/bike_repository.dart';
 import 'package:bike_life/utils/guard_helper.dart';
 import 'package:bike_life/utils/validator.dart';
 import 'package:bike_life/views/auth/signin.dart';
@@ -51,7 +51,7 @@ class _ComponentDetailPageState extends State<ComponentDetailPage> {
       padding: const EdgeInsets.symmetric(horizontal: thirdSize),
       child: ListView(children: <Widget>[
         AppTopLeftButton(
-            title: widget.component.label,
+            title: widget.component.type,
             callback: () => Navigator.of(context).pop()),
         _buildComponentsInfo(widget.component),
         const Divider(
@@ -62,6 +62,8 @@ class _ComponentDetailPageState extends State<ComponentDetailPage> {
       ]));
 
   Widget _buildComponentsInfo(Component component) => Column(children: <Widget>[
+        // TODO: Display information in textfield
+        // TODO: Display image if exists
         Padding(
             child: Text('Marque : ${component.brand ?? "Non spécifiée"}',
                 style: thirdTextStyle),
@@ -88,6 +90,7 @@ class UpdateBikeComponentForm extends StatefulWidget {
 }
 
 class _UpdateBikeComponentFormState extends State<UpdateBikeComponentForm> {
+  final StreamController<bool> _authState = StreamController();
   final _keyForm = GlobalKey<FormState>();
 
   final _kmFocus = FocusNode();
@@ -99,70 +102,76 @@ class _UpdateBikeComponentFormState extends State<UpdateBikeComponentForm> {
   final _durationFocus = FocusNode();
   late final TextEditingController _duration;
 
-  final BikeRepository _bikeRepository = BikeRepository();
+  final ComponentService _componentService = ComponentService();
 
   @override
   void initState() {
     super.initState();
+    GuardHelper.checkIfLogged(_authState);
     _km = TextEditingController(text: '${widget.component.km}');
     _brand = TextEditingController(text: widget.component.brand ?? '');
     _duration = TextEditingController(text: '${widget.component.duration}');
   }
 
   @override
-  Widget build(BuildContext context) => Padding(
-      padding: const EdgeInsets.all(thirdSize),
-      child: Form(
-          key: _keyForm,
-          child: Column(children: <Widget>[
-            Text('Modifier', style: secondTextStyle),
-            AppTextField(
-                keyboardType: TextInputType.text,
-                focusNode: _brandFocus,
-                textfieldController: _brand,
-                validator: emptyValidator,
-                hintText: 'Marque du composant',
-                label: 'Marque',
-                icon: Icons.branding_watermark),
-            AppTextField(
-                keyboardType: TextInputType.number,
-                focusNode: _kmFocus,
-                textfieldController: _km,
-                validator: kmValidator,
-                hintText: 'Nombre de km du composant',
-                label: 'Kilomètres',
-                icon: Icons.add_road),
-            AppTextField(
-                keyboardType: TextInputType.number,
-                focusNode: _durationFocus,
-                textfieldController: _duration,
-                validator: kmValidator,
-                hintText: 'Durée de vie',
-                label: 'Durée de vie du composant (km)',
-                icon: Icons.health_and_safety),
-            AppAccountButton(
-                callback: _onUpdateComponent,
-                text: 'Modifier',
-                color: mainColor)
-          ])));
+  Widget build(BuildContext context) => AuthGuard(
+      authStream: _authState.stream,
+      signedIn: Padding(
+          padding: const EdgeInsets.all(thirdSize),
+          child: Form(
+              key: _keyForm,
+              child: Column(children: <Widget>[
+                Text('Modifier', style: secondTextStyle),
+                AppTextField(
+                    keyboardType: TextInputType.text,
+                    focusNode: _brandFocus,
+                    textfieldController: _brand,
+                    validator: emptyValidator,
+                    hintText: 'Marque du composant',
+                    label: 'Marque',
+                    icon: Icons.branding_watermark),
+                AppTextField(
+                    keyboardType: TextInputType.number,
+                    focusNode: _kmFocus,
+                    textfieldController: _km,
+                    validator: kmValidator,
+                    hintText: 'Nombre de km du composant',
+                    label: 'Kilomètres',
+                    icon: Icons.add_road),
+                AppTextField(
+                    keyboardType: TextInputType.number,
+                    focusNode: _durationFocus,
+                    textfieldController: _duration,
+                    validator: kmValidator,
+                    hintText: 'Durée de vie',
+                    label: 'Durée de vie du composant (km)',
+                    icon: Icons.health_and_safety),
+                AppAccountButton(
+                    callback: _onUpdateComponent,
+                    text: 'Modifier',
+                    color: mainColor)
+              ]))),
+      signedOut: const SigninPage());
 
   void _onUpdateComponent() {
     if (_keyForm.currentState!.validate()) {
       _keyForm.currentState!.save();
-      _updateComponent(
-          _brand.text, double.parse(_km.text), double.parse(_duration.text));
+      _updateComponent(_brand.text, double.parse(_km.text),
+          double.parse(_duration.text), 'image', 'date', 'type');
     }
   }
 
-  void _updateComponent(
-      String newBrand, double newKm, double newDuration) async {
-    List<dynamic> response = await _bikeRepository.updateComponent(Component(
-        widget.component.label,
-        widget.component.field,
+  void _updateComponent(String brand, double km, double duration, String image,
+      String date, String type) async {
+    List<dynamic> response = await _componentService.update(Component(
         widget.component.id,
-        newBrand,
-        newKm,
-        newDuration));
+        widget.component.bikeId,
+        km,
+        brand,
+        date,
+        duration,
+        image,
+        type));
     Color responseColor = mainColor;
 
     if (response[0]) {

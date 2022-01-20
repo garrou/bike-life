@@ -5,7 +5,7 @@ import 'package:bike_life/utils/guard_helper.dart';
 
 import 'package:bike_life/utils/storage.dart';
 import 'package:bike_life/utils/validator.dart';
-import 'package:bike_life/repositories/bike_repository.dart';
+import 'package:bike_life/services/bike_service.dart';
 import 'package:bike_life/views/auth/signin.dart';
 import 'package:bike_life/styles/general.dart';
 import 'package:bike_life/widgets/button.dart';
@@ -72,7 +72,7 @@ class _AddBikeFormState extends State<AddBikeForm> {
   final _nbKmFocus = FocusNode();
   final _nbKm = TextEditingController();
 
-  final BikeRepository _bikeRepository = BikeRepository();
+  final BikeService _bikeService = BikeService();
 
   String _dateOfPurchase = DateTime.now().toString().split(' ')[0];
 
@@ -138,15 +138,22 @@ class _AddBikeFormState extends State<AddBikeForm> {
   }
 
   void _addBike(
-      String name, String image, String dateOfPurchase, String nbKm) async {
-    List<dynamic> response = await _bikeRepository.addBike(
+      // TODO: Purpose init specific components
+      String name,
+      String image,
+      String dateOfPurchase,
+      String nbKm) async {
+    List<dynamic> response = await _bikeService.addBike(
         _memberId, name, image, dateOfPurchase, double.parse(nbKm));
+    Color respColor = mainColor;
 
     if (response[0]) {
       Navigator.pushNamed(context, '/home');
+    } else {
+      respColor = errorColor;
     }
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: Text(response[1]['confirm']), backgroundColor: mainColor));
+        content: Text(response[1]['confirm']), backgroundColor: respColor));
   }
 
   void _onDateChanged(DateRangePickerSelectionChangedArgs args) {

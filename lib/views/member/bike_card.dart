@@ -1,7 +1,9 @@
+import 'package:bike_life/services/component_service.dart';
+import 'package:bike_life/routes/add_component_route.dart';
 import 'package:bike_life/utils/constants.dart';
 import 'package:bike_life/models/bike.dart';
 import 'package:bike_life/models/component.dart';
-import 'package:bike_life/repositories/bike_repository.dart';
+import 'package:bike_life/services/bike_service.dart';
 import 'package:bike_life/routes/args/bike_argument.dart';
 import 'package:bike_life/routes/bike_details_route.dart';
 import 'package:bike_life/utils/validator.dart';
@@ -25,7 +27,7 @@ class BikeCard extends StatefulWidget {
 }
 
 class _BikeCardState extends State<BikeCard> {
-  final BikeRepository _bikeRepository = BikeRepository();
+  final ComponentService _componentService = ComponentService();
   List<Component> _components = [];
 
   @override
@@ -36,35 +38,21 @@ class _BikeCardState extends State<BikeCard> {
 
   @override
   Widget build(BuildContext context) => AppFlip(
-      front: _buildFrontCard(widget.bike), back: _buildBackCard(widget.bike));
+      front: _buildFrontCard(widget.bike, context),
+      back: _buildBackCard(widget.bike));
 
   void _loadComponents() async {
-    dynamic jsonComponents =
-        await _bikeRepository.getComponents(widget.bike.id);
+    List<dynamic> jsonComponents =
+        await _componentService.getComponents(widget.bike.id);
 
-    if (jsonComponents != null) {
+    if (jsonComponents.isNotEmpty) {
       setState(() {
-        _components = [
-          Component.fromJson(jsonComponents, 'frame', 'Cadre'),
-          Component.fromJson(jsonComponents, 'fork', 'Fourche'),
-          Component.fromJson(jsonComponents, 'string', 'Chaîne'),
-          Component.fromJson(
-              jsonComponents, 'air_chamber_forward', 'Chambre à air avant'),
-          Component.fromJson(
-              jsonComponents, 'air_chamber_backward', 'Chambre à air arrière'),
-          Component.fromJson(jsonComponents, 'brake_forward', 'Frein avant'),
-          Component.fromJson(jsonComponents, 'brake_backward', 'Frein arrière'),
-          Component.fromJson(jsonComponents, 'tire_forward', 'Pneu avant'),
-          Component.fromJson(jsonComponents, 'tire_backward', 'Pneu arrière'),
-          Component.fromJson(jsonComponents, 'transmission', 'Transmission'),
-          Component.fromJson(jsonComponents, 'wheel_forward', 'Roue avant'),
-          Component.fromJson(jsonComponents, 'wheel_backward', 'Roue arrière')
-        ];
+        _components = createSeveralComponents(jsonComponents);
       });
     }
   }
 
-  Widget _buildFrontCard(Bike bike) => AppCard(
+  Widget _buildFrontCard(Bike bike, BuildContext context) => AppCard(
       child: ListView(
           padding:
               const EdgeInsets.fromLTRB(thirdSize, 0, thirdSize, thirdSize),
@@ -72,8 +60,8 @@ class _BikeCardState extends State<BikeCard> {
             ClipRRect(
                 borderRadius: BorderRadius.circular(mainSize),
                 child: CachedNetworkImage(
-                    height: 200.0,
-                    width: 200.0,
+                    height: MediaQuery.of(context).size.height / 3,
+                    width: MediaQuery.of(context).size.height / 3,
                     imageUrl: bike.image,
                     progressIndicatorBuilder:
                         (context, url, downloadProgress) =>
@@ -110,6 +98,7 @@ class _BikeCardState extends State<BikeCard> {
       );
 
   Widget _buildBackCard(Bike bike) => AppCard(
+      // TODO: Options to display bar in km order
       elevation: secondSize,
       child: ListView(
           padding: const EdgeInsets.symmetric(horizontal: thirdSize),
@@ -119,8 +108,16 @@ class _BikeCardState extends State<BikeCard> {
                 icon: Icons.settings,
                 padding: 0.0),
             for (Component component in _components)
-              AppPercentBar(component: component)
+              AppPercentBar(component: component),
+            AppAccountButton(
+                color: mainColor,
+                text: 'Ajouter un composant',
+                callback: _onGoToAddComponent)
           ]));
+
+  void _onGoToAddComponent() =>
+      Navigator.pushNamed(context, AddComponentRoute.routeName,
+          arguments: BikeArgument(widget.bike));
 
   void _onBikeDetailsClick() =>
       Navigator.pushNamed(context, BikeDetailsRoute.routeName,
@@ -142,7 +139,7 @@ class _AddKmFormState extends State<AddKmForm> {
   final _keyForm = GlobalKey<FormState>();
   final _kmFocus = FocusNode();
   final _km = TextEditingController();
-  final _bikeRepository = BikeRepository();
+  final _bikeService = BikeService();
 
   @override
   Widget build(BuildContext context) => Form(
@@ -165,16 +162,16 @@ class _AddKmFormState extends State<AddKmForm> {
         ],
       ));
 
-  void _onAddKm(String newKm) {
+  void _onAddKm(String km) {
     if (_keyForm.currentState!.validate()) {
       _keyForm.currentState!.save();
-      _addKm(double.parse(_km.text));
+      _addKm(double.parse(km));
     }
   }
 
   void _addKm(double toAdd) async {
     List<dynamic> response =
-        await _bikeRepository.updateBikeKm(widget.bike.id, toAdd);
+        await _bikeService.updateBikeKm(widget.bike.id, toAdd);
     Color responseColor = mainColor;
 
     if (response[0]) {

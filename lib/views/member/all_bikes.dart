@@ -1,6 +1,6 @@
 import 'package:bike_life/utils/constants.dart';
 import 'package:bike_life/models/bike.dart';
-import 'package:bike_life/repositories/bike_repository.dart';
+import 'package:bike_life/services/bike_service.dart';
 import 'package:bike_life/utils/storage.dart';
 import 'package:bike_life/views/member/bike_card.dart';
 import 'package:bike_life/styles/general.dart';
@@ -18,31 +18,19 @@ class AllBikesPage extends StatefulWidget {
 
 class _AllBikesPageState extends State<AllBikesPage> {
   final CarouselController _carouselController = CarouselController();
-  final BikeRepository _bikeRepository = BikeRepository();
+  final BikeService _bikeService = BikeService();
   final List<Widget> _cards = [];
-  late int _memberId;
   int _current = 0;
 
   @override
   void initState() {
     super.initState();
-    _load();
-  }
-
-  Future _load() async {
-    await _getMemberId();
-    await _loadBikes();
-  }
-
-  Future _getMemberId() async {
-    int id = await Storage.getMemberId();
-    setState(() {
-      _memberId = id;
-    });
+    _loadBikes();
   }
 
   Future _loadBikes() async {
-    dynamic jsonBikes = await _bikeRepository.getBikes(_memberId);
+    int id = await Storage.getMemberId();
+    dynamic jsonBikes = await _bikeService.getBikes(id);
     List<Bike> bikes = createSeveralBikes(jsonBikes['bikes']);
     Future.wait(bikes.map((bike) async => _cards.add(BikeCard(bike: bike))));
 
@@ -56,7 +44,7 @@ class _AllBikesPageState extends State<AllBikesPage> {
         AppTopRightButton(
             callback: () => Navigator.pushNamed(context, '/profile'),
             icon: Icons.person,
-            padding: 0.0),
+            padding: thirdSize),
         _buildCarousel()
       ]);
 
@@ -66,34 +54,35 @@ class _AllBikesPageState extends State<AllBikesPage> {
           items: _cards,
           carouselController: _carouselController,
           options: CarouselOptions(
-              enlargeCenterPage: true,
-              height: MediaQuery.of(context).size.height - 200,
-              enableInfiniteScroll: false,
               onPageChanged: (index, reason) {
                 setState(() {
                   _current = index;
                 });
-              }),
+              },
+              enlargeCenterPage: true,
+              height: MediaQuery.of(context).size.height - 200,
+              enableInfiniteScroll: false),
         ),
         Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: _cards.asMap().entries.map((entry) {
-              return GestureDetector(
-                onTap: () => _carouselController.animateToPage(entry.key),
-                child: Container(
-                  width: intermediateSize,
-                  height: intermediateSize,
-                  margin: const EdgeInsets.symmetric(
-                      vertical: thirdSize / 1.5, horizontal: thirdSize / 2),
-                  decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      color: (Theme.of(context).brightness == Brightness.dark
-                              ? secondColor
-                              : mainColor)
-                          .withOpacity(_current == entry.key ? 0.9 : 0.4)),
-                ),
-              );
-            }).toList())
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: <Widget>[
+              Visibility(
+                  visible: _current >= 1,
+                  child: IconButton(
+                      icon: const Icon(Icons.arrow_back_ios),
+                      onPressed: () {
+                        _carouselController.previousPage();
+                        setState(() => _current--);
+                      })),
+              Visibility(
+                  visible: _current < _cards.length - 1,
+                  child: IconButton(
+                      icon: const Icon(Icons.arrow_forward_ios),
+                      onPressed: () {
+                        _carouselController.nextPage();
+                        setState(() => _current++);
+                      }))
+            ])
       ]));
 
   Widget _buildAddBikeCard() => SizedBox(

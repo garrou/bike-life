@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:bike_life/utils/constants.dart';
 import 'package:bike_life/utils/guard_helper.dart';
 import 'package:bike_life/utils/validator.dart';
-import 'package:bike_life/repositories/member_repository.dart';
+import 'package:bike_life/services/member_service.dart';
 import 'package:bike_life/views/auth/signup.dart';
 import 'package:bike_life/views/member/member_home.dart';
 import 'package:bike_life/styles/general.dart';
@@ -76,7 +76,7 @@ class _SigninFormState extends State<SigninForm> {
   final _passwordFocus = FocusNode();
   final _password = TextEditingController();
 
-  final MemberRepository _memberRepository = MemberRepository();
+  final MemberService _memberService = MemberService();
 
   @override
   Widget build(BuildContext context) => Form(
@@ -110,7 +110,7 @@ class _SigninFormState extends State<SigninForm> {
   }
 
   void _authUser(String email, String password) async {
-    List<dynamic> response = await _memberRepository.login(email, password);
+    List<dynamic> response = await _memberService.login(email, password);
 
     if (response[0]) {
       Navigator.pushNamedAndRemoveUntil(
