@@ -1,4 +1,5 @@
 import 'package:bike_life/repositories/component_repository.dart';
+import 'package:bike_life/routes/add_component_route.dart';
 import 'package:bike_life/utils/constants.dart';
 import 'package:bike_life/models/bike.dart';
 import 'package:bike_life/models/component.dart';
@@ -97,6 +98,7 @@ class _BikeCardState extends State<BikeCard> {
       );
 
   Widget _buildBackCard(Bike bike) => AppCard(
+      // TODO: Options to display bar in km order
       elevation: secondSize,
       child: ListView(
           padding: const EdgeInsets.symmetric(horizontal: thirdSize),
@@ -110,8 +112,12 @@ class _BikeCardState extends State<BikeCard> {
             AppAccountButton(
                 color: mainColor,
                 text: 'Ajouter un composant',
-                callback: () => Navigator.pushNamed(context, '/add-component'))
+                callback: _onGoToAddComponent)
           ]));
+
+  void _onGoToAddComponent() =>
+      Navigator.pushNamed(context, AddComponentRoute.routeName,
+          arguments: BikeArgument(widget.bike));
 
   void _onBikeDetailsClick() =>
       Navigator.pushNamed(context, BikeDetailsRoute.routeName,

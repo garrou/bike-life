@@ -6,8 +6,8 @@ class ComponentType {
   ComponentType.fromJson(Map<String, dynamic> json) : name = json['name'];
 }
 
-List<ComponentType> createSeveralComponentTypes(List<dynamic> record) {
-  return record
+List<ComponentType> createSeveralComponentTypes(List<dynamic> records) {
+  return records
       .map((json) => ComponentType.fromJson(json))
       .toList(growable: false);
 }

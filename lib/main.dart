@@ -1,3 +1,4 @@
+import 'package:bike_life/routes/add_component_route.dart';
 import 'package:bike_life/utils/constants.dart';
 import 'package:bike_life/routes/bike_details_route.dart';
 import 'package:bike_life/routes/component_details_route.dart';
@@ -6,7 +7,6 @@ import 'package:bike_life/views/auth/signup.dart';
 import 'package:bike_life/views/home/home.dart';
 import 'package:bike_life/views/home/intro.dart';
 import 'package:bike_life/views/member/add_bike.dart';
-import 'package:bike_life/views/member/add_component.dart';
 import 'package:bike_life/views/member/member_home.dart';
 import 'package:bike_life/views/member/profile.dart';
 import 'package:bike_life/views/member/tips.dart';
@@ -45,6 +45,6 @@ class _AppState extends State<App> {
             ComponentDetailsRoute.routeName: (context) =>
                 const ComponentDetailsRoute(),
             BikeDetailsRoute.routeName: (context) => const BikeDetailsRoute(),
-            '/add-component': (context) => const AddComponentPage()
+            AddComponentRoute.routeName: (context) => const AddComponentRoute()
           });
 }

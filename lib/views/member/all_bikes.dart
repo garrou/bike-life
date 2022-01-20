@@ -44,7 +44,7 @@ class _AllBikesPageState extends State<AllBikesPage> {
         AppTopRightButton(
             callback: () => Navigator.pushNamed(context, '/profile'),
             icon: Icons.person,
-            padding: 0.0),
+            padding: thirdSize),
         _buildCarousel()
       ]);
 
@@ -54,6 +54,11 @@ class _AllBikesPageState extends State<AllBikesPage> {
           items: _cards,
           carouselController: _carouselController,
           options: CarouselOptions(
+              onPageChanged: (index, reason) {
+                setState(() {
+                  _current = index;
+                });
+              },
               enlargeCenterPage: true,
               height: MediaQuery.of(context).size.height - 200,
               enableInfiniteScroll: false),
@@ -67,9 +72,7 @@ class _AllBikesPageState extends State<AllBikesPage> {
                       icon: const Icon(Icons.arrow_back_ios),
                       onPressed: () {
                         _carouselController.previousPage();
-                        setState(() {
-                          _current--;
-                        });
+                        setState(() => _current--);
                       })),
               Visibility(
                   visible: _current < _cards.length - 1,
@@ -77,9 +80,7 @@ class _AllBikesPageState extends State<AllBikesPage> {
                       icon: const Icon(Icons.arrow_forward_ios),
                       onPressed: () {
                         _carouselController.nextPage();
-                        setState(() {
-                          _current++;
-                        });
+                        setState(() => _current++);
                       }))
             ])
       ]));

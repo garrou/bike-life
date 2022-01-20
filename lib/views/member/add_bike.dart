@@ -141,12 +141,15 @@ class _AddBikeFormState extends State<AddBikeForm> {
       String name, String image, String dateOfPurchase, String nbKm) async {
     List<dynamic> response = await _bikeRepository.addBike(
         _memberId, name, image, dateOfPurchase, double.parse(nbKm));
+    Color respColor = mainColor;
 
     if (response[0]) {
       Navigator.pushNamed(context, '/home');
+    } else {
+      respColor = errorColor;
     }
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: Text(response[1]['confirm']), backgroundColor: mainColor));
+        content: Text(response[1]['confirm']), backgroundColor: respColor));
   }
 
   void _onDateChanged(DateRangePickerSelectionChangedArgs args) {

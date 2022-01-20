@@ -23,6 +23,6 @@ class Bike {
       };
 }
 
-List<Bike> createSeveralBikes(List record) {
-  return record.map((json) => Bike.fromJson(json)).toList(growable: false);
+List<Bike> createSeveralBikes(List records) {
+  return records.map((json) => Bike.fromJson(json)).toList(growable: false);
 }

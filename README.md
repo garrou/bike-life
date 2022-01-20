@@ -31,3 +31,15 @@ flutter config --enable-linux-desktop
 ```sh
 flutter run 
 ```
+
+## Debug
+
+```sh
+flutter run -d [platform]
+```
+
+## Release
+
+```sh
+flutter run -d [platform] --release
+```

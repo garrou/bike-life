@@ -62,6 +62,8 @@ class _ComponentDetailPageState extends State<ComponentDetailPage> {
       ]));
 
   Widget _buildComponentsInfo(Component component) => Column(children: <Widget>[
+        // TODO: Display information in textfield
+        // TODO: Display image if exists
         Padding(
             child: Text('Marque : ${component.brand ?? "Non spécifiée"}',
                 style: thirdTextStyle),
@@ -88,6 +90,7 @@ class UpdateBikeComponentForm extends StatefulWidget {
 }
 
 class _UpdateBikeComponentFormState extends State<UpdateBikeComponentForm> {
+  final StreamController<bool> _authState = StreamController();
   final _keyForm = GlobalKey<FormState>();
 
   final _kmFocus = FocusNode();
@@ -104,47 +107,51 @@ class _UpdateBikeComponentFormState extends State<UpdateBikeComponentForm> {
   @override
   void initState() {
     super.initState();
+    GuardHelper.checkIfLogged(_authState);
     _km = TextEditingController(text: '${widget.component.km}');
     _brand = TextEditingController(text: widget.component.brand ?? '');
     _duration = TextEditingController(text: '${widget.component.duration}');
   }
 
   @override
-  Widget build(BuildContext context) => Padding(
-      padding: const EdgeInsets.all(thirdSize),
-      child: Form(
-          key: _keyForm,
-          child: Column(children: <Widget>[
-            Text('Modifier', style: secondTextStyle),
-            AppTextField(
-                keyboardType: TextInputType.text,
-                focusNode: _brandFocus,
-                textfieldController: _brand,
-                validator: emptyValidator,
-                hintText: 'Marque du composant',
-                label: 'Marque',
-                icon: Icons.branding_watermark),
-            AppTextField(
-                keyboardType: TextInputType.number,
-                focusNode: _kmFocus,
-                textfieldController: _km,
-                validator: kmValidator,
-                hintText: 'Nombre de km du composant',
-                label: 'Kilomètres',
-                icon: Icons.add_road),
-            AppTextField(
-                keyboardType: TextInputType.number,
-                focusNode: _durationFocus,
-                textfieldController: _duration,
-                validator: kmValidator,
-                hintText: 'Durée de vie',
-                label: 'Durée de vie du composant (km)',
-                icon: Icons.health_and_safety),
-            AppAccountButton(
-                callback: _onUpdateComponent,
-                text: 'Modifier',
-                color: mainColor)
-          ])));
+  Widget build(BuildContext context) => AuthGuard(
+      authStream: _authState.stream,
+      signedIn: Padding(
+          padding: const EdgeInsets.all(thirdSize),
+          child: Form(
+              key: _keyForm,
+              child: Column(children: <Widget>[
+                Text('Modifier', style: secondTextStyle),
+                AppTextField(
+                    keyboardType: TextInputType.text,
+                    focusNode: _brandFocus,
+                    textfieldController: _brand,
+                    validator: emptyValidator,
+                    hintText: 'Marque du composant',
+                    label: 'Marque',
+                    icon: Icons.branding_watermark),
+                AppTextField(
+                    keyboardType: TextInputType.number,
+                    focusNode: _kmFocus,
+                    textfieldController: _km,
+                    validator: kmValidator,
+                    hintText: 'Nombre de km du composant',
+                    label: 'Kilomètres',
+                    icon: Icons.add_road),
+                AppTextField(
+                    keyboardType: TextInputType.number,
+                    focusNode: _durationFocus,
+                    textfieldController: _duration,
+                    validator: kmValidator,
+                    hintText: 'Durée de vie',
+                    label: 'Durée de vie du composant (km)',
+                    icon: Icons.health_and_safety),
+                AppAccountButton(
+                    callback: _onUpdateComponent,
+                    text: 'Modifier',
+                    color: mainColor)
+              ]))),
+      signedOut: const SigninPage());
 
   void _onUpdateComponent() {
     if (_keyForm.currentState!.validate()) {

@@ -33,6 +33,8 @@ class Component {
       };
 }
 
-List<Component> createSeveralComponents(List<dynamic> record) {
-  return record.map((json) => Component.fromJson(json)).toList(growable: false);
+List<Component> createSeveralComponents(List<dynamic> records) {
+  return records
+      .map((json) => Component.fromJson(json))
+      .toList(growable: false);
 }
