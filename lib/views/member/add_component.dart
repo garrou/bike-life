@@ -55,9 +55,9 @@ class _AddComponentPageState extends State<AddComponentPage> {
   }
 
   void _load() async {
-    dynamic json = await _componentTypesService.getTypes();
+    List<ComponentType> compoTypes = await _componentTypesService.getTypes();
     setState(() {
-      _componentTypes = createSeveralComponentTypes(json);
+      _componentTypes = compoTypes;
       _typeValue = _componentTypes.first.name;
     });
   }

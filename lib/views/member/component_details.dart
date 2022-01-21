@@ -112,9 +112,9 @@ class _UpdateBikeComponentFormState extends State<UpdateBikeComponentForm> {
   }
 
   void _load() async {
-    dynamic json = await _componentTypesService.getTypes();
+    List<ComponentType> types = await _componentTypesService.getTypes();
     setState(() {
-      _componentTypes = createSeveralComponentTypes(json);
+      _componentTypes = types;
       _typeValue = _componentTypes.first.name;
     });
   }

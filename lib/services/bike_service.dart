@@ -26,10 +26,10 @@ class BikeService {
     return [response.statusCode == httpCodeCreated, jsonDecode(response.body)];
   }
 
-  Future<dynamic> getBikes(int memberId) async {
+  Future<List<Bike>> getBikes(int memberId) async {
     Response response =
         await client.get(Uri.parse('$endpoint/bikes?memberId=$memberId'));
-    return jsonDecode(response.body);
+    return createBikesFromList(jsonDecode(response.body));
   }
 
   Future<List<dynamic>> deleteBike(int bikeId) async {

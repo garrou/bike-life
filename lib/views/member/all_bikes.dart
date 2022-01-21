@@ -28,12 +28,10 @@ class _AllBikesPageState extends State<AllBikesPage> {
     _loadBikes();
   }
 
-  Future _loadBikes() async {
+  _loadBikes() async {
     int id = await Storage.getMemberId();
-    dynamic jsonBikes = await _bikeService.getBikes(id);
-    List<Bike> bikes = createSeveralBikes(jsonBikes['bikes']);
+    List<Bike> bikes = await _bikeService.getBikes(id);
     Future.wait(bikes.map((bike) async => _cards.add(BikeCard(bike: bike))));
-
     setState(() => _cards.add(_buildAddBikeCard()));
   }
 

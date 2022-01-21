@@ -12,14 +12,14 @@ class Component {
       this.duration, this.image, this.type);
 
   Component.fromJson(Map<String, dynamic> json)
-      : id = json['component_id'],
-        bikeId = json['bike_id'],
-        km = double.parse(json['nb_km']),
+      : id = json['id'],
+        bikeId = json['bikeId'],
+        km = double.parse(json['km']),
         duration = double.parse(json['duration']),
         brand = json['brand'],
-        dateOfPurchase = json['date_of_purchase'],
+        dateOfPurchase = json['dateOfPurchase'],
         image = json['image'],
-        type = json['component_type'];
+        type = json['type'];
 
   Map<String, dynamic> toJson() => {
         'id': id,
@@ -33,7 +33,7 @@ class Component {
       };
 }
 
-List<Component> createSeveralComponents(List<dynamic> records) {
+List<Component> createComponentsFromList(List<dynamic> records) {
   return records
       .map((json) => Component.fromJson(json))
       .toList(growable: false);

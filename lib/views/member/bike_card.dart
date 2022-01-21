@@ -42,12 +42,9 @@ class _BikeCardState extends State<BikeCard> {
       back: _buildBackCard(widget.bike));
 
   void _loadComponents() async {
-    List<dynamic> jsonComponents =
+    List<Component> jsonComponents =
         await _componentService.getComponents(widget.bike.id);
-
-    if (jsonComponents.isNotEmpty) {
-      setState(() => _components = createSeveralComponents(jsonComponents));
-    }
+    setState(() => _components = jsonComponents);
   }
 
   Widget _buildFrontCard(Bike bike, BuildContext context) => AppCard(
