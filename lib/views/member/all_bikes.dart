@@ -1,11 +1,11 @@
-import 'package:bike_life/constants.dart';
+import 'package:bike_life/utils/constants.dart';
 import 'package:bike_life/models/bike.dart';
-import 'package:bike_life/repositories/bike_repository.dart';
+import 'package:bike_life/services/bike_service.dart';
 import 'package:bike_life/utils/storage.dart';
 import 'package:bike_life/views/member/bike_card.dart';
-import 'package:bike_life/views/styles/general.dart';
-import 'package:bike_life/views/widgets/top_right_button.dart';
-import 'package:bike_life/views/widgets/card.dart';
+import 'package:bike_life/styles/general.dart';
+import 'package:bike_life/widgets/top_right_button.dart';
+import 'package:bike_life/widgets/card.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 
@@ -17,35 +17,24 @@ class AllBikesPage extends StatefulWidget {
 }
 
 class _AllBikesPageState extends State<AllBikesPage> {
-  final BikeRepository _bikeRepository = BikeRepository();
+  final CarouselController _carouselController = CarouselController();
+  final BikeService _bikeService = BikeService();
   final List<Widget> _cards = [];
-  late int _memberId;
+  int _current = 0;
 
   @override
   void initState() {
     super.initState();
-    _load();
-  }
-
-  Future _load() async {
-    await _getMemberId();
-    await _loadBikes();
-  }
-
-  Future _getMemberId() async {
-    int id = await Storage.getMemberId();
-    setState(() {
-      _memberId = id;
-    });
+    _loadBikes();
   }
 
   Future _loadBikes() async {
-    dynamic jsonBikes = await _bikeRepository.getBikes(_memberId);
-    List<Bike> _bikes = createSeveralBikes(jsonBikes['bikes']);
-    Future.wait(_bikes.map((bike) async => _cards.add(BikeCard(bike: bike))));
-    setState(() {
-      _cards.add(_buildAddBikeCard());
-    });
+    int id = await Storage.getMemberId();
+    dynamic jsonBikes = await _bikeService.getBikes(id);
+    List<Bike> bikes = createSeveralBikes(jsonBikes['bikes']);
+    Future.wait(bikes.map((bike) async => _cards.add(BikeCard(bike: bike))));
+
+    setState(() => _cards.add(_buildAddBikeCard()));
   }
 
   @override
@@ -54,16 +43,43 @@ class _AllBikesPageState extends State<AllBikesPage> {
             callback: () => Navigator.pushNamed(context, '/profile'),
             icon: Icons.person,
             padding: thirdSize),
-        Center(child: _buildCarousel())
+        _buildCarousel()
       ]);
 
-  Widget _buildCarousel() => CarouselSlider.builder(
-      options: CarouselOptions(
-          height: MediaQuery.of(context).size.height - ratio,
-          enableInfiniteScroll: false),
-      itemCount: _cards.length,
-      itemBuilder: (BuildContext context, int index, int realIndex) =>
-          _cards.elementAt(index));
+  Widget _buildCarousel() => SingleChildScrollView(
+          child: Column(children: <Widget>[
+        CarouselSlider(
+          items: _cards,
+          carouselController: _carouselController,
+          options: CarouselOptions(
+              onPageChanged: (index, reason) {
+                setState(() => _current = index);
+              },
+              enlargeCenterPage: true,
+              height: MediaQuery.of(context).size.height - 200,
+              enableInfiniteScroll: false),
+        ),
+        Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: <Widget>[
+              Visibility(
+                  visible: _current >= 1,
+                  child: IconButton(
+                      icon: const Icon(Icons.arrow_back_ios),
+                      onPressed: () {
+                        _carouselController.previousPage();
+                        setState(() => _current--);
+                      })),
+              Visibility(
+                  visible: _current < _cards.length - 1,
+                  child: IconButton(
+                      icon: const Icon(Icons.arrow_forward_ios),
+                      onPressed: () {
+                        _carouselController.nextPage();
+                        setState(() => _current++);
+                      }))
+            ])
+      ]));
 
   Widget _buildAddBikeCard() => SizedBox(
       width: double.infinity,

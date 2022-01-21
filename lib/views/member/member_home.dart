@@ -1,11 +1,11 @@
 import 'dart:async';
 
-import 'package:bike_life/constants.dart';
-import 'package:bike_life/utils/storage.dart';
+import 'package:bike_life/utils/guard_helper.dart';
 import 'package:bike_life/views/auth/signin.dart';
 import 'package:bike_life/views/member/all_bikes.dart';
+import 'package:bike_life/views/member/statistics.dart';
 import 'package:bike_life/views/member/tips.dart';
-import 'package:bike_life/views/styles/general.dart';
+import 'package:bike_life/styles/general.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_guards/flutter_guards.dart';
 
@@ -24,13 +24,8 @@ class _MemberHomePageState extends State<MemberHomePage> {
   @override
   void initState() {
     super.initState();
+    GuardHelper.checkIfLogged(_authState);
     _pageController = PageController(initialPage: _pageIndex);
-    _checkIfLogged();
-  }
-
-  void _checkIfLogged() async {
-    int memberId = await Storage.getMemberId();
-    memberId != -1 ? _authState.add(true) : _authState.add(false);
   }
 
   @override
@@ -42,23 +37,13 @@ class _MemberHomePageState extends State<MemberHomePage> {
   @override
   Widget build(BuildContext context) => AuthGuard(
       authStream: _authState.stream,
-      signedIn: LayoutBuilder(builder: (context, constraints) {
-        if (constraints.maxWidth > maxSize) {
-          return narrowLayout();
-        } else {
-          return wideLayout();
-        }
-      }),
+      signedIn: layout(),
       signedOut: const SigninPage());
 
-  Widget narrowLayout() => Padding(
-      padding: const EdgeInsets.symmetric(horizontal: maxPadding),
-      child: wideLayout());
-
-  Widget wideLayout() => Scaffold(
+  Widget layout() => Scaffold(
       body: PageView(
-        children: const <Widget>[AllBikesPage(), TipsPage()],
-        onPageChanged: _onPageChanged,
+        children: const <Widget>[AllBikesPage(), StatisticPage(), TipsPage()],
+        onPageChanged: (page) => setState(() => _pageIndex = page),
         controller: _pageController,
       ),
       bottomNavigationBar: BottomNavigationBar(
@@ -74,17 +59,15 @@ class _MemberHomePageState extends State<MemberHomePage> {
               label: 'Mes vélos',
               backgroundColor: mainColor),
           BottomNavigationBarItem(
-              icon: Icon(Icons.archive),
+              icon: Icon(Icons.bar_chart),
+              label: 'Mes statistiques',
+              backgroundColor: mainColor),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.comment),
               label: 'Conseils',
               backgroundColor: mainColor)
         ],
       ));
-
-  void _onPageChanged(int page) {
-    setState(() {
-      _pageIndex = page;
-    });
-  }
 
   void _onTabTapped(int index) {
     _pageController.animateToPage(index,

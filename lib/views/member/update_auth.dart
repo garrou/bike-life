@@ -1,12 +1,11 @@
-import 'package:bike_life/constants.dart';
-import 'package:bike_life/repositories/member_repository.dart';
+import 'package:bike_life/utils/constants.dart';
+import 'package:bike_life/services/member_service.dart';
 import 'package:bike_life/utils/storage.dart';
 import 'package:bike_life/utils/validator.dart';
-import 'package:bike_life/views/styles/general.dart';
-import 'package:bike_life/views/widgets/button.dart';
-import 'package:bike_life/views/widgets/card.dart';
-import 'package:bike_life/views/widgets/textfield.dart';
-import 'package:bike_life/views/widgets/top_left_button.dart';
+import 'package:bike_life/styles/general.dart';
+import 'package:bike_life/widgets/button.dart';
+import 'package:bike_life/widgets/textfield.dart';
+import 'package:bike_life/widgets/top_left_button.dart';
 import 'package:flutter/material.dart';
 
 class UpdateAccountPage extends StatefulWidget {
@@ -17,21 +16,6 @@ class UpdateAccountPage extends StatefulWidget {
 }
 
 class _UpdateAccountPageState extends State<UpdateAccountPage> {
-  final _keyForm = GlobalKey<FormState>();
-
-  final _emailFocus = FocusNode();
-  final _email = TextEditingController();
-
-  final _passwordFocus = FocusNode();
-  final _password = TextEditingController();
-
-  final MemberRepository _memberRepository = MemberRepository();
-
-  @override
-  void initState() {
-    super.initState();
-  }
-
   @override
   Widget build(BuildContext context) =>
       Scaffold(body: LayoutBuilder(builder: (context, constraints) {
@@ -46,17 +30,37 @@ class _UpdateAccountPageState extends State<UpdateAccountPage> {
       padding: const EdgeInsets.symmetric(horizontal: maxPadding),
       child: wideLayout());
 
-  Widget wideLayout() => Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: <Widget>[
-            AppTopLeftButton(
-                title: 'Modifier mon profil',
-                callback: () => Navigator.pushNamed(context, '/profile')),
-            AppCard(child: buildForm(), elevation: secondSize)
-          ]);
+  Widget wideLayout() => ListView(children: <Widget>[
+        AppTopLeftButton(
+            title: 'Modifier mon profil',
+            callback: () => Navigator.pushNamed(context, '/profile')),
+        const UpdateAuthForm()
+      ]);
+}
 
-  Widget buildForm() => Form(
+class UpdateAuthForm extends StatefulWidget {
+  const UpdateAuthForm({Key? key}) : super(key: key);
+
+  @override
+  _UpdateAuthFormState createState() => _UpdateAuthFormState();
+}
+
+class _UpdateAuthFormState extends State<UpdateAuthForm> {
+  final _keyForm = GlobalKey<FormState>();
+
+  final _emailFocus = FocusNode();
+  final _email = TextEditingController();
+
+  final _passwordFocus = FocusNode();
+  final _password = TextEditingController();
+
+  final _confirmPassFocus = FocusNode();
+  final _confirmPass = TextEditingController();
+
+  final MemberService _memberService = MemberService();
+
+  @override
+  Widget build(BuildContext context) => Form(
       key: _keyForm,
       child: Column(children: <Widget>[
         AppTextField(
@@ -77,6 +81,19 @@ class _UpdateAccountPageState extends State<UpdateAccountPage> {
             validator: passwordValidator,
             obscureText: true,
             icon: Icons.lock),
+        AppTextField(
+            keyboardType: TextInputType.text,
+            label: 'Confirmer le mot de passe',
+            hintText: 'Confirmer le mot de passe',
+            focusNode: _confirmPassFocus,
+            textfieldController: _confirmPass,
+            validator: (value) {
+              if (_password.text != value || value!.isEmpty) {
+                return 'Mot de passe incorrect';
+              }
+            },
+            obscureText: true,
+            icon: Icons.lock),
         AppButton(text: 'Modifier', callback: _onUpdate, color: mainColor)
       ]));
 
@@ -89,6 +106,16 @@ class _UpdateAccountPageState extends State<UpdateAccountPage> {
 
   void _updateAuth(String email, String password) async {
     int id = await Storage.getMemberId();
-    // TODO: Update
+    List<dynamic> response = await _memberService.update(id, email, password);
+    Color responseColor = mainColor;
+
+    if (response[0]) {
+      Navigator.pushNamedAndRemoveUntil(
+          context, '/profile', (Route<dynamic> route) => false);
+    } else {
+      responseColor = errorColor;
+    }
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text(response[1]['confirm']), backgroundColor: responseColor));
   }
 }
