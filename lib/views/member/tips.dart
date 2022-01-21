@@ -42,6 +42,6 @@ class _TipsPageState extends State<TipsPage> {
   Widget wideLayout() => Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: const <Widget>[
-            AppTitle(text: 'Conseils', paddingTop: secondSize)
+            AppTitle(text: 'Conseils', paddingTop: mainSize)
           ]);
 }

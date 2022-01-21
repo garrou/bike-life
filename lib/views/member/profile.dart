@@ -50,14 +50,17 @@ class _ProfilePageState extends State<ProfilePage> {
         AppTopLeftButton(
             title: 'Profil',
             callback: () => Navigator.pushNamed(context, '/home')),
-        const AppLinkToPage(
-            padding: mainSize,
-            child: Text('Modifier mon profil',
-                style: TextStyle(
-                    decoration: TextDecoration.underline,
-                    color: Colors.blue,
-                    fontSize: secondSize)),
-            destination: UpdateAccountPage()),
+        Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: const <Widget>[
+              Icon(Icons.edit, color: Colors.blue),
+              AppLinkToPage(
+                  padding: thirdSize,
+                  child: Text('Modifier mon profil',
+                      style:
+                          TextStyle(fontSize: secondSize, color: Colors.blue)),
+                  destination: UpdateAccountPage()),
+            ]),
         AppButton(
             text: 'Déconnexion', callback: _onDisconnect, color: mainColor)
       ]);
