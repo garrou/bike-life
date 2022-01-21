@@ -12,10 +12,10 @@ import 'package:bike_life/widgets/account_button.dart';
 import 'package:bike_life/widgets/button.dart';
 import 'package:bike_life/widgets/card.dart';
 import 'package:bike_life/widgets/flip.dart';
+import 'package:bike_life/widgets/network_image.dart';
 import 'package:bike_life/widgets/percent_bar.dart';
 import 'package:bike_life/widgets/textfield.dart';
 import 'package:bike_life/widgets/top_right_button.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
 class BikeCard extends StatefulWidget {
@@ -46,9 +46,7 @@ class _BikeCardState extends State<BikeCard> {
         await _componentService.getComponents(widget.bike.id);
 
     if (jsonComponents.isNotEmpty) {
-      setState(() {
-        _components = createSeveralComponents(jsonComponents);
-      });
+      setState(() => _components = createSeveralComponents(jsonComponents));
     }
   }
 
@@ -59,19 +57,8 @@ class _BikeCardState extends State<BikeCard> {
           children: <Widget>[
             ClipRRect(
                 borderRadius: BorderRadius.circular(mainSize),
-                child: CachedNetworkImage(
-                    height: MediaQuery.of(context).size.height / 3,
-                    width: MediaQuery.of(context).size.height / 3,
-                    imageUrl: bike.image,
-                    progressIndicatorBuilder:
-                        (context, url, downloadProgress) =>
-                            CircularProgressIndicator(
-                                value: downloadProgress.progress,
-                                color: mainColor),
-                    errorWidget: (context, url, error) => const Icon(
-                          Icons.error,
-                          color: Colors.red,
-                        ))),
+                child: AppNetworkImage(
+                    image: bike.image, progressColor: mainColor)),
             Center(child: Text(bike.name, style: secondTextStyle)),
             Padding(
                 child: Text('Distance parcourue', style: boldSubTitleStyle),
@@ -101,7 +88,7 @@ class _BikeCardState extends State<BikeCard> {
       // TODO: Options to display bar in km order
       elevation: secondSize,
       child: ListView(
-          padding: const EdgeInsets.symmetric(horizontal: thirdSize),
+          padding: const EdgeInsets.symmetric(horizontal: secondSize),
           children: <Widget>[
             AppTopRightButton(
                 callback: _onBikeDetailsClick,
@@ -112,10 +99,10 @@ class _BikeCardState extends State<BikeCard> {
             AppAccountButton(
                 color: mainColor,
                 text: 'Ajouter un composant',
-                callback: _onGoToAddComponent)
+                callback: _onAddComponentPage)
           ]));
 
-  void _onGoToAddComponent() =>
+  void _onAddComponentPage() =>
       Navigator.pushNamed(context, AddComponentRoute.routeName,
           arguments: BikeArgument(widget.bike));
 

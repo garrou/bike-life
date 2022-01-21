@@ -4,7 +4,6 @@ import 'package:bike_life/utils/storage.dart';
 import 'package:bike_life/utils/validator.dart';
 import 'package:bike_life/styles/general.dart';
 import 'package:bike_life/widgets/button.dart';
-import 'package:bike_life/widgets/card.dart';
 import 'package:bike_life/widgets/textfield.dart';
 import 'package:bike_life/widgets/top_left_button.dart';
 import 'package:flutter/material.dart';
@@ -31,15 +30,12 @@ class _UpdateAccountPageState extends State<UpdateAccountPage> {
       padding: const EdgeInsets.symmetric(horizontal: maxPadding),
       child: wideLayout());
 
-  Widget wideLayout() => Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: <Widget>[
-            AppTopLeftButton(
-                title: 'Modifier mon profil',
-                callback: () => Navigator.pushNamed(context, '/profile')),
-            const AppCard(child: UpdateAuthForm(), elevation: secondSize)
-          ]);
+  Widget wideLayout() => ListView(children: <Widget>[
+        AppTopLeftButton(
+            title: 'Modifier mon profil',
+            callback: () => Navigator.pushNamed(context, '/profile')),
+        const UpdateAuthForm()
+      ]);
 }
 
 class UpdateAuthForm extends StatefulWidget {
@@ -87,12 +83,12 @@ class _UpdateAuthFormState extends State<UpdateAuthForm> {
             icon: Icons.lock),
         AppTextField(
             keyboardType: TextInputType.text,
-            label: 'Mot de passe',
+            label: 'Confirmer le mot de passe',
             hintText: 'Confirmer le mot de passe',
             focusNode: _confirmPassFocus,
             textfieldController: _confirmPass,
             validator: (value) {
-              if (_password.text != value) {
+              if (_password.text != value || value!.isEmpty) {
                 return 'Mot de passe incorrect';
               }
             },

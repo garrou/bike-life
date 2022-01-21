@@ -45,7 +45,7 @@ class _AddComponentPageState extends State<AddComponentPage> {
 
   String _dateOfPurchase = DateTime.now().toString().split(' ')[0];
   List<ComponentType> _componentTypes = [];
-  String _dropDownValue = "";
+  String _typeValue = "";
 
   @override
   void initState() {
@@ -58,7 +58,7 @@ class _AddComponentPageState extends State<AddComponentPage> {
     dynamic json = await _componentTypesService.getTypes();
     setState(() {
       _componentTypes = createSeveralComponentTypes(json);
-      _dropDownValue = _componentTypes.first.name;
+      _typeValue = _componentTypes.first.name;
     });
   }
 
@@ -121,8 +121,9 @@ class _AddComponentPageState extends State<AddComponentPage> {
                   icon: Icons.health_and_safety,
                   keyboardType: TextInputType.number),
               DropdownButton(
-                  value: _dropDownValue,
-                  onChanged: _onChanged,
+                  value: _typeValue,
+                  onChanged: (String? value) =>
+                      setState(() => _typeValue = value!),
                   items: _componentTypes.map<DropdownMenuItem<String>>(
                       (ComponentType componentType) {
                     return DropdownMenuItem(
@@ -140,12 +141,6 @@ class _AddComponentPageState extends State<AddComponentPage> {
 
   void _onDateChanged(DateRangePickerSelectionChangedArgs args) {
     _dateOfPurchase = args.value.toString().split(' ')[0];
-  }
-
-  void _onChanged(String? value) {
-    setState(() {
-      _dropDownValue = value!;
-    });
   }
 
   void _addComponent(String brand, String image, double km, double duration,
@@ -168,7 +163,7 @@ class _AddComponentPageState extends State<AddComponentPage> {
     if (_keyForm.currentState!.validate()) {
       _keyForm.currentState!.save();
       _addComponent(_brand.text, _image.text, double.parse(_nbKm.text),
-          double.parse(_duration.text), _dropDownValue, _dateOfPurchase);
+          double.parse(_duration.text), _typeValue, _dateOfPurchase);
     }
   }
 }

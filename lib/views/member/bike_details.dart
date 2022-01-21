@@ -11,7 +11,6 @@ import 'package:bike_life/widgets/button.dart';
 import 'package:bike_life/widgets/calendar.dart';
 import 'package:bike_life/widgets/textfield.dart';
 import 'package:bike_life/widgets/top_left_button.dart';
-import 'package:bike_life/widgets/top_right_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_guards/flutter_guards.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
@@ -54,9 +53,7 @@ class _BikeDetailsPageState extends State<BikeDetailsPage> {
             children: <Widget>[
               AppTopLeftButton(
                   title: 'Paramètres du vélo',
-                  callback: () => Navigator.pop(context)),
-              AppTopRightButton(
-                  callback: () {}, icon: Icons.help, padding: secondSize)
+                  callback: () => Navigator.pop(context))
             ]),
         UpdateBikeForm(bike: widget.bike),
         AppButton(text: 'Supprimer', callback: _showDialog, color: errorColor)

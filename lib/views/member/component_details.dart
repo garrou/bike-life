@@ -1,17 +1,22 @@
 import 'dart:async';
 
+import 'package:bike_life/models/component_type.dart';
 import 'package:bike_life/services/component_service.dart';
+import 'package:bike_life/services/component_types_service.dart';
 import 'package:bike_life/utils/constants.dart';
 import 'package:bike_life/models/component.dart';
 import 'package:bike_life/utils/guard_helper.dart';
 import 'package:bike_life/utils/validator.dart';
 import 'package:bike_life/views/auth/signin.dart';
 import 'package:bike_life/styles/general.dart';
-import 'package:bike_life/widgets/account_button.dart';
+import 'package:bike_life/widgets/button.dart';
+import 'package:bike_life/widgets/calendar.dart';
+import 'package:bike_life/widgets/network_image.dart';
 import 'package:bike_life/widgets/textfield.dart';
 import 'package:bike_life/widgets/top_left_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_guards/flutter_guards.dart';
+import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 
 class ComponentDetailPage extends StatefulWidget {
   final Component component;
@@ -53,30 +58,10 @@ class _ComponentDetailPageState extends State<ComponentDetailPage> {
         AppTopLeftButton(
             title: widget.component.type,
             callback: () => Navigator.of(context).pop()),
-        _buildComponentsInfo(widget.component),
-        const Divider(
-          color: Colors.black,
-          height: mainSize,
-        ),
+        AppNetworkImage(
+            image: widget.component.image!, progressColor: mainColor),
         UpdateBikeComponentForm(component: widget.component)
       ]));
-
-  Widget _buildComponentsInfo(Component component) => Column(children: <Widget>[
-        // TODO: Display information in textfield
-        // TODO: Display image if exists
-        Padding(
-            child: Text('Marque : ${component.brand ?? "Non spécifiée"}',
-                style: thirdTextStyle),
-            padding: const EdgeInsets.only(top: thirdSize)),
-        Padding(
-            child: Text('Durée moyenne de km : ${component.duration} km',
-                style: thirdTextStyle),
-            padding: const EdgeInsets.only(top: thirdSize)),
-        Padding(
-            child: Text('Nombre de kilomètres : ${component.km} km',
-                style: thirdTextStyle),
-            padding: const EdgeInsets.only(top: thirdSize))
-      ]);
 }
 
 class UpdateBikeComponentForm extends StatefulWidget {
@@ -102,15 +87,36 @@ class _UpdateBikeComponentFormState extends State<UpdateBikeComponentForm> {
   final _durationFocus = FocusNode();
   late final TextEditingController _duration;
 
+  final _imageFocus = FocusNode();
+  late final TextEditingController _image;
+
+  late String _dateOfPurchase;
+  List<ComponentType> _componentTypes = [];
+  String _typeValue = "";
+
   final ComponentService _componentService = ComponentService();
+  final ComponentTypesService _componentTypesService = ComponentTypesService();
 
   @override
   void initState() {
     super.initState();
     GuardHelper.checkIfLogged(_authState);
-    _km = TextEditingController(text: '${widget.component.km}');
-    _brand = TextEditingController(text: widget.component.brand ?? '');
-    _duration = TextEditingController(text: '${widget.component.duration}');
+    _load();
+    setState(() {
+      _km = TextEditingController(text: '${widget.component.km}');
+      _brand = TextEditingController(text: widget.component.brand ?? '');
+      _duration = TextEditingController(text: '${widget.component.duration}');
+      _image = TextEditingController(text: widget.component.image);
+      _dateOfPurchase = widget.component.dateOfPurchase;
+    });
+  }
+
+  void _load() async {
+    dynamic json = await _componentTypesService.getTypes();
+    setState(() {
+      _componentTypes = createSeveralComponentTypes(json);
+      _typeValue = _componentTypes.first.name;
+    });
   }
 
   @override
@@ -121,7 +127,6 @@ class _UpdateBikeComponentFormState extends State<UpdateBikeComponentForm> {
           child: Form(
               key: _keyForm,
               child: Column(children: <Widget>[
-                Text('Modifier', style: secondTextStyle),
                 AppTextField(
                     keyboardType: TextInputType.text,
                     focusNode: _brandFocus,
@@ -146,18 +151,48 @@ class _UpdateBikeComponentFormState extends State<UpdateBikeComponentForm> {
                     hintText: 'Durée de vie',
                     label: 'Durée de vie du composant (km)',
                     icon: Icons.health_and_safety),
-                AppAccountButton(
+                AppTextField(
+                    focusNode: _imageFocus,
+                    textfieldController: _image,
+                    validator: emptyValidator,
+                    hintText: "Lien de l'image",
+                    label: 'Image',
+                    icon: Icons.image,
+                    keyboardType: TextInputType.text),
+                DropdownButton(
+                    value: _typeValue,
+                    onChanged: (String? value) =>
+                        setState(() => _typeValue = value!),
+                    items: _componentTypes.map<DropdownMenuItem<String>>(
+                        (ComponentType componentType) {
+                      return DropdownMenuItem(
+                          child:
+                              Text(componentType.name, style: secondTextStyle),
+                          value: componentType.name);
+                    }).toList()),
+                AppCalendar(
+                    callback: _onDateChanged, selectedDate: _dateOfPurchase),
+                AppButton(
                     callback: _onUpdateComponent,
                     text: 'Modifier',
                     color: mainColor)
               ]))),
       signedOut: const SigninPage());
 
+  void _onDateChanged(DateRangePickerSelectionChangedArgs args) {
+    _dateOfPurchase = args.value.toString().split(' ')[0];
+  }
+
   void _onUpdateComponent() {
     if (_keyForm.currentState!.validate()) {
       _keyForm.currentState!.save();
-      _updateComponent(_brand.text, double.parse(_km.text),
-          double.parse(_duration.text), 'image', 'date', 'type');
+      _updateComponent(
+          _brand.text,
+          double.parse(_km.text),
+          double.parse(_duration.text),
+          _image.text,
+          _dateOfPurchase,
+          _typeValue);
     }
   }
 

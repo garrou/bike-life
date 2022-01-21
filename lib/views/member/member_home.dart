@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:bike_life/utils/guard_helper.dart';
 import 'package:bike_life/views/auth/signin.dart';
 import 'package:bike_life/views/member/all_bikes.dart';
+import 'package:bike_life/views/member/statistics.dart';
 import 'package:bike_life/views/member/tips.dart';
 import 'package:bike_life/styles/general.dart';
 import 'package:flutter/material.dart';
@@ -41,7 +42,7 @@ class _MemberHomePageState extends State<MemberHomePage> {
 
   Widget layout() => Scaffold(
       body: PageView(
-        children: const <Widget>[AllBikesPage(), TipsPage()],
+        children: const <Widget>[AllBikesPage(), StatisticPage(), TipsPage()],
         onPageChanged: (page) => setState(() => _pageIndex = page),
         controller: _pageController,
       ),
@@ -56,6 +57,10 @@ class _MemberHomePageState extends State<MemberHomePage> {
           BottomNavigationBarItem(
               icon: Icon(Icons.pedal_bike),
               label: 'Mes vélos',
+              backgroundColor: mainColor),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.bar_chart),
+              label: 'Mes statistiques',
               backgroundColor: mainColor),
           BottomNavigationBarItem(
               icon: Icon(Icons.comment),
