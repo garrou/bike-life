@@ -109,7 +109,7 @@ class _SignupFormState extends State<SignupForm> {
             focusNode: _confirmPasswordFocus,
             textfieldController: _confirmPassword,
             validator: (value) {
-              if (_password.text != value) {
+              if (_password.text != value || value!.isEmpty) {
                 return 'Mot de passe incorrect';
               }
             },

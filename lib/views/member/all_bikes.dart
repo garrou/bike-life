@@ -34,9 +34,7 @@ class _AllBikesPageState extends State<AllBikesPage> {
     List<Bike> bikes = createSeveralBikes(jsonBikes['bikes']);
     Future.wait(bikes.map((bike) async => _cards.add(BikeCard(bike: bike))));
 
-    setState(() {
-      _cards.add(_buildAddBikeCard());
-    });
+    setState(() => _cards.add(_buildAddBikeCard()));
   }
 
   @override
@@ -55,9 +53,7 @@ class _AllBikesPageState extends State<AllBikesPage> {
           carouselController: _carouselController,
           options: CarouselOptions(
               onPageChanged: (index, reason) {
-                setState(() {
-                  _current = index;
-                });
+                setState(() => _current = index);
               },
               enlargeCenterPage: true,
               height: MediaQuery.of(context).size.height - 200,

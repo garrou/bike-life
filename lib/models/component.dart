@@ -3,7 +3,7 @@ class Component {
   final int bikeId;
   final double km;
   final String? brand;
-  final String? dateOfPurchase;
+  final String dateOfPurchase;
   final double duration;
   final String? image;
   final String type;
