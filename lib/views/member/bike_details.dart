@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:bike_life/routes/member_home_route.dart';
 import 'package:bike_life/utils/constants.dart';
 import 'package:bike_life/models/bike.dart';
 import 'package:bike_life/services/bike_service.dart';
@@ -69,7 +70,8 @@ class _BikeDetailsPageState extends State<BikeDetailsPage> {
 
     if (response[0]) {
       Navigator.pushNamedAndRemoveUntil(
-          context, '/home', (Route<dynamic> route) => false);
+          context, MemberHomeRoute.routeName, (Route<dynamic> route) => false,
+          arguments: 0);
     } else {
       responseColor = errorColor;
     }
@@ -92,7 +94,8 @@ class _BikeDetailsPageState extends State<BikeDetailsPage> {
               onPressed: () {
                 _onDeleteBike();
                 Navigator.pushNamedAndRemoveUntil(
-                    context, '/home', (route) => false);
+                    context, MemberHomeRoute.routeName, (route) => false,
+                    arguments: 0);
               },
             ),
             TextButton(
@@ -188,7 +191,8 @@ class _UpdateBikeFormState extends State<UpdateBikeForm> {
 
     if (response[0]) {
       Navigator.pushNamedAndRemoveUntil(
-          context, '/home', (Route<dynamic> route) => false);
+          context, MemberHomeRoute.routeName, (Route<dynamic> route) => false,
+          arguments: 0);
     } else {
       responseColor = errorColor;
     }

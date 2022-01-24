@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:bike_life/models/bike.dart';
 import 'package:bike_life/models/component_type.dart';
+import 'package:bike_life/routes/member_home_route.dart';
 import 'package:bike_life/services/component_service.dart';
 import 'package:bike_life/services/component_types_service.dart';
 import 'package:bike_life/styles/general.dart';
@@ -55,9 +56,9 @@ class _AddComponentPageState extends State<AddComponentPage> {
   }
 
   void _load() async {
-    dynamic json = await _componentTypesService.getTypes();
+    List<ComponentType> compoTypes = await _componentTypesService.getTypes();
     setState(() {
-      _componentTypes = createSeveralComponentTypes(json);
+      _componentTypes = compoTypes;
       _typeValue = _componentTypes.first.name;
     });
   }
@@ -83,7 +84,9 @@ class _AddComponentPageState extends State<AddComponentPage> {
         Row(children: <Widget>[
           AppTopLeftButton(
               title: 'Ajouter un composant',
-              callback: () => Navigator.pushNamed(context, '/home'))
+              callback: () => Navigator.pushNamed(
+                  context, MemberHomeRoute.routeName,
+                  arguments: 0))
         ]),
         Form(
             key: _keyForm,
@@ -151,7 +154,8 @@ class _AddComponentPageState extends State<AddComponentPage> {
 
     if (response[0]) {
       Navigator.pushNamedAndRemoveUntil(
-          context, '/home', (Route<dynamic> route) => false);
+          context, MemberHomeRoute.routeName, (Route<dynamic> route) => false,
+          arguments: 0);
     } else {
       respColor = errorColor;
     }

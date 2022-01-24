@@ -10,7 +10,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_guards/flutter_guards.dart';
 
 class MemberHomePage extends StatefulWidget {
-  const MemberHomePage({Key? key}) : super(key: key);
+  final int initialPage;
+  const MemberHomePage({Key? key, required this.initialPage}) : super(key: key);
 
   @override
   _MemberHomePageState createState() => _MemberHomePageState();
@@ -25,6 +26,7 @@ class _MemberHomePageState extends State<MemberHomePage> {
   void initState() {
     super.initState();
     GuardHelper.checkIfLogged(_authState);
+    _pageIndex = widget.initialPage;
     _pageController = PageController(initialPage: _pageIndex);
   }
 

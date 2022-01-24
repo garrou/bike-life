@@ -35,7 +35,7 @@ class _SignupPageState extends State<SignupPage> {
   Widget build(BuildContext context) => Scaffold(
       body: AuthGuard(
           authStream: _authState.stream,
-          signedIn: const MemberHomePage(),
+          signedIn: const MemberHomePage(initialPage: 0),
           signedOut: LayoutBuilder(builder: (context, constraints) {
             if (constraints.maxWidth > maxSize) {
               return narrowLayout();
@@ -47,7 +47,7 @@ class _SignupPageState extends State<SignupPage> {
   Center wideLayout() => Center(
           child: SingleChildScrollView(
               child: Column(children: <Widget>[
-        const AppTitle(text: "S'inscrire", paddingTop: 0),
+        AppTitle(text: "S'inscrire", paddingTop: 0, style: mainTextStyle),
         const AppCard(child: SignupForm(), elevation: secondSize),
         AppLinkToPage(
             padding: mainSize,

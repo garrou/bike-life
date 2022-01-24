@@ -1,3 +1,4 @@
+import 'package:bike_life/routes/member_home_route.dart';
 import 'package:bike_life/services/component_service.dart';
 import 'package:bike_life/routes/add_component_route.dart';
 import 'package:bike_life/utils/constants.dart';
@@ -42,12 +43,9 @@ class _BikeCardState extends State<BikeCard> {
       back: _buildBackCard(widget.bike));
 
   void _loadComponents() async {
-    List<dynamic> jsonComponents =
-        await _componentService.getComponents(widget.bike.id);
-
-    if (jsonComponents.isNotEmpty) {
-      setState(() => _components = createSeveralComponents(jsonComponents));
-    }
+    List<Component> components =
+        await _componentService.getBikeComponents(widget.bike.id);
+    setState(() => _components = components);
   }
 
   Widget _buildFrontCard(Bike bike, BuildContext context) => AppCard(
@@ -162,7 +160,8 @@ class _AddKmFormState extends State<AddKmForm> {
     Color responseColor = mainColor;
 
     if (response[0]) {
-      Navigator.pushReplacementNamed(context, '/home');
+      Navigator.pushReplacementNamed(context, MemberHomeRoute.routeName,
+          arguments: 0);
     } else {
       responseColor = errorColor;
     }

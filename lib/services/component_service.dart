@@ -11,10 +11,10 @@ class ComponentService {
     HttpAccountInterceptor(),
   ]);
 
-  Future<dynamic> getComponents(int bikeId) async {
+  Future<List<Component>> getBikeComponents(int bikeId) async {
     Response response =
         await client.get(Uri.parse('$endpoint/components?bikeId=$bikeId'));
-    return jsonDecode(response.body);
+    return createComponentsFromList(jsonDecode(response.body));
   }
 
   Future<List<dynamic>> add(String brand, String image, double km,

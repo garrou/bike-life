@@ -1,8 +1,12 @@
 import 'dart:async';
 
+import 'package:bike_life/models/tip.dart';
+import 'package:bike_life/services/tip_service.dart';
+import 'package:bike_life/styles/general.dart';
 import 'package:bike_life/utils/constants.dart';
 import 'package:bike_life/utils/guard_helper.dart';
 import 'package:bike_life/views/auth/signin.dart';
+import 'package:bike_life/widgets/tip_card.dart';
 import 'package:bike_life/widgets/title.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_guards/flutter_guards.dart';
@@ -16,11 +20,19 @@ class TipsPage extends StatefulWidget {
 
 class _TipsPageState extends State<TipsPage> {
   final StreamController<bool> _authState = StreamController();
+  final TipService _tipService = TipService();
+  List<Tip> _tips = [];
 
   @override
   void initState() {
     super.initState();
     GuardHelper.checkIfLogged(_authState);
+    _load();
+  }
+
+  void _load() async {
+    List<Tip> tips = await _tipService.getAll();
+    setState(() => _tips = tips);
   }
 
   @override
@@ -39,9 +51,11 @@ class _TipsPageState extends State<TipsPage> {
       padding: const EdgeInsets.symmetric(horizontal: maxPadding),
       child: wideLayout());
 
-  Widget wideLayout() => Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: const <Widget>[
-            AppTitle(text: 'Conseils', paddingTop: mainSize)
-          ]);
+  Widget wideLayout() =>
+      Column(crossAxisAlignment: CrossAxisAlignment.center, children: <Widget>[
+        AppTitle(
+            text: 'Conseils', paddingTop: mainSize, style: secondTextStyle),
+        for (Tip tip in _tips) AppTipCard(tip: tip)
+        // TODO: Filter by date, type
+      ]);
 }

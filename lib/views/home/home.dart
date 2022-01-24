@@ -31,7 +31,7 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) => Scaffold(
       body: AuthGuard(
           authStream: _authState.stream,
-          signedIn: const MemberHomePage(),
+          signedIn: const MemberHomePage(initialPage: 0),
           signedOut: LayoutBuilder(builder: (context, constraint) {
             if (constraint.maxWidth > maxSize) {
               return narrowLayout();
@@ -48,7 +48,7 @@ class _HomePageState extends State<HomePage> {
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
-          const AppTitle(text: title, paddingTop: 0),
+          AppTitle(text: title, paddingTop: 0, style: mainTextStyle),
           appQuote(),
           const AppNavButton(
               text: 'Se connecter',

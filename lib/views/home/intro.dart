@@ -25,7 +25,7 @@ class _IntroPageState extends State<IntroPage> {
     GuardHelper.checkIfLogged(_authState);
   }
 
-  void _onIntroEnd(context) {
+  void _onIntroEnd(BuildContext context) {
     Navigator.pushNamedAndRemoveUntil(
         context, '/', (Route<dynamic> route) => false);
   }
@@ -34,7 +34,7 @@ class _IntroPageState extends State<IntroPage> {
   Widget build(BuildContext context) => Scaffold(
       body: AuthGuard(
           authStream: _authState.stream,
-          signedIn: const MemberHomePage(),
+          signedIn: const MemberHomePage(initialPage: 0),
           signedOut: _buildIntroductionScreen()));
 
   IntroductionScreen _buildIntroductionScreen() => IntroductionScreen(
@@ -45,19 +45,19 @@ class _IntroPageState extends State<IntroPage> {
             title: title, body: quote, image: Image.asset('assets/bike.png')),
         PageViewModel(
             title: 'Gestion de vos vélos',
-            body: "Ajouter vos vélos dans l'application",
+            body: "Ajouter vos vélos dans l'application.",
             image: const Icon(Icons.bike_scooter)),
         PageViewModel(
             title: 'Gestion des composants des vélos',
             body:
-                "Gardez un oeil sur l'utilisation de vos composants en fonction de leur durée de vie",
+                "Ajouter les composants de votre vélo.\nGardez un oeil sur l'utilisation de ceux-ci en fonction de leur durée de vie.",
             image: const Icon(Icons.health_and_safety))
       ],
       showSkipButton: true,
       skip: const Text('Passer', style: TextStyle(color: mainColor)),
       next: const Icon(Icons.arrow_forward, color: mainColor),
       done: const Text('Compris', style: TextStyle(color: mainColor)),
-      curve: Curves.fastLinearToSlowEaseIn,
+      curve: Curves.easeIn,
       dotsDecorator: const DotsDecorator(
         size: Size(secondSize, secondSize),
         color: mainColor,
