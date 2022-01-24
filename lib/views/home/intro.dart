@@ -34,7 +34,7 @@ class _IntroPageState extends State<IntroPage> {
   Widget build(BuildContext context) => Scaffold(
       body: AuthGuard(
           authStream: _authState.stream,
-          signedIn: const MemberHomePage(),
+          signedIn: const MemberHomePage(initialPage: 0),
           signedOut: _buildIntroductionScreen()));
 
   IntroductionScreen _buildIntroductionScreen() => IntroductionScreen(

@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:bike_life/models/tip.dart';
 import 'package:bike_life/services/tip_service.dart';
+import 'package:bike_life/styles/general.dart';
 import 'package:bike_life/utils/constants.dart';
 import 'package:bike_life/utils/guard_helper.dart';
 import 'package:bike_life/views/auth/signin.dart';
@@ -52,7 +53,9 @@ class _TipsPageState extends State<TipsPage> {
 
   Widget wideLayout() =>
       Column(crossAxisAlignment: CrossAxisAlignment.center, children: <Widget>[
-        const AppTitle(text: 'Conseils', paddingTop: mainSize),
+        AppTitle(
+            text: 'Conseils', paddingTop: mainSize, style: secondTextStyle),
         for (Tip tip in _tips) AppTipCard(tip: tip)
+        // TODO: Filter by date, type
       ]);
 }

@@ -14,7 +14,7 @@ class BikeService {
   Future<List<dynamic>> addBike(int memberId, String name, String urlImage,
       String dateOfPurchase, double nbKm) async {
     Response response = await client.post(
-      Uri.parse('$endpoint/bikes'),
+      Uri.parse('$endpoint/$memberId/bikes'),
       body: jsonEncode(<String, dynamic>{
         'memberId': memberId,
         'name': name,
@@ -28,14 +28,14 @@ class BikeService {
 
   Future<List<Bike>> getBikes(int memberId) async {
     Response response =
-        await client.get(Uri.parse('$endpoint/bikes?memberId=$memberId'));
+        await client.get(Uri.parse('$endpoint/members/$memberId/bikes'));
     return createBikesFromList(jsonDecode(response.body));
   }
 
   Future<List<dynamic>> deleteBike(int bikeId) async {
     Response response =
         await client.delete(Uri.parse('$endpoint/bikes/$bikeId'));
-    return [response.statusCode == httpCodeOk, jsonDecode(response.body)];
+    return [response.statusCode == httpCodeOk, response.body];
   }
 
   Future<List<dynamic>> updateBike(Bike bike) async {

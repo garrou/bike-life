@@ -11,7 +11,7 @@ class ComponentService {
     HttpAccountInterceptor(),
   ]);
 
-  Future<List<Component>> getComponents(int bikeId) async {
+  Future<List<Component>> getBikeComponents(int bikeId) async {
     Response response =
         await client.get(Uri.parse('$endpoint/components?bikeId=$bikeId'));
     return createComponentsFromList(jsonDecode(response.body));

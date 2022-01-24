@@ -24,6 +24,5 @@ class Bike {
 }
 
 List<Bike> createBikesFromList(List records) {
-  print(records);
   return records.map((json) => Bike.fromJson(json)).toList(growable: false);
 }

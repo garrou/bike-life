@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:bike_life/routes/member_home_route.dart';
 import 'package:bike_life/utils/constants.dart';
 import 'package:bike_life/utils/guard_helper.dart';
 import 'package:bike_life/utils/storage.dart';
@@ -49,7 +50,9 @@ class _ProfilePageState extends State<ProfilePage> {
       Column(crossAxisAlignment: CrossAxisAlignment.center, children: <Widget>[
         AppTopLeftButton(
             title: 'Profil',
-            callback: () => Navigator.pushNamed(context, '/home')),
+            callback: () => Navigator.pushNamed(
+                context, MemberHomeRoute.routeName,
+                arguments: 0)),
         Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: const <Widget>[

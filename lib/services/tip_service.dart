@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:bike_life/models/tip.dart';
 import 'package:bike_life/utils/constants.dart';
 import 'package:bike_life/utils/http_account_interceptor.dart';

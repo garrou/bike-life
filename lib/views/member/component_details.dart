@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:bike_life/models/component_type.dart';
+import 'package:bike_life/routes/member_home_route.dart';
 import 'package:bike_life/services/component_service.dart';
 import 'package:bike_life/services/component_types_service.dart';
 import 'package:bike_life/utils/constants.dart';
@@ -211,7 +212,8 @@ class _UpdateBikeComponentFormState extends State<UpdateBikeComponentForm> {
 
     if (response[0]) {
       Navigator.pushNamedAndRemoveUntil(
-          context, '/home', (Route<dynamic> route) => false);
+          context, MemberHomeRoute.routeName, (Route<dynamic> route) => false,
+          arguments: 0);
     } else {
       responseColor = errorColor;
     }

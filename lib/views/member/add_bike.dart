@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:bike_life/routes/member_home_route.dart';
 import 'package:bike_life/utils/constants.dart';
 import 'package:bike_life/utils/guard_helper.dart';
 
@@ -91,7 +92,9 @@ class _AddBikeFormState extends State<AddBikeForm> {
         Row(children: <Widget>[
           AppTopLeftButton(
               title: 'Ajouter un vélo',
-              callback: () => Navigator.pushNamed(context, '/home'))
+              callback: () => Navigator.pushNamed(
+                  context, MemberHomeRoute.routeName,
+                  arguments: 0))
         ]),
         Form(
             key: _keyForm,
@@ -148,7 +151,7 @@ class _AddBikeFormState extends State<AddBikeForm> {
     Color respColor = mainColor;
 
     if (response[0]) {
-      Navigator.pushNamed(context, '/home');
+      Navigator.pushNamed(context, MemberHomeRoute.routeName, arguments: 0);
     } else {
       respColor = errorColor;
     }
