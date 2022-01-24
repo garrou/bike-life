@@ -8,7 +8,7 @@ class MemberHomeRoute extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final args = ModalRoute.of(context)!.settings.arguments as int;
+    final args = ModalRoute.of(context)!.settings.arguments as int?;
     return MemberHomePage(initialPage: args);
   }
 }

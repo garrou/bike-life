@@ -12,5 +12,5 @@ class ComponentType {
 List<ComponentType> createComponentTypesFromList(List<dynamic> records) {
   return records
       .map((json) => ComponentType.fromJson(json))
-      .toList(growable: false);
+      .toList(growable: true);
 }

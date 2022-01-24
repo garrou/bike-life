@@ -9,7 +9,7 @@ import 'package:bike_life/utils/guard_helper.dart';
 import 'package:bike_life/utils/validator.dart';
 import 'package:bike_life/views/auth/signin.dart';
 import 'package:bike_life/styles/general.dart';
-import 'package:bike_life/widgets/button.dart';
+import 'package:bike_life/widgets/account_button.dart';
 import 'package:bike_life/widgets/calendar.dart';
 import 'package:bike_life/widgets/textfield.dart';
 import 'package:bike_life/widgets/top_left_button.dart';
@@ -27,7 +27,6 @@ class BikeDetailsPage extends StatefulWidget {
 }
 
 class _BikeDetailsPageState extends State<BikeDetailsPage> {
-  final BikeService _bikeService = BikeService();
   final StreamController<bool> _authState = StreamController();
 
   @override
@@ -59,59 +58,11 @@ class _BikeDetailsPageState extends State<BikeDetailsPage> {
                   callback: () => Navigator.pop(context))
             ]),
         UpdateBikeForm(bike: widget.bike),
-        AppButton(text: 'Supprimer', callback: _showDialog, color: red)
       ]));
 
   Widget narrowLayout() => Padding(
       padding: const EdgeInsets.symmetric(horizontal: maxPadding),
       child: wideLayout());
-
-  void _onDeleteBike() async {
-    Response response = await _bikeService.deleteBike(widget.bike.id);
-    Color responseColor = deepGreen;
-    dynamic json = jsonDecode(response.body);
-
-    if (response.statusCode == httpCodeOk) {
-      Navigator.pushNamedAndRemoveUntil(
-          context, MemberHomeRoute.routeName, (Route<dynamic> route) => false,
-          arguments: 0);
-    } else {
-      responseColor = red;
-    }
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: Text(json['confirm']), backgroundColor: responseColor));
-  }
-
-  Future<void> _showDialog() async {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(secondSize)),
-          title: const Text('Supprimer ce vélo ?'),
-          actions: <Widget>[
-            TextButton(
-              child:
-                  const Text('Confirmer', style: TextStyle(color: deepGreen)),
-              onPressed: () {
-                _onDeleteBike();
-                Navigator.pushNamedAndRemoveUntil(
-                    context, MemberHomeRoute.routeName, (route) => false,
-                    arguments: 0);
-              },
-            ),
-            TextButton(
-              child: const Text('Annuler', style: TextStyle(color: deepGreen)),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            ),
-          ],
-        );
-      },
-    );
-  }
 }
 
 class UpdateBikeForm extends StatefulWidget {
@@ -176,8 +127,57 @@ class _UpdateBikeFormState extends State<UpdateBikeForm> {
             label: 'Nombre de km',
             icon: Icons.add_road),
         AppCalendar(callback: _onDateChanged, selectedDate: _dateOfPurchase),
-        AppButton(text: 'Modifier', callback: _onUpdateBike, color: deepGreen)
+        AppAccountButton(
+            text: 'Modifier', callback: _onUpdateBike, color: deepGreen),
+        AppAccountButton(text: 'Supprimer', callback: _showDialog, color: red)
       ]));
+
+  Future<void> _showDialog() async {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(secondSize)),
+          title: const Text('Supprimer ce vélo ?'),
+          actions: <Widget>[
+            TextButton(
+              child:
+                  const Text('Confirmer', style: TextStyle(color: deepGreen)),
+              onPressed: () {
+                _onDeleteBike();
+                Navigator.pushNamedAndRemoveUntil(
+                    context, MemberHomeRoute.routeName, (route) => false,
+                    arguments: 0);
+              },
+            ),
+            TextButton(
+              child: const Text('Annuler', style: TextStyle(color: deepGreen)),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  void _onDeleteBike() async {
+    Response response = await _bikeService.deleteBike(widget.bike.id);
+    Color responseColor = deepGreen;
+    dynamic json = jsonDecode(response.body);
+
+    if (response.statusCode == httpCodeOk) {
+      Navigator.pushNamedAndRemoveUntil(
+          context, MemberHomeRoute.routeName, (Route<dynamic> route) => false,
+          arguments: 0);
+    } else {
+      responseColor = red;
+    }
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text(json['confirm']), backgroundColor: responseColor));
+  }
 
   void _onUpdateBike() {
     if (_keyForm.currentState!.validate()) {

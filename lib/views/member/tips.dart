@@ -29,7 +29,7 @@ class _TipsPageState extends State<TipsPage> {
   final ComponentTypesService _componentTypesService = ComponentTypesService();
   List<ComponentType> _componentTypes = [];
   List<Tip> _tips = [];
-  String _value = '';
+  String _value = '%';
 
   @override
   void initState() {
@@ -48,7 +48,8 @@ class _TipsPageState extends State<TipsPage> {
         _tips = createTipsFromList(jsonDecode(responseTips.body));
         _componentTypes =
             createComponentTypesFromList(jsonDecode(responseComponents.body));
-        _value = _componentTypes.first.name;
+        _componentTypes.add(ComponentType('Tous', '%'));
+        _componentTypes = _componentTypes.reversed.toList();
       });
     }
   }
@@ -71,23 +72,26 @@ class _TipsPageState extends State<TipsPage> {
 
   Widget wideLayout() =>
       Column(crossAxisAlignment: CrossAxisAlignment.center, children: <Widget>[
-        AppTitle(
-            text: 'Conseils', paddingTop: mainSize, style: secondTextStyle),
-        Row(mainAxisAlignment: MainAxisAlignment.center, children: <Widget>[
-          DropdownButton(
-              value: _value,
-              onChanged: (String? value) => setState(() => _value = value!),
-              items: _componentTypes
-                  .map<DropdownMenuItem<String>>(
-                      (ComponentType componentType) => DropdownMenuItem(
-                          child:
-                              Text(componentType.name, style: thirdTextStyle),
-                          value: componentType.value))
-                  .toList()),
-          AppAccountButton(
-              callback: _onSearch, text: 'Rechercher', color: deepGreen)
-        ]),
-
+        Padding(
+            padding: const EdgeInsets.only(top: secondSize),
+            child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: <Widget>[
+                  DropdownButton(
+                      value: _value,
+                      onChanged: (String? value) =>
+                          setState(() => _value = value!),
+                      items: _componentTypes
+                          .map<DropdownMenuItem<String>>(
+                              (ComponentType componentType) => DropdownMenuItem(
+                                  child: Text(componentType.name,
+                                      style: thirdTextStyle),
+                                  value: componentType.value))
+                          .toList()),
+                  AppAccountButton(
+                      callback: _onSearch, text: 'Rechercher', color: deepGreen)
+                ])),
+        const Divider(color: deepGreen),
         for (Tip tip in _tips) AppTipCard(tip: tip)
         // TODO: Filter by date, type
       ]);

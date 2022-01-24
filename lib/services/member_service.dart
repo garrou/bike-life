@@ -30,8 +30,4 @@ class MemberService {
         body: jsonEncode(
             <String, dynamic>{'id': id, 'email': email, 'password': password}));
   }
-
-  Future<Response> verify() async {
-    return await http.get(Uri.parse('$endpoint/verify'));
-  }
 }

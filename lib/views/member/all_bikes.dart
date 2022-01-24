@@ -1,7 +1,6 @@
 import 'dart:convert';
 
 import 'package:bike_life/models/bike.dart';
-import 'package:bike_life/services/member_service.dart';
 import 'package:bike_life/utils/constants.dart';
 import 'package:bike_life/services/bike_service.dart';
 import 'package:bike_life/utils/storage.dart';
@@ -23,25 +22,13 @@ class AllBikesPage extends StatefulWidget {
 class _AllBikesPageState extends State<AllBikesPage> {
   final CarouselController _carouselController = CarouselController();
   final BikeService _bikeService = BikeService();
-  final MemberService _memberService = MemberService();
   final List<Widget> _cards = [];
   int _current = 0;
 
   @override
   void initState() {
     super.initState();
-    _checkMemberToken();
     _loadBikes();
-  }
-
-  _checkMemberToken() async {
-    Response response = await _memberService.verify();
-
-    if (response.statusCode != httpCodeOk) {
-      Storage.disconnect();
-      Navigator.pushNamedAndRemoveUntil(
-          context, '/', (Route<dynamic> route) => false);
-    }
   }
 
   _loadBikes() async {
@@ -53,6 +40,10 @@ class _AllBikesPageState extends State<AllBikesPage> {
       Future.wait(createBikesFromList(json)
           .map((bike) async => _cards.add(BikeCard(bike: bike))));
       setState(() => _cards.add(_buildAddBikeCard()));
+    } else {
+      Storage.disconnect();
+      Navigator.pushNamedAndRemoveUntil(
+          context, '/', (Route<dynamic> route) => false);
     }
   }
 
