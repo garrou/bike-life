@@ -6,8 +6,10 @@ class AppTopRightButton extends StatelessWidget {
   final VoidCallback callback;
   final IconData icon;
   final double padding;
+  final Color color;
   const AppTopRightButton(
       {Key? key,
+      this.color = mainColor,
       required this.callback,
       required this.icon,
       required this.padding})
@@ -21,6 +23,6 @@ class AppTopRightButton extends StatelessWidget {
           child: IconButton(
               onPressed: callback,
               icon: Icon(icon),
-              color: mainColor,
+              color: color,
               iconSize: mainSize)));
 }

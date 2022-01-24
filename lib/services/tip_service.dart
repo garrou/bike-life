@@ -14,4 +14,10 @@ class TipService {
     Response response = await client.get(Uri.parse('$endpoint/tips'));
     return createTipsFromList(jsonDecode(response.body));
   }
+
+  Future<List<Tip>> getByType(String type) async {
+    Response response =
+        await client.get(Uri.parse('$endpoint/tips/types/$type'));
+    return createTipsFromList(jsonDecode(response.body));
+  }
 }

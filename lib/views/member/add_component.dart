@@ -127,12 +127,13 @@ class _AddComponentPageState extends State<AddComponentPage> {
                   value: _typeValue,
                   onChanged: (String? value) =>
                       setState(() => _typeValue = value!),
-                  items: _componentTypes.map<DropdownMenuItem<String>>(
-                      (ComponentType componentType) {
-                    return DropdownMenuItem(
-                        child: Text(componentType.name, style: secondTextStyle),
-                        value: componentType.name);
-                  }).toList()),
+                  items: _componentTypes
+                      .map<DropdownMenuItem<String>>(
+                          (ComponentType componentType) => DropdownMenuItem(
+                              child: Text(componentType.name,
+                                  style: secondTextStyle),
+                              value: componentType.name))
+                      .toList()),
               Padding(
                   child: AppCalendar(
                       callback: _onDateChanged, selectedDate: _dateOfPurchase),

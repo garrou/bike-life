@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:bike_life/utils/constants.dart';
 import 'package:bike_life/models/bike.dart';
 import 'package:bike_life/utils/http_account_interceptor.dart';
+
 import 'package:http/http.dart';
 import 'package:http_interceptor/http/http.dart';
 
@@ -26,16 +27,16 @@ class BikeService {
     return [response.statusCode == httpCodeCreated, jsonDecode(response.body)];
   }
 
-  Future<List<Bike>> getBikes(int memberId) async {
+  Future<List<dynamic>> getBikes(int memberId) async {
     Response response =
         await client.get(Uri.parse('$endpoint/members/$memberId/bikes'));
-    return createBikesFromList(jsonDecode(response.body));
+    return [response.statusCode == httpCodeOk, response.body];
   }
 
   Future<List<dynamic>> deleteBike(int bikeId) async {
     Response response =
         await client.delete(Uri.parse('$endpoint/bikes/$bikeId'));
-    return [response.statusCode == httpCodeOk, response.body];
+    return [response.statusCode == httpCodeOk, jsonDecode(response.body)];
   }
 
   Future<List<dynamic>> updateBike(Bike bike) async {

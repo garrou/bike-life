@@ -1,5 +1,7 @@
-import 'package:bike_life/utils/constants.dart';
+import 'dart:convert';
+
 import 'package:bike_life/models/bike.dart';
+import 'package:bike_life/utils/constants.dart';
 import 'package:bike_life/services/bike_service.dart';
 import 'package:bike_life/utils/storage.dart';
 import 'package:bike_life/views/member/bike_card.dart';
@@ -30,9 +32,17 @@ class _AllBikesPageState extends State<AllBikesPage> {
 
   _loadBikes() async {
     int id = await Storage.getMemberId();
-    List<Bike> bikes = await _bikeService.getBikes(id);
-    Future.wait(bikes.map((bike) async => _cards.add(BikeCard(bike: bike))));
-    setState(() => _cards.add(_buildAddBikeCard()));
+    List<dynamic> bikes = await _bikeService.getBikes(id);
+
+    if (bikes[0]) {
+      Future.wait(createBikesFromList(jsonDecode(bikes[1]))
+          .map((bike) async => _cards.add(BikeCard(bike: bike))));
+      setState(() => _cards.add(_buildAddBikeCard()));
+    } else {
+      Storage.disconnect();
+      Navigator.pushNamedAndRemoveUntil(
+          context, '/', (Route<dynamic> route) => false);
+    }
   }
 
   @override
@@ -40,7 +50,8 @@ class _AllBikesPageState extends State<AllBikesPage> {
         AppTopRightButton(
             callback: () => Navigator.pushNamed(context, '/profile'),
             icon: Icons.person,
-            padding: thirdSize),
+            padding: thirdSize,
+            color: grey),
         _buildCarousel()
       ]);
 
@@ -63,7 +74,7 @@ class _AllBikesPageState extends State<AllBikesPage> {
               Visibility(
                   visible: _current >= 1,
                   child: IconButton(
-                      icon: const Icon(Icons.arrow_back_ios),
+                      icon: const Icon(Icons.arrow_back_ios, color: grey),
                       onPressed: () {
                         _carouselController.previousPage();
                         setState(() => _current--);
@@ -71,7 +82,7 @@ class _AllBikesPageState extends State<AllBikesPage> {
               Visibility(
                   visible: _current < _cards.length - 1,
                   child: IconButton(
-                      icon: const Icon(Icons.arrow_forward_ios),
+                      icon: const Icon(Icons.arrow_forward_ios, color: grey),
                       onPressed: () {
                         _carouselController.nextPage();
                         setState(() => _current++);

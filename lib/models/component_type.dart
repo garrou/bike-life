@@ -1,13 +1,16 @@
 class ComponentType {
   final String name;
+  final String value;
 
-  ComponentType(this.name);
+  ComponentType(this.name, this.value);
 
-  ComponentType.fromJson(Map<String, dynamic> json) : name = json['name'];
+  ComponentType.fromJson(Map<String, dynamic> json)
+      : name = json['name'],
+        value = json['name'];
 }
 
 List<ComponentType> createComponentTypesFromList(List<dynamic> records) {
   return records
       .map((json) => ComponentType.fromJson(json))
-      .toList(growable: false);
+      .toList(growable: true);
 }

@@ -63,7 +63,7 @@ class _BikeCardState extends State<BikeCard> {
                 padding: const EdgeInsets.only(top: thirdSize)),
             Text('${bike.nbKm} km', style: thirdTextStyle),
             AppAccountButton(
-                callback: _onDemandPopUp,
+                callback: _onOpenPopUp,
                 text: 'Ajouter des km',
                 color: mainColor)
           ]),
@@ -83,7 +83,6 @@ class _BikeCardState extends State<BikeCard> {
       );
 
   Widget _buildBackCard(Bike bike) => AppCard(
-      // TODO: Options to display bar in km order
       elevation: secondSize,
       child: ListView(
           padding: const EdgeInsets.symmetric(horizontal: secondSize),
@@ -108,7 +107,7 @@ class _BikeCardState extends State<BikeCard> {
       Navigator.pushNamed(context, BikeDetailsRoute.routeName,
           arguments: BikeArgument(widget.bike));
 
-  void _onDemandPopUp() =>
+  void _onOpenPopUp() =>
       showDialog(context: context, builder: (context) => _buildPopUp(context));
 }
 
