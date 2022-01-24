@@ -31,7 +31,7 @@ class _AppState extends State<App> {
           title: title,
           theme: ThemeData(
               visualDensity: VisualDensity.adaptivePlatformDensity,
-              primaryColor: mainColor,
+              primaryColor: deepGreen,
               brightness: Brightness.light),
           initialRoute: '/intro',
           routes: {

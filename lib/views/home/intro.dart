@@ -54,14 +54,14 @@ class _IntroPageState extends State<IntroPage> {
             image: const Icon(Icons.health_and_safety))
       ],
       showSkipButton: true,
-      skip: const Text('Passer', style: TextStyle(color: mainColor)),
-      next: const Icon(Icons.arrow_forward, color: mainColor),
-      done: const Text('Compris', style: TextStyle(color: mainColor)),
+      skip: const Text('Passer', style: TextStyle(color: deepGreen)),
+      next: const Icon(Icons.arrow_forward, color: deepGreen),
+      done: const Text('Compris', style: TextStyle(color: deepGreen)),
       curve: Curves.easeIn,
       dotsDecorator: const DotsDecorator(
         size: Size(secondSize, secondSize),
-        color: mainColor,
-        activeColor: mainColor,
+        color: deepGreen,
+        activeColor: deepGreen,
         activeSize: Size(mainSize, secondSize),
         activeShape: RoundedRectangleBorder(
           borderRadius: BorderRadius.all(Radius.circular(mainSize)),

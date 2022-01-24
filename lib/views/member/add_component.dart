@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:bike_life/models/bike.dart';
 import 'package:bike_life/models/component_type.dart';
@@ -16,6 +17,7 @@ import 'package:bike_life/widgets/textfield.dart';
 import 'package:bike_life/widgets/top_left_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_guards/flutter_guards.dart';
+import 'package:http/http.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 
 class AddComponentPage extends StatefulWidget {
@@ -56,11 +58,15 @@ class _AddComponentPageState extends State<AddComponentPage> {
   }
 
   void _load() async {
-    List<ComponentType> compoTypes = await _componentTypesService.getTypes();
-    setState(() {
-      _componentTypes = compoTypes;
-      _typeValue = _componentTypes.first.name;
-    });
+    Response response = await _componentTypesService.getTypes();
+
+    if (response.statusCode == httpCodeOk) {
+      setState(() {
+        _componentTypes =
+            createComponentTypesFromList(jsonDecode(response.body));
+        _typeValue = _componentTypes.first.name;
+      });
+    }
   }
 
   @override
@@ -139,7 +145,7 @@ class _AddComponentPageState extends State<AddComponentPage> {
                       callback: _onDateChanged, selectedDate: _dateOfPurchase),
                   padding: const EdgeInsets.only(top: secondSize)),
               AppButton(
-                  callback: _onAddComponent, text: 'Ajouter', color: mainColor)
+                  callback: _onAddComponent, text: 'Ajouter', color: deepGreen)
             ]))
       ]);
 
@@ -149,19 +155,20 @@ class _AddComponentPageState extends State<AddComponentPage> {
 
   void _addComponent(String brand, String image, double km, double duration,
       String type, String date) async {
-    List<dynamic> response = await _componentService.add(
+    Response response = await _componentService.add(
         brand, image, km, duration, type, date, widget.bike.id);
-    Color respColor = mainColor;
+    Color respColor = deepGreen;
+    dynamic json = jsonDecode(response.body);
 
-    if (response[0]) {
+    if (response.statusCode == httpCodeCreated) {
       Navigator.pushNamedAndRemoveUntil(
           context, MemberHomeRoute.routeName, (Route<dynamic> route) => false,
           arguments: 0);
     } else {
-      respColor = errorColor;
+      respColor = red;
     }
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: Text(response[1]['confirm']), backgroundColor: respColor));
+    ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(json['confirm']), backgroundColor: respColor));
   }
 
   void _onAddComponent() {

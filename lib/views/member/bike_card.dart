@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:bike_life/routes/member_home_route.dart';
 import 'package:bike_life/services/component_service.dart';
 import 'package:bike_life/routes/add_component_route.dart';
@@ -18,6 +20,7 @@ import 'package:bike_life/widgets/percent_bar.dart';
 import 'package:bike_life/widgets/textfield.dart';
 import 'package:bike_life/widgets/top_right_button.dart';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart';
 
 class BikeCard extends StatefulWidget {
   final Bike bike;
@@ -43,9 +46,10 @@ class _BikeCardState extends State<BikeCard> {
       back: _buildBackCard(widget.bike));
 
   void _loadComponents() async {
-    List<Component> components =
+    Response response =
         await _componentService.getBikeComponents(widget.bike.id);
-    setState(() => _components = components);
+    setState(() =>
+        _components = createComponentsFromList(jsonDecode(response.body)));
   }
 
   Widget _buildFrontCard(Bike bike, BuildContext context) => AppCard(
@@ -56,7 +60,7 @@ class _BikeCardState extends State<BikeCard> {
             ClipRRect(
                 borderRadius: BorderRadius.circular(mainSize),
                 child: AppNetworkImage(
-                    image: bike.image, progressColor: mainColor)),
+                    image: bike.image, progressColor: deepGreen)),
             Center(child: Text(bike.name, style: secondTextStyle)),
             Padding(
                 child: Text('Distance parcourue', style: boldSubTitleStyle),
@@ -65,7 +69,7 @@ class _BikeCardState extends State<BikeCard> {
             AppAccountButton(
                 callback: _onOpenPopUp,
                 text: 'Ajouter des km',
-                color: mainColor)
+                color: deepGreen)
           ]),
       elevation: secondSize);
 
@@ -78,7 +82,7 @@ class _BikeCardState extends State<BikeCard> {
           AppAccountButton(
               callback: () => Navigator.of(context).pop(),
               text: 'Fermer',
-              color: mainColor)
+              color: deepGreen)
         ],
       );
 
@@ -94,7 +98,7 @@ class _BikeCardState extends State<BikeCard> {
             for (Component component in _components)
               AppPercentBar(component: component),
             AppAccountButton(
-                color: mainColor,
+                color: deepGreen,
                 text: 'Ajouter un composant',
                 callback: _onAddComponentPage)
           ]));
@@ -142,7 +146,7 @@ class _AddKmFormState extends State<AddKmForm> {
           AppButton(
               text: 'Ajouter',
               callback: () => _onAddKm(_km.text),
-              color: mainColor)
+              color: deepGreen)
         ],
       ));
 
@@ -154,17 +158,17 @@ class _AddKmFormState extends State<AddKmForm> {
   }
 
   void _addKm(double toAdd) async {
-    List<dynamic> response =
-        await _bikeService.updateBikeKm(widget.bike.id, toAdd);
-    Color responseColor = mainColor;
+    Response response = await _bikeService.updateBikeKm(widget.bike.id, toAdd);
+    Color responseColor = deepGreen;
+    dynamic json = jsonDecode(response.body);
 
-    if (response[0]) {
+    if (response.statusCode == httpCodeOk) {
       Navigator.pushReplacementNamed(context, MemberHomeRoute.routeName,
           arguments: 0);
     } else {
-      responseColor = errorColor;
+      responseColor = red;
     }
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: Text(response[1]['confirm']), backgroundColor: responseColor));
+        content: Text(json['confirm']), backgroundColor: responseColor));
   }
 }

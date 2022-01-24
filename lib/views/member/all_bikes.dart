@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:bike_life/models/bike.dart';
+import 'package:bike_life/services/member_service.dart';
 import 'package:bike_life/utils/constants.dart';
 import 'package:bike_life/services/bike_service.dart';
 import 'package:bike_life/utils/storage.dart';
@@ -10,6 +11,7 @@ import 'package:bike_life/widgets/top_right_button.dart';
 import 'package:bike_life/widgets/card.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart';
 
 class AllBikesPage extends StatefulWidget {
   const AllBikesPage({Key? key}) : super(key: key);
@@ -21,27 +23,36 @@ class AllBikesPage extends StatefulWidget {
 class _AllBikesPageState extends State<AllBikesPage> {
   final CarouselController _carouselController = CarouselController();
   final BikeService _bikeService = BikeService();
+  final MemberService _memberService = MemberService();
   final List<Widget> _cards = [];
   int _current = 0;
 
   @override
   void initState() {
     super.initState();
+    _checkMemberToken();
     _loadBikes();
+  }
+
+  _checkMemberToken() async {
+    Response response = await _memberService.verify();
+
+    if (response.statusCode != httpCodeOk) {
+      Storage.disconnect();
+      Navigator.pushNamedAndRemoveUntil(
+          context, '/', (Route<dynamic> route) => false);
+    }
   }
 
   _loadBikes() async {
     int id = await Storage.getMemberId();
-    List<dynamic> bikes = await _bikeService.getBikes(id);
+    Response response = await _bikeService.getBikes(id);
 
-    if (bikes[0]) {
-      Future.wait(createBikesFromList(jsonDecode(bikes[1]))
+    if (response.statusCode == httpCodeOk) {
+      dynamic json = jsonDecode(response.body);
+      Future.wait(createBikesFromList(json)
           .map((bike) async => _cards.add(BikeCard(bike: bike))));
       setState(() => _cards.add(_buildAddBikeCard()));
-    } else {
-      Storage.disconnect();
-      Navigator.pushNamedAndRemoveUntil(
-          context, '/', (Route<dynamic> route) => false);
     }
   }
 
@@ -94,7 +105,7 @@ class _AllBikesPageState extends State<AllBikesPage> {
       width: double.infinity,
       child: AppCard(
           child: IconButton(
-              icon: const Icon(Icons.add, size: 50.0, color: mainColor),
+              icon: const Icon(Icons.add, size: 50.0, color: deepGreen),
               onPressed: () => Navigator.pushNamed(context, '/add-bike')),
           elevation: secondSize));
 }

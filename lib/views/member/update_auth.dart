@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:bike_life/utils/constants.dart';
 import 'package:bike_life/services/member_service.dart';
 import 'package:bike_life/utils/storage.dart';
@@ -7,6 +9,7 @@ import 'package:bike_life/widgets/button.dart';
 import 'package:bike_life/widgets/textfield.dart';
 import 'package:bike_life/widgets/top_left_button.dart';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart';
 
 class UpdateAccountPage extends StatefulWidget {
   const UpdateAccountPage({Key? key}) : super(key: key);
@@ -94,7 +97,7 @@ class _UpdateAuthFormState extends State<UpdateAuthForm> {
             },
             obscureText: true,
             icon: Icons.lock),
-        AppButton(text: 'Modifier', callback: _onUpdate, color: mainColor)
+        AppButton(text: 'Modifier', callback: _onUpdate, color: deepGreen)
       ]));
 
   void _onUpdate() {
@@ -106,16 +109,17 @@ class _UpdateAuthFormState extends State<UpdateAuthForm> {
 
   void _updateAuth(String email, String password) async {
     int id = await Storage.getMemberId();
-    List<dynamic> response = await _memberService.update(id, email, password);
-    Color responseColor = mainColor;
+    Response response = await _memberService.update(id, email, password);
+    Color responseColor = deepGreen;
+    dynamic json = jsonDecode(response.body);
 
-    if (response[0]) {
+    if (response.statusCode == httpCodeOk) {
       Navigator.pushNamedAndRemoveUntil(
           context, '/profile', (Route<dynamic> route) => false);
     } else {
-      responseColor = errorColor;
+      responseColor = red;
     }
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: Text(response[1]['confirm']), backgroundColor: responseColor));
+        content: Text(json['confirm']), backgroundColor: responseColor));
   }
 }

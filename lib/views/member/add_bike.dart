@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:bike_life/routes/member_home_route.dart';
 import 'package:bike_life/utils/constants.dart';
@@ -15,6 +16,7 @@ import 'package:bike_life/widgets/textfield.dart';
 import 'package:bike_life/widgets/top_left_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_guards/flutter_guards.dart';
+import 'package:http/http.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 
 class AddBikePage extends StatefulWidget {
@@ -125,7 +127,7 @@ class _AddBikeFormState extends State<AddBikeForm> {
                   icon: Icons.add_road),
               AppCalendar(
                   callback: _onDateChanged, selectedDate: _dateOfPurchase),
-              AppButton(text: 'Ajouter', callback: _onAddBike, color: mainColor)
+              AppButton(text: 'Ajouter', callback: _onAddBike, color: deepGreen)
             ]))
       ]));
 
@@ -146,17 +148,18 @@ class _AddBikeFormState extends State<AddBikeForm> {
       String image,
       String dateOfPurchase,
       String nbKm) async {
-    List<dynamic> response = await _bikeService.addBike(
+    Response response = await _bikeService.addBike(
         _memberId, name, image, dateOfPurchase, double.parse(nbKm));
-    Color respColor = mainColor;
+    Color respColor = deepGreen;
+    dynamic json = jsonDecode(response.body);
 
-    if (response[0]) {
+    if (response.statusCode == httpCodeCreated) {
       Navigator.pushNamed(context, MemberHomeRoute.routeName, arguments: 0);
     } else {
-      respColor = errorColor;
+      respColor = red;
     }
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: Text(response[1]['confirm']), backgroundColor: respColor));
+    ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(json['confirm']), backgroundColor: respColor));
   }
 
   void _onDateChanged(DateRangePickerSelectionChangedArgs args) {

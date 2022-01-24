@@ -1,5 +1,3 @@
-import 'dart:convert';
-import 'package:bike_life/models/tip.dart';
 import 'package:bike_life/utils/constants.dart';
 import 'package:bike_life/utils/http_account_interceptor.dart';
 import 'package:http/http.dart';
@@ -10,14 +8,11 @@ class TipService {
     HttpAccountInterceptor(),
   ]);
 
-  Future<List<Tip>> getAll() async {
-    Response response = await client.get(Uri.parse('$endpoint/tips'));
-    return createTipsFromList(jsonDecode(response.body));
+  Future<Response> getAll() async {
+    return await client.get(Uri.parse('$endpoint/tips'));
   }
 
-  Future<List<Tip>> getByType(String type) async {
-    Response response =
-        await client.get(Uri.parse('$endpoint/tips/types/$type'));
-    return createTipsFromList(jsonDecode(response.body));
+  Future<Response> getByType(String type) async {
+    return await client.get(Uri.parse('$endpoint/tips/types/$type'));
   }
 }

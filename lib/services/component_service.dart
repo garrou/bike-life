@@ -11,15 +11,13 @@ class ComponentService {
     HttpAccountInterceptor(),
   ]);
 
-  Future<List<Component>> getBikeComponents(int bikeId) async {
-    Response response =
-        await client.get(Uri.parse('$endpoint/components?bikeId=$bikeId'));
-    return createComponentsFromList(jsonDecode(response.body));
+  Future<Response> getBikeComponents(int bikeId) async {
+    return await client.get(Uri.parse('$endpoint/components?bikeId=$bikeId'));
   }
 
-  Future<List<dynamic>> add(String brand, String image, double km,
-      double duration, String type, String date, int bikeId) async {
-    Response response = await client.post(Uri.parse('$endpoint/components'),
+  Future<Response> add(String brand, String image, double km, double duration,
+      String type, String date, int bikeId) async {
+    return await client.post(Uri.parse('$endpoint/components'),
         body: jsonEncode(<String, dynamic>{
           'brand': brand,
           'image': image,
@@ -29,14 +27,11 @@ class ComponentService {
           'date': date,
           'bikeId': bikeId
         }));
-    return [response.statusCode == httpCodeCreated, jsonDecode(response.body)];
   }
 
-  Future<List<dynamic>> update(Component component) async {
-    Response response = await client.put(
-        Uri.parse('$endpoint/components/${component.id}'),
+  Future<Response> update(Component component) async {
+    return await client.put(Uri.parse('$endpoint/components/${component.id}'),
         body:
             jsonEncode(<String, dynamic>{'component': jsonEncode(component)}));
-    return [response.statusCode == httpCodeOk, jsonDecode(response.body)];
   }
 }

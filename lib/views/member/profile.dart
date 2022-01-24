@@ -65,7 +65,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   destination: UpdateAccountPage()),
             ]),
         AppButton(
-            text: 'Déconnexion', callback: _onDisconnect, color: mainColor)
+            text: 'Déconnexion', callback: _onDisconnect, color: deepGreen)
       ]);
 
   void _onDisconnect() {

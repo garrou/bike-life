@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:bike_life/models/component_type.dart';
 import 'package:bike_life/models/tip.dart';
@@ -13,6 +14,7 @@ import 'package:bike_life/widgets/tip_card.dart';
 import 'package:bike_life/widgets/title.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_guards/flutter_guards.dart';
+import 'package:http/http.dart';
 
 class TipsPage extends StatefulWidget {
   const TipsPage({Key? key}) : super(key: key);
@@ -37,14 +39,18 @@ class _TipsPageState extends State<TipsPage> {
   }
 
   void _load() async {
-    List<Tip> tips = await _tipService.getAll();
-    List<ComponentType> types = await _componentTypesService.getTypes();
-    setState(() {
-      _tips = tips;
-      _componentTypes = types;
-      _value = _componentTypes.first.name;
-    });
-    _componentTypes.add(ComponentType('Tous', '%'));
+    Response responseTips = await _tipService.getAll();
+    Response responseComponents = await _componentTypesService.getTypes();
+
+    if (responseTips.statusCode == httpCodeOk &&
+        responseComponents.statusCode == httpCodeOk) {
+      setState(() {
+        _tips = createTipsFromList(jsonDecode(responseTips.body));
+        _componentTypes =
+            createComponentTypesFromList(jsonDecode(responseComponents.body));
+        _value = _componentTypes.first.name;
+      });
+    }
   }
 
   @override
@@ -76,10 +82,10 @@ class _TipsPageState extends State<TipsPage> {
                       (ComponentType componentType) => DropdownMenuItem(
                           child:
                               Text(componentType.name, style: thirdTextStyle),
-                          value: componentType.name))
+                          value: componentType.value))
                   .toList()),
           AppAccountButton(
-              callback: _onSearch, text: 'Rechercher', color: mainColor)
+              callback: _onSearch, text: 'Rechercher', color: deepGreen)
         ]),
 
         for (Tip tip in _tips) AppTipCard(tip: tip)
@@ -87,7 +93,7 @@ class _TipsPageState extends State<TipsPage> {
       ]);
 
   void _onSearch() async {
-    List<Tip> tips = await _tipService.getByType(_value);
-    setState(() => _tips = tips);
+    Response response = await _tipService.getByType(_value);
+    setState(() => _tips = createTipsFromList(jsonDecode(response.body)));
   }
 }

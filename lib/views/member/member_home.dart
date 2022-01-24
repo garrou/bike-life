@@ -10,7 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_guards/flutter_guards.dart';
 
 class MemberHomePage extends StatefulWidget {
-  final int initialPage;
+  final int? initialPage;
   const MemberHomePage({Key? key, required this.initialPage}) : super(key: key);
 
   @override
@@ -18,7 +18,7 @@ class MemberHomePage extends StatefulWidget {
 }
 
 class _MemberHomePageState extends State<MemberHomePage> {
-  int _pageIndex = 0;
+  int? _pageIndex = 0;
   late PageController _pageController;
   final StreamController<bool> _authState = StreamController();
 
@@ -26,8 +26,8 @@ class _MemberHomePageState extends State<MemberHomePage> {
   void initState() {
     super.initState();
     GuardHelper.checkIfLogged(_authState);
-    _pageIndex = widget.initialPage;
-    _pageController = PageController(initialPage: _pageIndex);
+    _pageIndex = widget.initialPage ?? 0;
+    _pageController = PageController(initialPage: _pageIndex!);
   }
 
   @override
@@ -51,23 +51,23 @@ class _MemberHomePageState extends State<MemberHomePage> {
       bottomNavigationBar: BottomNavigationBar(
         showSelectedLabels: false,
         showUnselectedLabels: false,
-        currentIndex: _pageIndex,
+        currentIndex: _pageIndex!,
         onTap: _onTabTapped,
-        backgroundColor: mainColor,
+        backgroundColor: deepGreen,
         selectedItemColor: Colors.white,
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
               icon: Icon(Icons.pedal_bike),
               label: 'Mes vélos',
-              backgroundColor: mainColor),
+              backgroundColor: deepGreen),
           BottomNavigationBarItem(
               icon: Icon(Icons.bar_chart),
               label: 'Mes statistiques',
-              backgroundColor: mainColor),
+              backgroundColor: deepGreen),
           BottomNavigationBarItem(
               icon: Icon(Icons.comment),
               label: 'Conseils',
-              backgroundColor: mainColor)
+              backgroundColor: deepGreen)
         ],
       ));
 

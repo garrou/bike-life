@@ -9,7 +9,7 @@ class AppTopRightButton extends StatelessWidget {
   final Color color;
   const AppTopRightButton(
       {Key? key,
-      this.color = mainColor,
+      this.color = deepGreen,
       required this.callback,
       required this.icon,
       required this.padding})

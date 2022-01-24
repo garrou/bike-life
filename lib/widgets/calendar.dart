@@ -32,8 +32,8 @@ class _AppCalendarState extends State<AppCalendar> {
             visible: _isVisible,
             child: SfDateRangePicker(
                 initialSelectedDate: DateTime.parse(widget.selectedDate),
-                todayHighlightColor: mainColor,
-                selectionColor: mainColor,
+                todayHighlightColor: deepGreen,
+                selectionColor: deepGreen,
                 view: DateRangePickerView.month,
                 selectionMode: DateRangePickerSelectionMode.single,
                 onSelectionChanged: widget.callback))

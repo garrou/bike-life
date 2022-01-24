@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:bike_life/routes/member_home_route.dart';
 import 'package:bike_life/utils/constants.dart';
@@ -14,6 +15,7 @@ import 'package:bike_life/widgets/textfield.dart';
 import 'package:bike_life/widgets/top_left_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_guards/flutter_guards.dart';
+import 'package:http/http.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 
 class BikeDetailsPage extends StatefulWidget {
@@ -57,7 +59,7 @@ class _BikeDetailsPageState extends State<BikeDetailsPage> {
                   callback: () => Navigator.pop(context))
             ]),
         UpdateBikeForm(bike: widget.bike),
-        AppButton(text: 'Supprimer', callback: _showDialog, color: errorColor)
+        AppButton(text: 'Supprimer', callback: _showDialog, color: red)
       ]));
 
   Widget narrowLayout() => Padding(
@@ -65,18 +67,19 @@ class _BikeDetailsPageState extends State<BikeDetailsPage> {
       child: wideLayout());
 
   void _onDeleteBike() async {
-    List<dynamic> response = await _bikeService.deleteBike(widget.bike.id);
-    Color responseColor = mainColor;
+    Response response = await _bikeService.deleteBike(widget.bike.id);
+    Color responseColor = deepGreen;
+    dynamic json = jsonDecode(response.body);
 
-    if (response[0]) {
+    if (response.statusCode == httpCodeOk) {
       Navigator.pushNamedAndRemoveUntil(
           context, MemberHomeRoute.routeName, (Route<dynamic> route) => false,
           arguments: 0);
     } else {
-      responseColor = errorColor;
+      responseColor = red;
     }
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: Text(response[1]['confirm']), backgroundColor: responseColor));
+        content: Text(json['confirm']), backgroundColor: responseColor));
   }
 
   Future<void> _showDialog() async {
@@ -90,7 +93,7 @@ class _BikeDetailsPageState extends State<BikeDetailsPage> {
           actions: <Widget>[
             TextButton(
               child:
-                  const Text('Confirmer', style: TextStyle(color: mainColor)),
+                  const Text('Confirmer', style: TextStyle(color: deepGreen)),
               onPressed: () {
                 _onDeleteBike();
                 Navigator.pushNamedAndRemoveUntil(
@@ -99,7 +102,7 @@ class _BikeDetailsPageState extends State<BikeDetailsPage> {
               },
             ),
             TextButton(
-              child: const Text('Annuler', style: TextStyle(color: mainColor)),
+              child: const Text('Annuler', style: TextStyle(color: deepGreen)),
               onPressed: () {
                 Navigator.of(context).pop();
               },
@@ -173,7 +176,7 @@ class _UpdateBikeFormState extends State<UpdateBikeForm> {
             label: 'Nombre de km',
             icon: Icons.add_road),
         AppCalendar(callback: _onDateChanged, selectedDate: _dateOfPurchase),
-        AppButton(text: 'Modifier', callback: _onUpdateBike, color: mainColor)
+        AppButton(text: 'Modifier', callback: _onUpdateBike, color: deepGreen)
       ]));
 
   void _onUpdateBike() {
@@ -185,19 +188,20 @@ class _UpdateBikeFormState extends State<UpdateBikeForm> {
 
   void _updateBike(
       String name, String image, String dateOfPurchase, String nbKm) async {
-    List<dynamic> response = await _bikeService.updateBike(
+    Response response = await _bikeService.updateBike(
         Bike(widget.bike.id, name, image, double.parse(nbKm), dateOfPurchase));
-    Color responseColor = mainColor;
+    Color responseColor = deepGreen;
+    dynamic json = jsonDecode(response.body);
 
-    if (response[0]) {
+    if (response.statusCode == httpCodeOk) {
       Navigator.pushNamedAndRemoveUntil(
           context, MemberHomeRoute.routeName, (Route<dynamic> route) => false,
           arguments: 0);
     } else {
-      responseColor = errorColor;
+      responseColor = red;
     }
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: Text(response[1]['confirm']), backgroundColor: responseColor));
+        content: Text(json['confirm']), backgroundColor: responseColor));
   }
 
   void _onDateChanged(DateRangePickerSelectionChangedArgs args) {

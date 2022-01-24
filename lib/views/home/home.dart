@@ -53,9 +53,9 @@ class _HomePageState extends State<HomePage> {
           const AppNavButton(
               text: 'Se connecter',
               destination: SigninPage(),
-              color: mainColor),
+              color: deepGreen),
           const AppNavButton(
-              text: "S'inscrire", destination: SignupPage(), color: mainColor)
+              text: "S'inscrire", destination: SignupPage(), color: deepGreen)
         ],
       );
 

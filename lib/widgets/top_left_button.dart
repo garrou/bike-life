@@ -19,7 +19,7 @@ class AppTopLeftButton extends StatelessWidget {
                 child: IconButton(
                     onPressed: callback,
                     icon: const Icon(Icons.arrow_back),
-                    color: mainColor,
+                    color: deepGreen,
                     iconSize: mainSize))),
         Padding(
             padding: const EdgeInsets.only(top: secondSize),
