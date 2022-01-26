@@ -88,7 +88,7 @@ class _UpdateBikeFormState extends State<UpdateBikeForm> {
   final TextEditingController _nbKm = TextEditingController();
 
   String _dateOfPurchase = DateTime.now().toString();
-  bool? _electric = false;
+  bool? _isElectric = false;
 
   @override
   void initState() {
@@ -97,7 +97,7 @@ class _UpdateBikeFormState extends State<UpdateBikeForm> {
     _image.text = widget.bike.image ?? '';
     _nbKm.text = '${widget.bike.nbKm}';
     _dateOfPurchase = widget.bike.dateOfPurchase.split(' ')[0];
-    _electric = widget.bike.electric;
+    _isElectric = widget.bike.electric;
   }
 
   @override
@@ -132,9 +132,9 @@ class _UpdateBikeFormState extends State<UpdateBikeForm> {
           Text('Vélo électrique ?', style: secondTextStyle),
           Checkbox(
               fillColor: MaterialStateProperty.all(deepGreen),
-              value: _electric,
-              onChanged: (value) {
-                setState(() => _electric = value);
+              value: _isElectric,
+              onChanged: (bool? value) {
+                setState(() => _isElectric = value);
               })
         ]),
         AppCalendar(callback: _onDateChanged, selectedDate: _dateOfPurchase),
@@ -194,20 +194,27 @@ class _UpdateBikeFormState extends State<UpdateBikeForm> {
   void _onUpdateBike() {
     if (_keyForm.currentState!.validate()) {
       _keyForm.currentState!.save();
-      _updateBike(
-          _name.text, _image.text, _dateOfPurchase, _nbKm.text, _electric!);
+      _updateBike();
     }
   }
 
-  void _updateBike(String name, String image, String dateOfPurchase,
-      String nbKm, bool electric) async {
-    Response response = await _bikeService.updateBike(Bike(widget.bike.id, name,
-        image, double.parse(nbKm), dateOfPurchase, electric));
+  void _updateBike() async {
+    Response response = await _bikeService.updateBike(Bike(
+        widget.bike.id,
+        _name.text,
+        _image.text,
+        double.parse(_nbKm.text),
+        _dateOfPurchase,
+        _isElectric!));
     Color responseColor = deepGreen;
     dynamic json = jsonDecode(response.body);
 
     if (response.statusCode == httpCodeOk) {
-      Navigator.of(context).pop();
+      Navigator.pushAndRemoveUntil(
+          context,
+          MaterialPageRoute(
+              builder: (BuildContext context) => const MemberHomePage()),
+          (Route<dynamic> route) => false);
     } else {
       responseColor = red;
     }

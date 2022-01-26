@@ -59,7 +59,7 @@ class _AllBikesPageState extends State<AllBikesPage> {
             callback: _onGoProfilePage,
             icon: Icons.person,
             padding: thirdSize,
-            color: grey),
+            color: deepGreen),
         _buildCarousel()
       ]);
 

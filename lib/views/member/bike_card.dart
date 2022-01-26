@@ -68,17 +68,9 @@ class _BikeCardState extends State<BikeCard> {
       elevation: secondSize);
 
   Widget _buildPopUp(BuildContext context) => AlertDialog(
-        shape: const RoundedRectangleBorder(
-            borderRadius: BorderRadius.all(Radius.circular(mainSize))),
-        title: const Text('Ajouter des km'),
-        content: AddKmForm(bike: widget.bike),
-        actions: <Widget>[
-          AppAccountButton(
-              callback: () => Navigator.of(context).pop(),
-              text: 'Fermer',
-              color: deepGreen)
-        ],
-      );
+      shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(Radius.circular(mainSize))),
+      content: AddKmForm(bike: widget.bike));
 
   Widget _buildBackCard(Bike bike) => AppCard(
       elevation: secondSize,
@@ -132,8 +124,13 @@ class _AddKmFormState extends State<AddKmForm> {
   Widget build(BuildContext context) => Form(
       key: _keyForm,
       child: Column(
-        mainAxisSize: MainAxisSize.max,
+        mainAxisSize: MainAxisSize.min,
         children: <Widget>[
+          Align(
+              alignment: Alignment.topLeft,
+              child: BackButton(
+                  color: deepGreen,
+                  onPressed: () => Navigator.of(context).pop())),
           AppTextField(
               keyboardType: TextInputType.number,
               focusNode: _kmFocus,
@@ -143,21 +140,20 @@ class _AddKmFormState extends State<AddKmForm> {
               label: 'Kilomètres',
               icon: Icons.add_road),
           AppButton(
-              text: 'Ajouter',
-              callback: () => _onAddKm(_km.text),
-              color: deepGreen)
+              text: 'Ajouter', callback: () => _onAddKm(), color: deepGreen)
         ],
       ));
 
-  void _onAddKm(String km) {
+  void _onAddKm() {
     if (_keyForm.currentState!.validate()) {
       _keyForm.currentState!.save();
-      _addKm(double.parse(km));
+      _addKm();
     }
   }
 
-  void _addKm(double toAdd) async {
-    Response response = await _bikeService.updateBikeKm(widget.bike.id, toAdd);
+  void _addKm() async {
+    Response response =
+        await _bikeService.updateBikeKm(widget.bike.id, double.parse(_km.text));
     Color responseColor = deepGreen;
     dynamic json = jsonDecode(response.body);
 

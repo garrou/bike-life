@@ -134,7 +134,7 @@ class _AddBikeFormState extends State<AddBikeForm> {
                     Checkbox(
                         fillColor: MaterialStateProperty.all(deepGreen),
                         value: _isElectric,
-                        onChanged: (value) {
+                        onChanged: (bool? value) {
                           setState(() => _isElectric = value);
                         })
                   ]),

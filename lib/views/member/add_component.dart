@@ -150,10 +150,23 @@ class _AddComponentPageState extends State<AddComponentPage> {
     _dateOfPurchase = args.value.toString().split(' ')[0];
   }
 
-  void _addComponent(String brand, String image, double km, double duration,
-      String type, String date) async {
+  void _onAddComponent() {
+    if (_keyForm.currentState!.validate()) {
+      _keyForm.currentState!.save();
+      _addComponent();
+    }
+  }
+
+  void _addComponent() async {
     Response response = await _componentService.add(
-        brand, image, km, duration, type, date, widget.bike.id);
+        _brand.text,
+        _image.text,
+        double.parse(_nbKm.text),
+        double.parse(_duration.text),
+        _typeValue,
+        _dateOfPurchase,
+        widget.bike.id,
+        false);
     Color respColor = deepGreen;
     dynamic json = jsonDecode(response.body);
 
@@ -164,13 +177,5 @@ class _AddComponentPageState extends State<AddComponentPage> {
     }
     ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text(json['confirm']), backgroundColor: respColor));
-  }
-
-  void _onAddComponent() {
-    if (_keyForm.currentState!.validate()) {
-      _keyForm.currentState!.save();
-      _addComponent(_brand.text, _image.text, double.parse(_nbKm.text),
-          double.parse(_duration.text), _typeValue, _dateOfPurchase);
-    }
   }
 }

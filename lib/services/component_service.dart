@@ -12,12 +12,12 @@ class ComponentService {
   ]);
 
   Future<Response> getBikeComponents(String bikeId) async {
-    return await client.get(Uri.parse('$endpoint/components?bikeId=$bikeId'));
+    return await client.get(Uri.parse('$endpoint/bikes/$bikeId/components'));
   }
 
   Future<Response> add(String brand, String image, double km, double duration,
-      String type, String date, String bikeId) async {
-    return await client.post(Uri.parse('$endpoint/components'),
+      String type, String date, String bikeId, bool archived) async {
+    return await client.post(Uri.parse('$endpoint/bikes/$bikeId/components'),
         body: jsonEncode(<String, dynamic>{
           'brand': brand,
           'image': image,
@@ -25,7 +25,7 @@ class ComponentService {
           'duration': duration,
           'type': type,
           'date': date,
-          'bikeId': bikeId
+          'archived': archived
         }));
   }
 
@@ -36,7 +36,14 @@ class ComponentService {
   }
 
   Future<Response> initAllComponents(String bikeId) async {
-    return await client.post(Uri.parse('$endpoint/components/init'),
-        body: jsonEncode(<String, dynamic>{'bikeId': bikeId}));
+    return await client
+        .post(Uri.parse('$endpoint/bikes/$bikeId/components/init'));
   }
+
+  Future<Response> getMemberComponents(String memberId) async {
+    return await client
+        .get(Uri.parse('$endpoint/members/$memberId/components'));
+  }
+
+  // TODO: /members/id/components (post)
 }

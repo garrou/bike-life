@@ -1,19 +1,14 @@
 import 'package:shared_preferences/shared_preferences.dart';
 
 class Storage {
-  static Future<String?> getToken() async {
+  static Future<String> getToken() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    return prefs.getString('jwt');
+    return prefs.getString('jwt') ?? "";
   }
 
   static Future<String> getMemberId() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     return prefs.getString('id') ?? "";
-  }
-
-  static Future<String> getBikeId() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    return prefs.getString('bike') ?? "";
   }
 
   static disconnect() async {
