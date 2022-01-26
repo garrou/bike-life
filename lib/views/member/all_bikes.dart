@@ -4,8 +4,11 @@ import 'package:bike_life/models/bike.dart';
 import 'package:bike_life/utils/constants.dart';
 import 'package:bike_life/services/bike_service.dart';
 import 'package:bike_life/utils/storage.dart';
+import 'package:bike_life/views/auth/signin.dart';
+import 'package:bike_life/views/member/add_bike.dart';
 import 'package:bike_life/views/member/bike_card.dart';
 import 'package:bike_life/styles/general.dart';
+import 'package:bike_life/views/member/profile.dart';
 import 'package:bike_life/widgets/top_right_button.dart';
 import 'package:bike_life/widgets/card.dart';
 import 'package:carousel_slider/carousel_slider.dart';
@@ -32,7 +35,7 @@ class _AllBikesPageState extends State<AllBikesPage> {
   }
 
   _loadBikes() async {
-    int id = await Storage.getMemberId();
+    String id = await Storage.getMemberId();
     Response response = await _bikeService.getBikes(id);
 
     if (response.statusCode == httpCodeOk) {
@@ -42,20 +45,28 @@ class _AllBikesPageState extends State<AllBikesPage> {
       setState(() => _cards.add(_buildAddBikeCard()));
     } else {
       Storage.disconnect();
-      Navigator.pushNamedAndRemoveUntil(
-          context, '/', (Route<dynamic> route) => false);
+      Navigator.pushAndRemoveUntil(
+          context,
+          MaterialPageRoute(
+              builder: (BuildContext context) => const SigninPage()),
+          (Route<dynamic> route) => false);
     }
   }
 
   @override
   Widget build(BuildContext context) => ListView(children: <Widget>[
         AppTopRightButton(
-            callback: () => Navigator.pushNamed(context, '/profile'),
+            callback: _onGoProfilePage,
             icon: Icons.person,
             padding: thirdSize,
             color: grey),
         _buildCarousel()
       ]);
+
+  void _onGoProfilePage() => Navigator.push(
+      context,
+      MaterialPageRoute(
+          builder: (BuildContext context) => const ProfilePage()));
 
   Widget _buildCarousel() => SingleChildScrollView(
           child: Column(children: <Widget>[
@@ -67,7 +78,7 @@ class _AllBikesPageState extends State<AllBikesPage> {
                 setState(() => _current = index);
               },
               enlargeCenterPage: true,
-              height: MediaQuery.of(context).size.height - 200,
+              height: MediaQuery.of(context).size.height - maxPadding,
               enableInfiniteScroll: false),
         ),
         Row(
@@ -97,6 +108,11 @@ class _AllBikesPageState extends State<AllBikesPage> {
       child: AppCard(
           child: IconButton(
               icon: const Icon(Icons.add, size: 50.0, color: deepGreen),
-              onPressed: () => Navigator.pushNamed(context, '/add-bike')),
+              onPressed: _onGoAddBike),
           elevation: secondSize));
+
+  void _onGoAddBike() => Navigator.push(
+      context,
+      MaterialPageRoute(
+          builder: (BuildContext context) => const AddBikePage()));
 }

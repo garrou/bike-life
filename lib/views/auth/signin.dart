@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
 
-import 'package:bike_life/routes/member_home_route.dart';
 import 'package:bike_life/utils/constants.dart';
 import 'package:bike_life/utils/guard_helper.dart';
 import 'package:bike_life/utils/storage.dart';
@@ -39,7 +38,7 @@ class _SigninPageState extends State<SigninPage> {
   Widget build(BuildContext context) => Scaffold(
       body: AuthGuard(
           authStream: _authState.stream,
-          signedIn: const MemberHomePage(initialPage: 0),
+          signedIn: const MemberHomePage(),
           signedOut: LayoutBuilder(builder: (context, constraints) {
             if (constraints.maxWidth > maxSize) {
               return narrowLayout();
@@ -124,10 +123,12 @@ class _SigninFormState extends State<SigninForm> {
 
     if (response.statusCode == httpCodeOk) {
       Storage.setString('jwt', json['accessToken']);
-      Storage.setInt('id', json['member']['id']);
-      Navigator.pushNamedAndRemoveUntil(
-          context, MemberHomeRoute.routeName, (Route<dynamic> route) => false,
-          arguments: 0);
+      Storage.setString('id', json['member']['id']);
+      Navigator.pushAndRemoveUntil(
+          context,
+          MaterialPageRoute(
+              builder: (BuildContext context) => const MemberHomePage()),
+          (Route<dynamic> route) => false);
     } else {
       _password.text = '';
       ScaffoldMessenger.of(context).showSnackBar(

@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:bike_life/styles/general.dart';
 import 'package:bike_life/utils/constants.dart';
 import 'package:bike_life/utils/guard_helper.dart';
+import 'package:bike_life/views/home/home.dart';
 import 'package:bike_life/views/member/member_home.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_guards/flutter_guards.dart';
@@ -25,16 +26,16 @@ class _IntroPageState extends State<IntroPage> {
     GuardHelper.checkIfLogged(_authState);
   }
 
-  void _onIntroEnd(BuildContext context) {
-    Navigator.pushNamedAndRemoveUntil(
-        context, '/', (Route<dynamic> route) => false);
-  }
+  void _onIntroEnd(BuildContext context) => Navigator.pushAndRemoveUntil(
+      context,
+      MaterialPageRoute(builder: (BuildContext context) => const HomePage()),
+      (Route<dynamic> route) => false);
 
   @override
   Widget build(BuildContext context) => Scaffold(
       body: AuthGuard(
           authStream: _authState.stream,
-          signedIn: const MemberHomePage(initialPage: 0),
+          signedIn: const MemberHomePage(),
           signedOut: _buildIntroductionScreen()));
 
   IntroductionScreen _buildIntroductionScreen() => IntroductionScreen(

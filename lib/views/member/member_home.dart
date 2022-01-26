@@ -10,15 +10,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_guards/flutter_guards.dart';
 
 class MemberHomePage extends StatefulWidget {
-  final int? initialPage;
-  const MemberHomePage({Key? key, required this.initialPage}) : super(key: key);
+  const MemberHomePage({Key? key}) : super(key: key);
 
   @override
   _MemberHomePageState createState() => _MemberHomePageState();
 }
 
 class _MemberHomePageState extends State<MemberHomePage> {
-  int? _pageIndex = 0;
+  int _pageIndex = 0;
   late PageController _pageController;
   final StreamController<bool> _authState = StreamController();
 
@@ -26,8 +25,7 @@ class _MemberHomePageState extends State<MemberHomePage> {
   void initState() {
     super.initState();
     GuardHelper.checkIfLogged(_authState);
-    _pageIndex = widget.initialPage ?? 0;
-    _pageController = PageController(initialPage: _pageIndex!);
+    _pageController = PageController(initialPage: _pageIndex);
   }
 
   @override
@@ -39,10 +37,10 @@ class _MemberHomePageState extends State<MemberHomePage> {
   @override
   Widget build(BuildContext context) => AuthGuard(
       authStream: _authState.stream,
-      signedIn: layout(),
+      signedIn: _layout(),
       signedOut: const SigninPage());
 
-  Widget layout() => Scaffold(
+  Widget _layout() => Scaffold(
       body: PageView(
         children: const <Widget>[AllBikesPage(), StatisticPage(), TipsPage()],
         onPageChanged: (page) => setState(() => _pageIndex = page),
@@ -51,7 +49,7 @@ class _MemberHomePageState extends State<MemberHomePage> {
       bottomNavigationBar: BottomNavigationBar(
         showSelectedLabels: false,
         showUnselectedLabels: false,
-        currentIndex: _pageIndex!,
+        currentIndex: _pageIndex,
         onTap: _onTabTapped,
         backgroundColor: deepGreen,
         selectedItemColor: Colors.white,

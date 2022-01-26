@@ -9,9 +9,7 @@ import 'package:bike_life/styles/general.dart';
 import 'package:bike_life/utils/constants.dart';
 import 'package:bike_life/utils/guard_helper.dart';
 import 'package:bike_life/views/auth/signin.dart';
-import 'package:bike_life/widgets/account_button.dart';
 import 'package:bike_life/widgets/tip_card.dart';
-import 'package:bike_life/widgets/title.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_guards/flutter_guards.dart';
 import 'package:http/http.dart';
@@ -29,7 +27,7 @@ class _TipsPageState extends State<TipsPage> {
   final ComponentTypesService _componentTypesService = ComponentTypesService();
   List<ComponentType> _componentTypes = [];
   List<Tip> _tips = [];
-  String _value = '%';
+  String? _value = '%';
 
   @override
   void initState() {
@@ -59,18 +57,18 @@ class _TipsPageState extends State<TipsPage> {
       authStream: _authState.stream,
       signedIn: Scaffold(body: LayoutBuilder(builder: (context, constraints) {
         if (constraints.maxWidth > maxSize) {
-          return narrowLayout();
+          return _narrowLayout(context);
         } else {
-          return wideLayout();
+          return _wideLayout(context);
         }
       })),
       signedOut: const SigninPage());
 
-  Widget narrowLayout() => Padding(
+  Widget _narrowLayout(BuildContext context) => Padding(
       padding: const EdgeInsets.symmetric(horizontal: maxPadding),
-      child: wideLayout());
+      child: _wideLayout(context));
 
-  Widget wideLayout() =>
+  Widget _wideLayout(BuildContext context) =>
       Column(crossAxisAlignment: CrossAxisAlignment.center, children: <Widget>[
         Padding(
             padding: const EdgeInsets.only(top: secondSize),
@@ -79,25 +77,24 @@ class _TipsPageState extends State<TipsPage> {
                 children: <Widget>[
                   DropdownButton(
                       value: _value,
-                      onChanged: (String? value) =>
-                          setState(() => _value = value!),
+                      onChanged: _onSearch,
                       items: _componentTypes
                           .map<DropdownMenuItem<String>>(
                               (ComponentType componentType) => DropdownMenuItem(
                                   child: Text(componentType.name,
                                       style: thirdTextStyle),
                                   value: componentType.value))
-                          .toList()),
-                  AppAccountButton(
-                      callback: _onSearch, text: 'Rechercher', color: deepGreen)
+                          .toList())
                 ])),
         const Divider(color: deepGreen),
         for (Tip tip in _tips) AppTipCard(tip: tip)
-        // TODO: Filter by date, type
       ]);
 
-  void _onSearch() async {
-    Response response = await _tipService.getByType(_value);
-    setState(() => _tips = createTipsFromList(jsonDecode(response.body)));
+  void _onSearch(String? value) async {
+    Response response = await _tipService.getByType(value!);
+    setState(() {
+      _value = value;
+      _tips = createTipsFromList(jsonDecode(response.body));
+    });
   }
 }

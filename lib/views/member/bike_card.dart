@@ -1,21 +1,19 @@
 import 'dart:convert';
 
-import 'package:bike_life/routes/member_home_route.dart';
 import 'package:bike_life/services/component_service.dart';
-import 'package:bike_life/routes/add_component_route.dart';
 import 'package:bike_life/utils/constants.dart';
 import 'package:bike_life/models/bike.dart';
 import 'package:bike_life/models/component.dart';
 import 'package:bike_life/services/bike_service.dart';
-import 'package:bike_life/routes/args/bike_argument.dart';
-import 'package:bike_life/routes/bike_details_route.dart';
 import 'package:bike_life/utils/validator.dart';
 import 'package:bike_life/styles/general.dart';
+import 'package:bike_life/views/member/add_component.dart';
+import 'package:bike_life/views/member/bike_details.dart';
+import 'package:bike_life/views/member/member_home.dart';
 import 'package:bike_life/widgets/account_button.dart';
 import 'package:bike_life/widgets/button.dart';
 import 'package:bike_life/widgets/card.dart';
 import 'package:bike_life/widgets/flip.dart';
-import 'package:bike_life/widgets/network_image.dart';
 import 'package:bike_life/widgets/percent_bar.dart';
 import 'package:bike_life/widgets/textfield.dart';
 import 'package:bike_life/widgets/top_right_button.dart';
@@ -57,10 +55,6 @@ class _BikeCardState extends State<BikeCard> {
           padding:
               const EdgeInsets.fromLTRB(thirdSize, 0, thirdSize, thirdSize),
           children: <Widget>[
-            ClipRRect(
-                borderRadius: BorderRadius.circular(mainSize),
-                child: AppNetworkImage(
-                    image: bike.image, progressColor: deepGreen)),
             Center(child: Text(bike.name, style: secondTextStyle)),
             Padding(
                 child: Text('Distance parcourue', style: boldSubTitleStyle),
@@ -103,13 +97,18 @@ class _BikeCardState extends State<BikeCard> {
                 callback: _onAddComponentPage)
           ]));
 
-  void _onAddComponentPage() =>
-      Navigator.pushNamed(context, AddComponentRoute.routeName,
-          arguments: BikeArgument(widget.bike));
+  void _onAddComponentPage() => Navigator.push(
+      context,
+      MaterialPageRoute(
+          builder: (BuildContext context) =>
+              AddComponentPage(bike: widget.bike)));
 
-  void _onBikeDetailsClick() =>
-      Navigator.pushNamed(context, BikeDetailsRoute.routeName,
-          arguments: BikeArgument(widget.bike));
+  void _onBikeDetailsClick() => Navigator.push(
+        context,
+        MaterialPageRoute<void>(
+          builder: (BuildContext context) => BikeDetailsPage(bike: widget.bike),
+        ),
+      );
 
   void _onOpenPopUp() =>
       showDialog(context: context, builder: (context) => _buildPopUp(context));
@@ -163,8 +162,11 @@ class _AddKmFormState extends State<AddKmForm> {
     dynamic json = jsonDecode(response.body);
 
     if (response.statusCode == httpCodeOk) {
-      Navigator.pushReplacementNamed(context, MemberHomeRoute.routeName,
-          arguments: 0);
+      Navigator.pushAndRemoveUntil(
+          context,
+          MaterialPageRoute(
+              builder: (BuildContext context) => const MemberHomePage()),
+          (Route<dynamic> route) => false);
     } else {
       responseColor = red;
     }

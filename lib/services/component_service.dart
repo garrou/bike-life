@@ -11,12 +11,12 @@ class ComponentService {
     HttpAccountInterceptor(),
   ]);
 
-  Future<Response> getBikeComponents(int bikeId) async {
+  Future<Response> getBikeComponents(String bikeId) async {
     return await client.get(Uri.parse('$endpoint/components?bikeId=$bikeId'));
   }
 
   Future<Response> add(String brand, String image, double km, double duration,
-      String type, String date, int bikeId) async {
+      String type, String date, String bikeId) async {
     return await client.post(Uri.parse('$endpoint/components'),
         body: jsonEncode(<String, dynamic>{
           'brand': brand,
@@ -33,5 +33,10 @@ class ComponentService {
     return await client.put(Uri.parse('$endpoint/components/${component.id}'),
         body:
             jsonEncode(<String, dynamic>{'component': jsonEncode(component)}));
+  }
+
+  Future<Response> initAllComponents(String bikeId) async {
+    return await client.post(Uri.parse('$endpoint/components/init'),
+        body: jsonEncode(<String, dynamic>{'bikeId': bikeId}));
   }
 }

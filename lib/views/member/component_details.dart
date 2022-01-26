@@ -2,7 +2,6 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:bike_life/models/component_type.dart';
-import 'package:bike_life/routes/member_home_route.dart';
 import 'package:bike_life/services/component_service.dart';
 import 'package:bike_life/services/component_types_service.dart';
 import 'package:bike_life/utils/constants.dart';
@@ -11,6 +10,7 @@ import 'package:bike_life/utils/guard_helper.dart';
 import 'package:bike_life/utils/validator.dart';
 import 'package:bike_life/views/auth/signin.dart';
 import 'package:bike_life/styles/general.dart';
+import 'package:bike_life/views/member/member_home.dart';
 import 'package:bike_life/widgets/button.dart';
 import 'package:bike_life/widgets/calendar.dart';
 import 'package:bike_life/widgets/network_image.dart';
@@ -44,18 +44,18 @@ class _ComponentDetailPageState extends State<ComponentDetailPage> {
       authStream: _authState.stream,
       signedIn: Scaffold(body: LayoutBuilder(builder: (context, constraints) {
         if (constraints.maxWidth > maxSize) {
-          return narrowLayout();
+          return _narrowLayout();
         } else {
-          return wideLayout();
+          return _wideLayout();
         }
       })),
       signedOut: const SigninPage());
 
-  Widget narrowLayout() => Padding(
+  Widget _narrowLayout() => Padding(
       padding: const EdgeInsets.symmetric(horizontal: maxPadding),
-      child: wideLayout());
+      child: _wideLayout());
 
-  Widget wideLayout() => Padding(
+  Widget _wideLayout() => Padding(
       padding: const EdgeInsets.symmetric(horizontal: thirdSize),
       child: ListView(children: <Widget>[
         AppTopLeftButton(
@@ -218,9 +218,11 @@ class _UpdateBikeComponentFormState extends State<UpdateBikeComponentForm> {
     dynamic json = jsonDecode(response.body);
 
     if (response.statusCode == httpCodeOk) {
-      Navigator.pushNamedAndRemoveUntil(
-          context, MemberHomeRoute.routeName, (Route<dynamic> route) => false,
-          arguments: 0);
+      Navigator.pushAndRemoveUntil(
+          context,
+          MaterialPageRoute(
+              builder: (BuildContext context) => const MemberHomePage()),
+          (Route<dynamic> route) => false);
     } else {
       responseColor = red;
     }

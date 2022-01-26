@@ -3,7 +3,6 @@ import 'dart:convert';
 
 import 'package:bike_life/models/bike.dart';
 import 'package:bike_life/models/component_type.dart';
-import 'package:bike_life/routes/member_home_route.dart';
 import 'package:bike_life/services/component_service.dart';
 import 'package:bike_life/services/component_types_service.dart';
 import 'package:bike_life/styles/general.dart';
@@ -75,24 +74,22 @@ class _AddComponentPageState extends State<AddComponentPage> {
           authStream: _authState.stream,
           signedIn: LayoutBuilder(builder: (context, constraints) {
             if (constraints.maxWidth > maxSize) {
-              return narrowLayout();
+              return _narrowLayout();
             } else {
-              return wideLayout();
+              return _wideLayout();
             }
           }),
           signedOut: const SigninPage()));
 
-  Padding narrowLayout() => Padding(
+  Padding _narrowLayout() => Padding(
       padding: const EdgeInsets.symmetric(horizontal: maxPadding),
-      child: wideLayout());
+      child: _wideLayout());
 
-  ListView wideLayout() => ListView(children: <Widget>[
+  ListView _wideLayout() => ListView(children: <Widget>[
         Row(children: <Widget>[
           AppTopLeftButton(
               title: 'Ajouter un composant',
-              callback: () => Navigator.pushNamed(
-                  context, MemberHomeRoute.routeName,
-                  arguments: 0))
+              callback: () => Navigator.pop(context))
         ]),
         Form(
             key: _keyForm,
@@ -161,9 +158,7 @@ class _AddComponentPageState extends State<AddComponentPage> {
     dynamic json = jsonDecode(response.body);
 
     if (response.statusCode == httpCodeCreated) {
-      Navigator.pushNamedAndRemoveUntil(
-          context, MemberHomeRoute.routeName, (Route<dynamic> route) => false,
-          arguments: 0);
+      Navigator.of(context).pop();
     } else {
       respColor = red;
     }

@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:bike_life/routes/member_home_route.dart';
 import 'package:bike_life/utils/constants.dart';
 import 'package:bike_life/utils/guard_helper.dart';
 import 'package:bike_life/utils/storage.dart';
@@ -35,24 +34,21 @@ class _ProfilePageState extends State<ProfilePage> {
           authStream: _authState.stream,
           signedIn: LayoutBuilder(builder: (context, constraints) {
             if (constraints.maxWidth > maxSize) {
-              return narrowLayout();
+              return _narrowLayout();
             } else {
-              return wideLayout();
+              return _wideLayout();
             }
           }),
           signedOut: const SigninPage()));
 
-  Widget narrowLayout() => Padding(
+  Widget _narrowLayout() => Padding(
       padding: const EdgeInsets.symmetric(horizontal: maxPadding),
-      child: wideLayout());
+      child: _wideLayout());
 
-  Widget wideLayout() =>
+  Widget _wideLayout() =>
       Column(crossAxisAlignment: CrossAxisAlignment.center, children: <Widget>[
         AppTopLeftButton(
-            title: 'Profil',
-            callback: () => Navigator.pushNamed(
-                context, MemberHomeRoute.routeName,
-                arguments: 0)),
+            title: 'Profil', callback: () => Navigator.of(context).pop()),
         Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: const <Widget>[
@@ -64,14 +60,16 @@ class _ProfilePageState extends State<ProfilePage> {
                           TextStyle(fontSize: secondSize, color: Colors.blue)),
                   destination: UpdateAccountPage()),
             ]),
-        AppButton(
-            text: 'Déconnexion', callback: _onDisconnect, color: deepGreen),
-        AppButton(text: 'Aide', callback: () {}, color: deepGreen)
+        AppButton(text: 'Aide', callback: () {}, color: deepGreen),
+        AppButton(text: 'Déconnexion', callback: _onDisconnect, color: red)
       ]);
 
   void _onDisconnect() {
     Storage.disconnect();
-    Navigator.pushNamedAndRemoveUntil(
-        context, '/login', (Route<dynamic> route) => false);
+    Navigator.pushAndRemoveUntil(
+        context,
+        MaterialPageRoute(
+            builder: (BuildContext context) => const SigninPage()),
+        (Route<dynamic> route) => false);
   }
 }

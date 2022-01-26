@@ -37,7 +37,7 @@ class _SignupPageState extends State<SignupPage> {
   Widget build(BuildContext context) => Scaffold(
       body: AuthGuard(
           authStream: _authState.stream,
-          signedIn: const MemberHomePage(initialPage: 0),
+          signedIn: const MemberHomePage(),
           signedOut: LayoutBuilder(builder: (context, constraints) {
             if (constraints.maxWidth > maxSize) {
               return narrowLayout();
@@ -133,8 +133,11 @@ class _SignupFormState extends State<SignupForm> {
     dynamic json = jsonDecode(response.body);
 
     if (response.statusCode == httpCodeCreated) {
-      Navigator.pushNamedAndRemoveUntil(
-          context, '/login', (Route<dynamic> route) => false);
+      Navigator.pushAndRemoveUntil(
+          context,
+          MaterialPageRoute(
+              builder: (BuildContext context) => const SigninPage()),
+          (Route<dynamic> route) => false);
     } else {
       responseColor = red;
     }

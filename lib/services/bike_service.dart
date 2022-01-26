@@ -12,8 +12,8 @@ class BikeService {
     HttpAccountInterceptor(),
   ]);
 
-  Future<Response> addBike(int memberId, String name, String urlImage,
-      String dateOfPurchase, double nbKm) async {
+  Future<Response> addBike(String memberId, String name, String urlImage,
+      String dateOfPurchase, double nbKm, bool electric) async {
     return await client.post(
       Uri.parse('$endpoint/$memberId/bikes'),
       body: jsonEncode(<String, dynamic>{
@@ -21,16 +21,21 @@ class BikeService {
         'name': name,
         'image': urlImage,
         'dateOfPurchase': dateOfPurchase,
-        'nbKm': nbKm
+        'nbKm': nbKm,
+        'electric': electric
       }),
     );
   }
 
-  Future<Response> getBikes(int memberId) async {
+  Future<Response> getBike(String bikeId) async {
+    return await client.get(Uri.parse('$endpoint/bikes/$bikeId'));
+  }
+
+  Future<Response> getBikes(String memberId) async {
     return await client.get(Uri.parse('$endpoint/members/$memberId/bikes'));
   }
 
-  Future<Response> deleteBike(int bikeId) async {
+  Future<Response> deleteBike(String bikeId) async {
     return await client.delete(Uri.parse('$endpoint/bikes/$bikeId'));
   }
 
@@ -39,7 +44,7 @@ class BikeService {
         body: jsonEncode(<String, dynamic>{'bike': jsonEncode(bike)}));
   }
 
-  Future<Response> updateBikeKm(int bikeId, double kmToAdd) async {
+  Future<Response> updateBikeKm(String bikeId, double kmToAdd) async {
     return await client.patch(Uri.parse('$endpoint/bikes/$bikeId'),
         body: jsonEncode(<String, dynamic>{'bikeId': bikeId, 'km': kmToAdd}));
   }

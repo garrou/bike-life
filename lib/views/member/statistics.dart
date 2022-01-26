@@ -29,18 +29,18 @@ class _StatisticPageState extends State<StatisticPage> {
       authStream: _authState.stream,
       signedIn: LayoutBuilder(builder: (context, constraints) {
         if (constraints.maxWidth > maxSize) {
-          return narrowLayout();
+          return _narrowLayout();
         } else {
-          return wideLayout();
+          return _wideLayout();
         }
       }),
       signedOut: const SigninPage());
 
-  Widget narrowLayout() => Padding(
+  Widget _narrowLayout() => Padding(
       padding: const EdgeInsets.symmetric(horizontal: maxPadding),
-      child: wideLayout());
+      child: _wideLayout());
 
-  Widget wideLayout() =>
+  Widget _wideLayout() =>
       Column(crossAxisAlignment: CrossAxisAlignment.center, children: <Widget>[
         AppTitle(
             text: 'Statistiques', paddingTop: mainSize, style: secondTextStyle)

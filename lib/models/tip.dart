@@ -1,5 +1,5 @@
 class Tip {
-  final int id;
+  final String id;
   final String componentType;
   final String title;
   final String content;
