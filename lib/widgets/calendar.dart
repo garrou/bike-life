@@ -1,4 +1,5 @@
 import 'package:bike_life/styles/general.dart';
+import 'package:bike_life/utils/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 
@@ -16,7 +17,9 @@ class AppCalendar extends StatefulWidget {
 class _AppCalendarState extends State<AppCalendar> {
   bool _isVisible = false;
   @override
-  Widget build(BuildContext context) => Column(children: <Widget>[
+  Widget build(BuildContext context) => Padding(
+      padding: const EdgeInsets.only(top: thirdSize),
+      child: Column(children: <Widget>[
         GestureDetector(
           child: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
             Icon(_isVisible ? Icons.arrow_drop_up : Icons.arrow_drop_down),
@@ -32,10 +35,10 @@ class _AppCalendarState extends State<AppCalendar> {
             visible: _isVisible,
             child: SfDateRangePicker(
                 initialSelectedDate: DateTime.parse(widget.selectedDate),
-                todayHighlightColor: mainColor,
-                selectionColor: mainColor,
+                todayHighlightColor: deepGreen,
+                selectionColor: deepGreen,
                 view: DateRangePickerView.month,
                 selectionMode: DateRangePickerSelectionMode.single,
                 onSelectionChanged: widget.callback))
-      ]);
+      ]));
 }

@@ -6,9 +6,14 @@ class Storage {
     return prefs.getString('jwt');
   }
 
-  static Future<int> getMemberId() async {
+  static Future<String> getMemberId() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    return prefs.getInt('id') ?? -1;
+    return prefs.getString('id') ?? "";
+  }
+
+  static Future<String> getBikeId() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    return prefs.getString('bike') ?? "";
   }
 
   static disconnect() async {
@@ -20,10 +25,5 @@ class Storage {
   static setString(String key, String value) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.setString(key, value);
-  }
-
-  static setInt(String key, int value) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.setInt(key, value);
   }
 }

@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:bike_life/services/member_service.dart';
 import 'package:bike_life/utils/guard_helper.dart';
@@ -14,6 +15,7 @@ import 'package:bike_life/widgets/textfield.dart';
 import 'package:bike_life/widgets/title.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_guards/flutter_guards.dart';
+import 'package:http/http.dart';
 
 class SignupPage extends StatefulWidget {
   const SignupPage({Key? key}) : super(key: key);
@@ -35,7 +37,7 @@ class _SignupPageState extends State<SignupPage> {
   Widget build(BuildContext context) => Scaffold(
       body: AuthGuard(
           authStream: _authState.stream,
-          signedIn: const MemberHomePage(initialPage: 0),
+          signedIn: const MemberHomePage(),
           signedOut: LayoutBuilder(builder: (context, constraints) {
             if (constraints.maxWidth > maxSize) {
               return narrowLayout();
@@ -115,7 +117,7 @@ class _SignupFormState extends State<SignupForm> {
             },
             obscureText: true,
             icon: Icons.lock),
-        AppButton(text: "S'inscrire", callback: _onSignup, color: mainColor)
+        AppButton(text: "S'inscrire", callback: _onSignup, color: deepGreen)
       ]));
 
   void _onSignup() {
@@ -126,16 +128,20 @@ class _SignupFormState extends State<SignupForm> {
   }
 
   void _createUser(String email, String password) async {
-    List<dynamic> response = await _memberService.signup(email, password);
-    Color responseColor = mainColor;
+    Response response = await _memberService.signup(email, password);
+    Color responseColor = deepGreen;
+    dynamic json = jsonDecode(response.body);
 
-    if (response[0]) {
-      Navigator.pushNamedAndRemoveUntil(
-          context, '/login', (Route<dynamic> route) => false);
+    if (response.statusCode == httpCodeCreated) {
+      Navigator.pushAndRemoveUntil(
+          context,
+          MaterialPageRoute(
+              builder: (BuildContext context) => const SigninPage()),
+          (Route<dynamic> route) => false);
     } else {
-      responseColor = errorColor;
+      responseColor = red;
     }
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: Text(response[1]['confirm']), backgroundColor: responseColor));
+        content: Text(json['confirm']), backgroundColor: responseColor));
   }
 }

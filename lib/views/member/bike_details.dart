@@ -1,6 +1,6 @@
 import 'dart:async';
+import 'dart:convert';
 
-import 'package:bike_life/routes/member_home_route.dart';
 import 'package:bike_life/utils/constants.dart';
 import 'package:bike_life/models/bike.dart';
 import 'package:bike_life/services/bike_service.dart';
@@ -8,12 +8,14 @@ import 'package:bike_life/utils/guard_helper.dart';
 import 'package:bike_life/utils/validator.dart';
 import 'package:bike_life/views/auth/signin.dart';
 import 'package:bike_life/styles/general.dart';
-import 'package:bike_life/widgets/button.dart';
+import 'package:bike_life/views/member/member_home.dart';
+import 'package:bike_life/widgets/account_button.dart';
 import 'package:bike_life/widgets/calendar.dart';
 import 'package:bike_life/widgets/textfield.dart';
 import 'package:bike_life/widgets/top_left_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_guards/flutter_guards.dart';
+import 'package:http/http.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 
 class BikeDetailsPage extends StatefulWidget {
@@ -25,7 +27,6 @@ class BikeDetailsPage extends StatefulWidget {
 }
 
 class _BikeDetailsPageState extends State<BikeDetailsPage> {
-  final BikeService _bikeService = BikeService();
   final StreamController<bool> _authState = StreamController();
 
   @override
@@ -39,14 +40,14 @@ class _BikeDetailsPageState extends State<BikeDetailsPage> {
       authStream: _authState.stream,
       signedIn: Scaffold(body: LayoutBuilder(builder: (context, constraints) {
         if (constraints.maxWidth > maxSize) {
-          return narrowLayout();
+          return _narrowLayout();
         } else {
-          return wideLayout();
+          return _wideLayout();
         }
       })),
       signedOut: const SigninPage());
 
-  Widget wideLayout() => Padding(
+  Widget _wideLayout() => Padding(
       padding: const EdgeInsets.symmetric(horizontal: thirdSize),
       child: ListView(children: <Widget>[
         Row(
@@ -57,58 +58,11 @@ class _BikeDetailsPageState extends State<BikeDetailsPage> {
                   callback: () => Navigator.pop(context))
             ]),
         UpdateBikeForm(bike: widget.bike),
-        AppButton(text: 'Supprimer', callback: _showDialog, color: errorColor)
       ]));
 
-  Widget narrowLayout() => Padding(
+  Widget _narrowLayout() => Padding(
       padding: const EdgeInsets.symmetric(horizontal: maxPadding),
-      child: wideLayout());
-
-  void _onDeleteBike() async {
-    List<dynamic> response = await _bikeService.deleteBike(widget.bike.id);
-    Color responseColor = mainColor;
-
-    if (response[0]) {
-      Navigator.pushNamedAndRemoveUntil(
-          context, MemberHomeRoute.routeName, (Route<dynamic> route) => false,
-          arguments: 0);
-    } else {
-      responseColor = errorColor;
-    }
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: Text(response[1]['confirm']), backgroundColor: responseColor));
-  }
-
-  Future<void> _showDialog() async {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(secondSize)),
-          title: const Text('Supprimer ce vélo ?'),
-          actions: <Widget>[
-            TextButton(
-              child:
-                  const Text('Confirmer', style: TextStyle(color: mainColor)),
-              onPressed: () {
-                _onDeleteBike();
-                Navigator.pushNamedAndRemoveUntil(
-                    context, MemberHomeRoute.routeName, (route) => false,
-                    arguments: 0);
-              },
-            ),
-            TextButton(
-              child: const Text('Annuler', style: TextStyle(color: mainColor)),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            ),
-          ],
-        );
-      },
-    );
-  }
+      child: _wideLayout());
 }
 
 class UpdateBikeForm extends StatefulWidget {
@@ -120,28 +74,30 @@ class UpdateBikeForm extends StatefulWidget {
 }
 
 class _UpdateBikeFormState extends State<UpdateBikeForm> {
+  final BikeService _bikeService = BikeService();
+
   final _keyForm = GlobalKey<FormState>();
 
   final _nameFocus = FocusNode();
-  late final TextEditingController _name;
+  final TextEditingController _name = TextEditingController();
 
   final _imageFocus = FocusNode();
-  late final TextEditingController _image;
+  final TextEditingController _image = TextEditingController();
 
   final _nbKmFocus = FocusNode();
-  late final TextEditingController _nbKm;
+  final TextEditingController _nbKm = TextEditingController();
 
-  final BikeService _bikeService = BikeService();
-
-  late String _dateOfPurchase;
+  String _dateOfPurchase = DateTime.now().toString();
+  bool? _electric = false;
 
   @override
   void initState() {
     super.initState();
-    _name = TextEditingController(text: widget.bike.name);
-    _image = TextEditingController(text: widget.bike.image);
-    _nbKm = TextEditingController(text: '${widget.bike.nbKm}');
+    _name.text = widget.bike.name;
+    _image.text = widget.bike.image ?? '';
+    _nbKm.text = '${widget.bike.nbKm}';
     _dateOfPurchase = widget.bike.dateOfPurchase.split(' ')[0];
+    _electric = widget.bike.electric;
   }
 
   @override
@@ -160,7 +116,7 @@ class _UpdateBikeFormState extends State<UpdateBikeForm> {
             keyboardType: TextInputType.text,
             focusNode: _imageFocus,
             textfieldController: _image,
-            validator: fieldValidator,
+            validator: emptyValidator,
             hintText: "Lien de l'image du vélo",
             label: 'Image du vélo',
             icon: Icons.image),
@@ -172,32 +128,91 @@ class _UpdateBikeFormState extends State<UpdateBikeForm> {
             hintText: 'Nombre de kilomètres du vélo',
             label: 'Nombre de km',
             icon: Icons.add_road),
+        Row(mainAxisAlignment: MainAxisAlignment.center, children: <Widget>[
+          Text('Vélo électrique ?', style: secondTextStyle),
+          Checkbox(
+              fillColor: MaterialStateProperty.all(deepGreen),
+              value: _electric,
+              onChanged: (value) {
+                setState(() => _electric = value);
+              })
+        ]),
         AppCalendar(callback: _onDateChanged, selectedDate: _dateOfPurchase),
-        AppButton(text: 'Modifier', callback: _onUpdateBike, color: mainColor)
+        AppAccountButton(
+            text: 'Modifier', callback: _onUpdateBike, color: deepGreen),
+        AppAccountButton(text: 'Supprimer', callback: _showDialog, color: red)
       ]));
+
+  Future _showDialog() async => showDialog(
+      context: context,
+      builder: (BuildContext context) => AlertDialog(
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(secondSize)),
+            title: const Text('Supprimer ce vélo ?'),
+            actions: <Widget>[
+              TextButton(
+                child:
+                    const Text('Confirmer', style: TextStyle(color: deepGreen)),
+                onPressed: () {
+                  _onDeleteBike();
+                  Navigator.pushAndRemoveUntil(
+                      context,
+                      MaterialPageRoute(
+                          builder: (BuildContext context) =>
+                              const MemberHomePage()),
+                      (Route<dynamic> route) => false);
+                },
+              ),
+              TextButton(
+                child:
+                    const Text('Annuler', style: TextStyle(color: deepGreen)),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+            ],
+          ));
+
+  void _onDeleteBike() async {
+    Response response = await _bikeService.deleteBike(widget.bike.id);
+    Color responseColor = deepGreen;
+    dynamic json = jsonDecode(response.body);
+
+    if (response.statusCode == httpCodeOk) {
+      Navigator.pushAndRemoveUntil(
+          context,
+          MaterialPageRoute(
+              builder: (BuildContext context) => const MemberHomePage()),
+          (Route<dynamic> route) => false);
+    } else {
+      responseColor = red;
+    }
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text(json['confirm']), backgroundColor: responseColor));
+  }
 
   void _onUpdateBike() {
     if (_keyForm.currentState!.validate()) {
       _keyForm.currentState!.save();
-      _updateBike(_name.text, _image.text, _dateOfPurchase, _nbKm.text);
+      _updateBike(
+          _name.text, _image.text, _dateOfPurchase, _nbKm.text, _electric!);
     }
   }
 
-  void _updateBike(
-      String name, String image, String dateOfPurchase, String nbKm) async {
-    List<dynamic> response = await _bikeService.updateBike(
-        Bike(widget.bike.id, name, image, double.parse(nbKm), dateOfPurchase));
-    Color responseColor = mainColor;
+  void _updateBike(String name, String image, String dateOfPurchase,
+      String nbKm, bool electric) async {
+    Response response = await _bikeService.updateBike(Bike(widget.bike.id, name,
+        image, double.parse(nbKm), dateOfPurchase, electric));
+    Color responseColor = deepGreen;
+    dynamic json = jsonDecode(response.body);
 
-    if (response[0]) {
-      Navigator.pushNamedAndRemoveUntil(
-          context, MemberHomeRoute.routeName, (Route<dynamic> route) => false,
-          arguments: 0);
+    if (response.statusCode == httpCodeOk) {
+      Navigator.of(context).pop();
     } else {
-      responseColor = errorColor;
+      responseColor = red;
     }
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: Text(response[1]['confirm']), backgroundColor: responseColor));
+        content: Text(json['confirm']), backgroundColor: responseColor));
   }
 
   void _onDateChanged(DateRangePickerSelectionChangedArgs args) {

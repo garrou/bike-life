@@ -1,20 +1,22 @@
 import 'dart:async';
+import 'dart:convert';
 
-import 'package:bike_life/routes/member_home_route.dart';
+import 'package:bike_life/services/component_service.dart';
 import 'package:bike_life/utils/constants.dart';
 import 'package:bike_life/utils/guard_helper.dart';
-
 import 'package:bike_life/utils/storage.dart';
 import 'package:bike_life/utils/validator.dart';
 import 'package:bike_life/services/bike_service.dart';
 import 'package:bike_life/views/auth/signin.dart';
 import 'package:bike_life/styles/general.dart';
+import 'package:bike_life/views/member/member_home.dart';
 import 'package:bike_life/widgets/button.dart';
 import 'package:bike_life/widgets/calendar.dart';
 import 'package:bike_life/widgets/textfield.dart';
 import 'package:bike_life/widgets/top_left_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_guards/flutter_guards.dart';
+import 'package:http/http.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 
 class AddBikePage extends StatefulWidget {
@@ -74,15 +76,20 @@ class _AddBikeFormState extends State<AddBikeForm> {
   final _nbKm = TextEditingController();
 
   final BikeService _bikeService = BikeService();
+  final ComponentService _componentService = ComponentService();
 
+  late String _memberId;
   String _dateOfPurchase = DateTime.now().toString().split(' ')[0];
-
-  late int _memberId;
+  bool? _isElectric = false;
 
   @override
   void initState() {
     super.initState();
     _getMemberId();
+  }
+
+  void _getMemberId() async {
+    _memberId = await Storage.getMemberId();
   }
 
   @override
@@ -91,10 +98,7 @@ class _AddBikeFormState extends State<AddBikeForm> {
       child: Column(children: <Widget>[
         Row(children: <Widget>[
           AppTopLeftButton(
-              title: 'Ajouter un vélo',
-              callback: () => Navigator.pushNamed(
-                  context, MemberHomeRoute.routeName,
-                  arguments: 0))
+              title: 'Ajouter un vélo', callback: () => Navigator.pop(context))
         ]),
         Form(
             key: _keyForm,
@@ -111,7 +115,7 @@ class _AddBikeFormState extends State<AddBikeForm> {
                   keyboardType: TextInputType.text,
                   focusNode: _imageFocus,
                   textfieldController: _image,
-                  validator: fieldValidator,
+                  validator: emptyValidator,
                   hintText: "Lien de l'image du vélo",
                   label: 'Image du vélo',
                   icon: Icons.image),
@@ -123,43 +127,87 @@ class _AddBikeFormState extends State<AddBikeForm> {
                   hintText: 'Nombre de kilomètres du vélo',
                   label: 'Nombre de km',
                   icon: Icons.add_road),
+              Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Text('Vélo électrique ?', style: secondTextStyle),
+                    Checkbox(
+                        fillColor: MaterialStateProperty.all(deepGreen),
+                        value: _isElectric,
+                        onChanged: (value) {
+                          setState(() => _isElectric = value);
+                        })
+                  ]),
               AppCalendar(
                   callback: _onDateChanged, selectedDate: _dateOfPurchase),
-              AppButton(text: 'Ajouter', callback: _onAddBike, color: mainColor)
+              AppButton(text: 'Ajouter', callback: _onAddBike, color: deepGreen)
             ]))
       ]));
-
-  void _getMemberId() async {
-    _memberId = await Storage.getMemberId();
-  }
 
   void _onAddBike() {
     if (_keyForm.currentState!.validate()) {
       _keyForm.currentState!.save();
-      _addBike(_name.text, _image.text, _dateOfPurchase, _nbKm.text);
+      _showDialog();
     }
   }
 
-  void _addBike(
-      // TODO: Purpose init specific components
-      String name,
-      String image,
-      String dateOfPurchase,
-      String nbKm) async {
-    List<dynamic> response = await _bikeService.addBike(
-        _memberId, name, image, dateOfPurchase, double.parse(nbKm));
-    Color respColor = mainColor;
+  Future _showDialog() async => showDialog(
+      context: context,
+      builder: (BuildContext context) => AlertDialog(
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(secondSize)),
+            title: const Text('Initialiser les composants ?'),
+            actions: <Widget>[
+              TextButton(
+                  child: const Text('Oui', style: TextStyle(color: deepGreen)),
+                  onPressed: () => _addBikeAndInit()),
+              TextButton(
+                  child: const Text('Non', style: TextStyle(color: deepGreen)),
+                  onPressed: () => _addBike())
+            ],
+          ));
 
-    if (response[0]) {
-      Navigator.pushNamed(context, MemberHomeRoute.routeName, arguments: 0);
+  void _addBike() async {
+    Response response = await _bikeService.addBike(_memberId, _name.text,
+        _image.text, _dateOfPurchase, double.parse(_nbKm.text), _isElectric!);
+    Color respColor = deepGreen;
+    dynamic json = jsonDecode(response.body);
+
+    if (response.statusCode == httpCodeCreated) {
+      _toMemberHomePage();
     } else {
-      respColor = errorColor;
+      respColor = red;
     }
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: Text(response[1]['confirm']), backgroundColor: respColor));
+    ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(json['confirm']), backgroundColor: respColor));
+  }
+
+  void _addBikeAndInit() async {
+    Response response = await _bikeService.addBike(_memberId, _name.text,
+        _image.text, _dateOfPurchase, double.parse(_nbKm.text), _isElectric!);
+    Color respColor = red;
+
+    if (response.statusCode == httpCodeCreated) {
+      String bikeId = jsonDecode(response.body)['bike']['id'];
+      response = await _componentService.initAllComponents(bikeId);
+
+      if (response.statusCode == httpCodeCreated) {
+        _toMemberHomePage();
+        respColor = deepGreen;
+      }
+    }
+    dynamic json = jsonDecode(response.body);
+    ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(json['confirm']), backgroundColor: respColor));
   }
 
   void _onDateChanged(DateRangePickerSelectionChangedArgs args) {
     _dateOfPurchase = args.value.toString().split(' ')[0];
   }
+
+  void _toMemberHomePage() => Navigator.pushAndRemoveUntil(
+      context,
+      MaterialPageRoute(
+          builder: (BuildContext context) => const MemberHomePage()),
+      (Route<dynamic> route) => false);
 }

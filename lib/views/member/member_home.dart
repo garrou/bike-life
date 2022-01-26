@@ -10,8 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_guards/flutter_guards.dart';
 
 class MemberHomePage extends StatefulWidget {
-  final int initialPage;
-  const MemberHomePage({Key? key, required this.initialPage}) : super(key: key);
+  const MemberHomePage({Key? key}) : super(key: key);
 
   @override
   _MemberHomePageState createState() => _MemberHomePageState();
@@ -26,7 +25,6 @@ class _MemberHomePageState extends State<MemberHomePage> {
   void initState() {
     super.initState();
     GuardHelper.checkIfLogged(_authState);
-    _pageIndex = widget.initialPage;
     _pageController = PageController(initialPage: _pageIndex);
   }
 
@@ -39,10 +37,10 @@ class _MemberHomePageState extends State<MemberHomePage> {
   @override
   Widget build(BuildContext context) => AuthGuard(
       authStream: _authState.stream,
-      signedIn: layout(),
+      signedIn: _layout(),
       signedOut: const SigninPage());
 
-  Widget layout() => Scaffold(
+  Widget _layout() => Scaffold(
       body: PageView(
         children: const <Widget>[AllBikesPage(), StatisticPage(), TipsPage()],
         onPageChanged: (page) => setState(() => _pageIndex = page),
@@ -53,21 +51,21 @@ class _MemberHomePageState extends State<MemberHomePage> {
         showUnselectedLabels: false,
         currentIndex: _pageIndex,
         onTap: _onTabTapped,
-        backgroundColor: mainColor,
+        backgroundColor: deepGreen,
         selectedItemColor: Colors.white,
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
               icon: Icon(Icons.pedal_bike),
               label: 'Mes vélos',
-              backgroundColor: mainColor),
+              backgroundColor: deepGreen),
           BottomNavigationBarItem(
               icon: Icon(Icons.bar_chart),
               label: 'Mes statistiques',
-              backgroundColor: mainColor),
+              backgroundColor: deepGreen),
           BottomNavigationBarItem(
               icon: Icon(Icons.comment),
               label: 'Conseils',
-              backgroundColor: mainColor)
+              backgroundColor: deepGreen)
         ],
       ));
 

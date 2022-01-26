@@ -1,8 +1,9 @@
 import 'dart:async';
+import 'dart:convert';
 
-import 'package:bike_life/routes/member_home_route.dart';
 import 'package:bike_life/utils/constants.dart';
 import 'package:bike_life/utils/guard_helper.dart';
+import 'package:bike_life/utils/storage.dart';
 import 'package:bike_life/utils/validator.dart';
 import 'package:bike_life/services/member_service.dart';
 import 'package:bike_life/views/auth/signup.dart';
@@ -15,6 +16,7 @@ import 'package:bike_life/widgets/textfield.dart';
 import 'package:bike_life/widgets/title.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_guards/flutter_guards.dart';
+import 'package:http/http.dart';
 
 class SigninPage extends StatefulWidget {
   const SigninPage({Key? key}) : super(key: key);
@@ -36,7 +38,7 @@ class _SigninPageState extends State<SigninPage> {
   Widget build(BuildContext context) => Scaffold(
       body: AuthGuard(
           authStream: _authState.stream,
-          signedIn: const MemberHomePage(initialPage: 0),
+          signedIn: const MemberHomePage(),
           signedOut: LayoutBuilder(builder: (context, constraints) {
             if (constraints.maxWidth > maxSize) {
               return narrowLayout();
@@ -80,6 +82,11 @@ class _SigninFormState extends State<SigninForm> {
   final MemberService _memberService = MemberService();
 
   @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) => Form(
       key: _keyForm,
       child: Column(children: <Widget>[
@@ -100,7 +107,7 @@ class _SigninFormState extends State<SigninForm> {
             validator: passwordValidator,
             obscureText: true,
             icon: Icons.lock),
-        AppButton(text: 'Connexion', callback: _onSignin, color: mainColor)
+        AppButton(text: 'Connexion', callback: _onSignin, color: deepGreen)
       ]));
 
   void _onSignin() {
@@ -111,17 +118,21 @@ class _SigninFormState extends State<SigninForm> {
   }
 
   void _authUser(String email, String password) async {
-    List<dynamic> response = await _memberService.login(email, password);
+    Response response = await _memberService.login(email, password);
+    dynamic json = jsonDecode(response.body);
 
-    if (response[0]) {
-      Navigator.pushNamedAndRemoveUntil(
-          context, MemberHomeRoute.routeName, (Route<dynamic> route) => false,
-          arguments: 0);
+    if (response.statusCode == httpCodeOk) {
+      Storage.setString('jwt', json['accessToken']);
+      Storage.setString('id', json['member']['id']);
+      Navigator.pushAndRemoveUntil(
+          context,
+          MaterialPageRoute(
+              builder: (BuildContext context) => const MemberHomePage()),
+          (Route<dynamic> route) => false);
     } else {
       _password.text = '';
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-          content: Text(response[1]['confirm']),
-          backgroundColor: Theme.of(context).errorColor));
+      ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(json['confirm']), backgroundColor: red));
     }
   }
 }

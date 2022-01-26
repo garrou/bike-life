@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:bike_life/utils/constants.dart';
 import 'package:bike_life/models/bike.dart';
 import 'package:bike_life/utils/http_account_interceptor.dart';
+
 import 'package:http/http.dart';
 import 'package:http_interceptor/http/http.dart';
 
@@ -11,43 +12,40 @@ class BikeService {
     HttpAccountInterceptor(),
   ]);
 
-  Future<List<dynamic>> addBike(int memberId, String name, String urlImage,
-      String dateOfPurchase, double nbKm) async {
-    Response response = await client.post(
+  Future<Response> addBike(String memberId, String name, String urlImage,
+      String dateOfPurchase, double nbKm, bool electric) async {
+    return await client.post(
       Uri.parse('$endpoint/$memberId/bikes'),
       body: jsonEncode(<String, dynamic>{
         'memberId': memberId,
         'name': name,
         'image': urlImage,
         'dateOfPurchase': dateOfPurchase,
-        'nbKm': nbKm
+        'nbKm': nbKm,
+        'electric': electric
       }),
     );
-    return [response.statusCode == httpCodeCreated, jsonDecode(response.body)];
   }
 
-  Future<List<Bike>> getBikes(int memberId) async {
-    Response response =
-        await client.get(Uri.parse('$endpoint/members/$memberId/bikes'));
-    return createBikesFromList(jsonDecode(response.body));
+  Future<Response> getBike(String bikeId) async {
+    return await client.get(Uri.parse('$endpoint/bikes/$bikeId'));
   }
 
-  Future<List<dynamic>> deleteBike(int bikeId) async {
-    Response response =
-        await client.delete(Uri.parse('$endpoint/bikes/$bikeId'));
-    return [response.statusCode == httpCodeOk, response.body];
+  Future<Response> getBikes(String memberId) async {
+    return await client.get(Uri.parse('$endpoint/members/$memberId/bikes'));
   }
 
-  Future<List<dynamic>> updateBike(Bike bike) async {
-    Response response = await client.put(
-        Uri.parse('$endpoint/bikes/${bike.id}'),
+  Future<Response> deleteBike(String bikeId) async {
+    return await client.delete(Uri.parse('$endpoint/bikes/$bikeId'));
+  }
+
+  Future<Response> updateBike(Bike bike) async {
+    return await client.put(Uri.parse('$endpoint/bikes/${bike.id}'),
         body: jsonEncode(<String, dynamic>{'bike': jsonEncode(bike)}));
-    return [response.statusCode == httpCodeOk, jsonDecode(response.body)];
   }
 
-  Future<List<dynamic>> updateBikeKm(int bikeId, double kmToAdd) async {
-    Response response = await client.patch(Uri.parse('$endpoint/bikes/$bikeId'),
+  Future<Response> updateBikeKm(String bikeId, double kmToAdd) async {
+    return await client.patch(Uri.parse('$endpoint/bikes/$bikeId'),
         body: jsonEncode(<String, dynamic>{'bikeId': bikeId, 'km': kmToAdd}));
-    return [response.statusCode == httpCodeOk, jsonDecode(response.body)];
   }
 }

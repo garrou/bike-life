@@ -1,7 +1,7 @@
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:bike_life/models/component_type.dart';
-import 'package:bike_life/routes/member_home_route.dart';
 import 'package:bike_life/services/component_service.dart';
 import 'package:bike_life/services/component_types_service.dart';
 import 'package:bike_life/utils/constants.dart';
@@ -10,6 +10,7 @@ import 'package:bike_life/utils/guard_helper.dart';
 import 'package:bike_life/utils/validator.dart';
 import 'package:bike_life/views/auth/signin.dart';
 import 'package:bike_life/styles/general.dart';
+import 'package:bike_life/views/member/member_home.dart';
 import 'package:bike_life/widgets/button.dart';
 import 'package:bike_life/widgets/calendar.dart';
 import 'package:bike_life/widgets/network_image.dart';
@@ -17,6 +18,7 @@ import 'package:bike_life/widgets/textfield.dart';
 import 'package:bike_life/widgets/top_left_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_guards/flutter_guards.dart';
+import 'package:http/http.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 
 class ComponentDetailPage extends StatefulWidget {
@@ -42,25 +44,25 @@ class _ComponentDetailPageState extends State<ComponentDetailPage> {
       authStream: _authState.stream,
       signedIn: Scaffold(body: LayoutBuilder(builder: (context, constraints) {
         if (constraints.maxWidth > maxSize) {
-          return narrowLayout();
+          return _narrowLayout();
         } else {
-          return wideLayout();
+          return _wideLayout();
         }
       })),
       signedOut: const SigninPage());
 
-  Widget narrowLayout() => Padding(
+  Widget _narrowLayout() => Padding(
       padding: const EdgeInsets.symmetric(horizontal: maxPadding),
-      child: wideLayout());
+      child: _wideLayout());
 
-  Widget wideLayout() => Padding(
+  Widget _wideLayout() => Padding(
       padding: const EdgeInsets.symmetric(horizontal: thirdSize),
       child: ListView(children: <Widget>[
         AppTopLeftButton(
             title: widget.component.type,
             callback: () => Navigator.of(context).pop()),
         AppNetworkImage(
-            image: widget.component.image!, progressColor: mainColor),
+            image: widget.component.image!, progressColor: deepGreen),
         UpdateBikeComponentForm(component: widget.component)
       ]));
 }
@@ -113,11 +115,15 @@ class _UpdateBikeComponentFormState extends State<UpdateBikeComponentForm> {
   }
 
   void _load() async {
-    List<ComponentType> types = await _componentTypesService.getTypes();
-    setState(() {
-      _componentTypes = types;
-      _typeValue = _componentTypes.first.name;
-    });
+    Response response = await _componentTypesService.getTypes();
+
+    if (response.statusCode == httpCodeOk) {
+      setState(() {
+        _componentTypes =
+            createComponentTypesFromList(jsonDecode(response.body));
+        _typeValue = _componentTypes.first.name;
+      });
+    }
   }
 
   @override
@@ -176,7 +182,7 @@ class _UpdateBikeComponentFormState extends State<UpdateBikeComponentForm> {
                 AppButton(
                     callback: _onUpdateComponent,
                     text: 'Modifier',
-                    color: mainColor)
+                    color: deepGreen)
               ]))),
       signedOut: const SigninPage());
 
@@ -199,7 +205,7 @@ class _UpdateBikeComponentFormState extends State<UpdateBikeComponentForm> {
 
   void _updateComponent(String brand, double km, double duration, String image,
       String date, String type) async {
-    List<dynamic> response = await _componentService.update(Component(
+    Response response = await _componentService.update(Component(
         widget.component.id,
         widget.component.bikeId,
         km,
@@ -208,16 +214,19 @@ class _UpdateBikeComponentFormState extends State<UpdateBikeComponentForm> {
         duration,
         image,
         type));
-    Color responseColor = mainColor;
+    Color responseColor = deepGreen;
+    dynamic json = jsonDecode(response.body);
 
-    if (response[0]) {
-      Navigator.pushNamedAndRemoveUntil(
-          context, MemberHomeRoute.routeName, (Route<dynamic> route) => false,
-          arguments: 0);
+    if (response.statusCode == httpCodeOk) {
+      Navigator.pushAndRemoveUntil(
+          context,
+          MaterialPageRoute(
+              builder: (BuildContext context) => const MemberHomePage()),
+          (Route<dynamic> route) => false);
     } else {
-      responseColor = errorColor;
+      responseColor = red;
     }
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: Text(response[1]['confirm']), backgroundColor: responseColor));
+        content: Text(json['confirm']), backgroundColor: responseColor));
   }
 }

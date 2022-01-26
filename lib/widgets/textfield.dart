@@ -34,17 +34,17 @@ class AppTextField extends StatelessWidget {
           maxLines: maxLines,
           focusNode: focusNode,
           controller: textfieldController,
-          style: const TextStyle(color: mainColor),
+          style: const TextStyle(color: deepGreen),
           obscureText: obscureText,
           decoration: InputDecoration(
-              focusedBorder: textFieldBorder(mainSize, secondColor),
+              focusedBorder: textFieldBorder(mainSize, intermediateGreen),
               prefixIcon: Icon(icon,
-                  color: focusNode.hasFocus ? secondColor : mainColor),
-              border: textFieldBorder(mainSize, secondColor),
+                  color: focusNode.hasFocus ? intermediateGreen : deepGreen),
+              border: textFieldBorder(mainSize, intermediateGreen),
               labelText: label,
               labelStyle: TextStyle(
-                  color: focusNode.hasFocus ? secondColor : mainColor),
+                  color: focusNode.hasFocus ? intermediateGreen : deepGreen),
               hintText: hintText),
-          cursorColor: mainColor,
+          cursorColor: deepGreen,
           validator: validator));
 }

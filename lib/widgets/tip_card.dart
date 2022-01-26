@@ -1,6 +1,5 @@
 import 'package:bike_life/models/tip.dart';
-import 'package:bike_life/routes/args/tip_argument.dart';
-import 'package:bike_life/routes/tip_details_route.dart';
+import 'package:bike_life/views/member/tip_details.dart';
 import 'package:flutter/material.dart';
 
 class AppTipCard extends StatelessWidget {
@@ -9,8 +8,10 @@ class AppTipCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => GestureDetector(
-      onTap: () => Navigator.pushNamed(context, TipDetailsRoute.routeName,
-          arguments: TipArgument(tip)),
+      onTap: () => Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (BuildContext context) => TipDetailsPage(tip: tip))),
       child: Card(
         child: ListTile(title: Text(tip.title), subtitle: Text(tip.writeDate)),
       ));

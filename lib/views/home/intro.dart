@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:bike_life/styles/general.dart';
 import 'package:bike_life/utils/constants.dart';
 import 'package:bike_life/utils/guard_helper.dart';
+import 'package:bike_life/views/home/home.dart';
 import 'package:bike_life/views/member/member_home.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_guards/flutter_guards.dart';
@@ -25,16 +26,16 @@ class _IntroPageState extends State<IntroPage> {
     GuardHelper.checkIfLogged(_authState);
   }
 
-  void _onIntroEnd(BuildContext context) {
-    Navigator.pushNamedAndRemoveUntil(
-        context, '/', (Route<dynamic> route) => false);
-  }
+  void _onIntroEnd(BuildContext context) => Navigator.pushAndRemoveUntil(
+      context,
+      MaterialPageRoute(builder: (BuildContext context) => const HomePage()),
+      (Route<dynamic> route) => false);
 
   @override
   Widget build(BuildContext context) => Scaffold(
       body: AuthGuard(
           authStream: _authState.stream,
-          signedIn: const MemberHomePage(initialPage: 0),
+          signedIn: const MemberHomePage(),
           signedOut: _buildIntroductionScreen()));
 
   IntroductionScreen _buildIntroductionScreen() => IntroductionScreen(
@@ -54,14 +55,14 @@ class _IntroPageState extends State<IntroPage> {
             image: const Icon(Icons.health_and_safety))
       ],
       showSkipButton: true,
-      skip: const Text('Passer', style: TextStyle(color: mainColor)),
-      next: const Icon(Icons.arrow_forward, color: mainColor),
-      done: const Text('Compris', style: TextStyle(color: mainColor)),
+      skip: const Text('Passer', style: TextStyle(color: deepGreen)),
+      next: const Icon(Icons.arrow_forward, color: deepGreen),
+      done: const Text('Compris', style: TextStyle(color: deepGreen)),
       curve: Curves.easeIn,
       dotsDecorator: const DotsDecorator(
         size: Size(secondSize, secondSize),
-        color: mainColor,
-        activeColor: mainColor,
+        color: deepGreen,
+        activeColor: deepGreen,
         activeSize: Size(mainSize, secondSize),
         activeShape: RoundedRectangleBorder(
           borderRadius: BorderRadius.all(Radius.circular(mainSize)),

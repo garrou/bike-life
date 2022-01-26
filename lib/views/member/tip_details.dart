@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:bike_life/models/tip.dart';
-import 'package:bike_life/routes/member_home_route.dart';
 import 'package:bike_life/styles/general.dart';
 import 'package:bike_life/utils/constants.dart';
 import 'package:bike_life/utils/guard_helper.dart';
@@ -33,25 +32,22 @@ class _TipDetailsPageState extends State<TipDetailsPage> {
           authStream: _authState.stream,
           signedIn: LayoutBuilder(builder: (context, constraints) {
             if (constraints.maxWidth > maxSize) {
-              return narrowLayout();
+              return _narrowLayout();
             } else {
-              return wideLayout();
+              return _wideLayout();
             }
           }),
           signedOut: const SigninPage()));
 
-  Widget narrowLayout() => Padding(
+  Widget _narrowLayout() => Padding(
       padding: const EdgeInsets.symmetric(horizontal: maxPadding),
-      child: wideLayout());
+      child: _wideLayout());
 
-  Widget wideLayout() => ListView(
+  Widget _wideLayout() => ListView(
           padding: const EdgeInsets.symmetric(horizontal: thirdSize),
           children: <Widget>[
             AppTopLeftButton(
-                title: 'Conseils',
-                callback: () => Navigator.pushNamed(
-                    context, MemberHomeRoute.routeName,
-                    arguments: 2)),
+                title: 'Conseils', callback: () => Navigator.pop(context)),
             buildText(widget.tip.title, boldSubTitleStyle, TextAlign.center),
             buildText(widget.tip.content, thirdTextStyle, TextAlign.center),
           ]);

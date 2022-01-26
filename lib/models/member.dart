@@ -1,5 +1,5 @@
 class Member {
-  final int id;
+  final String id;
   final String email;
 
   Member(this.id, this.email);

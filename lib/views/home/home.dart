@@ -31,35 +31,33 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) => Scaffold(
       body: AuthGuard(
           authStream: _authState.stream,
-          signedIn: const MemberHomePage(initialPage: 0),
+          signedIn: const MemberHomePage(),
           signedOut: LayoutBuilder(builder: (context, constraint) {
             if (constraint.maxWidth > maxSize) {
-              return narrowLayout();
+              return _narrowLayout();
             } else {
-              return wideLayout();
+              return _wideLayout();
             }
           })));
 
-  Padding narrowLayout() => Padding(
+  Padding _narrowLayout() => Padding(
       padding: const EdgeInsets.symmetric(horizontal: maxPadding),
-      child: wideLayout());
+      child: _wideLayout());
 
-  Column wideLayout() => Column(
+  Column _wideLayout() => Column(
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
           AppTitle(text: title, paddingTop: 0, style: mainTextStyle),
-          appQuote(),
+          Padding(
+              padding: const EdgeInsets.symmetric(vertical: thirdSize),
+              child: Text(quote, style: italicTextStyle)),
           const AppNavButton(
               text: 'Se connecter',
               destination: SigninPage(),
-              color: mainColor),
+              color: deepGreen),
           const AppNavButton(
-              text: "S'inscrire", destination: SignupPage(), color: mainColor)
+              text: "S'inscrire", destination: SignupPage(), color: deepGreen)
         ],
       );
-
-  Padding appQuote() => Padding(
-      padding: const EdgeInsets.symmetric(vertical: thirdSize),
-      child: Text(quote, style: italicTextStyle));
 }

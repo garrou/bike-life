@@ -13,7 +13,7 @@ class AppCard extends StatelessWidget {
       color: Colors.white,
       shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(mainSize),
-          side: const BorderSide(color: mainColor)),
+          side: const BorderSide(color: deepGreen)),
       elevation: 0.0,
       child: Padding(
           padding: const EdgeInsets.symmetric(vertical: mainSize),

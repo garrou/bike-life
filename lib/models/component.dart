@@ -1,6 +1,6 @@
 class Component {
-  final int id;
-  final int bikeId;
+  final String id;
+  final String bikeId;
   final double km;
   final String? brand;
   final String dateOfPurchase;
