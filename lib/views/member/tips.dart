@@ -10,6 +10,7 @@ import 'package:bike_life/utils/constants.dart';
 import 'package:bike_life/utils/guard_helper.dart';
 import 'package:bike_life/views/auth/signin.dart';
 import 'package:bike_life/widgets/tip_card.dart';
+import 'package:bike_life/widgets/title.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_guards/flutter_guards.dart';
 import 'package:http/http.dart';
@@ -27,27 +28,35 @@ class _TipsPageState extends State<TipsPage> {
   final ComponentTypesService _componentTypesService = ComponentTypesService();
   List<ComponentType> _componentTypes = [];
   List<Tip> _tips = [];
-  String? _value = '%';
+  String _typeValue = '%';
 
   @override
   void initState() {
     super.initState();
     GuardHelper.checkIfLogged(_authState);
-    _load();
+    _loadComponentTypes();
+    _loadTips();
   }
 
-  void _load() async {
-    Response responseTips = await _tipService.getAll();
-    Response responseComponents = await _componentTypesService.getTypes();
+  void _loadComponentTypes() async {
+    Response response = await _componentTypesService.getTypes();
 
-    if (responseTips.statusCode == httpCodeOk &&
-        responseComponents.statusCode == httpCodeOk) {
+    if (response.statusCode == httpCodeOk) {
       setState(() {
-        _tips = createTipsFromList(jsonDecode(responseTips.body));
         _componentTypes =
-            createComponentTypesFromList(jsonDecode(responseComponents.body));
+            createComponentTypesFromList(jsonDecode(response.body));
         _componentTypes.add(ComponentType('Tous', '%'));
         _componentTypes = _componentTypes.reversed.toList();
+      });
+    }
+  }
+
+  void _loadTips() async {
+    Response response = await _tipService.getByType(_typeValue);
+
+    if (response.statusCode == httpCodeOk) {
+      setState(() {
+        _tips = createTipsFromList(jsonDecode(response.body));
       });
     }
   }
@@ -55,13 +64,18 @@ class _TipsPageState extends State<TipsPage> {
   @override
   Widget build(BuildContext context) => AuthGuard(
       authStream: _authState.stream,
-      signedIn: Scaffold(body: LayoutBuilder(builder: (context, constraints) {
-        if (constraints.maxWidth > maxSize) {
-          return _narrowLayout(context);
-        } else {
-          return _wideLayout(context);
-        }
-      })),
+      signedIn: Scaffold(
+          floatingActionButton: FloatingActionButton(
+              backgroundColor: deepGreen,
+              child: const Icon(Icons.list),
+              onPressed: _onOpenPopUp),
+          body: LayoutBuilder(builder: (context, constraints) {
+            if (constraints.maxWidth > maxSize) {
+              return _narrowLayout(context);
+            } else {
+              return _wideLayout(context);
+            }
+          })),
       signedOut: const SigninPage());
 
   Widget _narrowLayout(BuildContext context) => Padding(
@@ -70,31 +84,45 @@ class _TipsPageState extends State<TipsPage> {
 
   Widget _wideLayout(BuildContext context) =>
       Column(crossAxisAlignment: CrossAxisAlignment.center, children: <Widget>[
-        Padding(
-            padding: const EdgeInsets.only(top: secondSize),
-            child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: <Widget>[
-                  DropdownButton(
-                      value: _value,
-                      onChanged: _onSearch,
-                      items: _componentTypes
-                          .map<DropdownMenuItem<String>>(
-                              (ComponentType componentType) => DropdownMenuItem(
-                                  child: Text(componentType.name,
-                                      style: thirdTextStyle),
-                                  value: componentType.value))
-                          .toList())
-                ])),
-        const Divider(color: deepGreen),
+        AppTitle(
+            text: 'Conseils', paddingTop: mainSize, style: secondTextStyle),
         for (Tip tip in _tips) AppTipCard(tip: tip)
       ]);
 
-  void _onSearch(String? value) async {
-    Response response = await _tipService.getByType(value!);
-    setState(() {
-      _value = value;
-      _tips = createTipsFromList(jsonDecode(response.body));
-    });
-  }
+  void _onOpenPopUp() => showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+            shape: const RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(Radius.circular(mainSize))),
+            title: const Text('Filtrer'),
+            content: StatefulBuilder(
+                builder: (BuildContext context, StateSetter setState) {
+              return Column(mainAxisSize: MainAxisSize.min, children: [
+                DropdownButton(
+                    value: _typeValue,
+                    onChanged: (String? value) {
+                      setState(() {
+                        _typeValue = value!;
+                        _loadTips();
+                      });
+                    },
+                    items: _componentTypes
+                        .map<DropdownMenuItem<String>>(
+                            (ComponentType componentType) => DropdownMenuItem(
+                                child: Text(componentType.name,
+                                    style: secondTextStyle),
+                                value: componentType.value))
+                        .toList()),
+              ]);
+            }),
+            actions: <Widget>[
+              TextButton(
+                onPressed: () => Navigator.pop(context, 'Fermer'),
+                child: const Text('Fermer',
+                    style: TextStyle(
+                        color: deepGreen, fontSize: intermediateSize)),
+              ),
+            ]);
+      });
 }

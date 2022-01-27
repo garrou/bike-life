@@ -40,9 +40,10 @@ class ComponentService {
         .post(Uri.parse('$endpoint/bikes/$bikeId/components/init'));
   }
 
-  Future<Response> getMemberComponents(String memberId) async {
-    return await client
-        .get(Uri.parse('$endpoint/members/$memberId/components'));
+  Future<Response> getMemberComponents(
+      String memberId, bool archived, String type) async {
+    return await client.get(Uri.parse(
+        '$endpoint/members/$memberId/components?archived=$archived&type=$type'));
   }
 
   // TODO: /members/id/components (post)

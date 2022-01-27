@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:bike_life/utils/guard_helper.dart';
 import 'package:bike_life/views/auth/signin.dart';
 import 'package:bike_life/views/member/all_bikes.dart';
-import 'package:bike_life/views/member/all_components.dart';
+import 'package:bike_life/views/member/archived_components.dart';
 import 'package:bike_life/views/member/compare.dart';
 import 'package:bike_life/views/member/statistics.dart';
 import 'package:bike_life/views/member/tips.dart';
@@ -46,7 +46,7 @@ class _MemberHomePageState extends State<MemberHomePage> {
       body: PageView(
         children: const <Widget>[
           AllBikesPage(),
-          AllComponentsPage(),
+          ArchivedComponentsPage(),
           ComparePage(),
           StatisticPage(),
           TipsPage()
@@ -60,7 +60,7 @@ class _MemberHomePageState extends State<MemberHomePage> {
         currentIndex: _pageIndex,
         onTap: _onTabTapped,
         backgroundColor: deepGreen,
-        selectedItemColor: Colors.white,
+        selectedItemColor: Colors.black,
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
               icon: Icon(Icons.pedal_bike),
