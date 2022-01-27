@@ -87,7 +87,7 @@ class _ArchivedComponentsPageState extends State<ArchivedComponentsPage> {
   Future<List<Component>> _loadComponents() async {
     String memberId = await Storage.getMemberId();
     Response response =
-        await _componentService.getMemberComponents(memberId, true, '%');
+        await _componentService.getArchivedMemberComponents(memberId);
 
     if (response.statusCode == httpCodeOk) {
       return createComponents(jsonDecode(response.body));

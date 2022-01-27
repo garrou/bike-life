@@ -5,7 +5,7 @@ import 'package:bike_life/views/auth/signin.dart';
 import 'package:bike_life/views/member/all_bikes.dart';
 import 'package:bike_life/views/member/archived_components.dart';
 import 'package:bike_life/views/member/compare.dart';
-import 'package:bike_life/views/member/search.dart';
+import 'package:bike_life/views/member/statistics.dart';
 import 'package:bike_life/views/member/tips.dart';
 import 'package:bike_life/styles/general.dart';
 import 'package:flutter/material.dart';
@@ -41,16 +41,16 @@ class _MemberHomePageState extends State<MemberHomePage> {
   @override
   Widget build(BuildContext context) => AuthGuard(
       authStream: _authState.stream,
-      signedIn: _layout(),
+      signedIn: _layout(context),
       signedOut: const SigninPage());
 
-  Widget _layout() => Scaffold(
+  Widget _layout(BuildContext context) => Scaffold(
       body: PageView(
         children: const <Widget>[
           AllBikesPage(),
           ArchivedComponentsPage(),
           ComparePage(),
-          SearchPage(),
+          StatisticsPage(),
           TipsPage()
         ],
         onPageChanged: (page) {
@@ -79,8 +79,8 @@ class _MemberHomePageState extends State<MemberHomePage> {
               label: 'Comparaison de composants',
               backgroundColor: deepGreen),
           BottomNavigationBarItem(
-              icon: Icon(Icons.search),
-              label: 'Chercher des composants',
+              icon: Icon(Icons.bar_chart),
+              label: 'Statistiques',
               backgroundColor: deepGreen),
           BottomNavigationBarItem(
               icon: Icon(Icons.comment),

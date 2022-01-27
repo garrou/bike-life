@@ -40,7 +40,6 @@ class _IntroPageState extends State<IntroPage> {
 
   IntroductionScreen _buildIntroductionScreen() => IntroductionScreen(
       key: introKey,
-      globalBackgroundColor: Colors.white,
       pages: [
         PageViewModel(
             title: title, body: quote, image: Image.asset('assets/bike.png')),

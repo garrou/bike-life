@@ -8,14 +8,14 @@ import 'package:bike_life/widgets/title.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_guards/flutter_guards.dart';
 
-class SearchPage extends StatefulWidget {
-  const SearchPage({Key? key}) : super(key: key);
+class StatisticsPage extends StatefulWidget {
+  const StatisticsPage({Key? key}) : super(key: key);
 
   @override
-  _SearchPageState createState() => _SearchPageState();
+  _StatisticsPageState createState() => _StatisticsPageState();
 }
 
-class _SearchPageState extends State<SearchPage> {
+class _StatisticsPageState extends State<StatisticsPage> {
   final StreamController<bool> _authState = StreamController();
 
   @override

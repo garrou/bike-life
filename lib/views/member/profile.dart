@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:bike_life/services/member_service.dart';
+import 'package:bike_life/styles/theme_model.dart';
 import 'package:bike_life/utils/constants.dart';
 import 'package:bike_life/utils/guard_helper.dart';
 import 'package:bike_life/utils/storage.dart';
@@ -16,6 +17,7 @@ import 'package:bike_life/widgets/top_right_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_guards/flutter_guards.dart';
 import 'package:http/http.dart';
+import 'package:provider/provider.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({Key? key}) : super(key: key);
@@ -51,20 +53,38 @@ class _ProfilePageState extends State<ProfilePage> {
       child: _wideLayout());
 
   Widget _wideLayout() =>
-      Column(crossAxisAlignment: CrossAxisAlignment.center, children: <Widget>[
-        Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      Consumer<ThemeModel>(builder: (context, ThemeModel themeNotifier, child) {
+        return Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
-              AppTopLeftButton(
-                  title: 'Profil', callback: () => Navigator.of(context).pop()),
-              AppTopRightButton(
-                  callback: _onDisconnect,
-                  icon: Icons.logout,
-                  color: red,
-                  padding: secondSize)
-            ]),
-        const UpdateAuthForm()
-      ]);
+              Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    AppTopLeftButton(
+                        title: 'Profil',
+                        callback: () => Navigator.of(context).pop()),
+                    AppTopRightButton(
+                        callback: _onDisconnect,
+                        icon: Icons.logout,
+                        color: red,
+                        padding: secondSize)
+                  ]),
+              Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+                Text('Thème', style: secondTextStyle),
+                IconButton(
+                  onPressed: () {
+                    themeNotifier.isDark
+                        ? themeNotifier.isDark = false
+                        : themeNotifier.isDark = true;
+                  },
+                  icon: Icon(themeNotifier.isDark
+                      ? Icons.nightlight_round
+                      : Icons.wb_sunny),
+                )
+              ]),
+              const UpdateAuthForm()
+            ]);
+      });
 
   void _onDisconnect() {
     Storage.disconnect();

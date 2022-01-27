@@ -240,14 +240,14 @@ class _UpdateBikeComponentFormState extends State<UpdateBikeComponentForm> {
   void _onUpdateComponent() {
     if (_keyForm.currentState!.validate()) {
       _keyForm.currentState!.save();
-      _updateComponent(widget.component.archived);
+      _updateComponent(false);
     }
   }
 
   void _onArchiveComponent() {
     if (_keyForm.currentState!.validate()) {
       _keyForm.currentState!.save();
-      _updateComponent(!widget.component.archived);
+      _updateComponent(true);
     }
   }
 

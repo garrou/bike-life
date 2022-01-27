@@ -101,7 +101,7 @@ class _AllBikesPageState extends State<AllBikesPage> {
               Visibility(
                   visible: _current >= 1,
                   child: IconButton(
-                      icon: const Icon(Icons.arrow_back_ios, color: grey),
+                      icon: const Icon(Icons.arrow_back_ios),
                       onPressed: () {
                         _carouselController.previousPage();
                         setState(() => _current--);
@@ -109,7 +109,7 @@ class _AllBikesPageState extends State<AllBikesPage> {
               Visibility(
                   visible: _current < cards.length - 1,
                   child: IconButton(
-                      icon: const Icon(Icons.arrow_forward_ios, color: grey),
+                      icon: const Icon(Icons.arrow_forward_ios),
                       onPressed: () {
                         _carouselController.nextPage();
                         setState(() => _current++);
