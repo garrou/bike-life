@@ -33,10 +33,11 @@ class AppPercentBar extends StatelessWidget {
           ? 1.0
           : (component.km / component.duration),
       backgroundColor: grey,
-      progressColor: component.km >= component.duration / 2 &&
-              component.km < component.duration
-          ? orange
-          : component.km >= component.duration
-              ? red
-              : greenLight);
+      progressColor:
+          component.km >= 0.0 && component.km < component.duration / 2
+              ? greenLight
+              : component.km >= component.duration / 2 &&
+                      component.km < component.duration
+                  ? orange
+                  : red);
 }

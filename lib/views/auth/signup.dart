@@ -123,12 +123,13 @@ class _SignupFormState extends State<SignupForm> {
   void _onSignup() {
     if (_keyForm.currentState!.validate()) {
       _keyForm.currentState!.save();
-      _createUser(_email.text, _password.text);
+      _createUser();
     }
   }
 
-  void _createUser(String email, String password) async {
-    Response response = await _memberService.signup(email, password);
+  void _createUser() async {
+    Response response =
+        await _memberService.signup(_email.text, _password.text);
     Color responseColor = deepGreen;
     dynamic json = jsonDecode(response.body);
 

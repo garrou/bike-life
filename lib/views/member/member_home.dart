@@ -3,6 +3,8 @@ import 'dart:async';
 import 'package:bike_life/utils/guard_helper.dart';
 import 'package:bike_life/views/auth/signin.dart';
 import 'package:bike_life/views/member/all_bikes.dart';
+import 'package:bike_life/views/member/archived_components.dart';
+import 'package:bike_life/views/member/compare.dart';
 import 'package:bike_life/views/member/statistics.dart';
 import 'package:bike_life/views/member/tips.dart';
 import 'package:bike_life/styles/general.dart';
@@ -42,7 +44,13 @@ class _MemberHomePageState extends State<MemberHomePage> {
 
   Widget _layout() => Scaffold(
       body: PageView(
-        children: const <Widget>[AllBikesPage(), StatisticPage(), TipsPage()],
+        children: const <Widget>[
+          AllBikesPage(),
+          ArchivedComponentsPage(),
+          ComparePage(),
+          StatisticPage(),
+          TipsPage()
+        ],
         onPageChanged: (page) => setState(() => _pageIndex = page),
         controller: _pageController,
       ),
@@ -52,11 +60,19 @@ class _MemberHomePageState extends State<MemberHomePage> {
         currentIndex: _pageIndex,
         onTap: _onTabTapped,
         backgroundColor: deepGreen,
-        selectedItemColor: Colors.white,
+        selectedItemColor: Colors.black,
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
               icon: Icon(Icons.pedal_bike),
               label: 'Mes vélos',
+              backgroundColor: deepGreen),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.archive),
+              label: 'Mes composants',
+              backgroundColor: deepGreen),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.compare_arrows),
+              label: 'Comparaison de composants',
               backgroundColor: deepGreen),
           BottomNavigationBarItem(
               icon: Icon(Icons.bar_chart),

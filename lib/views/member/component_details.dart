@@ -13,7 +13,6 @@ import 'package:bike_life/styles/general.dart';
 import 'package:bike_life/views/member/member_home.dart';
 import 'package:bike_life/widgets/button.dart';
 import 'package:bike_life/widgets/calendar.dart';
-import 'package:bike_life/widgets/network_image.dart';
 import 'package:bike_life/widgets/textfield.dart';
 import 'package:bike_life/widgets/top_left_button.dart';
 import 'package:flutter/material.dart';
@@ -61,8 +60,8 @@ class _ComponentDetailPageState extends State<ComponentDetailPage> {
         AppTopLeftButton(
             title: widget.component.type,
             callback: () => Navigator.of(context).pop()),
-        AppNetworkImage(
-            image: widget.component.image!, progressColor: deepGreen),
+        // AppNetworkImage(
+        //     image: widget.component.image!, progressColor: deepGreen),
         UpdateBikeComponentForm(component: widget.component)
       ]));
 }
@@ -107,10 +106,11 @@ class _UpdateBikeComponentFormState extends State<UpdateBikeComponentForm> {
     _load();
     setState(() {
       _km = TextEditingController(text: '${widget.component.km}');
-      _brand = TextEditingController(text: widget.component.brand ?? '');
+      _brand = TextEditingController(text: widget.component.brand);
       _duration = TextEditingController(text: '${widget.component.duration}');
       _image = TextEditingController(text: widget.component.image);
       _dateOfPurchase = widget.component.dateOfPurchase;
+      _typeValue = widget.component.type;
     });
   }
 
@@ -121,7 +121,6 @@ class _UpdateBikeComponentFormState extends State<UpdateBikeComponentForm> {
       setState(() {
         _componentTypes =
             createComponentTypesFromList(jsonDecode(response.body));
-        _typeValue = _componentTypes.first.name;
       });
     }
   }
@@ -182,7 +181,11 @@ class _UpdateBikeComponentFormState extends State<UpdateBikeComponentForm> {
                 AppButton(
                     callback: _onUpdateComponent,
                     text: 'Modifier',
-                    color: deepGreen)
+                    color: deepGreen),
+                AppButton(
+                    callback: _onArchiveComponent,
+                    text: 'Archiver',
+                    color: red),
               ]))),
       signedOut: const SigninPage());
 
@@ -193,27 +196,28 @@ class _UpdateBikeComponentFormState extends State<UpdateBikeComponentForm> {
   void _onUpdateComponent() {
     if (_keyForm.currentState!.validate()) {
       _keyForm.currentState!.save();
-      _updateComponent(
-          _brand.text,
-          double.parse(_km.text),
-          double.parse(_duration.text),
-          _image.text,
-          _dateOfPurchase,
-          _typeValue);
+      _updateComponent(false);
     }
   }
 
-  void _updateComponent(String brand, double km, double duration, String image,
-      String date, String type) async {
+  void _onArchiveComponent() {
+    if (_keyForm.currentState!.validate()) {
+      _keyForm.currentState!.save();
+      _updateComponent(true);
+    }
+  }
+
+  void _updateComponent(bool archived) async {
     Response response = await _componentService.update(Component(
         widget.component.id,
         widget.component.bikeId,
-        km,
-        brand,
-        date,
-        duration,
-        image,
-        type));
+        double.parse(_km.text),
+        _brand.text,
+        _dateOfPurchase,
+        double.parse(_duration.text),
+        _image.text,
+        _typeValue,
+        archived));
     Color responseColor = deepGreen;
     dynamic json = jsonDecode(response.body);
 

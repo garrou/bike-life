@@ -113,12 +113,12 @@ class _SigninFormState extends State<SigninForm> {
   void _onSignin() {
     if (_keyForm.currentState!.validate()) {
       _keyForm.currentState!.save();
-      _authUser(_email.text, _password.text);
+      _authUser();
     }
   }
 
-  void _authUser(String email, String password) async {
-    Response response = await _memberService.login(email, password);
+  void _authUser() async {
+    Response response = await _memberService.login(_email.text, _password.text);
     dynamic json = jsonDecode(response.body);
 
     if (response.statusCode == httpCodeOk) {
