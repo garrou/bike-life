@@ -159,7 +159,7 @@ class _UpdateBikeFormState extends State<UpdateBikeForm> {
                       context,
                       MaterialPageRoute(
                           builder: (BuildContext context) =>
-                              const MemberHomePage()),
+                              const MemberHomePage(initialPage: 0)),
                       (Route<dynamic> route) => false);
                 },
               ),
@@ -182,7 +182,8 @@ class _UpdateBikeFormState extends State<UpdateBikeForm> {
       Navigator.pushAndRemoveUntil(
           context,
           MaterialPageRoute(
-              builder: (BuildContext context) => const MemberHomePage()),
+              builder: (BuildContext context) =>
+                  const MemberHomePage(initialPage: 0)),
           (Route<dynamic> route) => false);
     } else {
       responseColor = red;
@@ -213,7 +214,8 @@ class _UpdateBikeFormState extends State<UpdateBikeForm> {
       Navigator.pushAndRemoveUntil(
           context,
           MaterialPageRoute(
-              builder: (BuildContext context) => const MemberHomePage()),
+              builder: (BuildContext context) =>
+                  const MemberHomePage(initialPage: 0)),
           (Route<dynamic> route) => false);
     } else {
       responseColor = red;

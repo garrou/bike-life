@@ -16,7 +16,7 @@ class AppTopLeftButton extends StatelessWidget {
             child: Padding(
                 padding:
                     const EdgeInsets.fromLTRB(secondSize, secondSize, 0.0, 0.0),
-                child: BackButton(color: deepGreen, onPressed: callback))),
+                child: BackButton(onPressed: callback))),
         Padding(
             padding: const EdgeInsets.only(top: secondSize),
             child: Text(title, style: secondTextStyle))

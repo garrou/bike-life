@@ -37,7 +37,7 @@ class _SignupPageState extends State<SignupPage> {
   Widget build(BuildContext context) => Scaffold(
       body: AuthGuard(
           authStream: _authState.stream,
-          signedIn: const MemberHomePage(),
+          signedIn: const MemberHomePage(initialPage: 0),
           signedOut: LayoutBuilder(builder: (context, constraints) {
             if (constraints.maxWidth > maxSize) {
               return narrowLayout();
@@ -103,7 +103,7 @@ class _SignupFormState extends State<SignupForm> {
             textfieldController: _password,
             validator: passwordValidator,
             obscureText: true,
-            icon: Icons.lock),
+            icon: Icons.password),
         AppTextField(
             keyboardType: TextInputType.text,
             label: 'Confirmer le mot de passe',
@@ -116,7 +116,7 @@ class _SignupFormState extends State<SignupForm> {
               }
             },
             obscureText: true,
-            icon: Icons.lock),
+            icon: Icons.password),
         AppButton(text: "S'inscrire", callback: _onSignup, color: deepGreen)
       ]));
 

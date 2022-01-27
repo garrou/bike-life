@@ -38,7 +38,7 @@ class _SigninPageState extends State<SigninPage> {
   Widget build(BuildContext context) => Scaffold(
       body: AuthGuard(
           authStream: _authState.stream,
-          signedIn: const MemberHomePage(),
+          signedIn: const MemberHomePage(initialPage: 0),
           signedOut: LayoutBuilder(builder: (context, constraints) {
             if (constraints.maxWidth > maxSize) {
               return narrowLayout();
@@ -82,11 +82,6 @@ class _SigninFormState extends State<SigninForm> {
   final MemberService _memberService = MemberService();
 
   @override
-  void initState() {
-    super.initState();
-  }
-
-  @override
   Widget build(BuildContext context) => Form(
       key: _keyForm,
       child: Column(children: <Widget>[
@@ -106,7 +101,7 @@ class _SigninFormState extends State<SigninForm> {
             textfieldController: _password,
             validator: passwordValidator,
             obscureText: true,
-            icon: Icons.lock),
+            icon: Icons.password),
         AppButton(text: 'Connexion', callback: _onSignin, color: deepGreen)
       ]));
 
@@ -127,7 +122,8 @@ class _SigninFormState extends State<SigninForm> {
       Navigator.pushAndRemoveUntil(
           context,
           MaterialPageRoute(
-              builder: (BuildContext context) => const MemberHomePage()),
+              builder: (BuildContext context) =>
+                  const MemberHomePage(initialPage: 0)),
           (Route<dynamic> route) => false);
     } else {
       _password.text = '';

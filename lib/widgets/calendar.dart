@@ -22,13 +22,11 @@ class _AppCalendarState extends State<AppCalendar> {
       child: Column(children: <Widget>[
         GestureDetector(
           child: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-            Icon(_isVisible ? Icons.arrow_drop_up : Icons.arrow_drop_down),
-            Text("Date d'achat", style: secondTextStyle)
+            Text("Date d'achat", style: secondTextStyle),
+            Icon(_isVisible ? Icons.arrow_drop_up : Icons.arrow_drop_down)
           ]),
           onTap: () {
-            setState(() {
-              _isVisible = _isVisible ? false : true;
-            });
+            setState(() => _isVisible = !_isVisible);
           },
         ),
         Visibility(
@@ -39,6 +37,6 @@ class _AppCalendarState extends State<AppCalendar> {
                 selectionColor: deepGreen,
                 view: DateRangePickerView.month,
                 selectionMode: DateRangePickerSelectionMode.single,
-                onSelectionChanged: widget.callback))
+                onSelectionChanged: widget.callback)),
       ]));
 }

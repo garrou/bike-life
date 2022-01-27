@@ -15,6 +15,6 @@ class Tip {
         writeDate = json['date'];
 }
 
-List<Tip> createTipsFromList(List records) {
+List<Tip> createTips(List records) {
   return records.map((json) => Tip.fromJson(json)).toList(growable: false);
 }

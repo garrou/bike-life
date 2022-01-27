@@ -35,12 +35,11 @@ class _IntroPageState extends State<IntroPage> {
   Widget build(BuildContext context) => Scaffold(
       body: AuthGuard(
           authStream: _authState.stream,
-          signedIn: const MemberHomePage(),
+          signedIn: const MemberHomePage(initialPage: 0),
           signedOut: _buildIntroductionScreen()));
 
   IntroductionScreen _buildIntroductionScreen() => IntroductionScreen(
       key: introKey,
-      globalBackgroundColor: Colors.white,
       pages: [
         PageViewModel(
             title: title, body: quote, image: Image.asset('assets/bike.png')),
@@ -52,7 +51,15 @@ class _IntroPageState extends State<IntroPage> {
             title: 'Gestion des composants des vélos',
             body:
                 "Ajouter les composants de votre vélo.\nGardez un oeil sur l'utilisation de ceux-ci en fonction de leur durée de vie.",
-            image: const Icon(Icons.health_and_safety))
+            image: const Icon(Icons.health_and_safety)),
+        PageViewModel(
+            title: 'Une démarche écologique',
+            body: 'Entretenir son vélo, un premier pas pour la planète',
+            image: const Icon(Icons.eco)),
+        PageViewModel(
+            title: 'Une démarche économique',
+            body: 'Entretenir son vélo, pour le garder plus longtemps',
+            image: const Icon(Icons.euro))
       ],
       showSkipButton: true,
       skip: const Text('Passer', style: TextStyle(color: deepGreen)),

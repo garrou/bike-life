@@ -1,18 +1,22 @@
 import 'dart:async';
 import 'dart:convert';
 
+import 'package:bike_life/models/bike.dart';
 import 'package:bike_life/models/component_type.dart';
+import 'package:bike_life/services/bike_service.dart';
 import 'package:bike_life/services/component_service.dart';
 import 'package:bike_life/services/component_types_service.dart';
 import 'package:bike_life/utils/constants.dart';
 import 'package:bike_life/models/component.dart';
 import 'package:bike_life/utils/guard_helper.dart';
+import 'package:bike_life/utils/storage.dart';
 import 'package:bike_life/utils/validator.dart';
 import 'package:bike_life/views/auth/signin.dart';
 import 'package:bike_life/styles/general.dart';
 import 'package:bike_life/views/member/member_home.dart';
 import 'package:bike_life/widgets/button.dart';
 import 'package:bike_life/widgets/calendar.dart';
+import 'package:bike_life/widgets/loading.dart';
 import 'package:bike_life/widgets/textfield.dart';
 import 'package:bike_life/widgets/top_left_button.dart';
 import 'package:flutter/material.dart';
@@ -77,117 +81,157 @@ class UpdateBikeComponentForm extends StatefulWidget {
 }
 
 class _UpdateBikeComponentFormState extends State<UpdateBikeComponentForm> {
-  final StreamController<bool> _authState = StreamController();
+  final ComponentService _componentService = ComponentService();
+  final ComponentTypesService _componentTypesService = ComponentTypesService();
+  final BikeService _bikeService = BikeService();
   final _keyForm = GlobalKey<FormState>();
 
   final _kmFocus = FocusNode();
-  late final TextEditingController _km;
+  final TextEditingController _km = TextEditingController();
 
   final _brandFocus = FocusNode();
-  late final TextEditingController _brand;
+  final TextEditingController _brand = TextEditingController();
 
   final _durationFocus = FocusNode();
-  late final TextEditingController _duration;
+  final TextEditingController _duration = TextEditingController();
 
   final _imageFocus = FocusNode();
-  late final TextEditingController _image;
+  final TextEditingController _image = TextEditingController();
 
+  late Future<List<Bike>> _bikes;
+  late Future<List<ComponentType>> _componentTypes;
   late String _dateOfPurchase;
-  List<ComponentType> _componentTypes = [];
-  String _typeValue = "";
-
-  final ComponentService _componentService = ComponentService();
-  final ComponentTypesService _componentTypesService = ComponentTypesService();
+  late String _typeValue;
+  String? _bikeValue;
 
   @override
   void initState() {
     super.initState();
-    GuardHelper.checkIfLogged(_authState);
-    _load();
-    setState(() {
-      _km = TextEditingController(text: '${widget.component.km}');
-      _brand = TextEditingController(text: widget.component.brand);
-      _duration = TextEditingController(text: '${widget.component.duration}');
-      _image = TextEditingController(text: widget.component.image);
-      _dateOfPurchase = widget.component.dateOfPurchase;
-      _typeValue = widget.component.type;
-    });
+    _componentTypes = _loadComponentTypes();
+    _bikes = _loadBikes();
+    _km.text = '${widget.component.km}';
+    _brand.text = widget.component.brand ?? '';
+    _duration.text = '${widget.component.duration}';
+    _image.text = widget.component.image ?? '';
+    _dateOfPurchase = widget.component.dateOfPurchase;
+    _typeValue = widget.component.type;
   }
 
-  void _load() async {
-    Response response = await _componentTypesService.getTypes();
+  Future<List<ComponentType>> _loadComponentTypes() async {
+    final Response response = await _componentTypesService.getTypes();
 
     if (response.statusCode == httpCodeOk) {
-      setState(() {
-        _componentTypes =
-            createComponentTypesFromList(jsonDecode(response.body));
-      });
+      return createComponentTypes(jsonDecode(response.body));
+    } else {
+      throw Exception('Impossible de récupérer les types de composants');
+    }
+  }
+
+  Future<List<Bike>> _loadBikes() async {
+    final String id = await Storage.getMemberId();
+    final Response response = await _bikeService.getBikes(id);
+
+    if (response.statusCode == httpCodeOk) {
+      return createBikes(jsonDecode(response.body));
+    } else {
+      throw Exception('Impossible de récupérer les vélos');
     }
   }
 
   @override
-  Widget build(BuildContext context) => AuthGuard(
-      authStream: _authState.stream,
-      signedIn: Padding(
-          padding: const EdgeInsets.all(thirdSize),
-          child: Form(
-              key: _keyForm,
-              child: Column(children: <Widget>[
-                AppTextField(
-                    keyboardType: TextInputType.text,
-                    focusNode: _brandFocus,
-                    textfieldController: _brand,
-                    validator: emptyValidator,
-                    hintText: 'Marque du composant',
-                    label: 'Marque',
-                    icon: Icons.branding_watermark),
-                AppTextField(
-                    keyboardType: TextInputType.number,
-                    focusNode: _kmFocus,
-                    textfieldController: _km,
-                    validator: kmValidator,
-                    hintText: 'Nombre de km du composant',
-                    label: 'Kilomètres',
-                    icon: Icons.add_road),
-                AppTextField(
-                    keyboardType: TextInputType.number,
-                    focusNode: _durationFocus,
-                    textfieldController: _duration,
-                    validator: kmValidator,
-                    hintText: 'Durée de vie',
-                    label: 'Durée de vie du composant (km)',
-                    icon: Icons.health_and_safety),
-                AppTextField(
-                    focusNode: _imageFocus,
-                    textfieldController: _image,
-                    validator: emptyValidator,
-                    hintText: "Lien de l'image",
-                    label: 'Image',
-                    icon: Icons.image,
-                    keyboardType: TextInputType.text),
-                DropdownButton(
-                    value: _typeValue,
-                    onChanged: (String? value) =>
-                        setState(() => _typeValue = value!),
-                    items: _componentTypes.map<DropdownMenuItem<String>>(
-                        (ComponentType componentType) {
-                      return DropdownMenuItem(
-                          child:
-                              Text(componentType.name, style: secondTextStyle),
-                          value: componentType.name);
-                    }).toList()),
-                AppCalendar(
-                    callback: _onDateChanged, selectedDate: _dateOfPurchase),
-                AppButton(
-                    callback: _onUpdateComponent,
-                    text: 'Modifier',
-                    color: deepGreen),
-                AppButton(
-                    callback: _onArchiveComponent,
-                    text: 'Archiver',
-                    color: red),
-              ]))),
-      signedOut: const SigninPage());
+  Widget build(BuildContext context) => Padding(
+      padding: const EdgeInsets.all(thirdSize),
+      child: Form(
+          key: _keyForm,
+          child: Column(children: <Widget>[
+            AppTextField(
+                keyboardType: TextInputType.text,
+                focusNode: _brandFocus,
+                textfieldController: _brand,
+                validator: emptyValidator,
+                hintText: 'Marque du composant',
+                label: 'Marque',
+                icon: Icons.branding_watermark),
+            AppTextField(
+                keyboardType: TextInputType.number,
+                focusNode: _kmFocus,
+                textfieldController: _km,
+                validator: kmValidator,
+                hintText: 'Nombre de km du composant',
+                label: 'Kilomètres',
+                icon: Icons.add_road),
+            AppTextField(
+                keyboardType: TextInputType.number,
+                focusNode: _durationFocus,
+                textfieldController: _duration,
+                validator: kmValidator,
+                hintText: 'Durée de vie',
+                label: 'Durée de vie du composant (km)',
+                icon: Icons.health_and_safety),
+            AppTextField(
+                focusNode: _imageFocus,
+                textfieldController: _image,
+                validator: emptyValidator,
+                hintText: "Lien de l'image",
+                label: 'Image',
+                icon: Icons.image,
+                keyboardType: TextInputType.text),
+            _buildBikesDropdown(),
+            _buildComponentTypesDropdown(),
+            AppCalendar(
+                callback: _onDateChanged, selectedDate: _dateOfPurchase),
+            AppButton(
+                callback: _onUpdateComponent,
+                text: 'Modifier',
+                color: deepGreen),
+            AppButton(
+                callback: _onArchiveComponent, text: 'Archiver', color: red),
+          ])));
+
+  Widget _buildComponentTypesDropdown() => FutureBuilder<List<ComponentType>>(
+      future: _componentTypes,
+      builder: (_, snapshot) {
+        if (snapshot.hasError) {
+          return Text('${snapshot.error}');
+        } else if (snapshot.hasData) {
+          return DropdownButton(
+              value: _typeValue,
+              onChanged: (String? value) => setState(() => _typeValue = value!),
+              items: snapshot.data!
+                  .map<DropdownMenuItem<String>>((ComponentType componentType) {
+                return DropdownMenuItem(
+                    child: Text(componentType.name, style: secondTextStyle),
+                    value: componentType.name);
+              }).toList());
+        }
+        return const AppLoading();
+      });
+
+  Widget _buildBikesDropdown() => Visibility(
+      visible: widget.component.archived,
+      child: FutureBuilder<List<Bike>>(
+          future: _bikes,
+          builder: (_, snapshot) {
+            if (snapshot.hasError) {
+              return Text('${snapshot.error}');
+            } else if (snapshot.hasData) {
+              return DropdownButton(
+                  value: _bikeValue ??
+                      snapshot.data!
+                          .firstWhere(
+                              (bike) => bike.id == widget.component.bikeId)
+                          .id,
+                  onChanged: (String? value) =>
+                      setState(() => _bikeValue = value!),
+                  items: snapshot.data!
+                      .map<DropdownMenuItem<String>>((Bike bike) =>
+                          DropdownMenuItem(
+                              child: Text(bike.name, style: secondTextStyle),
+                              value: bike.id))
+                      .toList());
+            }
+            return const AppLoading();
+          }));
 
   void _onDateChanged(DateRangePickerSelectionChangedArgs args) {
     _dateOfPurchase = args.value.toString().split(' ')[0];
@@ -225,7 +269,8 @@ class _UpdateBikeComponentFormState extends State<UpdateBikeComponentForm> {
       Navigator.pushAndRemoveUntil(
           context,
           MaterialPageRoute(
-              builder: (BuildContext context) => const MemberHomePage()),
+              builder: (BuildContext context) =>
+                  const MemberHomePage(initialPage: 0)),
           (Route<dynamic> route) => false);
     } else {
       responseColor = red;

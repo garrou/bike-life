@@ -31,7 +31,7 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) => Scaffold(
       body: AuthGuard(
           authStream: _authState.stream,
-          signedIn: const MemberHomePage(),
+          signedIn: const MemberHomePage(initialPage: 0),
           signedOut: LayoutBuilder(builder: (context, constraint) {
             if (constraint.maxWidth > maxSize) {
               return _narrowLayout();

@@ -15,7 +15,7 @@ class BikeService {
   Future<Response> addBike(String memberId, String name, String urlImage,
       String dateOfPurchase, double nbKm, bool electric) async {
     return await client.post(
-      Uri.parse('$endpoint/$memberId/bikes'),
+      Uri.parse('$endpoint/members/$memberId/bikes'),
       body: jsonEncode(<String, dynamic>{
         'memberId': memberId,
         'name': name,
@@ -46,6 +46,6 @@ class BikeService {
 
   Future<Response> updateBikeKm(String bikeId, double kmToAdd) async {
     return await client.patch(Uri.parse('$endpoint/bikes/$bikeId'),
-        body: jsonEncode(<String, dynamic>{'bikeId': bikeId, 'km': kmToAdd}));
+        body: jsonEncode(<String, dynamic>{'km': kmToAdd}));
   }
 }

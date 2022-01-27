@@ -14,6 +14,7 @@ import 'package:bike_life/widgets/account_button.dart';
 import 'package:bike_life/widgets/button.dart';
 import 'package:bike_life/widgets/card.dart';
 import 'package:bike_life/widgets/flip.dart';
+import 'package:bike_life/widgets/loading.dart';
 import 'package:bike_life/widgets/percent_bar.dart';
 import 'package:bike_life/widgets/textfield.dart';
 import 'package:bike_life/widgets/top_right_button.dart';
@@ -30,25 +31,31 @@ class BikeCard extends StatefulWidget {
 
 class _BikeCardState extends State<BikeCard> {
   final ComponentService _componentService = ComponentService();
-  List<Component> _components = [];
+  late Future<List<Component>> _components;
 
   @override
   void initState() {
     super.initState();
-    _loadComponents();
+    _components = _loadComponents();
+  }
+
+  Future<List<Component>> _loadComponents() async {
+    Response response =
+        await _componentService.getBikeComponents(widget.bike.id);
+
+    if (response.statusCode == httpCodeOk) {
+      return createComponents(jsonDecode(response.body));
+    } else {
+      throw Exception('Impossible de récupérer les composants');
+    }
   }
 
   @override
-  Widget build(BuildContext context) => AppFlip(
-      front: _buildFrontCard(widget.bike, context),
-      back: _buildBackCard(widget.bike));
-
-  void _loadComponents() async {
-    Response response =
-        await _componentService.getBikeComponents(widget.bike.id);
-    setState(() =>
-        _components = createComponentsFromList(jsonDecode(response.body)));
-  }
+  Widget build(BuildContext context) => MouseRegion(
+      cursor: SystemMouseCursors.click,
+      child: AppFlip(
+          front: _buildFrontCard(widget.bike, context),
+          back: _buildBackCard(widget.bike)));
 
   Widget _buildFrontCard(Bike bike, BuildContext context) => AppCard(
       child: ListView(
@@ -81,8 +88,19 @@ class _BikeCardState extends State<BikeCard> {
                 callback: _onBikeDetailsClick,
                 icon: Icons.settings,
                 padding: 0.0),
-            for (Component component in _components)
-              AppPercentBar(component: component),
+            FutureBuilder<List<Component>>(
+                future: _components,
+                builder: (_, snapshot) {
+                  if (snapshot.hasError) {
+                    return Text('${snapshot.error}');
+                  } else if (snapshot.hasData) {
+                    return Column(children: [
+                      for (Component component in snapshot.data!)
+                        AppPercentBar(component: component)
+                    ]);
+                  }
+                  return const AppLoading();
+                }),
             AppAccountButton(
                 color: deepGreen,
                 text: 'Ajouter un composant',
@@ -161,7 +179,8 @@ class _AddKmFormState extends State<AddKmForm> {
       Navigator.pushAndRemoveUntil(
           context,
           MaterialPageRoute(
-              builder: (BuildContext context) => const MemberHomePage()),
+              builder: (BuildContext context) =>
+                  const MemberHomePage(initialPage: 0)),
           (Route<dynamic> route) => false);
     } else {
       responseColor = red;

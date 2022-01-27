@@ -10,7 +10,6 @@ class AppCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Card(
-      color: Colors.white,
       shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(mainSize),
           side: const BorderSide(color: deepGreen)),
