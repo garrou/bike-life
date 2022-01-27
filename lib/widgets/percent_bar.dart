@@ -2,7 +2,6 @@ import 'package:bike_life/utils/constants.dart';
 import 'package:bike_life/models/component.dart';
 import 'package:bike_life/views/member/component_details.dart';
 import 'package:bike_life/styles/general.dart';
-import 'package:bike_life/widgets/link_page.dart';
 import 'package:flutter/material.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
 
@@ -17,10 +16,9 @@ class AppPercentBar extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           Center(child: Text(component.type, style: thirdTextStyle)),
-          AppLinkToPage(
-              padding: 0.0,
+          GestureDetector(
               child: _buildLinearPercentBar(component),
-              destination: ComponentDetailPage(component: component))
+              onTap: () => _onTap(context, component))
         ],
       ));
 
@@ -40,4 +38,10 @@ class AppPercentBar extends StatelessWidget {
                       component.km < component.duration
                   ? orange
                   : red);
+
+  void _onTap(BuildContext context, Component component) => Navigator.push(
+      context,
+      MaterialPageRoute(
+          builder: (BuildContext context) =>
+              ComponentDetailPage(component: component)));
 }

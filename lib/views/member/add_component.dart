@@ -61,8 +61,7 @@ class _AddComponentPageState extends State<AddComponentPage> {
 
     if (response.statusCode == httpCodeOk) {
       setState(() {
-        _componentTypes =
-            createComponentTypesFromList(jsonDecode(response.body));
+        _componentTypes = createComponentTypes(jsonDecode(response.body));
         _typeValue = _componentTypes.first.name;
       });
     }

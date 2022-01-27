@@ -9,6 +9,7 @@ import 'package:bike_life/utils/validator.dart';
 import 'package:bike_life/views/auth/signin.dart';
 import 'package:bike_life/styles/general.dart';
 import 'package:bike_life/widgets/button.dart';
+import 'package:bike_life/widgets/loading.dart';
 import 'package:bike_life/widgets/textfield.dart';
 import 'package:bike_life/widgets/top_left_button.dart';
 import 'package:bike_life/widgets/top_right_button.dart';
@@ -95,19 +96,22 @@ class _UpdateAuthFormState extends State<UpdateAuthForm> {
   final _confirmPass = TextEditingController();
 
   final MemberService _memberService = MemberService();
+  late Future<String> _userEmail;
 
   @override
   void initState() {
     super.initState();
-    _load();
+    _userEmail = _load();
   }
 
-  void _load() async {
+  Future<String> _load() async {
     String id = await Storage.getMemberId();
     Response response = await _memberService.getEmail(id);
 
     if (response.statusCode == httpCodeOk) {
-      _email.text = jsonDecode(response.body)['email'];
+      return jsonDecode(response.body)['email'];
+    } else {
+      throw Exception("Impossible de récupérer l'email");
     }
   }
 
@@ -117,14 +121,24 @@ class _UpdateAuthFormState extends State<UpdateAuthForm> {
       child: Form(
           key: _keyForm,
           child: Column(children: <Widget>[
-            AppTextField(
-                keyboardType: TextInputType.emailAddress,
-                label: 'Email',
-                hintText: 'Entrer un email valide',
-                focusNode: _emailFocus,
-                textfieldController: _email,
-                validator: emailValidator,
-                icon: Icons.alternate_email),
+            FutureBuilder(
+                future: _userEmail,
+                builder: (_, snapshot) {
+                  if (snapshot.hasError) {
+                    return Text('${snapshot.error}');
+                  } else if (snapshot.hasData) {
+                    _email.text = snapshot.data.toString();
+                    return AppTextField(
+                        keyboardType: TextInputType.emailAddress,
+                        label: 'Email',
+                        hintText: 'Entrer un email valide',
+                        focusNode: _emailFocus,
+                        textfieldController: _email,
+                        validator: emailValidator,
+                        icon: Icons.alternate_email);
+                  }
+                  return const AppLoading();
+                }),
             AppTextField(
                 keyboardType: TextInputType.text,
                 label: 'Mot de passe',
@@ -134,7 +148,7 @@ class _UpdateAuthFormState extends State<UpdateAuthForm> {
                 textfieldController: _password,
                 validator: passwordValidator,
                 obscureText: true,
-                icon: Icons.lock),
+                icon: Icons.password),
             AppTextField(
                 keyboardType: TextInputType.text,
                 label: 'Confirmer le mot de passe',
@@ -147,7 +161,7 @@ class _UpdateAuthFormState extends State<UpdateAuthForm> {
                   }
                 },
                 obscureText: true,
-                icon: Icons.lock),
+                icon: Icons.password),
             AppButton(text: 'Modifier', callback: _onUpdate, color: deepGreen)
           ])));
 

@@ -7,7 +7,7 @@ class Component {
   final double duration;
   final String? image;
   final String type;
-  final bool archived;
+  bool archived;
 
   Component(this.id, this.bikeId, this.km, this.brand, this.dateOfPurchase,
       this.duration, this.image, this.type, this.archived);
@@ -36,7 +36,7 @@ class Component {
       };
 }
 
-List<Component> createComponentsFromList(List<dynamic> records) {
+List<Component> createComponents(List<dynamic> records) {
   return records
       .map((json) => Component.fromJson(json))
       .toList(growable: false);

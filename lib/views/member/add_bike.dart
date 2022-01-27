@@ -78,18 +78,18 @@ class _AddBikeFormState extends State<AddBikeForm> {
   final BikeService _bikeService = BikeService();
   final ComponentService _componentService = ComponentService();
 
-  late String _memberId;
+  late Future<String> _memberId;
   String _dateOfPurchase = DateTime.now().toString().split(' ')[0];
   bool? _isElectric = false;
 
   @override
   void initState() {
     super.initState();
-    _getMemberId();
+    _memberId = _getMemberId();
   }
 
-  void _getMemberId() async {
-    _memberId = await Storage.getMemberId();
+  Future<String> _getMemberId() async {
+    return await Storage.getMemberId();
   }
 
   @override
@@ -168,8 +168,9 @@ class _AddBikeFormState extends State<AddBikeForm> {
           ));
 
   void _addBike() async {
-    Response response = await _bikeService.addBike(_memberId, _name.text,
-        _image.text, _dateOfPurchase, double.parse(_nbKm.text), _isElectric!);
+    String id = await _memberId;
+    Response response = await _bikeService.addBike(id, _name.text, _image.text,
+        _dateOfPurchase, double.parse(_nbKm.text), _isElectric!);
     Color respColor = deepGreen;
     dynamic json = jsonDecode(response.body);
 
@@ -183,8 +184,9 @@ class _AddBikeFormState extends State<AddBikeForm> {
   }
 
   void _addBikeAndInit() async {
-    Response response = await _bikeService.addBike(_memberId, _name.text,
-        _image.text, _dateOfPurchase, double.parse(_nbKm.text), _isElectric!);
+    String id = await _memberId;
+    Response response = await _bikeService.addBike(id, _name.text, _image.text,
+        _dateOfPurchase, double.parse(_nbKm.text), _isElectric!);
     Color respColor = red;
 
     if (response.statusCode == httpCodeCreated) {
@@ -208,6 +210,7 @@ class _AddBikeFormState extends State<AddBikeForm> {
   void _toMemberHomePage() => Navigator.pushAndRemoveUntil(
       context,
       MaterialPageRoute(
-          builder: (BuildContext context) => const MemberHomePage()),
+          builder: (BuildContext context) =>
+              const MemberHomePage(initialPage: 0)),
       (Route<dynamic> route) => false);
 }

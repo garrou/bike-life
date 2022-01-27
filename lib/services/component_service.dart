@@ -45,6 +45,4 @@ class ComponentService {
     return await client.get(Uri.parse(
         '$endpoint/members/$memberId/components?archived=$archived&type=$type'));
   }
-
-  // TODO: /members/id/components (post)
 }
