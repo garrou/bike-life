@@ -64,8 +64,6 @@ class _ComponentDetailPageState extends State<ComponentDetailPage> {
         AppTopLeftButton(
             title: widget.component.type,
             callback: () => Navigator.of(context).pop()),
-        // AppNetworkImage(
-        //     image: widget.component.image!, progressColor: deepGreen),
         UpdateBikeComponentForm(component: widget.component)
       ]));
 }
@@ -102,7 +100,7 @@ class _UpdateBikeComponentFormState extends State<UpdateBikeComponentForm> {
   late Future<List<ComponentType>> _componentTypes;
   late String _dateOfPurchase;
   late String _typeValue;
-  String? _bikeValue;
+  late String? _bikeValue;
 
   @override
   void initState() {
@@ -115,6 +113,7 @@ class _UpdateBikeComponentFormState extends State<UpdateBikeComponentForm> {
     _image.text = widget.component.image ?? '';
     _dateOfPurchase = widget.component.dateOfPurchase;
     _typeValue = widget.component.type;
+    _bikeValue = widget.component.bikeId;
   }
 
   Future<List<ComponentType>> _loadComponentTypes() async {
@@ -144,7 +143,13 @@ class _UpdateBikeComponentFormState extends State<UpdateBikeComponentForm> {
       child: Form(
           key: _keyForm,
           child: Column(children: <Widget>[
+            Visibility(
+                child: Text(
+                    'Pour modifier les informations du composant, celui-ci doit-être désarchivé',
+                    style: thirdTextStyle),
+                visible: widget.component.archived),
             AppTextField(
+                enabled: !widget.component.archived,
                 keyboardType: TextInputType.text,
                 focusNode: _brandFocus,
                 textfieldController: _brand,
@@ -153,6 +158,7 @@ class _UpdateBikeComponentFormState extends State<UpdateBikeComponentForm> {
                 label: 'Marque',
                 icon: Icons.branding_watermark),
             AppTextField(
+                enabled: !widget.component.archived,
                 keyboardType: TextInputType.number,
                 focusNode: _kmFocus,
                 textfieldController: _km,
@@ -161,6 +167,7 @@ class _UpdateBikeComponentFormState extends State<UpdateBikeComponentForm> {
                 label: 'Kilomètres',
                 icon: Icons.add_road),
             AppTextField(
+                enabled: !widget.component.archived,
                 keyboardType: TextInputType.number,
                 focusNode: _durationFocus,
                 textfieldController: _duration,
@@ -169,6 +176,7 @@ class _UpdateBikeComponentFormState extends State<UpdateBikeComponentForm> {
                 label: 'Durée de vie du composant (km)',
                 icon: Icons.health_and_safety),
             AppTextField(
+                enabled: !widget.component.archived,
                 focusNode: _imageFocus,
                 textfieldController: _image,
                 validator: emptyValidator,
@@ -176,16 +184,33 @@ class _UpdateBikeComponentFormState extends State<UpdateBikeComponentForm> {
                 label: 'Image',
                 icon: Icons.image,
                 keyboardType: TextInputType.text),
-            _buildBikesDropdown(),
-            _buildComponentTypesDropdown(),
-            AppCalendar(
-                callback: _onDateChanged, selectedDate: _dateOfPurchase),
+            widget.component.archived
+                ? Padding(
+                    child: Text('Composant : ${widget.component.type}',
+                        style: thirdTextStyle),
+                    padding: const EdgeInsets.all(thirdSize))
+                : _buildComponentTypesDropdown(),
+            widget.component.archived
+                ? Padding(
+                    child: Text(
+                      "Date d'achat : ${widget.component.dateOfPurchase}",
+                      style: thirdTextStyle,
+                    ),
+                    padding: const EdgeInsets.all(thirdSize))
+                : AppCalendar(
+                    callback: _onDateChanged, selectedDate: _dateOfPurchase),
+            Visibility(
+                visible: !widget.component.archived,
+                child: AppButton(
+                    callback: _onUpdateComponent,
+                    text: 'Modifier',
+                    color: deepGreen)),
             AppButton(
-                callback: _onUpdateComponent,
-                text: 'Modifier',
-                color: deepGreen),
-            AppButton(
-                callback: _onArchiveComponent, text: 'Archiver', color: red),
+                callback: widget.component.archived
+                    ? _onOpenPopUp
+                    : _onArchiveComponent,
+                text: widget.component.archived ? 'Désarchiver' : 'Archiver',
+                color: red),
           ])));
 
   Widget _buildComponentTypesDropdown() => FutureBuilder<List<ComponentType>>(
@@ -207,61 +232,76 @@ class _UpdateBikeComponentFormState extends State<UpdateBikeComponentForm> {
         return const AppLoading();
       });
 
-  Widget _buildBikesDropdown() => Visibility(
-      visible: widget.component.archived,
-      child: FutureBuilder<List<Bike>>(
-          future: _bikes,
-          builder: (_, snapshot) {
-            if (snapshot.hasError) {
-              return Text('${snapshot.error}');
-            } else if (snapshot.hasData) {
-              return DropdownButton(
-                  value: _bikeValue ??
-                      snapshot.data!
-                          .firstWhere(
-                              (bike) => bike.id == widget.component.bikeId)
-                          .id,
-                  onChanged: (String? value) =>
-                      setState(() => _bikeValue = value!),
-                  items: snapshot.data!
-                      .map<DropdownMenuItem<String>>((Bike bike) =>
-                          DropdownMenuItem(
-                              child: Text(bike.name, style: secondTextStyle),
-                              value: bike.id))
-                      .toList());
-            }
-            return const AppLoading();
-          }));
+  Widget _buildBikesDropdown(StateSetter setState) => FutureBuilder<List<Bike>>(
+      future: _bikes,
+      builder: (context, snapshot) {
+        if (snapshot.hasError) {
+          return Text('${snapshot.error}');
+        } else if (snapshot.hasData) {
+          return DropdownButton(
+              value: _bikeValue,
+              onChanged: (String? value) {
+                setState(() => _bikeValue = value!);
+              },
+              items: snapshot.data!
+                  .map<DropdownMenuItem<String>>((Bike bike) =>
+                      DropdownMenuItem(
+                          child: Text(bike.name, style: secondTextStyle),
+                          value: bike.id))
+                  .toList());
+        }
+        return const AppLoading();
+      });
 
   void _onDateChanged(DateRangePickerSelectionChangedArgs args) {
     _dateOfPurchase = args.value.toString().split(' ')[0];
   }
 
-  void _onUpdateComponent() {
-    if (_keyForm.currentState!.validate()) {
-      _keyForm.currentState!.save();
-      _updateComponent(false);
-    }
-  }
+  void _onOpenPopUp() => showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return StatefulBuilder(
+            builder: (BuildContext context, StateSetter setState) {
+          return AlertDialog(
+              shape: const RoundedRectangleBorder(
+                  borderRadius: BorderRadius.all(Radius.circular(mainSize))),
+              title: const Text('Assigner le composant à un vélo'),
+              content:
+                  Column(mainAxisSize: MainAxisSize.min, children: <Widget>[
+                _buildBikesDropdown(setState),
+                AppButton(
+                    text: 'Valider',
+                    callback: _onArchiveComponent,
+                    color: deepGreen)
+              ]));
+        });
+      });
 
   void _onArchiveComponent() {
     if (_keyForm.currentState!.validate()) {
       _keyForm.currentState!.save();
-      _updateComponent(true);
+      _updateComponent(!widget.component.archived);
     }
   }
 
-  void _updateComponent(bool archived) async {
+  void _onUpdateComponent() {
+    if (_keyForm.currentState!.validate()) {
+      _keyForm.currentState!.save();
+      _updateComponent(widget.component.archived);
+    }
+  }
+
+  void _updateComponent(bool archive) async {
     Response response = await _componentService.update(Component(
         widget.component.id,
-        widget.component.bikeId,
+        _bikeValue!,
         double.parse(_km.text),
         _brand.text,
         _dateOfPurchase,
         double.parse(_duration.text),
         _image.text,
         _typeValue,
-        archived));
+        archive));
     Color responseColor = deepGreen;
     dynamic json = jsonDecode(response.body);
 

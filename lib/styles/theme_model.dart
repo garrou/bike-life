@@ -1,4 +1,4 @@
-import 'package:bike_life/utils/theme_preferences.dart';
+import 'package:bike_life/styles/theme_preferences.dart';
 import 'package:flutter/material.dart';
 
 class ThemeModel extends ChangeNotifier {

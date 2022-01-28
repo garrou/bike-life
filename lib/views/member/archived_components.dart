@@ -8,7 +8,7 @@ import 'package:bike_life/utils/constants.dart';
 import 'package:bike_life/utils/guard_helper.dart';
 import 'package:bike_life/utils/storage.dart';
 import 'package:bike_life/views/auth/signin.dart';
-import 'package:bike_life/views/member/member_home.dart';
+import 'package:bike_life/views/member/component_details.dart';
 import 'package:bike_life/widgets/loading.dart';
 import 'package:bike_life/widgets/title.dart';
 import 'package:flutter/material.dart';
@@ -65,24 +65,25 @@ class _ArchivedComponentsPageState extends State<ArchivedComponentsPage> {
             })
       ]);
 
-  Widget _buildCard(Component component) => Card(
-      child: Container(
-          child: Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                Padding(
-                    child: Text(component.type),
-                    padding:
-                        const EdgeInsets.fromLTRB(thirdSize, thirdSize, 0, 0)),
-                IconButton(
-                    onPressed: () => _unarchive(component),
-                    icon: const Icon(Icons.bookmark_remove_outlined))
-              ]),
-          decoration: const BoxDecoration(
-              borderRadius: BorderRadius.all(Radius.circular(thirdSize)),
-              image: DecorationImage(
-                  fit: BoxFit.cover, image: AssetImage('assets/green.png')))));
+  Widget _buildCard(Component component) => GestureDetector(
+      onTap: () => Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => ComponentDetailPage(component: component))),
+      child: MouseRegion(
+          cursor: SystemMouseCursors.click,
+          child: Card(
+              child: Container(
+                  child: Padding(
+                      child: Text(component.type),
+                      padding: const EdgeInsets.fromLTRB(
+                          thirdSize, thirdSize, 0, 0)),
+                  decoration: const BoxDecoration(
+                      borderRadius:
+                          BorderRadius.all(Radius.circular(thirdSize)),
+                      image: DecorationImage(
+                          fit: BoxFit.cover,
+                          image: AssetImage('assets/green.png')))))));
 
   Future<List<Component>> _loadComponents() async {
     String memberId = await Storage.getMemberId();
@@ -94,23 +95,5 @@ class _ArchivedComponentsPageState extends State<ArchivedComponentsPage> {
     } else {
       throw Exception('Impossible de récupérer les composants');
     }
-  }
-
-  void _unarchive(Component component) async {
-    component.archived = false;
-    Response response = await _componentService.update(component);
-    dynamic json = jsonDecode(response.body);
-    Color color = deepGreen;
-
-    if (response.statusCode == httpCodeOk) {
-      Navigator.push(
-          context,
-          MaterialPageRoute(
-              builder: (context) => const MemberHomePage(initialPage: 1)));
-    } else {
-      color = red;
-    }
-    ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(json['confirm']), backgroundColor: color));
   }
 }

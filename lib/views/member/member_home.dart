@@ -68,11 +68,11 @@ class _MemberHomePageState extends State<MemberHomePage> {
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
               icon: Icon(Icons.directions_bike),
-              label: 'Mes vélos',
+              label: 'Vélos',
               backgroundColor: deepGreen),
           BottomNavigationBarItem(
               icon: Icon(Icons.archive),
-              label: 'Mes composants',
+              label: 'Composants archivés',
               backgroundColor: deepGreen),
           BottomNavigationBarItem(
               icon: Icon(Icons.compare_arrows),

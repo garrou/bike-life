@@ -9,7 +9,7 @@ import 'package:bike_life/utils/validator.dart';
 import 'package:bike_life/views/auth/signin.dart';
 import 'package:bike_life/styles/general.dart';
 import 'package:bike_life/views/member/member_home.dart';
-import 'package:bike_life/widgets/account_button.dart';
+import 'package:bike_life/widgets/button.dart';
 import 'package:bike_life/widgets/calendar.dart';
 import 'package:bike_life/widgets/textfield.dart';
 import 'package:bike_life/widgets/top_left_button.dart';
@@ -138,9 +138,8 @@ class _UpdateBikeFormState extends State<UpdateBikeForm> {
               })
         ]),
         AppCalendar(callback: _onDateChanged, selectedDate: _dateOfPurchase),
-        AppAccountButton(
-            text: 'Modifier', callback: _onUpdateBike, color: deepGreen),
-        AppAccountButton(text: 'Supprimer', callback: _showDialog, color: red)
+        AppButton(text: 'Modifier', callback: _onUpdateBike, color: deepGreen),
+        AppButton(text: 'Supprimer', callback: _showDialog, color: red)
       ]));
 
   Future _showDialog() async => showDialog(
@@ -149,6 +148,7 @@ class _UpdateBikeFormState extends State<UpdateBikeForm> {
             shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(secondSize)),
             title: const Text('Supprimer ce vélo ?'),
+            content: const Text('Le vélo et ses composants seront supprimés'),
             actions: <Widget>[
               TextButton(
                 child:

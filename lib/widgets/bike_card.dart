@@ -171,7 +171,7 @@ class _AddKmFormState extends State<AddKmForm> {
 
   void _addKm() async {
     Response response =
-        await _bikeService.updateBikeKm(widget.bike.id, double.parse(_km.text));
+        await _bikeService.updateKm(widget.bike.id, double.parse(_km.text));
     Color responseColor = deepGreen;
     dynamic json = jsonDecode(response.body);
 

@@ -50,7 +50,7 @@ class _IntroPageState extends State<IntroPage> {
         PageViewModel(
             title: 'Gestion des composants des vélos',
             body:
-                "Ajouter les composants de votre vélo.\nGardez un oeil sur l'utilisation de ceux-ci en fonction de leur durée de vie.",
+                "Ajouter les composants de votre vélo.\nGardez un oeil sur l'utilisation de ceux-ci.",
             image: const Icon(Icons.health_and_safety)),
         PageViewModel(
             title: 'Une démarche écologique',

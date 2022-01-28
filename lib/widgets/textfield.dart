@@ -12,6 +12,7 @@ class AppTextField extends StatelessWidget {
   final bool obscureText;
   final IconData icon;
   final int maxLines;
+  final bool enabled;
   final TextInputType keyboardType;
   const AppTextField(
       {Key? key,
@@ -23,13 +24,15 @@ class AppTextField extends StatelessWidget {
       required this.icon,
       required this.keyboardType,
       this.obscureText = false,
-      this.maxLines = 1})
+      this.maxLines = 1,
+      this.enabled = true})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) => Padding(
       padding: const EdgeInsets.all(thirdSize),
       child: TextFormField(
+          enabled: enabled,
           keyboardType: keyboardType,
           maxLines: maxLines,
           focusNode: focusNode,

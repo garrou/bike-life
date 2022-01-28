@@ -44,7 +44,7 @@ class BikeService {
         body: jsonEncode(<String, dynamic>{'bike': jsonEncode(bike)}));
   }
 
-  Future<Response> updateBikeKm(String bikeId, double kmToAdd) async {
+  Future<Response> updateKm(String bikeId, double kmToAdd) async {
     return await client.patch(Uri.parse('$endpoint/bikes/$bikeId'),
         body: jsonEncode(<String, dynamic>{'km': kmToAdd}));
   }
