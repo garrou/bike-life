@@ -42,8 +42,6 @@ class _IntroPageState extends State<IntroPage> {
       key: introKey,
       pages: [
         PageViewModel(
-            title: title, body: quote, image: Image.asset('assets/bike.png')),
-        PageViewModel(
             title: 'Gestion de vos vélos',
             body: "Ajouter vos vélos dans l'application.",
             image: const Icon(Icons.bike_scooter)),

@@ -102,7 +102,11 @@ class _SigninFormState extends State<SigninForm> {
             validator: passwordValidator,
             obscureText: true,
             icon: Icons.password),
-        AppButton(text: 'Connexion', callback: _onSignin, color: deepGreen)
+        AppButton(
+            text: 'Connexion',
+            callback: _onSignin,
+            color: deepGreen,
+            icon: const Icon(Icons.login))
       ]));
 
   void _onSignin() {

@@ -138,8 +138,16 @@ class _UpdateBikeFormState extends State<UpdateBikeForm> {
               })
         ]),
         AppCalendar(callback: _onDateChanged, selectedDate: _dateOfPurchase),
-        AppButton(text: 'Modifier', callback: _onUpdateBike, color: deepGreen),
-        AppButton(text: 'Supprimer', callback: _showDialog, color: red)
+        AppButton(
+            text: 'Modifier',
+            callback: _onUpdateBike,
+            color: deepGreen,
+            icon: const Icon(Icons.edit)),
+        AppButton(
+            text: 'Supprimer',
+            callback: _showDialog,
+            color: red,
+            icon: const Icon(Icons.delete))
       ]));
 
   Future _showDialog() async => showDialog(
@@ -175,7 +183,7 @@ class _UpdateBikeFormState extends State<UpdateBikeForm> {
 
   void _onDeleteBike() async {
     Response response = await _bikeService.deleteBike(widget.bike.id);
-    Color responseColor = deepGreen;
+    Color color = deepGreen;
     dynamic json = jsonDecode(response.body);
 
     if (response.statusCode == httpCodeOk) {
@@ -186,10 +194,10 @@ class _UpdateBikeFormState extends State<UpdateBikeForm> {
                   const MemberHomePage(initialPage: 0)),
           (Route<dynamic> route) => false);
     } else {
-      responseColor = red;
+      color = red;
     }
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: Text(json['confirm']), backgroundColor: responseColor));
+    ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(json['confirm']), backgroundColor: color));
   }
 
   void _onUpdateBike() {
@@ -207,7 +215,7 @@ class _UpdateBikeFormState extends State<UpdateBikeForm> {
         double.parse(_nbKm.text),
         _dateOfPurchase,
         _isElectric!));
-    Color responseColor = deepGreen;
+    Color color = deepGreen;
     dynamic json = jsonDecode(response.body);
 
     if (response.statusCode == httpCodeOk) {
@@ -218,10 +226,10 @@ class _UpdateBikeFormState extends State<UpdateBikeForm> {
                   const MemberHomePage(initialPage: 0)),
           (Route<dynamic> route) => false);
     } else {
-      responseColor = red;
+      color = red;
     }
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: Text(json['confirm']), backgroundColor: responseColor));
+    ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(json['confirm']), backgroundColor: color));
   }
 
   void _onDateChanged(DateRangePickerSelectionChangedArgs args) {

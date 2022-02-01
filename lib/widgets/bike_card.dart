@@ -158,7 +158,10 @@ class _AddKmFormState extends State<AddKmForm> {
               label: 'Kilomètres',
               icon: Icons.add_road),
           AppButton(
-              text: 'Ajouter', callback: () => _onAddKm(), color: deepGreen)
+              text: 'Ajouter',
+              callback: () => _onAddKm(),
+              color: deepGreen,
+              icon: const Icon(Icons.add))
         ],
       ));
 
@@ -171,21 +174,20 @@ class _AddKmFormState extends State<AddKmForm> {
 
   void _addKm() async {
     Response response =
-        await _bikeService.updateKm(widget.bike.id, double.parse(_km.text));
-    Color responseColor = deepGreen;
+        await _bikeService.addKm(widget.bike.id, double.parse(_km.text));
+    Color color = deepGreen;
     dynamic json = jsonDecode(response.body);
 
     if (response.statusCode == httpCodeOk) {
       Navigator.pushAndRemoveUntil(
           context,
           MaterialPageRoute(
-              builder: (BuildContext context) =>
-                  const MemberHomePage(initialPage: 0)),
+              builder: (context) => const MemberHomePage(initialPage: 0)),
           (Route<dynamic> route) => false);
     } else {
-      responseColor = red;
+      color = red;
     }
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: Text(json['confirm']), backgroundColor: responseColor));
+    ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(json['confirm']), backgroundColor: color));
   }
 }

@@ -141,7 +141,10 @@ class _AddComponentPageState extends State<AddComponentPage> {
                       callback: _onDateChanged, selectedDate: _dateOfPurchase),
                   padding: const EdgeInsets.only(top: secondSize)),
               AppButton(
-                  callback: _onAddComponent, text: 'Ajouter', color: deepGreen)
+                  callback: _onAddComponent,
+                  text: 'Ajouter',
+                  color: deepGreen,
+                  icon: const Icon(Icons.save))
             ]))
       ]);
 

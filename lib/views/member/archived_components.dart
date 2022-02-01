@@ -72,18 +72,16 @@ class _ArchivedComponentsPageState extends State<ArchivedComponentsPage> {
               builder: (context) => ComponentDetailPage(component: component))),
       child: MouseRegion(
           cursor: SystemMouseCursors.click,
-          child: Card(
-              child: Container(
-                  child: Padding(
-                      child: Text(component.type),
-                      padding: const EdgeInsets.fromLTRB(
-                          thirdSize, thirdSize, 0, 0)),
-                  decoration: const BoxDecoration(
-                      borderRadius:
-                          BorderRadius.all(Radius.circular(thirdSize)),
-                      image: DecorationImage(
-                          fit: BoxFit.cover,
-                          image: AssetImage('assets/green.png')))))));
+          child: Container(
+              height: 200,
+              width: 200,
+              child: Text(component.type, style: secondTextStyle),
+              alignment: Alignment.center,
+              decoration: const BoxDecoration(
+                  borderRadius: BorderRadius.all(Radius.circular(thirdSize)),
+                  image: DecorationImage(
+                      fit: BoxFit.cover,
+                      image: AssetImage('assets/green.png'))))));
 
   Future<List<Component>> _loadComponents() async {
     String memberId = await Storage.getMemberId();

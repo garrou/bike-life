@@ -117,7 +117,11 @@ class _SignupFormState extends State<SignupForm> {
             },
             obscureText: true,
             icon: Icons.password),
-        AppButton(text: "S'inscrire", callback: _onSignup, color: deepGreen)
+        AppButton(
+            text: "S'inscrire",
+            callback: _onSignup,
+            color: deepGreen,
+            icon: const Icon(Icons.person_add_alt_1))
       ]));
 
   void _onSignup() {
@@ -130,7 +134,7 @@ class _SignupFormState extends State<SignupForm> {
   void _createUser() async {
     Response response =
         await _memberService.signup(_email.text, _password.text);
-    Color responseColor = deepGreen;
+    Color color = deepGreen;
     dynamic json = jsonDecode(response.body);
 
     if (response.statusCode == httpCodeCreated) {
@@ -140,9 +144,9 @@ class _SignupFormState extends State<SignupForm> {
               builder: (BuildContext context) => const SigninPage()),
           (Route<dynamic> route) => false);
     } else {
-      responseColor = red;
+      color = red;
     }
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: Text(json['confirm']), backgroundColor: responseColor));
+    ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(json['confirm']), backgroundColor: color));
   }
 }

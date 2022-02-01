@@ -3,11 +3,10 @@ import 'dart:async';
 import 'package:bike_life/utils/constants.dart';
 import 'package:bike_life/utils/guard_helper.dart';
 import 'package:bike_life/views/auth/signin.dart';
-import 'package:bike_life/views/auth/signup.dart';
+import 'package:bike_life/views/home/intro.dart';
 import 'package:bike_life/views/member/member_home.dart';
 import 'package:bike_life/styles/general.dart';
 import 'package:bike_life/widgets/nav_button.dart';
-import 'package:bike_life/widgets/title.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_guards/flutter_guards.dart';
 
@@ -32,32 +31,26 @@ class _HomePageState extends State<HomePage> {
       body: AuthGuard(
           authStream: _authState.stream,
           signedIn: const MemberHomePage(initialPage: 0),
-          signedOut: LayoutBuilder(builder: (context, constraint) {
-            if (constraint.maxWidth > maxSize) {
-              return _narrowLayout();
-            } else {
-              return _wideLayout();
-            }
-          })));
+          signedOut: _layout()));
 
-  Padding _narrowLayout() => Padding(
-      padding: const EdgeInsets.symmetric(horizontal: maxPadding),
-      child: _wideLayout());
-
-  Column _wideLayout() => Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: <Widget>[
-          AppTitle(text: title, paddingTop: 0, style: mainTextStyle),
+  ListView _layout() => ListView(children: <Widget>[
+        Row(children: <Widget>[
+          Padding(
+              padding: const EdgeInsets.fromLTRB(mainSize, mainSize, 0, 0),
+              child: Text(title, style: secondTextStyle)),
+        ]),
+        Column(mainAxisAlignment: MainAxisAlignment.center, children: <Widget>[
+          Padding(
+              padding: const EdgeInsets.all(thirdSize),
+              child: Image.asset('assets/bike.png', fit: BoxFit.contain)),
           Padding(
               padding: const EdgeInsets.symmetric(vertical: thirdSize),
-              child: Text(quote, style: italicTextStyle)),
+              child: Text("La santé de votre vélo\nse surveille de près.",
+                  style: italicTextStyle)),
           const AppNavButton(
-              text: 'Se connecter',
-              destination: SigninPage(),
-              color: deepGreen),
+              text: 'Découvrir', destination: IntroPage(), color: deepGreen),
           const AppNavButton(
-              text: "S'inscrire", destination: SignupPage(), color: deepGreen)
-        ],
-      );
+              text: 'Connexion', destination: SigninPage(), color: deepGreen)
+        ])
+      ]);
 }

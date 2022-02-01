@@ -6,7 +6,6 @@ String endpoint =
         : "http://localhost:8100";
 
 const String title = "Bike's life";
-const String quote = "La santé de votre vélo se surveille de près.";
 
 const double ratio = 200.0;
 

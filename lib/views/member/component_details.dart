@@ -144,9 +144,8 @@ class _UpdateBikeComponentFormState extends State<UpdateBikeComponentForm> {
           key: _keyForm,
           child: Column(children: <Widget>[
             Visibility(
-                child: Text(
-                    'Pour modifier les informations du composant, celui-ci doit-être désarchivé',
-                    style: thirdTextStyle),
+                child: const Text(
+                    'Pour modifier les informations du composant, celui-ci doit-être désarchivé'),
                 visible: widget.component.archived),
             AppTextField(
                 enabled: !widget.component.archived,
@@ -193,9 +192,8 @@ class _UpdateBikeComponentFormState extends State<UpdateBikeComponentForm> {
             widget.component.archived
                 ? Padding(
                     child: Text(
-                      "Date d'achat : ${widget.component.dateOfPurchase}",
-                      style: thirdTextStyle,
-                    ),
+                        "Date d'achat : ${widget.component.dateOfPurchase}",
+                        style: thirdTextStyle),
                     padding: const EdgeInsets.all(thirdSize))
                 : AppCalendar(
                     callback: _onDateChanged, selectedDate: _dateOfPurchase),
@@ -204,13 +202,17 @@ class _UpdateBikeComponentFormState extends State<UpdateBikeComponentForm> {
                 child: AppButton(
                     callback: _onUpdateComponent,
                     text: 'Modifier',
-                    color: deepGreen)),
+                    color: deepGreen,
+                    icon: const Icon(Icons.edit))),
             AppButton(
                 callback: widget.component.archived
                     ? _onOpenPopUp
                     : _onArchiveComponent,
                 text: widget.component.archived ? 'Désarchiver' : 'Archiver',
-                color: red),
+                color: red,
+                icon: widget.component.archived
+                    ? const Icon(Icons.bookmark_remove)
+                    : const Icon(Icons.bookmark_add)),
           ])));
 
   Widget _buildComponentTypesDropdown() => FutureBuilder<List<ComponentType>>(
@@ -272,7 +274,8 @@ class _UpdateBikeComponentFormState extends State<UpdateBikeComponentForm> {
                 AppButton(
                     text: 'Valider',
                     callback: _onArchiveComponent,
-                    color: deepGreen)
+                    color: deepGreen,
+                    icon: const Icon(Icons.check))
               ]));
         });
       });
@@ -302,7 +305,7 @@ class _UpdateBikeComponentFormState extends State<UpdateBikeComponentForm> {
         _image.text,
         _typeValue,
         archive));
-    Color responseColor = deepGreen;
+    Color color = deepGreen;
     dynamic json = jsonDecode(response.body);
 
     if (response.statusCode == httpCodeOk) {
@@ -313,9 +316,9 @@ class _UpdateBikeComponentFormState extends State<UpdateBikeComponentForm> {
                   const MemberHomePage(initialPage: 0)),
           (Route<dynamic> route) => false);
     } else {
-      responseColor = red;
+      color = red;
     }
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: Text(json['confirm']), backgroundColor: responseColor));
+    ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(json['confirm']), backgroundColor: color));
   }
 }

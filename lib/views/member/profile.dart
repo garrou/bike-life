@@ -182,7 +182,11 @@ class _UpdateAuthFormState extends State<UpdateAuthForm> {
                 },
                 obscureText: true,
                 icon: Icons.password),
-            AppButton(text: 'Modifier', callback: _onUpdate, color: deepGreen)
+            AppButton(
+                text: 'Modifier',
+                callback: _onUpdate,
+                color: deepGreen,
+                icon: const Icon(Icons.edit))
           ])));
 
   void _onUpdate() {
@@ -196,15 +200,15 @@ class _UpdateAuthFormState extends State<UpdateAuthForm> {
     String id = await Storage.getMemberId();
     Response response =
         await _memberService.update(id, _email.text, _password.text);
-    Color responseColor = deepGreen;
+    Color color = deepGreen;
     dynamic json = jsonDecode(response.body);
 
     if (response.statusCode == httpCodeOk) {
       Navigator.pop(context);
     } else {
-      responseColor = red;
+      color = red;
     }
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: Text(json['confirm']), backgroundColor: responseColor));
+    ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(json['confirm']), backgroundColor: color));
   }
 }

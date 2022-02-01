@@ -140,7 +140,11 @@ class _AddBikeFormState extends State<AddBikeForm> {
                   ]),
               AppCalendar(
                   callback: _onDateChanged, selectedDate: _dateOfPurchase),
-              AppButton(text: 'Ajouter', callback: _onAddBike, color: deepGreen)
+              AppButton(
+                  text: 'Ajouter',
+                  callback: _onAddBike,
+                  color: deepGreen,
+                  icon: const Icon(Icons.save))
             ]))
       ]));
 

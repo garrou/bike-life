@@ -1,6 +1,5 @@
 import 'package:bike_life/styles/theme_model.dart';
-import 'package:bike_life/utils/constants.dart';
-import 'package:bike_life/views/home/intro.dart';
+import 'package:bike_life/views/home/home.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -22,8 +21,8 @@ class _AppState extends State<App> {
       child: Consumer<ThemeModel>(
           builder: (context, ThemeModel themeNotifier, child) {
         return MaterialApp(
-            title: title,
+            title: "Bike's Life",
             theme: themeNotifier.isDark ? ThemeData.dark() : ThemeData.light(),
-            home: const IntroPage());
+            home: const HomePage());
       }));
 }

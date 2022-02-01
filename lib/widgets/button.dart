@@ -7,11 +7,13 @@ class AppButton extends StatelessWidget {
   final String text;
   final Color color;
   final VoidCallback callback;
+  final Icon icon;
   const AppButton(
       {Key? key,
       required this.text,
       required this.callback,
-      required this.color})
+      required this.color,
+      required this.icon})
       : super(key: key);
 
   @override
@@ -20,9 +22,9 @@ class AppButton extends StatelessWidget {
       child: SizedBox(
           height: buttonHeight,
           width: buttonWidth,
-          child: ElevatedButton(
-            onPressed: callback,
-            child: Text(text, style: thirdTextStyle),
-            style: roundedButtonStyle(color),
-          )));
+          child: ElevatedButton.icon(
+              onPressed: callback,
+              icon: icon,
+              label: Text(text, style: thirdTextStyle),
+              style: roundedButtonStyle(color))));
 }
