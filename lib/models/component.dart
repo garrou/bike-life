@@ -7,10 +7,9 @@ class Component {
   final double duration;
   final String? image;
   final String type;
-  bool archived;
 
   Component(this.id, this.bikeId, this.km, this.brand, this.dateOfPurchase,
-      this.duration, this.image, this.type, this.archived);
+      this.duration, this.image, this.type);
 
   Component.fromJson(Map<String, dynamic> json)
       : id = json['id'],
@@ -20,8 +19,7 @@ class Component {
         brand = json['brand'],
         dateOfPurchase = json['dateOfPurchase'],
         image = json['image'],
-        type = json['type'],
-        archived = json['archived'];
+        type = json['type'];
 
   Map<String, dynamic> toJson() => {
         'id': id,
@@ -31,8 +29,7 @@ class Component {
         'dateOfPurchase': dateOfPurchase,
         'duration': duration,
         'image': image,
-        'type': type,
-        'archived': archived
+        'type': type
       };
 }
 

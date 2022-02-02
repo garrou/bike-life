@@ -1,15 +1,12 @@
 import 'dart:async';
 import 'dart:convert';
 
-import 'package:bike_life/models/bike.dart';
 import 'package:bike_life/models/component_type.dart';
-import 'package:bike_life/services/bike_service.dart';
 import 'package:bike_life/services/component_service.dart';
 import 'package:bike_life/services/component_types_service.dart';
 import 'package:bike_life/utils/constants.dart';
 import 'package:bike_life/models/component.dart';
 import 'package:bike_life/utils/guard_helper.dart';
-import 'package:bike_life/utils/storage.dart';
 import 'package:bike_life/utils/validator.dart';
 import 'package:bike_life/views/auth/signin.dart';
 import 'package:bike_life/styles/general.dart';
@@ -81,7 +78,7 @@ class UpdateBikeComponentForm extends StatefulWidget {
 class _UpdateBikeComponentFormState extends State<UpdateBikeComponentForm> {
   final ComponentService _componentService = ComponentService();
   final ComponentTypesService _componentTypesService = ComponentTypesService();
-  final BikeService _bikeService = BikeService();
+
   final _keyForm = GlobalKey<FormState>();
 
   final _kmFocus = FocusNode();
@@ -96,7 +93,6 @@ class _UpdateBikeComponentFormState extends State<UpdateBikeComponentForm> {
   final _imageFocus = FocusNode();
   final TextEditingController _image = TextEditingController();
 
-  late Future<List<Bike>> _bikes;
   late Future<List<ComponentType>> _componentTypes;
   late String _dateOfPurchase;
   late String _typeValue;
@@ -106,7 +102,6 @@ class _UpdateBikeComponentFormState extends State<UpdateBikeComponentForm> {
   void initState() {
     super.initState();
     _componentTypes = _loadComponentTypes();
-    _bikes = _loadBikes();
     _km.text = '${widget.component.km}';
     _brand.text = widget.component.brand ?? '';
     _duration.text = '${widget.component.duration}';
@@ -126,29 +121,13 @@ class _UpdateBikeComponentFormState extends State<UpdateBikeComponentForm> {
     }
   }
 
-  Future<List<Bike>> _loadBikes() async {
-    final String id = await Storage.getMemberId();
-    final Response response = await _bikeService.getBikes(id);
-
-    if (response.statusCode == httpCodeOk) {
-      return createBikes(jsonDecode(response.body));
-    } else {
-      throw Exception('Impossible de récupérer les vélos');
-    }
-  }
-
   @override
   Widget build(BuildContext context) => Padding(
       padding: const EdgeInsets.all(thirdSize),
       child: Form(
           key: _keyForm,
           child: Column(children: <Widget>[
-            Visibility(
-                child: const Text(
-                    'Pour modifier les informations du composant, celui-ci doit-être désarchivé'),
-                visible: widget.component.archived),
             AppTextField(
-                enabled: !widget.component.archived,
                 keyboardType: TextInputType.text,
                 focusNode: _brandFocus,
                 textfieldController: _brand,
@@ -157,7 +136,6 @@ class _UpdateBikeComponentFormState extends State<UpdateBikeComponentForm> {
                 label: 'Marque',
                 icon: Icons.branding_watermark),
             AppTextField(
-                enabled: !widget.component.archived,
                 keyboardType: TextInputType.number,
                 focusNode: _kmFocus,
                 textfieldController: _km,
@@ -166,7 +144,6 @@ class _UpdateBikeComponentFormState extends State<UpdateBikeComponentForm> {
                 label: 'Kilomètres',
                 icon: Icons.add_road),
             AppTextField(
-                enabled: !widget.component.archived,
                 keyboardType: TextInputType.number,
                 focusNode: _durationFocus,
                 textfieldController: _duration,
@@ -175,7 +152,6 @@ class _UpdateBikeComponentFormState extends State<UpdateBikeComponentForm> {
                 label: 'Durée de vie du composant (km)',
                 icon: Icons.health_and_safety),
             AppTextField(
-                enabled: !widget.component.archived,
                 focusNode: _imageFocus,
                 textfieldController: _image,
                 validator: emptyValidator,
@@ -183,36 +159,14 @@ class _UpdateBikeComponentFormState extends State<UpdateBikeComponentForm> {
                 label: 'Image',
                 icon: Icons.image,
                 keyboardType: TextInputType.text),
-            widget.component.archived
-                ? Padding(
-                    child: Text('Composant : ${widget.component.type}',
-                        style: thirdTextStyle),
-                    padding: const EdgeInsets.all(thirdSize))
-                : _buildComponentTypesDropdown(),
-            widget.component.archived
-                ? Padding(
-                    child: Text(
-                        "Date d'achat : ${widget.component.dateOfPurchase}",
-                        style: thirdTextStyle),
-                    padding: const EdgeInsets.all(thirdSize))
-                : AppCalendar(
-                    callback: _onDateChanged, selectedDate: _dateOfPurchase),
-            Visibility(
-                visible: !widget.component.archived,
-                child: AppButton(
-                    callback: _onUpdateComponent,
-                    text: 'Modifier',
-                    color: deepGreen,
-                    icon: const Icon(Icons.edit))),
+            _buildComponentTypesDropdown(),
+            AppCalendar(
+                callback: _onDateChanged, selectedDate: _dateOfPurchase),
             AppButton(
-                callback: widget.component.archived
-                    ? _onOpenPopUp
-                    : _onArchiveComponent,
-                text: widget.component.archived ? 'Désarchiver' : 'Archiver',
-                color: red,
-                icon: widget.component.archived
-                    ? const Icon(Icons.bookmark_remove)
-                    : const Icon(Icons.bookmark_add)),
+                callback: _onUpdateComponent,
+                text: 'Modifier',
+                color: deepGreen,
+                icon: const Icon(Icons.edit)),
           ])));
 
   Widget _buildComponentTypesDropdown() => FutureBuilder<List<ComponentType>>(
@@ -234,67 +188,18 @@ class _UpdateBikeComponentFormState extends State<UpdateBikeComponentForm> {
         return const AppLoading();
       });
 
-  Widget _buildBikesDropdown(StateSetter setState) => FutureBuilder<List<Bike>>(
-      future: _bikes,
-      builder: (context, snapshot) {
-        if (snapshot.hasError) {
-          return Text('${snapshot.error}');
-        } else if (snapshot.hasData) {
-          return DropdownButton(
-              value: _bikeValue,
-              onChanged: (String? value) {
-                setState(() => _bikeValue = value!);
-              },
-              items: snapshot.data!
-                  .map<DropdownMenuItem<String>>((Bike bike) =>
-                      DropdownMenuItem(
-                          child: Text(bike.name, style: secondTextStyle),
-                          value: bike.id))
-                  .toList());
-        }
-        return const AppLoading();
-      });
-
   void _onDateChanged(DateRangePickerSelectionChangedArgs args) {
     _dateOfPurchase = args.value.toString().split(' ')[0];
-  }
-
-  void _onOpenPopUp() => showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return StatefulBuilder(
-            builder: (BuildContext context, StateSetter setState) {
-          return AlertDialog(
-              shape: const RoundedRectangleBorder(
-                  borderRadius: BorderRadius.all(Radius.circular(mainSize))),
-              title: const Text('Assigner le composant à un vélo'),
-              content:
-                  Column(mainAxisSize: MainAxisSize.min, children: <Widget>[
-                _buildBikesDropdown(setState),
-                AppButton(
-                    text: 'Valider',
-                    callback: _onArchiveComponent,
-                    color: deepGreen,
-                    icon: const Icon(Icons.check))
-              ]));
-        });
-      });
-
-  void _onArchiveComponent() {
-    if (_keyForm.currentState!.validate()) {
-      _keyForm.currentState!.save();
-      _updateComponent(!widget.component.archived);
-    }
   }
 
   void _onUpdateComponent() {
     if (_keyForm.currentState!.validate()) {
       _keyForm.currentState!.save();
-      _updateComponent(widget.component.archived);
+      _updateComponent();
     }
   }
 
-  void _updateComponent(bool archive) async {
+  void _updateComponent() async {
     Response response = await _componentService.update(Component(
         widget.component.id,
         _bikeValue!,
@@ -303,8 +208,7 @@ class _UpdateBikeComponentFormState extends State<UpdateBikeComponentForm> {
         _dateOfPurchase,
         double.parse(_duration.text),
         _image.text,
-        _typeValue,
-        archive));
+        _typeValue));
     Color color = deepGreen;
     dynamic json = jsonDecode(response.body);
 

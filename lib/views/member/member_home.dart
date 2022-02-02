@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:bike_life/utils/guard_helper.dart';
 import 'package:bike_life/views/auth/signin.dart';
 import 'package:bike_life/views/member/all_bikes.dart';
-import 'package:bike_life/views/member/archived_components.dart';
 import 'package:bike_life/views/member/compare.dart';
 import 'package:bike_life/views/member/statistics.dart';
 import 'package:bike_life/views/member/tips.dart';
@@ -48,7 +47,6 @@ class _MemberHomePageState extends State<MemberHomePage> {
       body: PageView(
         children: const <Widget>[
           AllBikesPage(),
-          ArchivedComponentsPage(),
           ComparePage(),
           StatisticsPage(),
           TipsPage()
@@ -71,10 +69,6 @@ class _MemberHomePageState extends State<MemberHomePage> {
               label: 'Vélos',
               backgroundColor: deepGreen),
           BottomNavigationBarItem(
-              icon: Icon(Icons.archive),
-              label: 'Composants archivés',
-              backgroundColor: deepGreen),
-          BottomNavigationBarItem(
               icon: Icon(Icons.compare_arrows),
               label: 'Comparaison de composants',
               backgroundColor: deepGreen),
@@ -89,8 +83,6 @@ class _MemberHomePageState extends State<MemberHomePage> {
         ],
       ));
 
-  void _onTabTapped(int index) {
-    _pageController.animateToPage(index,
-        duration: const Duration(milliseconds: 500), curve: Curves.easeInOut);
-  }
+  void _onTabTapped(int index) => _pageController.animateToPage(index,
+      duration: const Duration(milliseconds: 500), curve: Curves.easeInOut);
 }
