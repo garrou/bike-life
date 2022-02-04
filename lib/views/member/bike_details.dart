@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:bike_life/models/bike.dart';
 import 'package:bike_life/models/component.dart';
 import 'package:bike_life/services/component_service.dart';
-import 'package:bike_life/styles/general.dart';
+import 'package:bike_life/styles/styles.dart';
 import 'package:bike_life/utils/constants.dart';
 import 'package:bike_life/widgets/loading.dart';
 import 'package:bike_life/widgets/top_left_button.dart';
@@ -83,19 +83,22 @@ class _BikeDetailsPageState extends State<BikeDetailsPage> {
 
   Widget _buildLinearPercentBar(Component component) {
     final DateTime start = DateTime.parse(widget.bike.addedAt);
-    final Duration limit = DateTime.now().difference(start);
-    final double percent =
-        limit.inDays * (widget.bike.kmPerWeek / 7) / component.duration;
+    final Duration diff = DateTime.now().difference(start);
+    double percent =
+        diff.inDays * (widget.bike.kmPerWeek / 7) / component.duration;
+    percent = percent > 1.0 ? 1 : percent;
+
     return MouseRegion(
         child: LinearPercentIndicator(
             lineHeight: mainSize,
-            percent: percent > 1 ? 1 : percent,
+            center: Text('${(percent * 100).toStringAsFixed(0)} %'),
+            percent: percent,
             backgroundColor: grey,
             progressColor: percent >= 1
                 ? red
                 : percent > .5
                     ? orange
-                    : greenLight,
+                    : green,
             barRadius: const Radius.circular(50)),
         cursor: SystemMouseCursors.click);
   }

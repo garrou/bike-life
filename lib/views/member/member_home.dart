@@ -1,8 +1,6 @@
 import 'package:bike_life/views/member/home.dart';
-import 'package:bike_life/views/member/compare.dart';
-import 'package:bike_life/views/member/statistics.dart';
 import 'package:bike_life/views/member/tips.dart';
-import 'package:bike_life/styles/general.dart';
+import 'package:bike_life/styles/styles.dart';
 import 'package:flutter/material.dart';
 
 class MemberHomePage extends StatefulWidget {
@@ -33,12 +31,7 @@ class _MemberHomePageState extends State<MemberHomePage> {
   @override
   Widget build(BuildContext context) => Scaffold(
       body: PageView(
-        children: const <Widget>[
-          AllBikesPage(),
-          ComparePage(),
-          StatisticsPage(),
-          TipsPage()
-        ],
+        children: const <Widget>[AllBikesPage(), TipsPage()],
         onPageChanged: (page) {
           setState(() => _pageIndex = page);
         },
@@ -56,14 +49,6 @@ class _MemberHomePageState extends State<MemberHomePage> {
           BottomNavigationBarItem(
               icon: Icon(Icons.directions_bike),
               label: 'Vélos',
-              backgroundColor: primaryColor),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.compare_arrows),
-              label: 'Comparaison de composants',
-              backgroundColor: primaryColor),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.bar_chart),
-              label: 'Statistiques',
               backgroundColor: primaryColor),
           BottomNavigationBarItem(
               icon: Icon(Icons.comment),

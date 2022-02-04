@@ -1,7 +1,7 @@
 import 'package:bike_life/models/bike.dart';
 import 'package:bike_life/models/http_response.dart';
 import 'package:bike_life/services/bike_service.dart';
-import 'package:bike_life/styles/general.dart';
+import 'package:bike_life/styles/styles.dart';
 import 'package:bike_life/utils/constants.dart';
 import 'package:bike_life/utils/validator.dart';
 import 'package:bike_life/views/member/member_home.dart';
@@ -45,20 +45,18 @@ class _UpdateBikePageState extends State<UpdateBikePage> {
   }
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-        body: LayoutBuilder(builder: (context, constraints) {
-          if (constraints.maxWidth > maxSize) {
-            return _narrowLayout();
-          } else {
-            return _wideLayout();
-          }
-        }),
-        floatingActionButton: FloatingActionButton(
-            backgroundColor: primaryColor,
-            child: const Icon(Icons.save),
-            onPressed: _onUpdate));
-  }
+  Widget build(BuildContext context) => Scaffold(
+      body: LayoutBuilder(builder: (context, constraints) {
+        if (constraints.maxWidth > maxSize) {
+          return _narrowLayout();
+        } else {
+          return _wideLayout();
+        }
+      }),
+      floatingActionButton: FloatingActionButton(
+          backgroundColor: primaryColor,
+          child: const Icon(Icons.save),
+          onPressed: _onUpdate));
 
   Widget _narrowLayout() => Padding(
       padding: const EdgeInsets.symmetric(horizontal: maxPadding),

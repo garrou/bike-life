@@ -3,15 +3,11 @@ import 'dart:convert';
 
 import 'package:bike_life/models/tip.dart';
 import 'package:bike_life/services/tip_service.dart';
-import 'package:bike_life/styles/general.dart';
+import 'package:bike_life/styles/styles.dart';
 import 'package:bike_life/utils/constants.dart';
-import 'package:bike_life/utils/guard_helper.dart';
-import 'package:bike_life/views/auth/signin.dart';
 import 'package:bike_life/views/member/tip_details.dart';
 import 'package:bike_life/widgets/loading.dart';
-import 'package:bike_life/widgets/title.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_guards/flutter_guards.dart';
 import 'package:http/http.dart';
 
 class TipsPage extends StatefulWidget {
@@ -22,19 +18,17 @@ class TipsPage extends StatefulWidget {
 }
 
 class _TipsPageState extends State<TipsPage> {
-  final StreamController<bool> _authState = StreamController();
   final TipService _tipService = TipService();
   late Future<List<Tip>> _tips;
 
   @override
   void initState() {
     super.initState();
-    GuardHelper.checkIfLogged(_authState);
     _tips = _loadTips();
   }
 
   Future<List<Tip>> _loadTips() async {
-    Response response = await _tipService.getByType('%');
+    Response response = await _tipService.getByTopic('%');
 
     if (response.statusCode == httpCodeOk) {
       return createTips(jsonDecode(response.body));
@@ -44,16 +38,14 @@ class _TipsPageState extends State<TipsPage> {
   }
 
   @override
-  Widget build(BuildContext context) => AuthGuard(
-      authStream: _authState.stream,
-      signedIn: LayoutBuilder(builder: (context, constraints) {
+  Widget build(BuildContext context) =>
+      Scaffold(body: LayoutBuilder(builder: (context, constraints) {
         if (constraints.maxWidth > maxSize) {
           return _narrowLayout(context);
         } else {
           return _wideLayout(context);
         }
-      }),
-      signedOut: const SigninPage());
+      }));
 
   Widget _narrowLayout(BuildContext context) => Padding(
       padding: const EdgeInsets.symmetric(horizontal: maxPadding),
@@ -61,8 +53,20 @@ class _TipsPageState extends State<TipsPage> {
 
   Widget _wideLayout(BuildContext context) =>
       Column(crossAxisAlignment: CrossAxisAlignment.center, children: <Widget>[
-        AppTitle(
-            text: 'Conseils', paddingTop: mainSize, style: secondTextStyle),
+        Padding(
+            padding: const EdgeInsets.all(secondSize),
+            child: Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text('Conseils', style: secondTextStyle),
+                  IconButton(
+                      icon: const Icon(Icons.help),
+                      iconSize: 30,
+                      onPressed: () {
+                        // TODO: Help
+                      })
+                ])),
         FutureBuilder<List<Tip>>(
             future: _tips,
             builder: (_, snapshot) {

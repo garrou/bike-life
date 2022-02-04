@@ -1,13 +1,14 @@
 import 'dart:async';
 import 'dart:convert';
 
+import 'package:bike_life/models/http_response.dart';
 import 'package:bike_life/services/member_service.dart';
 import 'package:bike_life/styles/theme_model.dart';
 import 'package:bike_life/utils/constants.dart';
 import 'package:bike_life/utils/storage.dart';
 import 'package:bike_life/utils/validator.dart';
 import 'package:bike_life/views/auth/signin.dart';
-import 'package:bike_life/styles/general.dart';
+import 'package:bike_life/styles/styles.dart';
 import 'package:bike_life/widgets/button.dart';
 import 'package:bike_life/widgets/loading.dart';
 import 'package:bike_life/widgets/textfield.dart';
@@ -69,7 +70,7 @@ class _ProfilePageState extends State<ProfilePage> {
                       : Icons.wb_sunny),
                 )
               ]),
-              const UpdateAuthForm()
+              const ProfileForm()
             ]);
       });
 
@@ -82,14 +83,14 @@ class _ProfilePageState extends State<ProfilePage> {
   }
 }
 
-class UpdateAuthForm extends StatefulWidget {
-  const UpdateAuthForm({Key? key}) : super(key: key);
+class ProfileForm extends StatefulWidget {
+  const ProfileForm({Key? key}) : super(key: key);
 
   @override
-  _UpdateAuthFormState createState() => _UpdateAuthFormState();
+  _ProfileFormState createState() => _ProfileFormState();
 }
 
-class _UpdateAuthFormState extends State<UpdateAuthForm> {
+class _ProfileFormState extends State<ProfileForm> {
   final _keyForm = GlobalKey<FormState>();
 
   final _emailFocus = FocusNode();
@@ -187,15 +188,13 @@ class _UpdateAuthFormState extends State<UpdateAuthForm> {
     String id = await Storage.getMemberId();
     Response response =
         await _memberService.update(id, _email.text, _password.text);
-    Color color = primaryColor;
-    dynamic json = jsonDecode(response.body);
+    HttpResponse httpResponse = HttpResponse(response);
 
-    if (response.statusCode == httpCodeOk) {
+    if (httpResponse.success()) {
       Navigator.pop(context);
-    } else {
-      color = red;
     }
-    ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(json['confirm']), backgroundColor: color));
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text(httpResponse.body()[serverMessage]),
+        backgroundColor: httpResponse.color()));
   }
 }

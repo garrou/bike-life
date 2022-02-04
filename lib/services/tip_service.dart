@@ -12,7 +12,7 @@ class TipService {
     return await client.get(Uri.parse('$endpoint/tips'));
   }
 
-  Future<Response> getByType(String type) async {
-    return await client.get(Uri.parse('$endpoint/tips/types/$type'));
+  Future<Response> getByTopic(String topic) async {
+    return await client.get(Uri.parse('$endpoint/topics/$topic/tips'));
   }
 }

@@ -3,7 +3,7 @@ import 'package:intl/intl.dart';
 class Tip {
   static DateFormat format = DateFormat('dd/MM/yyyy');
 
-  final String id;
+  final int id;
   final String componentType;
   final String title;
   final String content;

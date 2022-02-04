@@ -1,6 +1,5 @@
 import 'package:bike_life/utils/constants.dart';
-import 'package:bike_life/styles/general.dart';
-import 'package:bike_life/styles/textfield_border.dart';
+import 'package:bike_life/styles/styles.dart';
 import 'package:flutter/material.dart';
 
 class AppTextField extends StatelessWidget {

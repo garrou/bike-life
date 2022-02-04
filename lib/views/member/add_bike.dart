@@ -6,8 +6,9 @@ import 'package:bike_life/utils/constants.dart';
 import 'package:bike_life/utils/storage.dart';
 import 'package:bike_life/utils/validator.dart';
 import 'package:bike_life/services/bike_service.dart';
-import 'package:bike_life/styles/general.dart';
+import 'package:bike_life/styles/styles.dart';
 import 'package:bike_life/views/member/member_home.dart';
+import 'package:bike_life/widgets/button.dart';
 import 'package:bike_life/widgets/textfield.dart';
 import 'package:bike_life/widgets/top_left_button.dart';
 import 'package:flutter/material.dart';
@@ -21,6 +22,42 @@ class AddBikePage extends StatefulWidget {
 }
 
 class _AddBikePageState extends State<AddBikePage> {
+  @override
+  Widget build(BuildContext context) =>
+      Scaffold(body: LayoutBuilder(builder: (context, constraints) {
+        if (constraints.maxWidth > maxSize) {
+          return narrowLayout();
+        } else {
+          return wideLayout();
+        }
+      }));
+
+  Widget narrowLayout() => Padding(
+      padding: const EdgeInsets.symmetric(horizontal: maxPadding),
+      child: wideLayout());
+
+  Widget wideLayout() => ListView(children: <Widget>[
+        Padding(
+            padding: const EdgeInsets.all(thirdSize),
+            child: Column(children: <Widget>[
+              Row(children: <Widget>[
+                AppTopLeftButton(
+                    title: 'Ajouter un vélo',
+                    callback: () => Navigator.pop(context))
+              ]),
+              const BikeForm()
+            ]))
+      ]);
+}
+
+class BikeForm extends StatefulWidget {
+  const BikeForm({Key? key}) : super(key: key);
+
+  @override
+  _BikeFormState createState() => _BikeFormState();
+}
+
+class _BikeFormState extends State<BikeForm> {
   final _keyForm = GlobalKey<FormState>();
 
   final _nameFocus = FocusNode();
@@ -49,38 +86,7 @@ class _AddBikePageState extends State<AddBikePage> {
   }
 
   @override
-  Widget build(BuildContext context) => Scaffold(
-      floatingActionButton: FloatingActionButton(
-          backgroundColor: primaryColor,
-          child: const Icon(Icons.save),
-          onPressed: _onAddBike),
-      body: LayoutBuilder(builder: (context, constraints) {
-        if (constraints.maxWidth > maxSize) {
-          return narrowLayout();
-        } else {
-          return wideLayout();
-        }
-      }));
-
-  Widget narrowLayout() => Padding(
-      padding: const EdgeInsets.symmetric(horizontal: maxPadding),
-      child: wideLayout());
-
-  Widget wideLayout() => SingleChildScrollView(
-          child: Column(children: <Widget>[
-        Padding(
-            padding: const EdgeInsets.all(thirdSize),
-            child: Column(children: <Widget>[
-              Row(children: <Widget>[
-                AppTopLeftButton(
-                    title: 'Ajouter un vélo',
-                    callback: () => Navigator.pop(context))
-              ]),
-              _buildForm()
-            ]))
-      ]));
-
-  Form _buildForm() => Form(
+  Widget build(BuildContext context) => Form(
       key: _keyForm,
       child: Column(children: <Widget>[
         AppTextField(
@@ -121,7 +127,12 @@ class _AddBikePageState extends State<AddBikePage> {
                 setState(() => _electric = value);
               }),
         ]),
-        _buildTypesList()
+        _buildTypesList(),
+        AppButton(
+            text: 'Ajouter',
+            callback: _onAddBike,
+            color: primaryColor,
+            icon: const Icon(Icons.add))
       ]));
 
   void _onAddBike() {
@@ -155,8 +166,14 @@ class _AddBikePageState extends State<AddBikePage> {
 
   void _addBike() async {
     final String memberId = await _memberId;
-    final Bike bike = Bike('', _name.text, double.parse(_kmWeek.text),
-        _nbPerWeek.toInt(), _electric!, _type!, DateTime.now().toString());
+    final Bike bike = Bike(
+        '',
+        _name.text,
+        double.parse(_kmWeek.text),
+        _nbPerWeek.toInt(),
+        _electric!,
+        _type!,
+        DateTime.now().add(const Duration(days: -2)).toString());
     final Response response = await _bikeService.create(memberId, bike);
     final HttpResponse httpResponse = HttpResponse(response);
 
