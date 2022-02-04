@@ -4,7 +4,6 @@ import 'dart:convert';
 import 'package:bike_life/services/member_service.dart';
 import 'package:bike_life/styles/theme_model.dart';
 import 'package:bike_life/utils/constants.dart';
-import 'package:bike_life/utils/guard_helper.dart';
 import 'package:bike_life/utils/storage.dart';
 import 'package:bike_life/utils/validator.dart';
 import 'package:bike_life/views/auth/signin.dart';
@@ -15,7 +14,6 @@ import 'package:bike_life/widgets/textfield.dart';
 import 'package:bike_life/widgets/top_left_button.dart';
 import 'package:bike_life/widgets/top_right_button.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_guards/flutter_guards.dart';
 import 'package:http/http.dart';
 import 'package:provider/provider.dart';
 
@@ -27,26 +25,15 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
-  final StreamController<bool> _authState = StreamController();
-
   @override
-  void initState() {
-    super.initState();
-    GuardHelper.checkIfLogged(_authState);
-  }
-
-  @override
-  Widget build(BuildContext context) => Scaffold(
-      body: AuthGuard(
-          authStream: _authState.stream,
-          signedIn: LayoutBuilder(builder: (context, constraints) {
-            if (constraints.maxWidth > maxSize) {
-              return _narrowLayout();
-            } else {
-              return _wideLayout();
-            }
-          }),
-          signedOut: const SigninPage()));
+  Widget build(BuildContext context) =>
+      Scaffold(body: LayoutBuilder(builder: (context, constraints) {
+        if (constraints.maxWidth > maxSize) {
+          return _narrowLayout();
+        } else {
+          return _wideLayout();
+        }
+      }));
 
   Widget _narrowLayout() => Padding(
       padding: const EdgeInsets.symmetric(horizontal: maxPadding),
@@ -65,7 +52,7 @@ class _ProfilePageState extends State<ProfilePage> {
                         callback: () => Navigator.of(context).pop()),
                     AppTopRightButton(
                         callback: _onDisconnect,
-                        icon: Icons.logout,
+                        icon: const Icon(Icons.logout),
                         color: red,
                         padding: secondSize)
                   ]),
@@ -78,7 +65,7 @@ class _ProfilePageState extends State<ProfilePage> {
                         : themeNotifier.isDark = true;
                   },
                   icon: Icon(themeNotifier.isDark
-                      ? Icons.nightlight_round
+                      ? Icons.nightlight_round_outlined
                       : Icons.wb_sunny),
                 )
               ]),
@@ -90,8 +77,7 @@ class _ProfilePageState extends State<ProfilePage> {
     Storage.disconnect();
     Navigator.pushAndRemoveUntil(
         context,
-        MaterialPageRoute(
-            builder: (BuildContext context) => const SigninPage()),
+        MaterialPageRoute(builder: (context) => const SigninPage()),
         (Route<dynamic> route) => false);
   }
 }
@@ -163,7 +149,7 @@ class _UpdateAuthFormState extends State<UpdateAuthForm> {
                 keyboardType: TextInputType.text,
                 label: 'Mot de passe',
                 hintText:
-                    'Entrer un mot de passe de minimum $minPasswordSize caractères',
+                    'Entrer un mot de passe de $minPasswordSize caractères minimum',
                 focusNode: _passwordFocus,
                 textfieldController: _password,
                 validator: passwordValidator,
@@ -175,6 +161,7 @@ class _UpdateAuthFormState extends State<UpdateAuthForm> {
                 hintText: 'Confirmer le mot de passe',
                 focusNode: _confirmPassFocus,
                 textfieldController: _confirmPass,
+                // ignore: body_might_complete_normally_nullable
                 validator: (value) {
                   if (_password.text != value || value!.isEmpty) {
                     return 'Mot de passe incorrect';
@@ -185,7 +172,7 @@ class _UpdateAuthFormState extends State<UpdateAuthForm> {
             AppButton(
                 text: 'Modifier',
                 callback: _onUpdate,
-                color: deepGreen,
+                color: primaryColor,
                 icon: const Icon(Icons.edit))
           ])));
 
@@ -200,7 +187,7 @@ class _UpdateAuthFormState extends State<UpdateAuthForm> {
     String id = await Storage.getMemberId();
     Response response =
         await _memberService.update(id, _email.text, _password.text);
-    Color color = deepGreen;
+    Color color = primaryColor;
     dynamic json = jsonDecode(response.body);
 
     if (response.statusCode == httpCodeOk) {

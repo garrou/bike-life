@@ -9,6 +9,6 @@ class AppLoading extends StatelessWidget {
   Widget build(BuildContext context) => Column(children: const <Widget>[
         Padding(
             padding: EdgeInsets.all(mainSize),
-            child: CircularProgressIndicator(color: deepGreen))
+            child: CircularProgressIndicator(color: primaryColor))
       ]);
 }

@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:bike_life/utils/constants.dart';
 import 'package:bike_life/utils/guard_helper.dart';
 import 'package:bike_life/views/auth/signin.dart';
-import 'package:bike_life/views/home/intro.dart';
+import 'package:bike_life/views/home/discover.dart';
 import 'package:bike_life/views/member/member_home.dart';
 import 'package:bike_life/styles/general.dart';
 import 'package:bike_life/widgets/nav_button.dart';
@@ -48,9 +48,11 @@ class _HomePageState extends State<HomePage> {
               child: Text("La santé de votre vélo\nse surveille de près.",
                   style: italicTextStyle)),
           const AppNavButton(
-              text: 'Découvrir', destination: IntroPage(), color: deepGreen),
+              text: 'Découvrir',
+              destination: DiscoverPage(),
+              color: primaryColor),
           const AppNavButton(
-              text: 'Connexion', destination: SigninPage(), color: deepGreen)
+              text: 'Connexion', destination: SigninPage(), color: primaryColor)
         ])
       ]);
 }

@@ -105,7 +105,7 @@ class _SigninFormState extends State<SigninForm> {
         AppButton(
             text: 'Connexion',
             callback: _onSignin,
-            color: deepGreen,
+            color: primaryColor,
             icon: const Icon(Icons.login))
       ]));
 
@@ -126,8 +126,7 @@ class _SigninFormState extends State<SigninForm> {
       Navigator.pushAndRemoveUntil(
           context,
           MaterialPageRoute(
-              builder: (BuildContext context) =>
-                  const MemberHomePage(initialPage: 0)),
+              builder: (context) => const MemberHomePage(initialPage: 0)),
           (Route<dynamic> route) => false);
     } else {
       _password.text = '';

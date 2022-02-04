@@ -14,8 +14,8 @@ const double buttonHeight = 40.0;
 
 const double imageSize = 500.0;
 
-const double maxPadding = 150.0;
-const double maxSize = 600.0;
+const double maxPadding = 200.0;
+const double maxSize = 700.0;
 
 const double mainSize = 30.0;
 const double secondSize = 20.0;
@@ -26,3 +26,5 @@ const int minPasswordSize = 8;
 
 const int httpCodeOk = 200;
 const int httpCodeCreated = 201;
+
+const String serverMessage = 'confirm';

@@ -1,6 +1,6 @@
 import 'dart:async';
-import 'dart:convert';
 
+import 'package:bike_life/models/http_response.dart';
 import 'package:bike_life/services/member_service.dart';
 import 'package:bike_life/utils/guard_helper.dart';
 import 'package:bike_life/utils/validator.dart';
@@ -110,6 +110,7 @@ class _SignupFormState extends State<SignupForm> {
             hintText: 'Mot de passe, $minPasswordSize caractères minimum',
             focusNode: _confirmPasswordFocus,
             textfieldController: _confirmPassword,
+            // ignore: body_might_complete_normally_nullable
             validator: (value) {
               if (_password.text != value || value!.isEmpty) {
                 return 'Mot de passe incorrect';
@@ -120,7 +121,7 @@ class _SignupFormState extends State<SignupForm> {
         AppButton(
             text: "S'inscrire",
             callback: _onSignup,
-            color: deepGreen,
+            color: primaryColor,
             icon: const Icon(Icons.person_add_alt_1))
       ]));
 
@@ -134,19 +135,17 @@ class _SignupFormState extends State<SignupForm> {
   void _createUser() async {
     Response response =
         await _memberService.signup(_email.text, _password.text);
-    Color color = deepGreen;
-    dynamic json = jsonDecode(response.body);
+    HttpResponse httpResponse = HttpResponse(response);
 
-    if (response.statusCode == httpCodeCreated) {
+    if (httpResponse.success()) {
       Navigator.pushAndRemoveUntil(
           context,
           MaterialPageRoute(
               builder: (BuildContext context) => const SigninPage()),
           (Route<dynamic> route) => false);
-    } else {
-      color = red;
     }
-    ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(json['confirm']), backgroundColor: color));
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text(httpResponse.body()[serverMessage]),
+        backgroundColor: httpResponse.color()));
   }
 }

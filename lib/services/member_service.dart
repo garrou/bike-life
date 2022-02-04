@@ -7,7 +7,7 @@ import 'package:http/http.dart';
 import 'package:http_interceptor/http/http.dart';
 
 class MemberService {
-  Client client = InterceptedClient.build(interceptors: [
+  final Client client = InterceptedClient.build(interceptors: [
     HttpAccountInterceptor(),
   ]);
 

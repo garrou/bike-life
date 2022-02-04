@@ -4,12 +4,12 @@ import 'package:flutter/material.dart';
 
 class AppTopRightButton extends StatelessWidget {
   final VoidCallback callback;
-  final IconData icon;
+  final Icon icon;
   final double padding;
   final Color color;
   const AppTopRightButton(
       {Key? key,
-      this.color = deepGreen,
+      this.color = primaryColor,
       required this.callback,
       required this.icon,
       required this.padding})
@@ -22,7 +22,7 @@ class AppTopRightButton extends StatelessWidget {
           padding: EdgeInsets.fromLTRB(0.0, padding, padding, 0.0),
           child: IconButton(
               onPressed: callback,
-              icon: Icon(icon),
+              icon: icon,
               color: color,
               iconSize: mainSize)));
 }

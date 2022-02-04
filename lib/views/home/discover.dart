@@ -9,14 +9,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_guards/flutter_guards.dart';
 import 'package:introduction_screen/introduction_screen.dart';
 
-class IntroPage extends StatefulWidget {
-  const IntroPage({Key? key}) : super(key: key);
+class DiscoverPage extends StatefulWidget {
+  const DiscoverPage({Key? key}) : super(key: key);
 
   @override
-  _IntroPageState createState() => _IntroPageState();
+  _DiscoverPageState createState() => _DiscoverPageState();
 }
 
-class _IntroPageState extends State<IntroPage> {
+class _DiscoverPageState extends State<DiscoverPage> {
   final introKey = GlobalKey<IntroductionScreenState>();
   final StreamController<bool> _authState = StreamController();
 
@@ -60,14 +60,14 @@ class _IntroPageState extends State<IntroPage> {
             image: const Icon(Icons.euro))
       ],
       showSkipButton: true,
-      skip: const Text('Passer', style: TextStyle(color: deepGreen)),
-      next: const Icon(Icons.arrow_forward, color: deepGreen),
-      done: const Text('Compris', style: TextStyle(color: deepGreen)),
+      skip: const Text('Passer', style: TextStyle(color: primaryColor)),
+      next: const Icon(Icons.arrow_forward, color: primaryColor),
+      done: const Text('Compris', style: TextStyle(color: primaryColor)),
       curve: Curves.easeIn,
       dotsDecorator: const DotsDecorator(
         size: Size(secondSize, secondSize),
-        color: deepGreen,
-        activeColor: deepGreen,
+        color: primaryColor,
+        activeColor: primaryColor,
         activeSize: Size(mainSize, secondSize),
         activeShape: RoundedRectangleBorder(
           borderRadius: BorderRadius.all(Radius.circular(mainSize)),

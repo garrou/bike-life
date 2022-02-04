@@ -7,7 +7,7 @@ import 'package:http/http.dart';
 import 'package:http_interceptor/http/http.dart';
 
 class ComponentService {
-  Client client = InterceptedClient.build(interceptors: [
+  final Client client = InterceptedClient.build(interceptors: [
     HttpAccountInterceptor(),
   ]);
 
@@ -33,15 +33,5 @@ class ComponentService {
     return await client.put(Uri.parse('$endpoint/components/${component.id}'),
         body:
             jsonEncode(<String, dynamic>{'component': jsonEncode(component)}));
-  }
-
-  Future<Response> initAllComponents(String bikeId) async {
-    return await client
-        .post(Uri.parse('$endpoint/bikes/$bikeId/components/init'));
-  }
-
-  Future<Response> getArchivedMemberComponents(String memberId) async {
-    return await client
-        .get(Uri.parse('$endpoint/members/$memberId/components'));
   }
 }

@@ -7,8 +7,8 @@ import 'package:bike_life/styles/general.dart';
 import 'package:bike_life/utils/constants.dart';
 import 'package:bike_life/utils/guard_helper.dart';
 import 'package:bike_life/views/auth/signin.dart';
+import 'package:bike_life/views/member/tip_details.dart';
 import 'package:bike_life/widgets/loading.dart';
-import 'package:bike_life/widgets/tip_card.dart';
 import 'package:bike_life/widgets/title.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_guards/flutter_guards.dart';
@@ -72,10 +72,23 @@ class _TipsPageState extends State<TipsPage> {
                 return Column(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: <Widget>[
-                      for (Tip tip in snapshot.data!) AppTipCard(tip: tip)
+                      for (Tip tip in snapshot.data!) _buildTip(tip)
                     ]);
               }
               return const AppLoading();
             })
       ]);
+
+  Widget _buildTip(Tip tip) => Card(
+      child: GestureDetector(
+          onTap: () => Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (BuildContext context) => TipDetailsPage(tip: tip))),
+          child: ListTile(
+              title: MouseRegion(
+                  child: Text(tip.title), cursor: SystemMouseCursors.click),
+              subtitle: MouseRegion(
+                  child: Text(tip.writeDate),
+                  cursor: SystemMouseCursors.click))));
 }
