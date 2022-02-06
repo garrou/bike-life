@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:convert';
 
 import 'package:bike_life/models/http_response.dart';
 import 'package:bike_life/services/member_service.dart';
@@ -15,7 +14,6 @@ import 'package:bike_life/widgets/textfield.dart';
 import 'package:bike_life/widgets/top_left_button.dart';
 import 'package:bike_life/widgets/top_right_button.dart';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart';
 import 'package:provider/provider.dart';
 
 class ProfilePage extends StatefulWidget {
@@ -29,15 +27,16 @@ class _ProfilePageState extends State<ProfilePage> {
   @override
   Widget build(BuildContext context) =>
       Scaffold(body: LayoutBuilder(builder: (context, constraints) {
-        if (constraints.maxWidth > maxSize) {
-          return _narrowLayout();
+        if (constraints.maxWidth > maxWidth) {
+          return _narrowLayout(context);
         } else {
           return _wideLayout();
         }
       }));
 
-  Widget _narrowLayout() => Padding(
-      padding: const EdgeInsets.symmetric(horizontal: maxPadding),
+  Widget _narrowLayout(BuildContext context) => Padding(
+      padding: EdgeInsets.symmetric(
+          horizontal: MediaQuery.of(context).size.width / 8),
       child: _wideLayout());
 
   Widget _wideLayout() =>
@@ -111,12 +110,13 @@ class _ProfileFormState extends State<ProfileForm> {
     _userEmail = _load();
   }
 
+  // TODO: pref profile and cursor to display components
   Future<String> _load() async {
-    String id = await Storage.getMemberId();
-    Response response = await _memberService.getEmail(id);
+    final String memberId = await Storage.getMemberId();
+    final HttpResponse response = await _memberService.getEmail(memberId);
 
-    if (response.statusCode == httpCodeOk) {
-      return jsonDecode(response.body)['email'];
+    if (response.success()) {
+      return response.email();
     } else {
       throw Exception("Impossible de récupérer l'email");
     }
@@ -185,16 +185,14 @@ class _ProfileFormState extends State<ProfileForm> {
   }
 
   void _updateAuth() async {
-    String id = await Storage.getMemberId();
-    Response response =
+    final String id = await Storage.getMemberId();
+    final HttpResponse response =
         await _memberService.update(id, _email.text, _password.text);
-    HttpResponse httpResponse = HttpResponse(response);
 
-    if (httpResponse.success()) {
+    if (response.success()) {
       Navigator.pop(context);
     }
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: Text(httpResponse.body()[serverMessage]),
-        backgroundColor: httpResponse.color()));
+        content: Text(response.message()), backgroundColor: response.color()));
   }
 }

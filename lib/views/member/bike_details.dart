@@ -1,14 +1,12 @@
-import 'dart:convert';
-
 import 'package:bike_life/models/bike.dart';
 import 'package:bike_life/models/component.dart';
+import 'package:bike_life/models/http_response.dart';
 import 'package:bike_life/services/component_service.dart';
 import 'package:bike_life/styles/styles.dart';
 import 'package:bike_life/utils/constants.dart';
 import 'package:bike_life/widgets/loading.dart';
 import 'package:bike_life/widgets/top_left_button.dart';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
 
 class BikeDetailsPage extends StatefulWidget {
@@ -30,11 +28,11 @@ class _BikeDetailsPageState extends State<BikeDetailsPage> {
   }
 
   Future<List<Component>> _loadComponents() async {
-    Response response =
+    final HttpResponse response =
         await _componentService.getBikeComponents(widget.bike.id);
 
-    if (response.statusCode == httpCodeOk) {
-      return createComponents(jsonDecode(response.body));
+    if (response.success()) {
+      return createComponents(response.body());
     } else {
       throw Exception('Impossible de récupérer les données');
     }
@@ -43,15 +41,16 @@ class _BikeDetailsPageState extends State<BikeDetailsPage> {
   @override
   Widget build(BuildContext context) =>
       Scaffold(body: LayoutBuilder(builder: (context, constraints) {
-        if (constraints.maxWidth > maxSize) {
-          return _narrowLayout();
+        if (constraints.maxWidth > maxWidth) {
+          return _narrowLayout(context);
         } else {
           return _wideLayout();
         }
       }));
 
-  Widget _narrowLayout() => Padding(
-      padding: const EdgeInsets.symmetric(horizontal: maxPadding),
+  Widget _narrowLayout(BuildContext context) => Padding(
+      padding: EdgeInsets.symmetric(
+          horizontal: MediaQuery.of(context).size.width / 8),
       child: _wideLayout());
 
   Widget _wideLayout() => ListView(children: [
@@ -82,8 +81,7 @@ class _BikeDetailsPageState extends State<BikeDetailsPage> {
           subtitle: _buildLinearPercentBar(component)));
 
   Widget _buildLinearPercentBar(Component component) {
-    final DateTime start = DateTime.parse(widget.bike.addedAt);
-    final Duration diff = DateTime.now().difference(start);
+    final Duration diff = DateTime.now().difference(widget.bike.addedAt);
     double percent =
         diff.inDays * (widget.bike.kmPerWeek / 7) / component.duration;
     percent = percent > 1.0 ? 1 : percent;

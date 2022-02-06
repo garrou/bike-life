@@ -15,7 +15,6 @@ import 'package:bike_life/widgets/textfield.dart';
 import 'package:bike_life/widgets/title.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_guards/flutter_guards.dart';
-import 'package:http/http.dart';
 
 class SignupPage extends StatefulWidget {
   const SignupPage({Key? key}) : super(key: key);
@@ -39,8 +38,8 @@ class _SignupPageState extends State<SignupPage> {
           authStream: _authState.stream,
           signedIn: const MemberHomePage(initialPage: 0),
           signedOut: LayoutBuilder(builder: (context, constraints) {
-            if (constraints.maxWidth > maxSize) {
-              return narrowLayout();
+            if (constraints.maxWidth > maxWidth) {
+              return narrowLayout(context);
             } else {
               return wideLayout();
             }
@@ -57,9 +56,12 @@ class _SignupPageState extends State<SignupPage> {
             destination: const SigninPage())
       ])));
 
-  Padding narrowLayout() => Padding(
-      padding: const EdgeInsets.symmetric(horizontal: maxPadding),
-      child: wideLayout());
+  Padding narrowLayout(BuildContext context) {
+    return Padding(
+        padding: EdgeInsets.symmetric(
+            horizontal: MediaQuery.of(context).size.width / 8),
+        child: wideLayout());
+  }
 }
 
 class SignupForm extends StatefulWidget {
@@ -133,11 +135,10 @@ class _SignupFormState extends State<SignupForm> {
   }
 
   void _createUser() async {
-    Response response =
+    final HttpResponse response =
         await _memberService.signup(_email.text, _password.text);
-    HttpResponse httpResponse = HttpResponse(response);
 
-    if (httpResponse.success()) {
+    if (response.success()) {
       Navigator.pushAndRemoveUntil(
           context,
           MaterialPageRoute(
@@ -145,7 +146,6 @@ class _SignupFormState extends State<SignupForm> {
           (Route<dynamic> route) => false);
     }
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: Text(httpResponse.body()[serverMessage]),
-        backgroundColor: httpResponse.color()));
+        content: Text(response.message()), backgroundColor: response.color()));
   }
 }

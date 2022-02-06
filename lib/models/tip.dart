@@ -9,6 +9,8 @@ class Tip {
   final String content;
   final String writeDate;
 
+  // TODO; check date
+
   Tip(this.id, this.componentType, this.title, this.content, this.writeDate);
 
   Tip.fromJson(Map<String, dynamic> json)

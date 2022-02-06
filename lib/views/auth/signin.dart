@@ -1,6 +1,6 @@
 import 'dart:async';
-import 'dart:convert';
 
+import 'package:bike_life/models/http_response.dart';
 import 'package:bike_life/styles/styles.dart';
 import 'package:bike_life/utils/constants.dart';
 import 'package:bike_life/utils/guard_helper.dart';
@@ -16,7 +16,6 @@ import 'package:bike_life/widgets/textfield.dart';
 import 'package:bike_life/widgets/title.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_guards/flutter_guards.dart';
-import 'package:http/http.dart';
 
 class SigninPage extends StatefulWidget {
   const SigninPage({Key? key}) : super(key: key);
@@ -40,8 +39,8 @@ class _SigninPageState extends State<SigninPage> {
           authStream: _authState.stream,
           signedIn: const MemberHomePage(initialPage: 0),
           signedOut: LayoutBuilder(builder: (context, constraints) {
-            if (constraints.maxWidth > maxSize) {
-              return narrowLayout();
+            if (constraints.maxWidth > maxWidth) {
+              return narrowLayout(context);
             } else {
               return wideLayout();
             }
@@ -58,8 +57,9 @@ class _SigninPageState extends State<SigninPage> {
             destination: const SignupPage())
       ])));
 
-  Padding narrowLayout() => Padding(
-      padding: const EdgeInsets.symmetric(horizontal: maxPadding),
+  Padding narrowLayout(BuildContext context) => Padding(
+      padding: EdgeInsets.symmetric(
+          horizontal: MediaQuery.of(context).size.width / 8),
       child: wideLayout());
 }
 
@@ -117,12 +117,12 @@ class _SigninFormState extends State<SigninForm> {
   }
 
   void _authUser() async {
-    Response response = await _memberService.login(_email.text, _password.text);
-    dynamic json = jsonDecode(response.body);
+    final HttpResponse response =
+        await _memberService.login(_email.text, _password.text);
 
-    if (response.statusCode == httpCodeOk) {
-      Storage.setString('jwt', json['accessToken']);
-      Storage.setString('id', json['member']['id']);
+    if (response.success()) {
+      Storage.setString('jwt', response.token());
+      Storage.setString('id', response.memberId());
       Navigator.pushAndRemoveUntil(
           context,
           MaterialPageRoute(
@@ -131,7 +131,7 @@ class _SigninFormState extends State<SigninForm> {
     } else {
       _password.text = '';
       ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(json['confirm']), backgroundColor: red));
+          SnackBar(content: Text(response.message()), backgroundColor: red));
     }
   }
 }

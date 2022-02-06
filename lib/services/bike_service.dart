@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:bike_life/models/http_response.dart';
 import 'package:bike_life/utils/constants.dart';
 import 'package:bike_life/models/bike.dart';
 import 'package:bike_life/utils/http_account_interceptor.dart';
@@ -12,25 +13,34 @@ class BikeService {
     HttpAccountInterceptor(),
   ]);
 
-  Future<Response> create(String memberId, Bike bike) async {
-    return await client.post(Uri.parse('$endpoint/members/$memberId/bikes'),
+  Future<HttpResponse> create(String memberId, Bike bike) async {
+    Response response = await client.post(
+        Uri.parse('$endpoint/members/$memberId/bikes'),
         body: jsonEncode(bike));
+    return HttpResponse(response);
   }
 
-  Future<Response> getOne(String bikeId) async {
-    return await client.get(Uri.parse('$endpoint/bikes/$bikeId'));
+  Future<HttpResponse> getOne(String bikeId) async {
+    Response response = await client.get(Uri.parse('$endpoint/bikes/$bikeId'));
+    return HttpResponse(response);
   }
 
-  Future<Response> getByMember(String memberId) async {
-    return await client.get(Uri.parse('$endpoint/members/$memberId/bikes'));
+  Future<HttpResponse> getByMember(String memberId) async {
+    Response response =
+        await client.get(Uri.parse('$endpoint/members/$memberId/bikes'));
+    return HttpResponse(response);
   }
 
-  Future<Response> delete(String bikeId) async {
-    return await client.delete(Uri.parse('$endpoint/bikes/$bikeId'));
+  Future<HttpResponse> delete(String bikeId) async {
+    Response response =
+        await client.delete(Uri.parse('$endpoint/bikes/$bikeId'));
+    return HttpResponse(response);
   }
 
-  Future<Response> update(Bike bike) async {
-    return await client.put(Uri.parse('$endpoint/bikes/${bike.id}'),
+  Future<HttpResponse> update(Bike bike) async {
+    Response response = await client.put(
+        Uri.parse('$endpoint/bikes/${bike.id}'),
         body: jsonEncode(<String, dynamic>{'bike': jsonEncode(bike)}));
+    return HttpResponse(response);
   }
 }

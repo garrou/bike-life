@@ -1,3 +1,4 @@
+import 'package:bike_life/models/http_response.dart';
 import 'package:bike_life/utils/constants.dart';
 import 'package:bike_life/utils/http_account_interceptor.dart';
 import 'package:http/http.dart';
@@ -8,7 +9,9 @@ class ComponentTypesService {
     HttpAccountInterceptor(),
   ]);
 
-  Future<Response> getTypes() async {
-    return await client.get(Uri.parse('$endpoint/component-types'));
+  Future<HttpResponse> getTypes() async {
+    Response response =
+        await client.get(Uri.parse('$endpoint/component-types'));
+    return HttpResponse(response);
   }
 }

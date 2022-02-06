@@ -1,15 +1,11 @@
-import 'package:intl/intl.dart';
-
 class Bike {
-  static DateFormat format = DateFormat('dd/MM/yyyy');
-
   final String id;
   final String name;
   final double kmPerWeek;
   final int nbUsedPerWeek;
   final bool electric;
   final String type;
-  final String addedAt;
+  final DateTime addedAt;
 
   Bike(this.id, this.name, this.kmPerWeek, this.nbUsedPerWeek, this.electric,
       this.type, this.addedAt);
@@ -21,7 +17,7 @@ class Bike {
         nbUsedPerWeek = json['nbUsedPerWeek'],
         electric = json['electric'],
         type = json['type'],
-        addedAt = json['addedAt'];
+        addedAt = DateTime.parse(json['addedAt']);
 
   Map<String, dynamic> toJson() => {
         'id': id,

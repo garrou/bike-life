@@ -1,6 +1,6 @@
 import 'dart:async';
-import 'dart:convert';
 
+import 'package:bike_life/models/http_response.dart';
 import 'package:bike_life/models/tip.dart';
 import 'package:bike_life/services/tip_service.dart';
 import 'package:bike_life/styles/styles.dart';
@@ -8,7 +8,6 @@ import 'package:bike_life/utils/constants.dart';
 import 'package:bike_life/views/member/tip_details.dart';
 import 'package:bike_life/widgets/loading.dart';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart';
 
 class TipsPage extends StatefulWidget {
   const TipsPage({Key? key}) : super(key: key);
@@ -28,10 +27,10 @@ class _TipsPageState extends State<TipsPage> {
   }
 
   Future<List<Tip>> _loadTips() async {
-    Response response = await _tipService.getByTopic('%');
+    HttpResponse response = await _tipService.getByTopic('%');
 
-    if (response.statusCode == httpCodeOk) {
-      return createTips(jsonDecode(response.body));
+    if (response.success()) {
+      return createTips(response.body());
     } else {
       throw Exception('Impossible de récupérer les conseils');
     }
@@ -40,7 +39,7 @@ class _TipsPageState extends State<TipsPage> {
   @override
   Widget build(BuildContext context) =>
       Scaffold(body: LayoutBuilder(builder: (context, constraints) {
-        if (constraints.maxWidth > maxSize) {
+        if (constraints.maxWidth > maxWidth) {
           return _narrowLayout(context);
         } else {
           return _wideLayout(context);
@@ -48,7 +47,8 @@ class _TipsPageState extends State<TipsPage> {
       }));
 
   Widget _narrowLayout(BuildContext context) => Padding(
-      padding: const EdgeInsets.symmetric(horizontal: maxPadding),
+      padding: EdgeInsets.symmetric(
+          horizontal: MediaQuery.of(context).size.width / 12),
       child: _wideLayout(context));
 
   Widget _wideLayout(BuildContext context) =>
@@ -59,7 +59,7 @@ class _TipsPageState extends State<TipsPage> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text('Conseils', style: secondTextStyle),
+                  Text('Conseils', style: thirdTextStyle),
                   IconButton(
                       icon: const Icon(Icons.help),
                       iconSize: 30,

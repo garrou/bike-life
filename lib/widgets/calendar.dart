@@ -4,8 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 
 class AppCalendar extends StatefulWidget {
-  final String selectedDate;
+  final DateTime selectedDate;
   final Function(DateRangePickerSelectionChangedArgs args) callback;
+
   const AppCalendar(
       {Key? key, required this.callback, required this.selectedDate})
       : super(key: key);
@@ -16,6 +17,7 @@ class AppCalendar extends StatefulWidget {
 
 class _AppCalendarState extends State<AppCalendar> {
   bool _isVisible = false;
+
   @override
   Widget build(BuildContext context) => Padding(
       padding: const EdgeInsets.only(top: thirdSize),
@@ -32,7 +34,7 @@ class _AppCalendarState extends State<AppCalendar> {
         Visibility(
             visible: _isVisible,
             child: SfDateRangePicker(
-                initialSelectedDate: DateTime.parse(widget.selectedDate),
+                initialSelectedDate: widget.selectedDate,
                 todayHighlightColor: primaryColor,
                 selectionColor: primaryColor,
                 view: DateRangePickerView.month,

@@ -31,16 +31,17 @@ class _TipDetailsPageState extends State<TipDetailsPage> {
       body: AuthGuard(
           authStream: _authState.stream,
           signedIn: LayoutBuilder(builder: (context, constraints) {
-            if (constraints.maxWidth > maxSize) {
-              return _narrowLayout();
+            if (constraints.maxWidth > maxWidth) {
+              return _narrowLayout(context);
             } else {
               return _wideLayout();
             }
           }),
           signedOut: const SigninPage()));
 
-  Widget _narrowLayout() => Padding(
-      padding: const EdgeInsets.symmetric(horizontal: maxPadding),
+  Widget _narrowLayout(BuildContext context) => Padding(
+      padding: EdgeInsets.symmetric(
+          horizontal: MediaQuery.of(context).size.width / 12),
       child: _wideLayout());
 
   Widget _wideLayout() => ListView(

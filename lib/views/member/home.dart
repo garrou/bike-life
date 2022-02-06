@@ -1,8 +1,8 @@
 import 'dart:async';
-import 'dart:convert';
 
 import 'package:bike_life/models/bike.dart';
 import 'package:bike_life/models/component.dart';
+import 'package:bike_life/models/http_response.dart';
 import 'package:bike_life/services/component_service.dart';
 import 'package:bike_life/styles/animations.dart';
 import 'package:bike_life/utils/constants.dart';
@@ -16,10 +16,10 @@ import 'package:bike_life/views/member/bike_details.dart';
 import 'package:bike_life/views/member/update_bike.dart';
 import 'package:bike_life/views/member/profile.dart';
 import 'package:bike_life/widgets/loading.dart';
+import 'package:bike_life/widgets/top_right_button.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_guards/flutter_guards.dart';
-import 'package:http/http.dart';
 
 class AllBikesPage extends StatefulWidget {
   const AllBikesPage({Key? key}) : super(key: key);
@@ -42,8 +42,8 @@ class _AllBikesPageState extends State<AllBikesPage> {
       body: AuthGuard(
           authStream: _authState.stream,
           signedIn: LayoutBuilder(builder: (context, constraints) {
-            if (constraints.maxWidth > maxSize) {
-              return _narrowLayout();
+            if (constraints.maxWidth > maxWidth) {
+              return _narrowLayout(context);
             } else {
               return _wideLayout();
             }
@@ -55,23 +55,24 @@ class _AllBikesPageState extends State<AllBikesPage> {
         child: const Icon(Icons.add, color: Colors.white),
       ));
 
-  Widget _narrowLayout() => Padding(
-      padding: const EdgeInsets.symmetric(horizontal: maxPadding),
+  Widget _narrowLayout(BuildContext context) => Padding(
+      padding: EdgeInsets.symmetric(
+          horizontal: MediaQuery.of(context).size.width / 8),
       child: _wideLayout());
 
-  Widget _wideLayout() => ListView(children: [
-        Padding(
-            padding: const EdgeInsets.all(secondSize),
-            child: Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text('Vélos', style: secondTextStyle),
-                  IconButton(
-                      icon: const Icon(Icons.person),
-                      iconSize: 30,
-                      onPressed: _onProfilePage)
-                ])),
+  Widget _wideLayout() =>
+      ListView(padding: const EdgeInsets.all(secondSize), children: [
+        Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text('Vélos', style: secondTextStyle),
+              AppTopRightButton(
+                  color: Colors.black,
+                  callback: _onProfilePage,
+                  icon: const Icon(Icons.person),
+                  padding: 0),
+            ]),
         const Carousel(),
         const ComponentsAlerts()
       ]);
@@ -97,11 +98,11 @@ class _CarouselState extends State<Carousel> {
   int _current = 0;
 
   Future<List<Bike>> _loadBikes() async {
-    String memberId = await Storage.getMemberId();
-    Response response = await _bikeService.getByMember(memberId);
+    final String memberId = await Storage.getMemberId();
+    final HttpResponse response = await _bikeService.getByMember(memberId);
 
-    if (response.statusCode == httpCodeOk) {
-      return createBikes(jsonDecode(response.body));
+    if (response.success()) {
+      return createBikes(response.body());
     } else {
       throw Exception('Impossible de récupérer les données');
     }
@@ -162,9 +163,9 @@ class _CarouselState extends State<Carousel> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Padding(
-                            padding: const EdgeInsets.all(10),
                             child: Text(bike.name,
-                                style: const TextStyle(color: Colors.white))),
+                                style: const TextStyle(color: Colors.white)),
+                            padding: const EdgeInsets.all(10)),
                         IconButton(
                             icon: const Icon(Icons.edit,
                                 size: 20, color: Colors.white),
@@ -211,13 +212,16 @@ class ComponentsAlerts extends StatefulWidget {
 class _ComponentsAlertsState extends State<ComponentsAlerts> {
   final ComponentService _componentService = ComponentService();
   late Future<List<Component>> _components;
+  final List<String> _actions = ['Changer', 'Supprimer'];
 
   Future<List<Component>> _loadComponentsAlerts() async {
-    String memberId = await Storage.getMemberId();
-    Response response = await _componentService.getComponentsAlerts(memberId);
+    final String memberId = await Storage.getMemberId();
+    final HttpResponse response =
+        await _componentService.getComponentsAlerts(memberId);
 
-    if (response.statusCode == httpCodeOk) {
-      return createComponents(jsonDecode(response.body));
+    if (response.success()) {
+      // TODO: create alert obj
+      return createComponents(response.body());
     } else {
       throw Exception('Impossible de récupérer les données');
     }
@@ -236,9 +240,9 @@ class _ComponentsAlertsState extends State<ComponentsAlerts> {
         if (snapshot.hasError) {
           return Text('${snapshot.error}');
         } else if (snapshot.hasData) {
-          return Column(children: [
-            Text('${snapshot.data!.length} composants à vérifier',
-                style: secondTextStyle),
+          final String several = snapshot.data!.length > 1 ? 's' : '';
+          return Column(children: <Widget>[
+            Text('Composant$several à changer', style: thirdTextStyle),
             ListView.builder(
                 itemCount: snapshot.data!.length,
                 shrinkWrap: true,
@@ -250,19 +254,20 @@ class _ComponentsAlertsState extends State<ComponentsAlerts> {
         return const AppLoading();
       });
 
-  Widget _buildComponent(Component component) => Dismissible(
-      background: Container(color: green, child: const Icon(Icons.check)),
-      secondaryBackground:
-          Container(color: red, child: const Icon(Icons.cancel)),
-      onDismissed: (direction) {
-        /*
-        TODO:
-        startToEnd
-        endToStart
-        */
-      },
-      key: Key(component.id),
-      child: ListTile(
-          title: MouseRegion(
-              child: Text(component.type), cursor: SystemMouseCursors.click)));
+  ListTile _buildComponent(Component component) => ListTile(
+        title: MouseRegion(
+            child: Text(component.type), cursor: SystemMouseCursors.click),
+        trailing: PopupMenuButton<String>(
+            onSelected: _onChoice,
+            itemBuilder: (context) => _actions
+                .map((String action) =>
+                    PopupMenuItem<String>(child: Text(action), value: action))
+                .toList()),
+      );
+
+  void _onChoice(String action) {
+    // TODO: action
+    if (action == 'Changer') {
+    } else {}
+  }
 }

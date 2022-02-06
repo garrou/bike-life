@@ -21,8 +21,6 @@ TextStyle mainTextStyle = GoogleFonts.roboto(fontSize: mainSize);
 TextStyle secondTextStyle = GoogleFonts.roboto(fontSize: secondSize);
 TextStyle thirdTextStyle = GoogleFonts.roboto(fontSize: intermediateSize);
 
-TextStyle whiteThirdTextStyle =
-    GoogleFonts.roboto(fontSize: 15.0, color: Colors.white);
 TextStyle boldSubTitleStyle =
     GoogleFonts.roboto(fontSize: secondSize, fontWeight: FontWeight.bold);
 TextStyle italicTextStyle =

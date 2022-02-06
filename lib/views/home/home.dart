@@ -33,7 +33,7 @@ class _HomePageState extends State<HomePage> {
           signedIn: const MemberHomePage(initialPage: 0),
           signedOut: _layout()));
 
-  ListView _layout() => ListView(children: <Widget>[
+  Widget _layout() => ListView(children: <Widget>[
         Row(children: <Widget>[
           Padding(
               padding: const EdgeInsets.fromLTRB(mainSize, mainSize, 0, 0),

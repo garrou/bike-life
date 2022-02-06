@@ -1,3 +1,4 @@
+import 'package:bike_life/models/http_response.dart';
 import 'package:bike_life/utils/constants.dart';
 import 'package:bike_life/utils/http_account_interceptor.dart';
 import 'package:http/http.dart';
@@ -8,12 +9,21 @@ class ComponentService {
     HttpAccountInterceptor(),
   ]);
 
-  Future<Response> getBikeComponents(String bikeId) async {
-    return await client.get(Uri.parse('$endpoint/bikes/$bikeId/components'));
+  Future<HttpResponse> getBikeComponents(String bikeId) async {
+    Response response =
+        await client.get(Uri.parse('$endpoint/bikes/$bikeId/components'));
+    return HttpResponse(response);
   }
 
-  Future<Response> getComponentsAlerts(String memberId) async {
-    return await client
+  Future<HttpResponse> getComponentsAlerts(String memberId) async {
+    Response response = await client
         .get(Uri.parse('$endpoint/members/$memberId/components/alerts'));
+    return HttpResponse(response);
+  }
+
+  Future<HttpResponse> changeComponent(int componentId) async {
+    Response response =
+        await client.patch(Uri.parse('$endpoint/components/$componentId'));
+    return HttpResponse(response);
   }
 }
