@@ -7,12 +7,10 @@ import 'package:bike_life/utils/constants.dart';
 import 'package:bike_life/utils/validator.dart';
 import 'package:bike_life/views/member/member_home.dart';
 import 'package:bike_life/widgets/button.dart';
-import 'package:bike_life/widgets/calendar.dart';
 import 'package:bike_life/widgets/textfield.dart';
 import 'package:bike_life/widgets/top_left_button.dart';
 import 'package:bike_life/widgets/top_right_button.dart';
 import 'package:flutter/material.dart';
-import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 
 class UpdateBikePage extends StatefulWidget {
   final Bike bike;
@@ -87,7 +85,6 @@ class _UpdateBikeFormState extends State<UpdateBikeForm> {
   final BikeService _bikeService = BikeService();
   final List<String> _types = ['VTT', 'Ville', 'Route'];
 
-  late DateTime _dateOfPurchase;
   late int _nbPerWeek;
   late bool? _electric;
   late String? _type;
@@ -97,7 +94,6 @@ class _UpdateBikeFormState extends State<UpdateBikeForm> {
     super.initState();
     _type = widget.bike.type;
     _nbPerWeek = widget.bike.nbUsedPerWeek;
-    _dateOfPurchase = widget.bike.addedAt;
     _electric = widget.bike.electric;
     _kmWeek.text = '${widget.bike.kmPerWeek}';
     _name.text = widget.bike.name;
@@ -146,12 +142,8 @@ class _UpdateBikeFormState extends State<UpdateBikeForm> {
               }),
         ]),
         _buildBikesTypes(),
-        AppCalendar(callback: _onDateChanged, selectedDate: _dateOfPurchase),
         AppButton(
-            text: 'Modifier',
-            callback: _onUpdate,
-            color: primaryColor,
-            icon: const Icon(Icons.save))
+            text: 'Modifier', callback: _onUpdate, icon: const Icon(Icons.save))
       ]));
 
   Widget _buildBikesTypes() => Column(children: <Widget>[
@@ -172,10 +164,6 @@ class _UpdateBikeFormState extends State<UpdateBikeForm> {
                   }))
       ]);
 
-  void _onDateChanged(DateRangePickerSelectionChangedArgs args) {
-    _dateOfPurchase = args.value;
-  }
-
   void _onUpdate() {
     if (_keyForm.currentState!.validate()) {
       _keyForm.currentState!.save();
@@ -183,7 +171,6 @@ class _UpdateBikeFormState extends State<UpdateBikeForm> {
     }
   }
 
-  // TODO: check negative add bike and components
   void _update() async {
     final Bike bike = Bike(
         widget.bike.id,
@@ -192,7 +179,7 @@ class _UpdateBikeFormState extends State<UpdateBikeForm> {
         _nbPerWeek,
         _electric!,
         _type!,
-        _dateOfPurchase);
+        widget.bike.addedAt);
     HttpResponse response = await _bikeService.update(bike);
 
     if (response.success()) {

@@ -9,15 +9,15 @@ import 'package:bike_life/widgets/top_left_button.dart';
 import 'package:flutter/material.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
 
-class BikeDetailsPage extends StatefulWidget {
+class BikeComponentsPage extends StatefulWidget {
   final Bike bike;
-  const BikeDetailsPage({Key? key, required this.bike}) : super(key: key);
+  const BikeComponentsPage({Key? key, required this.bike}) : super(key: key);
 
   @override
-  _BikeDetailsPageState createState() => _BikeDetailsPageState();
+  _BikeComponentsPageState createState() => _BikeComponentsPageState();
 }
 
-class _BikeDetailsPageState extends State<BikeDetailsPage> {
+class _BikeComponentsPageState extends State<BikeComponentsPage> {
   final ComponentService _componentService = ComponentService();
   late Future<List<Component>> _components;
 
@@ -85,6 +85,8 @@ class _BikeDetailsPageState extends State<BikeDetailsPage> {
     double percent =
         diff.inDays * (widget.bike.kmPerWeek / 7) / component.duration;
     percent = percent > 1.0 ? 1 : percent;
+
+    // TODO: get last changed in obj
 
     return MouseRegion(
         child: LinearPercentIndicator(

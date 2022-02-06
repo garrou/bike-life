@@ -105,7 +105,6 @@ class _SigninFormState extends State<SigninForm> {
         AppButton(
             text: 'Connexion',
             callback: _onSignin,
-            color: primaryColor,
             icon: const Icon(Icons.login))
       ]));
 

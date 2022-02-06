@@ -123,7 +123,6 @@ class _SignupFormState extends State<SignupForm> {
         AppButton(
             text: "S'inscrire",
             callback: _onSignup,
-            color: primaryColor,
             icon: const Icon(Icons.person_add_alt_1))
       ]));
 

@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:bike_life/models/http_response.dart';
 import 'package:bike_life/services/member_service.dart';
+import 'package:bike_life/styles/animations.dart';
 import 'package:bike_life/styles/theme_model.dart';
 import 'package:bike_life/utils/constants.dart';
 import 'package:bike_life/utils/storage.dart';
@@ -77,7 +78,7 @@ class _ProfilePageState extends State<ProfilePage> {
     Storage.disconnect();
     Navigator.pushAndRemoveUntil(
         context,
-        MaterialPageRoute(builder: (context) => const SigninPage()),
+        animationRightLeft(const SigninPage()),
         (Route<dynamic> route) => false);
   }
 }
@@ -173,8 +174,7 @@ class _ProfileFormState extends State<ProfileForm> {
             AppButton(
                 text: 'Modifier',
                 callback: _onUpdate,
-                color: primaryColor,
-                icon: const Icon(Icons.edit))
+                icon: const Icon(Icons.save))
           ])));
 
   void _onUpdate() {

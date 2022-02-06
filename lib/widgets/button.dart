@@ -11,7 +11,7 @@ class AppButton extends StatelessWidget {
       {Key? key,
       required this.text,
       required this.callback,
-      required this.color,
+      this.color = primaryColor,
       required this.icon})
       : super(key: key);
 

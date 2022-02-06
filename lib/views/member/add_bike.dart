@@ -120,12 +120,12 @@ class _AddBikeFormState extends State<AddBikeForm> {
               }),
         ]),
         _buildBikesTypes(),
-        AppCalendar(callback: _onDateChanged, selectedDate: _dateOfPurchase),
+        AppCalendar(
+            callback: _onDateChanged,
+            selectedDate: _dateOfPurchase,
+            text: "Date d'ajout"),
         AppButton(
-            text: 'Ajouter',
-            callback: _onAddBike,
-            color: primaryColor,
-            icon: const Icon(Icons.add))
+            text: 'Ajouter', callback: _onAddBike, icon: const Icon(Icons.add))
       ]));
 
   Widget _buildBikesTypes() => Column(children: <Widget>[

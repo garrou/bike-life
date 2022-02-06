@@ -5,10 +5,16 @@ import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 
 class AppCalendar extends StatefulWidget {
   final DateTime selectedDate;
+  final String text;
+  final bool visible;
   final Function(DateRangePickerSelectionChangedArgs args) callback;
 
   const AppCalendar(
-      {Key? key, required this.callback, required this.selectedDate})
+      {Key? key,
+      required this.callback,
+      required this.selectedDate,
+      required this.text,
+      this.visible = false})
       : super(key: key);
 
   @override
@@ -16,7 +22,13 @@ class AppCalendar extends StatefulWidget {
 }
 
 class _AppCalendarState extends State<AppCalendar> {
-  bool _isVisible = false;
+  late bool _isVisible;
+
+  @override
+  void initState() {
+    super.initState();
+    _isVisible = widget.visible;
+  }
 
   @override
   Widget build(BuildContext context) => Padding(
@@ -24,7 +36,7 @@ class _AppCalendarState extends State<AppCalendar> {
       child: Column(children: <Widget>[
         GestureDetector(
           child: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-            Text("Date d'achat", style: secondTextStyle),
+            Text(widget.text, style: secondTextStyle),
             Icon(_isVisible ? Icons.arrow_drop_up : Icons.arrow_drop_down)
           ]),
           onTap: () {

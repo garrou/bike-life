@@ -16,7 +16,7 @@ packages:
     source: hosted
     version: "2.1.0"
   carousel_slider:
-    dependency: "direct main"
+    dependency: "direct overridden"
     description:
       name: carousel_slider
       url: "https://pub.dartlang.org"
@@ -58,7 +58,7 @@ packages:
     source: hosted
     version: "3.0.1"
   cupertino_icons:
-    dependency: "direct main"
+    dependency: "direct overridden"
     description:
       name: cupertino_icons
       url: "https://pub.dartlang.org"
@@ -98,7 +98,7 @@ packages:
     source: sdk
     version: "0.0.0"
   flutter_guards:
-    dependency: "direct main"
+    dependency: "direct overridden"
     description:
       name: flutter_guards
       url: "https://pub.dartlang.org"
@@ -122,21 +122,21 @@ packages:
     source: sdk
     version: "0.0.0"
   google_fonts:
-    dependency: "direct main"
+    dependency: "direct overridden"
     description:
       name: google_fonts
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.1.0"
   http:
-    dependency: "direct main"
+    dependency: "direct overridden"
     description:
       name: http
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.13.3"
   http_interceptor:
-    dependency: "direct main"
+    dependency: "direct overridden"
     description:
       name: http_interceptor
       url: "https://pub.dartlang.org"
@@ -150,14 +150,14 @@ packages:
     source: hosted
     version: "4.0.0"
   intl:
-    dependency: "direct main"
+    dependency: "direct overridden"
     description:
       name: intl
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.17.0"
   introduction_screen:
-    dependency: "direct main"
+    dependency: "direct overridden"
     description:
       name: introduction_screen
       url: "https://pub.dartlang.org"
@@ -255,19 +255,19 @@ packages:
     source: hosted
     version: "1.11.1"
   percent_indicator:
-    dependency: "direct main"
+    dependency: "direct overridden"
     description:
       name: percent_indicator
       url: "https://pub.dartlang.org"
     source: hosted
     version: "4.0.0"
   platform:
-    dependency: transitive
+    dependency: "direct overridden"
     description:
       name: platform
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "3.0.2"
+    version: "3.1.0"
   plugin_platform_interface:
     dependency: transitive
     description:
@@ -283,14 +283,14 @@ packages:
     source: hosted
     version: "4.2.3"
   provider:
-    dependency: "direct main"
+    dependency: "direct overridden"
     description:
       name: provider
       url: "https://pub.dartlang.org"
     source: hosted
     version: "6.0.2"
   shared_preferences:
-    dependency: "direct main"
+    dependency: "direct overridden"
     description:
       name: shared_preferences
       url: "https://pub.dartlang.org"
@@ -386,7 +386,7 @@ packages:
     source: hosted
     version: "19.3.44"
   syncfusion_flutter_datepicker:
-    dependency: "direct main"
+    dependency: "direct overridden"
     description:
       name: syncfusion_flutter_datepicker
       url: "https://pub.dartlang.org"

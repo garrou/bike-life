@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:bike_life/models/http_response.dart';
 import 'package:bike_life/utils/constants.dart';
 import 'package:bike_life/utils/http_account_interceptor.dart';
@@ -21,9 +23,11 @@ class ComponentService {
     return HttpResponse(response);
   }
 
-  Future<HttpResponse> changeComponent(int componentId) async {
-    Response response =
-        await client.patch(Uri.parse('$endpoint/components/$componentId'));
+  Future<HttpResponse> changeComponent(
+      String componentId, DateTime date) async {
+    Response response = await client.patch(
+        Uri.parse('$endpoint/components/$componentId'),
+        body: jsonEncode(<String, dynamic>{'changedAt': date.toString()}));
     return HttpResponse(response);
   }
 }

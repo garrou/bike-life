@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:bike_life/models/http_response.dart';
 import 'package:bike_life/models/tip.dart';
 import 'package:bike_life/services/tip_service.dart';
+import 'package:bike_life/styles/animations.dart';
 import 'package:bike_life/styles/styles.dart';
 import 'package:bike_life/utils/constants.dart';
 import 'package:bike_life/views/member/tip_details.dart';
@@ -86,9 +87,7 @@ class _TipsPageState extends State<TipsPage> {
   Widget _buildTip(Tip tip) => Card(
       child: GestureDetector(
           onTap: () => Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (BuildContext context) => TipDetailsPage(tip: tip))),
+              context, animationRightLeft(TipDetailsPage(tip: tip))),
           child: ListTile(
               title: MouseRegion(
                   child: Text(tip.title), cursor: SystemMouseCursors.click),

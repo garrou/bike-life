@@ -12,7 +12,8 @@ import 'package:bike_life/utils/storage.dart';
 import 'package:bike_life/views/auth/signin.dart';
 import 'package:bike_life/views/member/add_bike.dart';
 import 'package:bike_life/styles/styles.dart';
-import 'package:bike_life/views/member/bike_details.dart';
+import 'package:bike_life/views/member/bike_components.dart';
+import 'package:bike_life/views/member/change_component.dart';
 import 'package:bike_life/views/member/update_bike.dart';
 import 'package:bike_life/views/member/profile.dart';
 import 'package:bike_life/widgets/loading.dart';
@@ -198,8 +199,8 @@ class _CarouselState extends State<Carousel> {
   void _onUpdateBikePage(Bike bike) =>
       Navigator.push(context, animationRightLeft(UpdateBikePage(bike: bike)));
 
-  void _onBikePage(Bike bike) =>
-      Navigator.push(context, animationRightLeft(BikeDetailsPage(bike: bike)));
+  void _onBikePage(Bike bike) => Navigator.push(
+      context, animationRightLeft(BikeComponentsPage(bike: bike)));
 }
 
 class ComponentsAlerts extends StatefulWidget {
@@ -212,7 +213,6 @@ class ComponentsAlerts extends StatefulWidget {
 class _ComponentsAlertsState extends State<ComponentsAlerts> {
   final ComponentService _componentService = ComponentService();
   late Future<List<Component>> _components;
-  final List<String> _actions = ['Changer', 'Supprimer'];
 
   Future<List<Component>> _loadComponentsAlerts() async {
     final String memberId = await Storage.getMemberId();
@@ -247,27 +247,25 @@ class _ComponentsAlertsState extends State<ComponentsAlerts> {
                 itemCount: snapshot.data!.length,
                 shrinkWrap: true,
                 itemBuilder: (_, index) {
-                  return _buildComponent(snapshot.data![index]);
+                  return _buildTile(snapshot.data![index]);
                 })
           ]);
         }
         return const AppLoading();
       });
 
-  ListTile _buildComponent(Component component) => ListTile(
-        title: MouseRegion(
-            child: Text(component.type), cursor: SystemMouseCursors.click),
-        trailing: PopupMenuButton<String>(
-            onSelected: _onChoice,
-            itemBuilder: (context) => _actions
-                .map((String action) =>
-                    PopupMenuItem<String>(child: Text(action), value: action))
-                .toList()),
-      );
+  Widget _buildTile(Component component) => Dismissible(
+      key: Key(component.id),
+      direction: DismissDirection.startToEnd,
+      background: Container(
+          padding: const EdgeInsets.all(15),
+          child: const Text('Changer', style: TextStyle(color: Colors.white)),
+          color: green),
+      child: ListTile(
+          title: MouseRegion(
+              child: Text(component.type), cursor: SystemMouseCursors.click)),
+      onDismissed: (_) => _onDismiss(component));
 
-  void _onChoice(String action) {
-    // TODO: action
-    if (action == 'Changer') {
-    } else {}
-  }
+  void _onDismiss(Component component) => Navigator.push(
+      context, animationRightLeft(ChangeComponentPage(component: component)));
 }
