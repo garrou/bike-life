@@ -2,8 +2,10 @@ import 'package:bike_life/models/bike.dart';
 import 'package:bike_life/models/component.dart';
 import 'package:bike_life/models/http_response.dart';
 import 'package:bike_life/services/component_service.dart';
+import 'package:bike_life/styles/animations.dart';
 import 'package:bike_life/styles/styles.dart';
 import 'package:bike_life/utils/constants.dart';
+import 'package:bike_life/views/member/component_details.dart';
 import 'package:bike_life/widgets/loading.dart';
 import 'package:bike_life/widgets/top_left_button.dart';
 import 'package:flutter/material.dart';
@@ -18,7 +20,6 @@ class BikeComponentsPage extends StatefulWidget {
 }
 
 class _BikeComponentsPageState extends State<BikeComponentsPage> {
-  final ComponentService _componentService = ComponentService();
   late Future<List<Component>> _components;
 
   @override
@@ -28,8 +29,9 @@ class _BikeComponentsPageState extends State<BikeComponentsPage> {
   }
 
   Future<List<Component>> _loadComponents() async {
+    final ComponentService componentService = ComponentService();
     final HttpResponse response =
-        await _componentService.getBikeComponents(widget.bike.id);
+        await componentService.getBikeComponents(widget.bike.id);
 
     if (response.success()) {
       return createComponents(response.body());
@@ -67,9 +69,8 @@ class _BikeComponentsPageState extends State<BikeComponentsPage> {
           return ListView.builder(
               itemCount: snapshot.data!.length,
               shrinkWrap: true,
-              itemBuilder: (_, index) {
-                return _buildComponent(snapshot.data![index]);
-              });
+              itemBuilder: (_, index) =>
+                  _buildComponent(snapshot.data![index]));
         }
         return const AppLoading();
       });
@@ -81,27 +82,30 @@ class _BikeComponentsPageState extends State<BikeComponentsPage> {
           subtitle: _buildLinearPercentBar(component)));
 
   Widget _buildLinearPercentBar(Component component) {
-    final Duration diff = DateTime.now().difference(widget.bike.addedAt);
+    final Duration diff = DateTime.now().difference(component.changedAt);
     double percent =
         diff.inDays * (widget.bike.kmPerWeek / 7) / component.duration;
     percent = percent > 1.0 ? 1 : percent;
 
-    // TODO: get last changed in obj
-
     return MouseRegion(
-        child: LinearPercentIndicator(
-            lineHeight: mainSize,
-            center: Text('${(percent * 100).toStringAsFixed(0)} %'),
-            percent: percent,
-            backgroundColor: grey,
-            progressColor: percent >= 1
-                ? red
-                : percent > .5
-                    ? orange
-                    : green,
-            barRadius: const Radius.circular(50)),
+        child: GestureDetector(
+            onTap: () => _onComponentHistoric(component),
+            child: LinearPercentIndicator(
+                lineHeight: mainSize,
+                center: Text('${(percent * 100).toStringAsFixed(0)} %'),
+                percent: percent,
+                backgroundColor: grey,
+                progressColor: percent >= 1
+                    ? red
+                    : percent > .5
+                        ? orange
+                        : green,
+                barRadius: const Radius.circular(50))),
         cursor: SystemMouseCursors.click);
   }
 
   void _back() => Navigator.of(context).pop();
+
+  void _onComponentHistoric(Component component) => Navigator.push(
+      context, animationRightLeft(ComponentDetailsPage(component: component)));
 }

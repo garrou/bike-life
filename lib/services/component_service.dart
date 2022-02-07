@@ -30,4 +30,10 @@ class ComponentService {
         body: jsonEncode(<String, dynamic>{'changedAt': date.toString()}));
     return HttpResponse(response);
   }
+
+  Future<HttpResponse> getChangeHistoric(String componentId) async {
+    Response response = await client
+        .get(Uri.parse('$endpoint/components/$componentId/change-historic'));
+    return HttpResponse(response);
+  }
 }

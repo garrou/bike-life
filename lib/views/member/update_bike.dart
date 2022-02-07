@@ -21,8 +21,6 @@ class UpdateBikePage extends StatefulWidget {
 }
 
 class _UpdateBikePageState extends State<UpdateBikePage> {
-  final BikeService _bikeService = BikeService();
-
   @override
   Widget build(BuildContext context) =>
       Scaffold(body: LayoutBuilder(builder: (context, constraints) {
@@ -50,7 +48,8 @@ class _UpdateBikePageState extends State<UpdateBikePage> {
       ]);
 
   _onDelete() async {
-    final HttpResponse response = await _bikeService.delete(widget.bike.id);
+    final BikeService bikeService = BikeService();
+    final HttpResponse response = await bikeService.delete(widget.bike.id);
 
     if (response.success()) {
       Navigator.pushAndRemoveUntil(
@@ -82,7 +81,6 @@ class _UpdateBikeFormState extends State<UpdateBikeForm> {
   final _kmWeekFocus = FocusNode();
   final _kmWeek = TextEditingController();
 
-  final BikeService _bikeService = BikeService();
   final List<String> _types = ['VTT', 'Ville', 'Route'];
 
   late int _nbPerWeek;
@@ -180,7 +178,8 @@ class _UpdateBikeFormState extends State<UpdateBikeForm> {
         _electric!,
         _type!,
         widget.bike.addedAt);
-    HttpResponse response = await _bikeService.update(bike);
+    final BikeService bikeService = BikeService();
+    final HttpResponse response = await bikeService.update(bike);
 
     if (response.success()) {
       Navigator.pushAndRemoveUntil(

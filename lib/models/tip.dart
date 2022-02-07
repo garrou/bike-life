@@ -9,8 +9,6 @@ class Tip {
   final String content;
   final String writeDate;
 
-  // TODO; check date
-
   Tip(this.id, this.componentType, this.title, this.content, this.writeDate);
 
   Tip.fromJson(Map<String, dynamic> json)
@@ -21,6 +19,5 @@ class Tip {
         writeDate = format.format(DateTime.parse(json['date']));
 }
 
-List<Tip> createTips(List records) {
-  return records.map((json) => Tip.fromJson(json)).toList(growable: false);
-}
+List<Tip> createTips(List records) =>
+    records.map((json) => Tip.fromJson(json)).toList(growable: false);

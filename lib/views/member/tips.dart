@@ -18,7 +18,6 @@ class TipsPage extends StatefulWidget {
 }
 
 class _TipsPageState extends State<TipsPage> {
-  final TipService _tipService = TipService();
   late Future<List<Tip>> _tips;
 
   @override
@@ -28,7 +27,8 @@ class _TipsPageState extends State<TipsPage> {
   }
 
   Future<List<Tip>> _loadTips() async {
-    HttpResponse response = await _tipService.getByTopic('%');
+    final TipService tipService = TipService();
+    final HttpResponse response = await tipService.getByTopic('%');
 
     if (response.success()) {
       return createTips(response.body());

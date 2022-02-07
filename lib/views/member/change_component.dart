@@ -20,7 +20,6 @@ class ChangeComponentPage extends StatefulWidget {
 }
 
 class _ChangeComponentPageState extends State<ChangeComponentPage> {
-  final ComponentService _componentService = ComponentService();
   DateTime _changedDate = DateTime.now();
 
   @override
@@ -61,7 +60,8 @@ class _ChangeComponentPageState extends State<ChangeComponentPage> {
       context, animationRightLeft(const MemberHomePage(initialPage: 0)));
 
   void _change() async {
-    HttpResponse response = await _componentService.changeComponent(
+    final ComponentService componentService = ComponentService();
+    final HttpResponse response = await componentService.changeComponent(
         widget.component.id, _changedDate);
 
     if (response.success()) {

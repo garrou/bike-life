@@ -63,7 +63,6 @@ class _AddBikeFormState extends State<AddBikeForm> {
   final _kmWeekFocus = FocusNode();
   final _kmWeek = TextEditingController();
 
-  final BikeService _bikeService = BikeService();
   final List<String> _types = ['VTT', 'Ville', 'Route'];
 
   DateTime _dateOfPurchase = DateTime.now();
@@ -159,9 +158,10 @@ class _AddBikeFormState extends State<AddBikeForm> {
 
   void _addBike() async {
     final String memberId = await Storage.getMemberId();
+    final BikeService bikeService = BikeService();
     final Bike bike = Bike('', _name.text, double.parse(_kmWeek.text),
         _nbPerWeek.toInt(), _electric!, _type!, _dateOfPurchase);
-    final HttpResponse response = await _bikeService.create(memberId, bike);
+    final HttpResponse response = await bikeService.create(memberId, bike);
 
     if (response.success()) {
       _onMemberHomePage();

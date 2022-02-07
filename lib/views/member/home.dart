@@ -14,6 +14,7 @@ import 'package:bike_life/views/member/add_bike.dart';
 import 'package:bike_life/styles/styles.dart';
 import 'package:bike_life/views/member/bike_components.dart';
 import 'package:bike_life/views/member/change_component.dart';
+import 'package:bike_life/views/member/component_details.dart';
 import 'package:bike_life/views/member/update_bike.dart';
 import 'package:bike_life/views/member/profile.dart';
 import 'package:bike_life/widgets/loading.dart';
@@ -94,13 +95,13 @@ class Carousel extends StatefulWidget {
 
 class _CarouselState extends State<Carousel> {
   final CarouselController _carouselController = CarouselController();
-  final BikeService _bikeService = BikeService();
   late Future<List<Bike>> _bikes;
   int _current = 0;
 
   Future<List<Bike>> _loadBikes() async {
     final String memberId = await Storage.getMemberId();
-    final HttpResponse response = await _bikeService.getByMember(memberId);
+    final BikeService bikeService = BikeService();
+    final HttpResponse response = await bikeService.getByMember(memberId);
 
     if (response.success()) {
       return createBikes(response.body());
@@ -211,16 +212,15 @@ class ComponentsAlerts extends StatefulWidget {
 }
 
 class _ComponentsAlertsState extends State<ComponentsAlerts> {
-  final ComponentService _componentService = ComponentService();
   late Future<List<Component>> _components;
 
   Future<List<Component>> _loadComponentsAlerts() async {
     final String memberId = await Storage.getMemberId();
+    final ComponentService componentService = ComponentService();
     final HttpResponse response =
-        await _componentService.getComponentsAlerts(memberId);
+        await componentService.getComponentsAlerts(memberId);
 
     if (response.success()) {
-      // TODO: create alert obj
       return createComponents(response.body());
     } else {
       throw Exception('Impossible de récupérer les données');
@@ -246,26 +246,25 @@ class _ComponentsAlertsState extends State<ComponentsAlerts> {
             ListView.builder(
                 itemCount: snapshot.data!.length,
                 shrinkWrap: true,
-                itemBuilder: (_, index) {
-                  return _buildTile(snapshot.data![index]);
-                })
+                itemBuilder: (_, index) => _buildTile(snapshot.data![index]))
           ]);
         }
         return const AppLoading();
       });
 
-  Widget _buildTile(Component component) => Dismissible(
-      key: Key(component.id),
-      direction: DismissDirection.startToEnd,
-      background: Container(
-          padding: const EdgeInsets.all(15),
-          child: const Text('Changer', style: TextStyle(color: Colors.white)),
-          color: green),
-      child: ListTile(
-          title: MouseRegion(
-              child: Text(component.type), cursor: SystemMouseCursors.click)),
-      onDismissed: (_) => _onDismiss(component));
+  Widget _buildTile(Component component) => ListTile(
+      title: MouseRegion(
+          child: GestureDetector(
+              child: Text(component.type),
+              onTap: () => _onComponentHistoric(component)),
+          cursor: SystemMouseCursors.click),
+      trailing: IconButton(
+          onPressed: () => _onChange(component),
+          icon: const Icon(Icons.restart_alt)));
 
-  void _onDismiss(Component component) => Navigator.push(
+  void _onChange(Component component) => Navigator.push(
       context, animationRightLeft(ChangeComponentPage(component: component)));
+
+  void _onComponentHistoric(Component component) => Navigator.push(
+      context, animationRightLeft(ComponentDetailsPage(component: component)));
 }
