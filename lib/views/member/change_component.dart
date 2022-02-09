@@ -46,6 +46,7 @@ class _ChangeComponentPageState extends State<ChangeComponentPage> {
                 text: 'Date du changement',
                 visible: true),
             padding: const EdgeInsets.all(20)),
+        // TODO: add ref of component
         AppButton(
             text: 'Changer le composant',
             callback: _change,

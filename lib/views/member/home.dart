@@ -167,7 +167,7 @@ class _CarouselState extends State<Carousel> {
                         Padding(
                             child: Text(bike.name,
                                 style: const TextStyle(color: Colors.white)),
-                            padding: const EdgeInsets.all(10)),
+                            padding: const EdgeInsets.all(12)),
                         IconButton(
                             icon: const Icon(Icons.edit,
                                 size: 20, color: Colors.white),

@@ -2,10 +2,7 @@ import 'package:bike_life/models/change.dart';
 import 'package:bike_life/models/component.dart';
 import 'package:bike_life/models/http_response.dart';
 import 'package:bike_life/services/component_service.dart';
-import 'package:bike_life/styles/animations.dart';
-import 'package:bike_life/styles/styles.dart';
 import 'package:bike_life/utils/constants.dart';
-import 'package:bike_life/views/member/member_home.dart';
 import 'package:bike_life/widgets/loading.dart';
 import 'package:bike_life/widgets/top_left_button.dart';
 import 'package:flutter/material.dart';
@@ -78,8 +75,7 @@ class _ComponentDetailsPageState extends State<ComponentDetailsPage> {
 
   ListTile _buildTile(Change change) => ListTile(
       title: Text(change.changeAt),
-      subtitle: Text('${change.km.toString()} km'));
+      subtitle: Text('${change.km.toStringAsFixed(2)} km'));
 
-  void _back() => Navigator.push(
-      context, animationRightLeft(const MemberHomePage(initialPage: 0)));
+  void _back() => Navigator.pop(context);
 }

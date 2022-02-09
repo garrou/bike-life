@@ -40,12 +40,41 @@ class _UpdateBikePageState extends State<UpdateBikePage> {
         Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
           AppTopLeftButton(title: widget.bike.name, callback: _back),
           AppTopRightButton(
-              callback: _onDelete,
+              callback: _showDeleteDialog,
               icon: const Icon(Icons.delete, color: red),
               padding: secondSize)
         ]),
         UpdateBikeForm(bike: widget.bike)
       ]);
+
+  Future _showDeleteDialog() async => showDialog(
+      context: context,
+      builder: (BuildContext context) => AlertDialog(
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(secondSize)),
+            title: const Text('Supprimer ce vélo ?'),
+            content: const Text(
+                'La suppression de ce vélo entrainera la suppression de toutes les données liées à celui-ci'),
+            actions: <Widget>[
+              TextButton(
+                  child: const Text('Confirmer', style: TextStyle(color: red)),
+                  onPressed: () {
+                    _onDelete();
+                    Navigator.pushAndRemoveUntil(
+                        context,
+                        animationRightLeft(
+                            const MemberHomePage(initialPage: 0)),
+                        (Route<dynamic> route) => false);
+                  }),
+              TextButton(
+                child: const Text('Annuler',
+                    style: TextStyle(color: primaryColor)),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+            ],
+          ));
 
   _onDelete() async {
     final BikeService bikeService = BikeService();
