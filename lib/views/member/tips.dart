@@ -6,6 +6,7 @@ import 'package:bike_life/services/tip_service.dart';
 import 'package:bike_life/styles/animations.dart';
 import 'package:bike_life/styles/styles.dart';
 import 'package:bike_life/utils/constants.dart';
+import 'package:bike_life/views/member/click_region.dart';
 import 'package:bike_life/views/member/tip_details.dart';
 import 'package:bike_life/widgets/loading.dart';
 import 'package:flutter/material.dart';
@@ -85,13 +86,11 @@ class _TipsPageState extends State<TipsPage> {
       ]);
 
   Widget _buildTip(Tip tip) => Card(
+      elevation: 5,
       child: GestureDetector(
           onTap: () => Navigator.push(
               context, animationRightLeft(TipDetailsPage(tip: tip))),
           child: ListTile(
-              title: MouseRegion(
-                  child: Text(tip.title), cursor: SystemMouseCursors.click),
-              subtitle: MouseRegion(
-                  child: Text(tip.writeDate),
-                  cursor: SystemMouseCursors.click))));
+              title: AppClickRegion(child: Text(tip.title)),
+              subtitle: AppClickRegion(child: Text(tip.writeDate)))));
 }

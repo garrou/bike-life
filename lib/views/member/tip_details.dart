@@ -47,8 +47,7 @@ class _TipDetailsPageState extends State<TipDetailsPage> {
   Widget _wideLayout() => ListView(
           padding: const EdgeInsets.symmetric(horizontal: thirdSize),
           children: <Widget>[
-            AppTopLeftButton(
-                title: 'Conseils', callback: () => Navigator.pop(context)),
+            AppTopLeftButton(title: 'Conseils', callback: () => _back),
             buildText(widget.tip.title, boldSubTitleStyle, TextAlign.center),
             buildText(widget.tip.content, thirdTextStyle, TextAlign.center),
           ]);
@@ -57,4 +56,6 @@ class _TipDetailsPageState extends State<TipDetailsPage> {
       Padding(
           padding: const EdgeInsets.symmetric(vertical: thirdSize),
           child: Text(text, textAlign: textAlign, style: style));
+
+  void _back() => Navigator.pop(context);
 }

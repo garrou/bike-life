@@ -57,8 +57,7 @@ class _ChangeComponentPageState extends State<ChangeComponentPage> {
     _changedDate = args.value;
   }
 
-  void _back() => Navigator.push(
-      context, animationRightLeft(const MemberHomePage(initialPage: 0)));
+  void _back() => Navigator.pop(context);
 
   void _change() async {
     final ComponentService componentService = ComponentService();

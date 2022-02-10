@@ -10,6 +10,7 @@ import 'package:bike_life/utils/validator.dart';
 import 'package:bike_life/views/auth/signin.dart';
 import 'package:bike_life/styles/styles.dart';
 import 'package:bike_life/widgets/button.dart';
+import 'package:bike_life/widgets/card.dart';
 import 'package:bike_life/widgets/loading.dart';
 import 'package:bike_life/widgets/textfield.dart';
 import 'package:bike_life/widgets/top_left_button.dart';
@@ -42,36 +43,35 @@ class _ProfilePageState extends State<ProfilePage> {
 
   Widget _wideLayout() =>
       Consumer<ThemeModel>(builder: (context, ThemeModel themeNotifier, child) {
-        return Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: <Widget>[
-              Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    AppTopLeftButton(
-                        title: 'Profil',
-                        callback: () => Navigator.of(context).pop()),
-                    AppTopRightButton(
-                        callback: _onDisconnect,
-                        icon: const Icon(Icons.logout),
-                        color: red,
-                        padding: secondSize)
-                  ]),
-              Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-                Text('Thème', style: secondTextStyle),
-                IconButton(
-                  onPressed: () {
-                    themeNotifier.isDark
-                        ? themeNotifier.isDark = false
-                        : themeNotifier.isDark = true;
-                  },
-                  icon: Icon(themeNotifier.isDark
-                      ? Icons.nightlight_round_outlined
-                      : Icons.wb_sunny),
-                )
+        return ListView(children: <Widget>[
+          Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                AppTopLeftButton(
+                    title: 'Profil',
+                    callback: () => Navigator.of(context).pop()),
+                AppTopRightButton(
+                    callback: _onDisconnect,
+                    icon: const Icon(Icons.logout),
+                    color: red,
+                    padding: secondSize)
               ]),
-              const ProfileForm()
-            ]);
+          Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+            Text('Thème', style: secondTextStyle),
+            IconButton(
+              onPressed: () {
+                themeNotifier.isDark
+                    ? themeNotifier.isDark = false
+                    : themeNotifier.isDark = true;
+              },
+              icon: Icon(themeNotifier.isDark
+                  ? Icons.nightlight_round_outlined
+                  : Icons.wb_sunny),
+            )
+          ]),
+          const UpdateEmailForm(),
+          const UpdatePasswordForm()
+        ]);
       });
 
   void _onDisconnect() {
@@ -83,24 +83,18 @@ class _ProfilePageState extends State<ProfilePage> {
   }
 }
 
-class ProfileForm extends StatefulWidget {
-  const ProfileForm({Key? key}) : super(key: key);
+class UpdateEmailForm extends StatefulWidget {
+  const UpdateEmailForm({Key? key}) : super(key: key);
 
   @override
-  _ProfileFormState createState() => _ProfileFormState();
+  _UpdateEmailFormState createState() => _UpdateEmailFormState();
 }
 
-class _ProfileFormState extends State<ProfileForm> {
+class _UpdateEmailFormState extends State<UpdateEmailForm> {
   final _keyForm = GlobalKey<FormState>();
 
   final _emailFocus = FocusNode();
   final _email = TextEditingController();
-
-  final _passwordFocus = FocusNode();
-  final _password = TextEditingController();
-
-  final _confirmPassFocus = FocusNode();
-  final _confirmPass = TextEditingController();
 
   final MemberService _memberService = MemberService();
   late Future<String> _userEmail;
@@ -115,7 +109,7 @@ class _ProfileFormState extends State<ProfileForm> {
   Future<String> _load() async {
     final String memberId = await Storage.getMemberId();
     final HttpResponse response = await _memberService.getEmail(memberId);
-
+    // TODO: maybre store email and return on update email
     if (response.success()) {
       return response.email();
     } else {
@@ -126,72 +120,121 @@ class _ProfileFormState extends State<ProfileForm> {
   @override
   Widget build(BuildContext context) => Padding(
       padding: const EdgeInsets.only(top: secondSize),
-      child: Form(
-          key: _keyForm,
-          child: Column(children: <Widget>[
-            FutureBuilder(
-                future: _userEmail,
-                builder: (_, snapshot) {
-                  if (snapshot.hasError) {
-                    return Text('${snapshot.error}');
-                  } else if (snapshot.hasData) {
-                    _email.text = snapshot.data.toString();
-                    return AppTextField(
-                        keyboardType: TextInputType.emailAddress,
-                        label: 'Email',
-                        hintText: 'Entrer un email valide',
-                        focusNode: _emailFocus,
-                        textfieldController: _email,
-                        validator: emailValidator,
-                        icon: Icons.alternate_email);
-                  }
-                  return const AppLoading();
-                }),
-            AppTextField(
-                keyboardType: TextInputType.text,
-                label: 'Mot de passe',
-                hintText:
-                    'Entrer un mot de passe de $minPasswordSize caractères minimum',
-                focusNode: _passwordFocus,
-                textfieldController: _password,
-                validator: passwordValidator,
-                obscureText: true,
-                icon: Icons.password),
-            AppTextField(
-                keyboardType: TextInputType.text,
-                label: 'Confirmer le mot de passe',
-                hintText: 'Confirmer le mot de passe',
-                focusNode: _confirmPassFocus,
-                textfieldController: _confirmPass,
-                // ignore: body_might_complete_normally_nullable
-                validator: (value) {
-                  if (_password.text != value || value!.isEmpty) {
-                    return 'Mot de passe incorrect';
-                  }
-                },
-                obscureText: true,
-                icon: Icons.password),
-            AppButton(
-                text: 'Modifier',
-                callback: _onUpdate,
-                icon: const Icon(Icons.save))
-          ])));
+      child: AppCard(
+          elevation: 5,
+          child: Form(
+              key: _keyForm,
+              child: Column(children: <Widget>[
+                Text("Modifier l'email", style: thirdTextStyle),
+                FutureBuilder(
+                    future: _userEmail,
+                    builder: (_, snapshot) {
+                      if (snapshot.hasError) {
+                        return Text('${snapshot.error}');
+                      } else if (snapshot.hasData) {
+                        _email.text = snapshot.data.toString();
+                        return AppTextField(
+                            keyboardType: TextInputType.emailAddress,
+                            label: 'Email',
+                            hintText: 'Entrer un email valide',
+                            focusNode: _emailFocus,
+                            textfieldController: _email,
+                            validator: emailValidator,
+                            icon: Icons.alternate_email);
+                      }
+                      return const AppLoading();
+                    }),
+                AppButton(
+                    text: "Modifier",
+                    callback: _onUpdate,
+                    icon: const Icon(Icons.save))
+              ]))));
 
   void _onUpdate() {
     if (_keyForm.currentState!.validate()) {
       _keyForm.currentState!.save();
-      _updateAuth();
+      _updateEmail();
     }
   }
 
-  void _updateAuth() async {
-    final String id = await Storage.getMemberId();
+  void _updateEmail() async {
+    final String memberId = await Storage.getMemberId();
     final HttpResponse response =
-        await _memberService.update(id, _email.text, _password.text);
+        await _memberService.updateEmail(memberId, _email.text);
 
-    if (response.success()) {
-      Navigator.pop(context);
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text(response.message()), backgroundColor: response.color()));
+  }
+}
+
+class UpdatePasswordForm extends StatefulWidget {
+  const UpdatePasswordForm({Key? key}) : super(key: key);
+
+  @override
+  _UpdatePasswordFormState createState() => _UpdatePasswordFormState();
+}
+
+class _UpdatePasswordFormState extends State<UpdatePasswordForm> {
+  final _keyForm = GlobalKey<FormState>();
+
+  final _passwordFocus = FocusNode();
+  final _password = TextEditingController();
+
+  final _confirmPassFocus = FocusNode();
+  final _confirmPass = TextEditingController();
+
+  @override
+  Widget build(BuildContext context) => Padding(
+      padding: const EdgeInsets.only(top: secondSize),
+      child: AppCard(
+          elevation: 5,
+          child: Form(
+              key: _keyForm,
+              child: Column(children: <Widget>[
+                Text('Modifier le mot de passe', style: thirdTextStyle),
+                AppTextField(
+                    keyboardType: TextInputType.text,
+                    label: 'Mot de passe',
+                    hintText:
+                        'Entrer un mot de passe de $minPasswordSize caractères minimum',
+                    focusNode: _passwordFocus,
+                    textfieldController: _password,
+                    validator: passwordValidator,
+                    obscureText: true,
+                    icon: Icons.password),
+                AppTextField(
+                    keyboardType: TextInputType.text,
+                    label: 'Confirmer le mot de passe',
+                    hintText: 'Confirmer le mot de passe',
+                    focusNode: _confirmPassFocus,
+                    textfieldController: _confirmPass,
+                    // ignore: body_might_complete_normally_nullable
+                    validator: (value) {
+                      if (_password.text != value || value!.isEmpty) {
+                        return 'Mot de passe incorrect';
+                      }
+                    },
+                    obscureText: true,
+                    icon: Icons.password),
+                AppButton(
+                    text: "Modifier",
+                    callback: _onUpdate,
+                    icon: const Icon(Icons.save))
+              ]))));
+
+  void _onUpdate() {
+    if (_keyForm.currentState!.validate()) {
+      _keyForm.currentState!.save();
+      _updatePassword();
     }
+  }
+
+  void _updatePassword() async {
+    final String memberId = await Storage.getMemberId();
+    final MemberService memberService = MemberService();
+    final HttpResponse response =
+        await memberService.updatePassword(memberId, _password.text);
+
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
         content: Text(response.message()), backgroundColor: response.color()));
   }

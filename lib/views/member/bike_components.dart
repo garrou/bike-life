@@ -5,7 +5,8 @@ import 'package:bike_life/services/component_service.dart';
 import 'package:bike_life/styles/animations.dart';
 import 'package:bike_life/styles/styles.dart';
 import 'package:bike_life/utils/constants.dart';
-import 'package:bike_life/views/member/component_details.dart';
+import 'package:bike_life/views/member/click_region.dart';
+import 'package:bike_life/views/member/component_historic.dart';
 import 'package:bike_life/widgets/loading.dart';
 import 'package:bike_life/widgets/top_left_button.dart';
 import 'package:flutter/material.dart';
@@ -69,17 +70,31 @@ class _BikeComponentsPageState extends State<BikeComponentsPage> {
           return ListView.builder(
               itemCount: snapshot.data!.length,
               shrinkWrap: true,
-              itemBuilder: (_, index) =>
-                  _buildComponent(snapshot.data![index]));
+              itemBuilder: (_, index) => _buildTile(snapshot.data![index]));
         }
         return const AppLoading();
       });
 
-  Widget _buildComponent(Component component) => Card(
-      child: ListTile(
-          title: MouseRegion(
-              child: Text(component.type), cursor: SystemMouseCursors.click),
-          subtitle: _buildLinearPercentBar(component)));
+  Widget _buildTile(Component component) {
+    final Duration diff = DateTime.now().difference(component.changedAt);
+    final String kmSinceLastChange =
+        (diff.inDays * (widget.bike.kmPerWeek / 7)).toStringAsFixed(2);
+
+    return Card(
+        elevation: 5,
+        child: ListTile(
+            title: AppClickRegion(
+                child: Padding(
+                    padding: const EdgeInsets.only(bottom: 10),
+                    child: Text(component.type))),
+            subtitle: Column(children: <Widget>[
+              _buildLinearPercentBar(component),
+              Padding(
+                  padding: const EdgeInsets.only(top: 10),
+                  child: Text(
+                      '$kmSinceLastChange km depuis le ${component.changedAtToString()}'))
+            ])));
+  }
 
   Widget _buildLinearPercentBar(Component component) {
     final Duration diff = DateTime.now().difference(component.changedAt);
@@ -87,7 +102,7 @@ class _BikeComponentsPageState extends State<BikeComponentsPage> {
         diff.inDays * (widget.bike.kmPerWeek / 7) / component.duration;
     percent = percent > 1.0 ? 1 : percent;
 
-    return MouseRegion(
+    return AppClickRegion(
         child: GestureDetector(
             onTap: () => _onComponentHistoric(component),
             child: LinearPercentIndicator(
@@ -100,12 +115,11 @@ class _BikeComponentsPageState extends State<BikeComponentsPage> {
                     : percent > .5
                         ? orange
                         : green,
-                barRadius: const Radius.circular(50))),
-        cursor: SystemMouseCursors.click);
+                barRadius: const Radius.circular(50))));
   }
 
   void _back() => Navigator.of(context).pop();
 
   void _onComponentHistoric(Component component) => Navigator.push(
-      context, animationRightLeft(ComponentDetailsPage(component: component)));
+      context, animationRightLeft(ComponentHistoricPage(component: component)));
 }

@@ -2,21 +2,24 @@ import 'package:bike_life/models/change.dart';
 import 'package:bike_life/models/component.dart';
 import 'package:bike_life/models/http_response.dart';
 import 'package:bike_life/services/component_service.dart';
+import 'package:bike_life/styles/animations.dart';
+import 'package:bike_life/styles/styles.dart';
 import 'package:bike_life/utils/constants.dart';
+import 'package:bike_life/views/member/change_component.dart';
 import 'package:bike_life/widgets/loading.dart';
 import 'package:bike_life/widgets/top_left_button.dart';
 import 'package:flutter/material.dart';
 
-class ComponentDetailsPage extends StatefulWidget {
+class ComponentHistoricPage extends StatefulWidget {
   final Component component;
-  const ComponentDetailsPage({Key? key, required this.component})
+  const ComponentHistoricPage({Key? key, required this.component})
       : super(key: key);
 
   @override
-  _ComponentDetailsPageState createState() => _ComponentDetailsPageState();
+  _ComponentHistoricPageState createState() => _ComponentHistoricPageState();
 }
 
-class _ComponentDetailsPageState extends State<ComponentDetailsPage> {
+class _ComponentHistoricPageState extends State<ComponentHistoricPage> {
   late Future<List<Change>> _historic;
 
   Future<List<Change>> _load() async {
@@ -38,8 +41,12 @@ class _ComponentDetailsPageState extends State<ComponentDetailsPage> {
   }
 
   @override
-  Widget build(BuildContext context) =>
-      Scaffold(body: LayoutBuilder(builder: (context, constraints) {
+  Widget build(BuildContext context) => Scaffold(
+      floatingActionButton: FloatingActionButton(
+          child: const Icon(Icons.restart_alt, color: Colors.white),
+          backgroundColor: primaryColor,
+          onPressed: () => _onComponentChangePage(widget.component)),
+      body: LayoutBuilder(builder: (context, constraints) {
         if (constraints.maxWidth > maxWidth) {
           return _narrowLayout(context);
         } else {
@@ -78,4 +85,7 @@ class _ComponentDetailsPageState extends State<ComponentDetailsPage> {
       subtitle: Text('${change.km.toStringAsFixed(2)} km'));
 
   void _back() => Navigator.pop(context);
+
+  void _onComponentChangePage(Component component) => Navigator.push(
+      context, animationRightLeft(ChangeComponentPage(component: component)));
 }

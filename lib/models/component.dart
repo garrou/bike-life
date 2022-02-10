@@ -1,4 +1,8 @@
+import 'package:intl/intl.dart';
+
 class Component {
+  static DateFormat format = DateFormat('dd/MM/yyyy');
+
   final String id;
   final double duration;
   final String type;
@@ -21,6 +25,8 @@ class Component {
         'active': active,
         'changedAt': changedAt.toString()
       };
+
+  String changedAtToString() => format.format(changedAt);
 }
 
 List<Component> createComponents(List<dynamic> records) =>

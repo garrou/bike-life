@@ -5,6 +5,7 @@ import 'package:bike_life/styles/animations.dart';
 import 'package:bike_life/styles/styles.dart';
 import 'package:bike_life/utils/constants.dart';
 import 'package:bike_life/utils/validator.dart';
+import 'package:bike_life/views/member/click_region.dart';
 import 'package:bike_life/views/member/member_home.dart';
 import 'package:bike_life/widgets/button.dart';
 import 'package:bike_life/widgets/textfield.dart';
@@ -177,8 +178,7 @@ class _UpdateBikeFormState extends State<UpdateBikeForm> {
         for (String type in _types)
           ListTile(
               title: GestureDetector(
-                  child: MouseRegion(
-                      child: Text(type), cursor: SystemMouseCursors.click),
+                  child: AppClickRegion(child: Text(type)),
                   onTap: () {
                     setState(() => _type = type);
                   }),
