@@ -1,5 +1,9 @@
+import 'package:intl/intl.dart';
+
 class Tip {
-  final String id;
+  static DateFormat format = DateFormat('dd/MM/yyyy');
+
+  final int id;
   final String componentType;
   final String title;
   final String content;
@@ -12,9 +16,8 @@ class Tip {
         componentType = json['type'],
         title = json['title'],
         content = json['content'],
-        writeDate = json['date'];
+        writeDate = format.format(DateTime.parse(json['date']));
 }
 
-List<Tip> createTips(List records) {
-  return records.map((json) => Tip.fromJson(json)).toList(growable: false);
-}
+List<Tip> createTips(List records) =>
+    records.map((json) => Tip.fromJson(json)).toList(growable: false);

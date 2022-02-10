@@ -1,11 +1,11 @@
 import 'dart:async';
-import 'dart:convert';
 
+import 'package:bike_life/models/http_response.dart';
 import 'package:bike_life/services/member_service.dart';
 import 'package:bike_life/utils/guard_helper.dart';
 import 'package:bike_life/utils/validator.dart';
 import 'package:bike_life/views/member/member_home.dart';
-import 'package:bike_life/styles/general.dart';
+import 'package:bike_life/styles/styles.dart';
 import 'package:bike_life/widgets/button.dart';
 import 'package:bike_life/widgets/card.dart';
 import 'package:bike_life/widgets/link_page.dart';
@@ -15,7 +15,6 @@ import 'package:bike_life/widgets/textfield.dart';
 import 'package:bike_life/widgets/title.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_guards/flutter_guards.dart';
-import 'package:http/http.dart';
 
 class SignupPage extends StatefulWidget {
   const SignupPage({Key? key}) : super(key: key);
@@ -39,8 +38,8 @@ class _SignupPageState extends State<SignupPage> {
           authStream: _authState.stream,
           signedIn: const MemberHomePage(initialPage: 0),
           signedOut: LayoutBuilder(builder: (context, constraints) {
-            if (constraints.maxWidth > maxSize) {
-              return narrowLayout();
+            if (constraints.maxWidth > maxWidth) {
+              return narrowLayout(context);
             } else {
               return wideLayout();
             }
@@ -57,9 +56,12 @@ class _SignupPageState extends State<SignupPage> {
             destination: const SigninPage())
       ])));
 
-  Padding narrowLayout() => Padding(
-      padding: const EdgeInsets.symmetric(horizontal: maxPadding),
-      child: wideLayout());
+  Padding narrowLayout(BuildContext context) {
+    return Padding(
+        padding: EdgeInsets.symmetric(
+            horizontal: MediaQuery.of(context).size.width / 8),
+        child: wideLayout());
+  }
 }
 
 class SignupForm extends StatefulWidget {
@@ -110,6 +112,7 @@ class _SignupFormState extends State<SignupForm> {
             hintText: 'Mot de passe, $minPasswordSize caractères minimum',
             focusNode: _confirmPasswordFocus,
             textfieldController: _confirmPassword,
+            // ignore: body_might_complete_normally_nullable
             validator: (value) {
               if (_password.text != value || value!.isEmpty) {
                 return 'Mot de passe incorrect';
@@ -117,7 +120,10 @@ class _SignupFormState extends State<SignupForm> {
             },
             obscureText: true,
             icon: Icons.password),
-        AppButton(text: "S'inscrire", callback: _onSignup, color: deepGreen)
+        AppButton(
+            text: "S'inscrire",
+            callback: _onSignup,
+            icon: const Icon(Icons.person_add_alt_1))
       ]));
 
   void _onSignup() {
@@ -128,21 +134,17 @@ class _SignupFormState extends State<SignupForm> {
   }
 
   void _createUser() async {
-    Response response =
+    final HttpResponse response =
         await _memberService.signup(_email.text, _password.text);
-    Color responseColor = deepGreen;
-    dynamic json = jsonDecode(response.body);
 
-    if (response.statusCode == httpCodeCreated) {
+    if (response.success()) {
       Navigator.pushAndRemoveUntil(
           context,
           MaterialPageRoute(
               builder: (BuildContext context) => const SigninPage()),
           (Route<dynamic> route) => false);
-    } else {
-      responseColor = red;
     }
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: Text(json['confirm']), backgroundColor: responseColor));
+        content: Text(response.message()), backgroundColor: response.color()));
   }
 }

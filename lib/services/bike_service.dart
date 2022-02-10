@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:bike_life/models/http_response.dart';
 import 'package:bike_life/utils/constants.dart';
 import 'package:bike_life/models/bike.dart';
 import 'package:bike_life/utils/http_account_interceptor.dart';
@@ -8,44 +9,38 @@ import 'package:http/http.dart';
 import 'package:http_interceptor/http/http.dart';
 
 class BikeService {
-  Client client = InterceptedClient.build(interceptors: [
+  final Client client = InterceptedClient.build(interceptors: [
     HttpAccountInterceptor(),
   ]);
 
-  Future<Response> addBike(String memberId, String name, String urlImage,
-      String dateOfPurchase, double nbKm, bool electric) async {
-    return await client.post(
-      Uri.parse('$endpoint/members/$memberId/bikes'),
-      body: jsonEncode(<String, dynamic>{
-        'memberId': memberId,
-        'name': name,
-        'image': urlImage,
-        'dateOfPurchase': dateOfPurchase,
-        'nbKm': nbKm,
-        'electric': electric
-      }),
-    );
+  Future<HttpResponse> create(String memberId, Bike bike) async {
+    Response response = await client.post(
+        Uri.parse('$endpoint/members/$memberId/bikes'),
+        body: jsonEncode(bike));
+    return HttpResponse(response);
   }
 
-  Future<Response> getBike(String bikeId) async {
-    return await client.get(Uri.parse('$endpoint/bikes/$bikeId'));
+  Future<HttpResponse> getOne(String bikeId) async {
+    Response response = await client.get(Uri.parse('$endpoint/bikes/$bikeId'));
+    return HttpResponse(response);
   }
 
-  Future<Response> getBikes(String memberId) async {
-    return await client.get(Uri.parse('$endpoint/members/$memberId/bikes'));
+  Future<HttpResponse> getByMember(String memberId) async {
+    Response response =
+        await client.get(Uri.parse('$endpoint/members/$memberId/bikes'));
+    return HttpResponse(response);
   }
 
-  Future<Response> deleteBike(String bikeId) async {
-    return await client.delete(Uri.parse('$endpoint/bikes/$bikeId'));
+  Future<HttpResponse> delete(String bikeId) async {
+    Response response =
+        await client.delete(Uri.parse('$endpoint/bikes/$bikeId'));
+    return HttpResponse(response);
   }
 
-  Future<Response> updateBike(Bike bike) async {
-    return await client.put(Uri.parse('$endpoint/bikes/${bike.id}'),
+  Future<HttpResponse> update(Bike bike) async {
+    Response response = await client.put(
+        Uri.parse('$endpoint/bikes/${bike.id}'),
         body: jsonEncode(<String, dynamic>{'bike': jsonEncode(bike)}));
-  }
-
-  Future<Response> updateBikeKm(String bikeId, double kmToAdd) async {
-    return await client.patch(Uri.parse('$endpoint/bikes/$bikeId'),
-        body: jsonEncode(<String, dynamic>{'km': kmToAdd}));
+    return HttpResponse(response);
   }
 }

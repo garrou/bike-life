@@ -1,4 +1,4 @@
-import 'package:bike_life/styles/general.dart';
+import 'package:bike_life/styles/styles.dart';
 import 'package:bike_life/utils/constants.dart';
 import 'package:flutter/material.dart';
 
@@ -9,6 +9,6 @@ class AppLoading extends StatelessWidget {
   Widget build(BuildContext context) => Column(children: const <Widget>[
         Padding(
             padding: EdgeInsets.all(mainSize),
-            child: CircularProgressIndicator(color: deepGreen))
+            child: CircularProgressIndicator(color: primaryColor))
       ]);
 }

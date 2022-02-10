@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:bike_life/models/tip.dart';
-import 'package:bike_life/styles/general.dart';
+import 'package:bike_life/styles/styles.dart';
 import 'package:bike_life/utils/constants.dart';
 import 'package:bike_life/utils/guard_helper.dart';
 import 'package:bike_life/views/auth/signin.dart';
@@ -31,23 +31,23 @@ class _TipDetailsPageState extends State<TipDetailsPage> {
       body: AuthGuard(
           authStream: _authState.stream,
           signedIn: LayoutBuilder(builder: (context, constraints) {
-            if (constraints.maxWidth > maxSize) {
-              return _narrowLayout();
+            if (constraints.maxWidth > maxWidth) {
+              return _narrowLayout(context);
             } else {
               return _wideLayout();
             }
           }),
           signedOut: const SigninPage()));
 
-  Widget _narrowLayout() => Padding(
-      padding: const EdgeInsets.symmetric(horizontal: maxPadding),
+  Widget _narrowLayout(BuildContext context) => Padding(
+      padding: EdgeInsets.symmetric(
+          horizontal: MediaQuery.of(context).size.width / 12),
       child: _wideLayout());
 
   Widget _wideLayout() => ListView(
           padding: const EdgeInsets.symmetric(horizontal: thirdSize),
           children: <Widget>[
-            AppTopLeftButton(
-                title: 'Conseils', callback: () => Navigator.pop(context)),
+            AppTopLeftButton(title: 'Conseils', callback: () => _back),
             buildText(widget.tip.title, boldSubTitleStyle, TextAlign.center),
             buildText(widget.tip.content, thirdTextStyle, TextAlign.center),
           ]);
@@ -56,4 +56,6 @@ class _TipDetailsPageState extends State<TipDetailsPage> {
       Padding(
           padding: const EdgeInsets.symmetric(vertical: thirdSize),
           child: Text(text, textAlign: textAlign, style: style));
+
+  void _back() => Navigator.pop(context);
 }

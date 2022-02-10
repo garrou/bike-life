@@ -1,18 +1,22 @@
+import 'package:bike_life/models/http_response.dart';
 import 'package:bike_life/utils/constants.dart';
 import 'package:bike_life/utils/http_account_interceptor.dart';
 import 'package:http/http.dart';
 import 'package:http_interceptor/http/http.dart';
 
 class TipService {
-  Client client = InterceptedClient.build(interceptors: [
+  final Client client = InterceptedClient.build(interceptors: [
     HttpAccountInterceptor(),
   ]);
 
-  Future<Response> getAll() async {
-    return await client.get(Uri.parse('$endpoint/tips'));
+  Future<HttpResponse> getAll() async {
+    Response response = await client.get(Uri.parse('$endpoint/tips'));
+    return HttpResponse(response);
   }
 
-  Future<Response> getByType(String type) async {
-    return await client.get(Uri.parse('$endpoint/tips/types/$type'));
+  Future<HttpResponse> getByTopic(String topic) async {
+    Response response =
+        await client.get(Uri.parse('$endpoint/topics/$topic/tips'));
+    return HttpResponse(response);
   }
 }

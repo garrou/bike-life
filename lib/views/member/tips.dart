@@ -1,18 +1,15 @@
 import 'dart:async';
-import 'dart:convert';
 
+import 'package:bike_life/models/http_response.dart';
 import 'package:bike_life/models/tip.dart';
 import 'package:bike_life/services/tip_service.dart';
-import 'package:bike_life/styles/general.dart';
+import 'package:bike_life/styles/animations.dart';
+import 'package:bike_life/styles/styles.dart';
 import 'package:bike_life/utils/constants.dart';
-import 'package:bike_life/utils/guard_helper.dart';
-import 'package:bike_life/views/auth/signin.dart';
+import 'package:bike_life/views/member/click_region.dart';
+import 'package:bike_life/views/member/tip_details.dart';
 import 'package:bike_life/widgets/loading.dart';
-import 'package:bike_life/widgets/tip_card.dart';
-import 'package:bike_life/widgets/title.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_guards/flutter_guards.dart';
-import 'package:http/http.dart';
 
 class TipsPage extends StatefulWidget {
   const TipsPage({Key? key}) : super(key: key);
@@ -22,47 +19,56 @@ class TipsPage extends StatefulWidget {
 }
 
 class _TipsPageState extends State<TipsPage> {
-  final StreamController<bool> _authState = StreamController();
-  final TipService _tipService = TipService();
   late Future<List<Tip>> _tips;
 
   @override
   void initState() {
     super.initState();
-    GuardHelper.checkIfLogged(_authState);
     _tips = _loadTips();
   }
 
   Future<List<Tip>> _loadTips() async {
-    Response response = await _tipService.getByType('%');
+    final TipService tipService = TipService();
+    final HttpResponse response = await tipService.getByTopic('%');
 
-    if (response.statusCode == httpCodeOk) {
-      return createTips(jsonDecode(response.body));
+    if (response.success()) {
+      return createTips(response.body());
     } else {
       throw Exception('Impossible de récupérer les conseils');
     }
   }
 
   @override
-  Widget build(BuildContext context) => AuthGuard(
-      authStream: _authState.stream,
-      signedIn: LayoutBuilder(builder: (context, constraints) {
-        if (constraints.maxWidth > maxSize) {
+  Widget build(BuildContext context) =>
+      Scaffold(body: LayoutBuilder(builder: (context, constraints) {
+        if (constraints.maxWidth > maxWidth) {
           return _narrowLayout(context);
         } else {
           return _wideLayout(context);
         }
-      }),
-      signedOut: const SigninPage());
+      }));
 
   Widget _narrowLayout(BuildContext context) => Padding(
-      padding: const EdgeInsets.symmetric(horizontal: maxPadding),
+      padding: EdgeInsets.symmetric(
+          horizontal: MediaQuery.of(context).size.width / 12),
       child: _wideLayout(context));
 
   Widget _wideLayout(BuildContext context) =>
       Column(crossAxisAlignment: CrossAxisAlignment.center, children: <Widget>[
-        AppTitle(
-            text: 'Conseils', paddingTop: mainSize, style: secondTextStyle),
+        Padding(
+            padding: const EdgeInsets.all(secondSize),
+            child: Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text('Conseils', style: thirdTextStyle),
+                  IconButton(
+                      icon: const Icon(Icons.help),
+                      iconSize: 30,
+                      onPressed: () {
+                        // TODO: Help
+                      })
+                ])),
         FutureBuilder<List<Tip>>(
             future: _tips,
             builder: (_, snapshot) {
@@ -72,10 +78,19 @@ class _TipsPageState extends State<TipsPage> {
                 return Column(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: <Widget>[
-                      for (Tip tip in snapshot.data!) AppTipCard(tip: tip)
+                      for (Tip tip in snapshot.data!) _buildTip(tip)
                     ]);
               }
               return const AppLoading();
             })
       ]);
+
+  Widget _buildTip(Tip tip) => Card(
+      elevation: 5,
+      child: GestureDetector(
+          onTap: () => Navigator.push(
+              context, animationRightLeft(TipDetailsPage(tip: tip))),
+          child: ListTile(
+              title: AppClickRegion(child: Text(tip.title)),
+              subtitle: AppClickRegion(child: Text(tip.writeDate)))));
 }

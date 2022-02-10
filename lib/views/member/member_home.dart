@@ -1,15 +1,7 @@
-import 'dart:async';
-
-import 'package:bike_life/utils/guard_helper.dart';
-import 'package:bike_life/views/auth/signin.dart';
-import 'package:bike_life/views/member/all_bikes.dart';
-import 'package:bike_life/views/member/archived_components.dart';
-import 'package:bike_life/views/member/compare.dart';
-import 'package:bike_life/views/member/statistics.dart';
+import 'package:bike_life/views/member/home.dart';
 import 'package:bike_life/views/member/tips.dart';
-import 'package:bike_life/styles/general.dart';
+import 'package:bike_life/styles/styles.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_guards/flutter_guards.dart';
 
 class MemberHomePage extends StatefulWidget {
   final int initialPage;
@@ -21,13 +13,11 @@ class MemberHomePage extends StatefulWidget {
 
 class _MemberHomePageState extends State<MemberHomePage> {
   late PageController _pageController;
-  final StreamController<bool> _authState = StreamController();
   late int _pageIndex;
 
   @override
   void initState() {
     super.initState();
-    GuardHelper.checkIfLogged(_authState);
     _pageIndex = widget.initialPage;
     _pageController = PageController(initialPage: _pageIndex);
   }
@@ -39,58 +29,34 @@ class _MemberHomePageState extends State<MemberHomePage> {
   }
 
   @override
-  Widget build(BuildContext context) => AuthGuard(
-      authStream: _authState.stream,
-      signedIn: _layout(context),
-      signedOut: const SigninPage());
-
-  Widget _layout(BuildContext context) => Scaffold(
+  Widget build(BuildContext context) => Scaffold(
       body: PageView(
-        children: const <Widget>[
-          AllBikesPage(),
-          ArchivedComponentsPage(),
-          ComparePage(),
-          StatisticsPage(),
-          TipsPage()
-        ],
+        children: const <Widget>[AllBikesPage(), TipsPage()],
         onPageChanged: (page) {
           setState(() => _pageIndex = page);
         },
         controller: _pageController,
       ),
       bottomNavigationBar: BottomNavigationBar(
+        type: BottomNavigationBarType.fixed,
         showSelectedLabels: false,
         showUnselectedLabels: false,
         currentIndex: _pageIndex,
         onTap: _onTabTapped,
-        backgroundColor: deepGreen,
-        selectedItemColor: Colors.black,
+        backgroundColor: primaryColor,
+        selectedItemColor: Colors.white,
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
               icon: Icon(Icons.directions_bike),
-              label: 'Mes vélos',
-              backgroundColor: deepGreen),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.archive),
-              label: 'Mes composants',
-              backgroundColor: deepGreen),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.compare_arrows),
-              label: 'Comparaison de composants',
-              backgroundColor: deepGreen),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.bar_chart),
-              label: 'Statistiques',
-              backgroundColor: deepGreen),
+              label: 'Vélos',
+              backgroundColor: primaryColor),
           BottomNavigationBarItem(
               icon: Icon(Icons.comment),
               label: 'Conseils',
-              backgroundColor: deepGreen)
+              backgroundColor: primaryColor)
         ],
       ));
 
-  void _onTabTapped(int index) {
-    _pageController.animateToPage(index,
-        duration: const Duration(milliseconds: 500), curve: Curves.easeInOut);
-  }
+  void _onTabTapped(int index) => _pageController.animateToPage(index,
+      duration: const Duration(milliseconds: 500), curve: Curves.easeInOut);
 }

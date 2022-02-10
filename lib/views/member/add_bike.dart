@@ -1,22 +1,18 @@
-import 'dart:async';
-import 'dart:convert';
-
-import 'package:bike_life/services/component_service.dart';
+import 'package:bike_life/models/bike.dart';
+import 'package:bike_life/models/http_response.dart';
+import 'package:bike_life/styles/animations.dart';
 import 'package:bike_life/utils/constants.dart';
-import 'package:bike_life/utils/guard_helper.dart';
 import 'package:bike_life/utils/storage.dart';
 import 'package:bike_life/utils/validator.dart';
 import 'package:bike_life/services/bike_service.dart';
-import 'package:bike_life/views/auth/signin.dart';
-import 'package:bike_life/styles/general.dart';
+import 'package:bike_life/styles/styles.dart';
+import 'package:bike_life/views/member/click_region.dart';
 import 'package:bike_life/views/member/member_home.dart';
 import 'package:bike_life/widgets/button.dart';
 import 'package:bike_life/widgets/calendar.dart';
 import 'package:bike_life/widgets/textfield.dart';
 import 'package:bike_life/widgets/top_left_button.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_guards/flutter_guards.dart';
-import 'package:http/http.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 
 class AddBikePage extends StatefulWidget {
@@ -27,33 +23,29 @@ class AddBikePage extends StatefulWidget {
 }
 
 class _AddBikePageState extends State<AddBikePage> {
-  final StreamController<bool> _authState = StreamController();
-
   @override
-  void initState() {
-    super.initState();
-    GuardHelper.checkIfLogged(_authState);
-  }
+  Widget build(BuildContext context) =>
+      Scaffold(body: LayoutBuilder(builder: (context, constraints) {
+        if (constraints.maxWidth > maxWidth) {
+          return _narrowLayout(context);
+        } else {
+          return _wideLayout();
+        }
+      }));
 
-  @override
-  Widget build(BuildContext context) => Scaffold(
-      body: AuthGuard(
-          authStream: _authState.stream,
-          signedIn: LayoutBuilder(builder: (context, constraints) {
-            if (constraints.maxWidth > maxSize) {
-              return narrowLayout();
-            } else {
-              return wideLayout();
-            }
-          }),
-          signedOut: const SigninPage()));
+  Widget _narrowLayout(BuildContext context) => Padding(
+      padding: EdgeInsets.symmetric(
+          horizontal: MediaQuery.of(context).size.width / 12),
+      child: _wideLayout());
 
-  Widget narrowLayout() => Padding(
-      padding: const EdgeInsets.symmetric(horizontal: maxPadding),
-      child: wideLayout());
-
-  Widget wideLayout() => SingleChildScrollView(
-      child: Column(children: const <Widget>[AddBikeForm()]));
+  Widget _wideLayout() =>
+      ListView(padding: const EdgeInsets.all(thirdSize), children: <Widget>[
+        Row(children: <Widget>[
+          AppTopLeftButton(
+              title: 'Ajouter un vélo', callback: () => Navigator.pop(context))
+        ]),
+        const AddBikeForm()
+      ]);
 }
 
 class AddBikeForm extends StatefulWidget {
@@ -69,148 +61,117 @@ class _AddBikeFormState extends State<AddBikeForm> {
   final _nameFocus = FocusNode();
   final _name = TextEditingController();
 
-  final _imageFocus = FocusNode();
-  final _image = TextEditingController();
+  final _kmWeekFocus = FocusNode();
+  final _kmWeek = TextEditingController();
 
-  final _nbKmFocus = FocusNode();
-  final _nbKm = TextEditingController();
+  final List<String> _types = ['VTT', 'Ville', 'Route'];
 
-  final BikeService _bikeService = BikeService();
-  final ComponentService _componentService = ComponentService();
-
-  late Future<String> _memberId;
-  String _dateOfPurchase = DateTime.now().toString().split(' ')[0];
-  bool? _isElectric = false;
+  DateTime _dateOfPurchase = DateTime.now();
+  double _nbPerWeek = 1;
+  bool? _electric = false;
+  String? _type;
 
   @override
   void initState() {
     super.initState();
-    _memberId = _getMemberId();
-  }
-
-  Future<String> _getMemberId() async {
-    return await Storage.getMemberId();
+    _type = _types.first;
   }
 
   @override
-  Widget build(BuildContext context) => Padding(
-      padding: const EdgeInsets.all(thirdSize),
+  Widget build(BuildContext context) => Form(
+      key: _keyForm,
       child: Column(children: <Widget>[
-        Row(children: <Widget>[
-          AppTopLeftButton(
-              title: 'Ajouter un vélo', callback: () => Navigator.pop(context))
+        AppTextField(
+            keyboardType: TextInputType.text,
+            focusNode: _nameFocus,
+            textfieldController: _name,
+            validator: fieldValidator,
+            hintText: 'Nom du vélo',
+            label: 'Nom du vélo',
+            icon: Icons.pedal_bike),
+        AppTextField(
+            keyboardType: TextInputType.number,
+            focusNode: _kmWeekFocus,
+            textfieldController: _kmWeek,
+            validator: kmValidator,
+            hintText: 'Kilomètres par semaine',
+            label: 'Kilomètres par semaine',
+            icon: Icons.image),
+        Text('Utilisation par semaine', style: secondTextStyle),
+        Slider(
+            value: _nbPerWeek,
+            thumbColor: primaryColor,
+            activeColor: primaryColor,
+            inactiveColor: const Color.fromARGB(255, 156, 156, 156),
+            min: 1,
+            max: 7,
+            divisions: 6,
+            label: '$_nbPerWeek',
+            onChanged: (rating) {
+              setState(() => _nbPerWeek = rating);
+            }),
+        Row(mainAxisAlignment: MainAxisAlignment.center, children: <Widget>[
+          Text('Electrique', style: secondTextStyle),
+          Checkbox(
+              fillColor: MaterialStateProperty.all(primaryColor),
+              value: _electric,
+              onChanged: (bool? value) {
+                setState(() => _electric = value);
+              }),
         ]),
-        Form(
-            key: _keyForm,
-            child: Column(children: <Widget>[
-              AppTextField(
-                  keyboardType: TextInputType.text,
-                  focusNode: _nameFocus,
-                  textfieldController: _name,
-                  validator: fieldValidator,
-                  hintText: 'Entrer un nom de vélo',
-                  label: 'Nom du vélo',
-                  icon: Icons.pedal_bike),
-              AppTextField(
-                  keyboardType: TextInputType.text,
-                  focusNode: _imageFocus,
-                  textfieldController: _image,
-                  validator: emptyValidator,
-                  hintText: "Lien de l'image du vélo",
-                  label: 'Image du vélo',
-                  icon: Icons.image),
-              AppTextField(
-                  keyboardType: TextInputType.number,
-                  focusNode: _nbKmFocus,
-                  textfieldController: _nbKm,
-                  validator: kmValidator,
-                  hintText: 'Nombre de kilomètres du vélo',
-                  label: 'Nombre de km',
-                  icon: Icons.add_road),
-              Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    Text('Vélo électrique ?', style: secondTextStyle),
-                    Checkbox(
-                        fillColor: MaterialStateProperty.all(deepGreen),
-                        value: _isElectric,
-                        onChanged: (bool? value) {
-                          setState(() => _isElectric = value);
-                        })
-                  ]),
-              AppCalendar(
-                  callback: _onDateChanged, selectedDate: _dateOfPurchase),
-              AppButton(text: 'Ajouter', callback: _onAddBike, color: deepGreen)
-            ]))
+        _buildBikesTypes(),
+        AppCalendar(
+            callback: _onDateChanged,
+            selectedDate: _dateOfPurchase,
+            text: "Date d'ajout"),
+        AppButton(
+            text: 'Ajouter', callback: _onAddBike, icon: const Icon(Icons.add))
       ]));
+
+  Widget _buildBikesTypes() => Column(children: <Widget>[
+        for (String type in _types)
+          ListTile(
+              title: GestureDetector(
+                  child: AppClickRegion(child: Text(type)),
+                  onTap: () {
+                    setState(() => _type = type);
+                  }),
+              leading: Radio<String>(
+                  activeColor: primaryColor,
+                  value: type,
+                  groupValue: _type,
+                  onChanged: (String? value) {
+                    setState(() => _type = value);
+                  }))
+      ]);
+
+  void _onDateChanged(DateRangePickerSelectionChangedArgs args) {
+    _dateOfPurchase = args.value;
+  }
 
   void _onAddBike() {
     if (_keyForm.currentState!.validate()) {
       _keyForm.currentState!.save();
-      _showDialog();
+      _addBike();
     }
   }
-
-  Future _showDialog() async => showDialog(
-      context: context,
-      builder: (BuildContext context) => AlertDialog(
-            shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(secondSize)),
-            title: const Text('Initialiser les composants ?'),
-            actions: <Widget>[
-              TextButton(
-                  child: const Text('Oui', style: TextStyle(color: deepGreen)),
-                  onPressed: () => _addBikeAndInit()),
-              TextButton(
-                  child: const Text('Non', style: TextStyle(color: deepGreen)),
-                  onPressed: () => _addBike())
-            ],
-          ));
 
   void _addBike() async {
-    String id = await _memberId;
-    Response response = await _bikeService.addBike(id, _name.text, _image.text,
-        _dateOfPurchase, double.parse(_nbKm.text), _isElectric!);
-    Color respColor = deepGreen;
-    dynamic json = jsonDecode(response.body);
+    final String memberId = await Storage.getMemberId();
+    final BikeService bikeService = BikeService();
+    final Bike bike = Bike('', _name.text, double.parse(_kmWeek.text),
+        _nbPerWeek.toInt(), _electric!, _type!, _dateOfPurchase);
+    final HttpResponse response = await bikeService.create(memberId, bike);
 
-    if (response.statusCode == httpCodeCreated) {
-      _toMemberHomePage();
-    } else {
-      respColor = red;
+    if (response.success()) {
+      _onMemberHomePage();
     }
-    ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(json['confirm']), backgroundColor: respColor));
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text(response.message()), backgroundColor: response.color()));
   }
 
-  void _addBikeAndInit() async {
-    String id = await _memberId;
-    Response response = await _bikeService.addBike(id, _name.text, _image.text,
-        _dateOfPurchase, double.parse(_nbKm.text), _isElectric!);
-    Color respColor = red;
-
-    if (response.statusCode == httpCodeCreated) {
-      String bikeId = jsonDecode(response.body)['bike']['id'];
-      response = await _componentService.initAllComponents(bikeId);
-
-      if (response.statusCode == httpCodeCreated) {
-        _toMemberHomePage();
-        respColor = deepGreen;
-      }
-    }
-    dynamic json = jsonDecode(response.body);
-    ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(json['confirm']), backgroundColor: respColor));
-  }
-
-  void _onDateChanged(DateRangePickerSelectionChangedArgs args) {
-    _dateOfPurchase = args.value.toString().split(' ')[0];
-  }
-
-  void _toMemberHomePage() => Navigator.pushAndRemoveUntil(
+  void _onMemberHomePage() => Navigator.pushAndRemoveUntil(
       context,
-      MaterialPageRoute(
-          builder: (BuildContext context) =>
-              const MemberHomePage(initialPage: 0)),
+      animationRightLeft(const MemberHomePage(initialPage: 0)),
       (Route<dynamic> route) => false);
 }

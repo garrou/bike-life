@@ -1,43 +1,33 @@
-class Component {
-  final String id;
-  final String bikeId;
-  final double km;
-  final String? brand;
-  final String dateOfPurchase;
-  final double duration;
-  final String? image;
-  final String type;
-  bool archived;
+import 'package:intl/intl.dart';
 
-  Component(this.id, this.bikeId, this.km, this.brand, this.dateOfPurchase,
-      this.duration, this.image, this.type, this.archived);
+class Component {
+  static DateFormat format = DateFormat('dd/MM/yyyy');
+
+  final String id;
+  final double duration;
+  final String type;
+  final bool active;
+  final DateTime changedAt;
+
+  Component(this.id, this.duration, this.type, this.active, this.changedAt);
 
   Component.fromJson(Map<String, dynamic> json)
       : id = json['id'],
-        bikeId = json['bikeId'],
-        km = double.parse(json['km']),
         duration = double.parse(json['duration']),
-        brand = json['brand'],
-        dateOfPurchase = json['dateOfPurchase'],
-        image = json['image'],
         type = json['type'],
-        archived = json['archived'];
+        active = json['active'],
+        changedAt = DateTime.parse(json['changedAt']);
 
   Map<String, dynamic> toJson() => {
         'id': id,
-        'bikeId': bikeId,
-        'km': km,
-        'brand': brand,
-        'dateOfPurchase': dateOfPurchase,
         'duration': duration,
-        'image': image,
         'type': type,
-        'archived': archived
+        'active': active,
+        'changedAt': changedAt.toString()
       };
+
+  String changedAtToString() => format.format(changedAt);
 }
 
-List<Component> createComponents(List<dynamic> records) {
-  return records
-      .map((json) => Component.fromJson(json))
-      .toList(growable: false);
-}
+List<Component> createComponents(List<dynamic> records) =>
+    records.map((json) => Component.fromJson(json)).toList(growable: false);

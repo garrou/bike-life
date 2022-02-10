@@ -1,5 +1,5 @@
+import 'package:bike_life/styles/styles.dart';
 import 'package:bike_life/utils/constants.dart';
-import 'package:bike_life/styles/rounded_button_style.dart';
 import 'package:flutter/material.dart';
 
 class AppAccountButton extends StatelessWidget {

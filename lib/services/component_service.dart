@@ -1,47 +1,39 @@
 import 'dart:convert';
 
-import 'package:bike_life/models/component.dart';
+import 'package:bike_life/models/http_response.dart';
 import 'package:bike_life/utils/constants.dart';
 import 'package:bike_life/utils/http_account_interceptor.dart';
 import 'package:http/http.dart';
 import 'package:http_interceptor/http/http.dart';
 
 class ComponentService {
-  Client client = InterceptedClient.build(interceptors: [
+  final Client client = InterceptedClient.build(interceptors: [
     HttpAccountInterceptor(),
   ]);
 
-  Future<Response> getBikeComponents(String bikeId) async {
-    return await client.get(Uri.parse('$endpoint/bikes/$bikeId/components'));
+  Future<HttpResponse> getBikeComponents(String bikeId) async {
+    Response response =
+        await client.get(Uri.parse('$endpoint/bikes/$bikeId/components'));
+    return HttpResponse(response);
   }
 
-  Future<Response> add(String brand, String image, double km, double duration,
-      String type, String date, String bikeId, bool archived) async {
-    return await client.post(Uri.parse('$endpoint/bikes/$bikeId/components'),
-        body: jsonEncode(<String, dynamic>{
-          'brand': brand,
-          'image': image,
-          'km': km,
-          'duration': duration,
-          'type': type,
-          'date': date,
-          'archived': archived
-        }));
+  Future<HttpResponse> getComponentsAlerts(String memberId) async {
+    Response response = await client
+        .get(Uri.parse('$endpoint/members/$memberId/components/alerts'));
+    return HttpResponse(response);
   }
 
-  Future<Response> update(Component component) async {
-    return await client.put(Uri.parse('$endpoint/components/${component.id}'),
-        body:
-            jsonEncode(<String, dynamic>{'component': jsonEncode(component)}));
+  Future<HttpResponse> changeComponent(
+      String componentId, DateTime date) async {
+    Response response = await client.patch(
+        Uri.parse('$endpoint/components/$componentId'),
+        body: jsonEncode(<String, dynamic>{'changedAt': date.toString()}));
+    return HttpResponse(response);
   }
 
-  Future<Response> initAllComponents(String bikeId) async {
-    return await client
-        .post(Uri.parse('$endpoint/bikes/$bikeId/components/init'));
-  }
-
-  Future<Response> getArchivedMemberComponents(String memberId) async {
-    return await client
-        .get(Uri.parse('$endpoint/members/$memberId/components'));
+  Future<HttpResponse> getChangeHistoric(String componentId) async {
+    Response response = await client
+        .get(Uri.parse('$endpoint/components/$componentId/change-historic'));
+    return HttpResponse(response);
   }
 }
