@@ -13,7 +13,7 @@ import 'package:bike_life/views/auth/signin.dart';
 import 'package:bike_life/views/member/add_bike.dart';
 import 'package:bike_life/styles/styles.dart';
 import 'package:bike_life/views/member/bike_components.dart';
-import 'package:bike_life/views/member/click_region.dart';
+import 'package:bike_life/widgets/click_region.dart';
 import 'package:bike_life/views/member/component_historic.dart';
 import 'package:bike_life/views/member/update_bike.dart';
 import 'package:bike_life/views/member/profile.dart';
@@ -68,7 +68,7 @@ class _AllBikesPageState extends State<AllBikesPage> {
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text('Vélos', style: secondTextStyle),
+              Text('Vélos', style: thirdTextStyle),
               AppTopRightButton(
                   color: Colors.black,
                   callback: _onProfilePage,
@@ -98,6 +98,12 @@ class _CarouselState extends State<Carousel> {
   late Future<List<Bike>> _bikes;
   int _current = 0;
 
+  @override
+  void initState() {
+    super.initState();
+    _bikes = _loadBikes();
+  }
+
   Future<List<Bike>> _loadBikes() async {
     final String memberId = await Storage.getMemberId();
     final BikeService bikeService = BikeService();
@@ -108,12 +114,6 @@ class _CarouselState extends State<Carousel> {
     } else {
       throw Exception('Impossible de récupérer les données');
     }
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    _bikes = _loadBikes();
   }
 
   @override
@@ -168,7 +168,7 @@ class _CarouselState extends State<Carousel> {
                                 style: const TextStyle(color: Colors.white)),
                             padding: const EdgeInsets.all(12)),
                         IconButton(
-                            icon: const Icon(Icons.edit,
+                            icon: const Icon(Icons.info_outline,
                                 size: 20, color: Colors.white),
                             onPressed: () => _onUpdateBikePage(bike))
                       ]),
@@ -242,7 +242,8 @@ class _ComponentsAlertsState extends State<ComponentsAlerts> {
           final String several = nb > 1 ? 's' : '';
 
           return Column(children: <Widget>[
-            Text('$nb composant$several à changer', style: thirdTextStyle),
+            Text(nb > 0 ? '$nb composant$several à changer' : '',
+                style: thirdTextStyle),
             ListView.builder(
                 itemCount: snapshot.data!.length,
                 shrinkWrap: true,

@@ -27,6 +27,7 @@ environment:
 # the latest version available on pub.dev. To see which dependencies have newer
 # versions available, run `flutter pub outdated`.
 dependencies:
+  charts_flutter: ^0.12.0
   flutter:
     sdk: flutter
 
@@ -47,6 +48,7 @@ dependency_overrides:
   provider: ^6.0.2
   intl: ^0.17.0
   percent_indicator: ^4.0.0
+  lottie: ^1.2.1
 
 dev_dependencies:
   flutter_test:

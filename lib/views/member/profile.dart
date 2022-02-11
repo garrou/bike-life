@@ -18,14 +18,9 @@ import 'package:bike_life/widgets/top_right_button.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class ProfilePage extends StatefulWidget {
+class ProfilePage extends StatelessWidget {
   const ProfilePage({Key? key}) : super(key: key);
 
-  @override
-  _ProfilePageState createState() => _ProfilePageState();
-}
-
-class _ProfilePageState extends State<ProfilePage> {
   @override
   Widget build(BuildContext context) =>
       Scaffold(body: LayoutBuilder(builder: (context, constraints) {
@@ -51,7 +46,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     title: 'Profil',
                     callback: () => Navigator.of(context).pop()),
                 AppTopRightButton(
-                    callback: _onDisconnect,
+                    callback: () => _onDisconnect(context),
                     icon: const Icon(Icons.logout),
                     color: red,
                     padding: secondSize)
@@ -70,11 +65,11 @@ class _ProfilePageState extends State<ProfilePage> {
             )
           ]),
           const UpdateEmailForm(),
-          const UpdatePasswordForm()
+          UpdatePasswordForm()
         ]);
       });
 
-  void _onDisconnect() {
+  void _onDisconnect(BuildContext context) {
     Storage.disconnect();
     Navigator.pushAndRemoveUntil(
         context,
@@ -167,14 +162,9 @@ class _UpdateEmailFormState extends State<UpdateEmailForm> {
   }
 }
 
-class UpdatePasswordForm extends StatefulWidget {
-  const UpdatePasswordForm({Key? key}) : super(key: key);
+class UpdatePasswordForm extends StatelessWidget {
+  UpdatePasswordForm({Key? key}) : super(key: key);
 
-  @override
-  _UpdatePasswordFormState createState() => _UpdatePasswordFormState();
-}
-
-class _UpdatePasswordFormState extends State<UpdatePasswordForm> {
   final _keyForm = GlobalKey<FormState>();
 
   final _passwordFocus = FocusNode();
@@ -218,18 +208,18 @@ class _UpdatePasswordFormState extends State<UpdatePasswordForm> {
                     icon: Icons.password),
                 AppButton(
                     text: "Modifier",
-                    callback: _onUpdate,
+                    callback: () => _onUpdate(context),
                     icon: const Icon(Icons.save))
               ]))));
 
-  void _onUpdate() {
+  void _onUpdate(BuildContext context) {
     if (_keyForm.currentState!.validate()) {
       _keyForm.currentState!.save();
-      _updatePassword();
+      _updatePassword(context);
     }
   }
 
-  void _updatePassword() async {
+  void _updatePassword(BuildContext context) async {
     final String memberId = await Storage.getMemberId();
     final MemberService memberService = MemberService();
     final HttpResponse response =

@@ -9,6 +9,7 @@ import 'package:bike_life/styles/styles.dart';
 import 'package:bike_life/widgets/nav_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_guards/flutter_guards.dart';
+import 'package:lottie/lottie.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -42,10 +43,11 @@ class _HomePageState extends State<HomePage> {
         Column(mainAxisAlignment: MainAxisAlignment.center, children: <Widget>[
           Padding(
               padding: const EdgeInsets.all(thirdSize),
-              child: Image.asset('assets/bike.png', fit: BoxFit.contain)),
+              child: Lottie.network(
+                  'https://assets2.lottiefiles.com/packages/lf20_lnji2epm.json')),
           Padding(
               padding: const EdgeInsets.symmetric(vertical: thirdSize),
-              child: Text("La santé de votre vélo\nse surveille de près.",
+              child: Text("La santé de votre vélo se surveille de près.",
                   style: italicTextStyle)),
           const AppNavButton(
               text: 'Découvrir',
