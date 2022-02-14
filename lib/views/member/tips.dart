@@ -54,21 +54,19 @@ class _TipsPageState extends State<TipsPage> {
       child: _wideLayout(context));
 
   Widget _wideLayout(BuildContext context) =>
-      Column(crossAxisAlignment: CrossAxisAlignment.center, children: <Widget>[
-        Padding(
-            padding: const EdgeInsets.all(secondSize),
-            child: Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text('Conseils', style: thirdTextStyle),
-                  IconButton(
-                      icon: const Icon(Icons.help),
-                      iconSize: 30,
-                      onPressed: () {
-                        // TODO: Help
-                      })
-                ])),
+      ListView(padding: const EdgeInsets.all(thirdSize), children: <Widget>[
+        Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text('Conseils', style: thirdTextStyle),
+              IconButton(
+                  icon: const Icon(Icons.help),
+                  iconSize: 30,
+                  onPressed: () {
+                    // TODO: Help
+                  })
+            ]),
         FutureBuilder<List<Tip>>(
             future: _tips,
             builder: (_, snapshot) {

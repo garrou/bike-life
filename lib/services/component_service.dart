@@ -37,10 +37,17 @@ class ComponentService {
     return HttpResponse(response);
   }
 
-  Future<HttpResponse> getComponentsChangeStats(
+  Future<HttpResponse> getNbComponentsChangeStats(
       String memberId, int year) async {
     Response response = await client.get(Uri.parse(
-        '$endpoint/members/$memberId/components/change-stats/years/$year'));
+        '$endpoint/members/$memberId/components/nb-change-stats/years/$year'));
+    return HttpResponse(response);
+  }
+
+  Future<HttpResponse> getKmComponentsChangeStats(
+      String memberId, int year) async {
+    Response response = await client.get(Uri.parse(
+        '$endpoint/members/$memberId/components/km-change-stats/years/$year'));
     return HttpResponse(response);
   }
 }

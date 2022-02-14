@@ -239,10 +239,10 @@ class _ComponentsAlertsState extends State<ComponentsAlerts> {
           return Text('${snapshot.error}');
         } else if (snapshot.hasData) {
           final int nb = snapshot.data!.length;
-          final String several = nb > 1 ? 's' : '';
+          final String s = nb > 1 ? 's' : '';
 
           return Column(children: <Widget>[
-            Text(nb > 0 ? '$nb composant$several à changer' : '',
+            Text(nb > 0 ? '$nb composant$s à changer' : '',
                 style: thirdTextStyle),
             ListView.builder(
                 itemCount: snapshot.data!.length,
