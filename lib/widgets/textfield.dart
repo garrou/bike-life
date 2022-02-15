@@ -40,11 +40,11 @@ class AppTextField extends StatelessWidget {
           decoration: InputDecoration(
               focusedBorder: textFieldBorder(mainSize, primaryColor),
               prefixIcon: Icon(icon,
-                  color: focusNode.hasFocus ? intermediateGreen : primaryColor),
-              border: textFieldBorder(mainSize, intermediateGreen),
+                  color: focusNode.hasFocus ? intermediateColor : primaryColor),
+              border: textFieldBorder(mainSize, intermediateColor),
               labelText: label,
               labelStyle: TextStyle(
-                  color: focusNode.hasFocus ? intermediateGreen : primaryColor),
+                  color: focusNode.hasFocus ? intermediateColor : primaryColor),
               hintText: hintText),
           cursorColor: primaryColor,
           validator: validator));

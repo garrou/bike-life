@@ -13,12 +13,11 @@ import 'package:bike_life/views/auth/signin.dart';
 import 'package:bike_life/views/member/add_bike.dart';
 import 'package:bike_life/styles/styles.dart';
 import 'package:bike_life/views/member/bike_components.dart';
-import 'package:bike_life/views/member/click_region.dart';
+import 'package:bike_life/widgets/buttons/top_right_button.dart';
+import 'package:bike_life/widgets/click_region.dart';
 import 'package:bike_life/views/member/component_historic.dart';
-import 'package:bike_life/views/member/update_bike.dart';
-import 'package:bike_life/views/member/profile.dart';
+import 'package:bike_life/views/member/bike_details.dart';
 import 'package:bike_life/widgets/loading.dart';
-import 'package:bike_life/widgets/top_right_button.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_guards/flutter_guards.dart';
@@ -62,25 +61,17 @@ class _AllBikesPageState extends State<AllBikesPage> {
           horizontal: MediaQuery.of(context).size.width / 8),
       child: _wideLayout());
 
-  Widget _wideLayout() =>
-      ListView(padding: const EdgeInsets.all(secondSize), children: [
-        Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text('Vélos', style: secondTextStyle),
-              AppTopRightButton(
-                  color: Colors.black,
-                  callback: _onProfilePage,
-                  icon: const Icon(Icons.person),
-                  padding: 0),
-            ]),
-        const Carousel(),
-        const ComponentsAlerts()
-      ]);
-
-  void _onProfilePage() =>
-      Navigator.push(context, animationRightLeft(const ProfilePage()));
+  Widget _wideLayout() => ListView(
+          padding: const EdgeInsets.fromLTRB(
+              thirdSize, mainSize, thirdSize, thirdSize),
+          children: <Widget>[
+            Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[Text('Vélos', style: secondTextStyle)]),
+            const Carousel(),
+            const ComponentsAlerts()
+          ]);
 
   void _onAddBikePage() =>
       Navigator.push(context, animationRightLeft(const AddBikePage()));
@@ -98,6 +89,12 @@ class _CarouselState extends State<Carousel> {
   late Future<List<Bike>> _bikes;
   int _current = 0;
 
+  @override
+  void initState() {
+    super.initState();
+    _bikes = _loadBikes();
+  }
+
   Future<List<Bike>> _loadBikes() async {
     final String memberId = await Storage.getMemberId();
     final BikeService bikeService = BikeService();
@@ -108,12 +105,6 @@ class _CarouselState extends State<Carousel> {
     } else {
       throw Exception('Impossible de récupérer les données');
     }
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    _bikes = _loadBikes();
   }
 
   @override
@@ -147,9 +138,7 @@ class _CarouselState extends State<Carousel> {
                 scrollDirection: Axis.horizontal,
                 shrinkWrap: true,
                 itemCount: cards.length,
-                itemBuilder: (_, i) {
-                  return _dotIndicator(i);
-                })),
+                itemBuilder: (_, i) => _dotIndicator(i))),
       ]);
 
   Widget _bikeCard(Bike bike) => GestureDetector(
@@ -159,19 +148,18 @@ class _CarouselState extends State<Carousel> {
               borderRadius: BorderRadius.circular(10),
               child: Container(
                   color: primaryColor,
-                  child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Padding(
-                            child: Text(bike.name,
-                                style: const TextStyle(color: Colors.white)),
-                            padding: const EdgeInsets.all(12)),
-                        IconButton(
-                            icon: const Icon(Icons.edit,
-                                size: 20, color: Colors.white),
-                            onPressed: () => _onUpdateBikePage(bike))
-                      ]),
+                  child: Column(children: <Widget>[
+                    AppTopRightButton(
+                        icon: const Icon(Icons.info_outline,
+                            size: mainSize, color: Colors.white),
+                        padding: 0,
+                        onPressed: () => _updateBikePage(bike)),
+                    Padding(
+                        child: Text(bike.name,
+                            style: const TextStyle(
+                                color: Colors.white, fontSize: mainSize)),
+                        padding: const EdgeInsets.all(12))
+                  ]),
                   width: MediaQuery.of(context).size.width,
                   height: 300))));
 
@@ -195,8 +183,8 @@ class _CarouselState extends State<Carousel> {
         _current = index;
       });
 
-  void _onUpdateBikePage(Bike bike) =>
-      Navigator.push(context, animationRightLeft(UpdateBikePage(bike: bike)));
+  void _updateBikePage(Bike bike) =>
+      Navigator.push(context, animationRightLeft(BikeDetails(bike: bike)));
 
   void _onBikePage(Bike bike) => Navigator.push(
       context, animationRightLeft(BikeComponentsPage(bike: bike)));
@@ -239,10 +227,11 @@ class _ComponentsAlertsState extends State<ComponentsAlerts> {
           return Text('${snapshot.error}');
         } else if (snapshot.hasData) {
           final int nb = snapshot.data!.length;
-          final String several = nb > 1 ? 's' : '';
+          final String s = nb > 1 ? 's' : '';
 
           return Column(children: <Widget>[
-            Text('$nb composant$several à changer', style: thirdTextStyle),
+            Text(nb > 0 ? '$nb composant$s à changer' : '',
+                style: thirdTextStyle),
             ListView.builder(
                 itemCount: snapshot.data!.length,
                 shrinkWrap: true,

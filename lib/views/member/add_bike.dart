@@ -6,39 +6,34 @@ import 'package:bike_life/utils/storage.dart';
 import 'package:bike_life/utils/validator.dart';
 import 'package:bike_life/services/bike_service.dart';
 import 'package:bike_life/styles/styles.dart';
-import 'package:bike_life/views/member/click_region.dart';
+import 'package:bike_life/widgets/click_region.dart';
 import 'package:bike_life/views/member/member_home.dart';
-import 'package:bike_life/widgets/button.dart';
+import 'package:bike_life/widgets/buttons/button.dart';
 import 'package:bike_life/widgets/calendar.dart';
 import 'package:bike_life/widgets/textfield.dart';
-import 'package:bike_life/widgets/top_left_button.dart';
+import 'package:bike_life/widgets/buttons/top_left_button.dart';
 import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 
-class AddBikePage extends StatefulWidget {
+class AddBikePage extends StatelessWidget {
   const AddBikePage({Key? key}) : super(key: key);
 
-  @override
-  _AddBikePageState createState() => _AddBikePageState();
-}
-
-class _AddBikePageState extends State<AddBikePage> {
   @override
   Widget build(BuildContext context) =>
       Scaffold(body: LayoutBuilder(builder: (context, constraints) {
         if (constraints.maxWidth > maxWidth) {
           return _narrowLayout(context);
         } else {
-          return _wideLayout();
+          return _wideLayout(context);
         }
       }));
 
   Widget _narrowLayout(BuildContext context) => Padding(
       padding: EdgeInsets.symmetric(
           horizontal: MediaQuery.of(context).size.width / 12),
-      child: _wideLayout());
+      child: _wideLayout(context));
 
-  Widget _wideLayout() =>
+  Widget _wideLayout(BuildContext context) =>
       ListView(padding: const EdgeInsets.all(thirdSize), children: <Widget>[
         Row(children: <Widget>[
           AppTopLeftButton(
@@ -69,13 +64,7 @@ class _AddBikeFormState extends State<AddBikeForm> {
   DateTime _dateOfPurchase = DateTime.now();
   double _nbPerWeek = 1;
   bool? _electric = false;
-  String? _type;
-
-  @override
-  void initState() {
-    super.initState();
-    _type = _types.first;
-  }
+  String? _type = 'VTT';
 
   @override
   Widget build(BuildContext context) => Form(
@@ -121,6 +110,7 @@ class _AddBikeFormState extends State<AddBikeForm> {
         ]),
         _buildBikesTypes(),
         AppCalendar(
+            minDate: DateTime(1900),
             callback: _onDateChanged,
             selectedDate: _dateOfPurchase,
             text: "Date d'ajout"),

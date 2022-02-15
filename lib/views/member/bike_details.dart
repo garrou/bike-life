@@ -5,50 +5,46 @@ import 'package:bike_life/styles/animations.dart';
 import 'package:bike_life/styles/styles.dart';
 import 'package:bike_life/utils/constants.dart';
 import 'package:bike_life/utils/validator.dart';
-import 'package:bike_life/views/member/click_region.dart';
+import 'package:bike_life/widgets/click_region.dart';
 import 'package:bike_life/views/member/member_home.dart';
-import 'package:bike_life/widgets/button.dart';
+import 'package:bike_life/widgets/buttons/button.dart';
+import 'package:bike_life/widgets/buttons/top_left_button.dart';
+import 'package:bike_life/widgets/buttons/top_right_button.dart';
 import 'package:bike_life/widgets/textfield.dart';
-import 'package:bike_life/widgets/top_left_button.dart';
-import 'package:bike_life/widgets/top_right_button.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
-class UpdateBikePage extends StatefulWidget {
+class BikeDetails extends StatelessWidget {
   final Bike bike;
-  const UpdateBikePage({Key? key, required this.bike}) : super(key: key);
+  const BikeDetails({Key? key, required this.bike}) : super(key: key);
 
-  @override
-  _UpdateBikePageState createState() => _UpdateBikePageState();
-}
-
-class _UpdateBikePageState extends State<UpdateBikePage> {
   @override
   Widget build(BuildContext context) =>
       Scaffold(body: LayoutBuilder(builder: (context, constraints) {
         if (constraints.maxWidth > maxWidth) {
           return _narrowLayout(context);
         } else {
-          return _wideLayout();
+          return _wideLayout(context);
         }
       }));
 
   Widget _narrowLayout(BuildContext context) => Padding(
       padding: EdgeInsets.symmetric(
           horizontal: MediaQuery.of(context).size.width / 8),
-      child: _wideLayout());
+      child: _wideLayout(context));
 
-  Widget _wideLayout() => ListView(children: [
+  Widget _wideLayout(BuildContext context) => ListView(children: [
         Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-          AppTopLeftButton(title: widget.bike.name, callback: _back),
+          AppTopLeftButton(title: 'Détails', callback: () => _back(context)),
           AppTopRightButton(
-              callback: _showDeleteDialog,
+              onPressed: () => _showDeleteDialog(context),
               icon: const Icon(Icons.delete, color: red),
               padding: secondSize)
         ]),
-        UpdateBikeForm(bike: widget.bike)
+        UpdateBikeForm(bike: bike)
       ]);
 
-  Future _showDeleteDialog() async => showDialog(
+  Future _showDeleteDialog(BuildContext context) async => showDialog(
       context: context,
       builder: (BuildContext context) => AlertDialog(
             shape: RoundedRectangleBorder(
@@ -60,7 +56,7 @@ class _UpdateBikePageState extends State<UpdateBikePage> {
               TextButton(
                   child: const Text('Confirmer', style: TextStyle(color: red)),
                   onPressed: () {
-                    _onDelete();
+                    _onDelete(context);
                     Navigator.pushAndRemoveUntil(
                         context,
                         animationRightLeft(
@@ -70,16 +66,14 @@ class _UpdateBikePageState extends State<UpdateBikePage> {
               TextButton(
                 child: const Text('Annuler',
                     style: TextStyle(color: primaryColor)),
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
+                onPressed: () => Navigator.of(context).pop(),
               ),
             ],
           ));
 
-  _onDelete() async {
+  _onDelete(BuildContext context) async {
     final BikeService bikeService = BikeService();
-    final HttpResponse response = await bikeService.delete(widget.bike.id);
+    final HttpResponse response = await bikeService.delete(bike.id);
 
     if (response.success()) {
       Navigator.pushAndRemoveUntil(
@@ -91,7 +85,7 @@ class _UpdateBikePageState extends State<UpdateBikePage> {
         content: Text(response.message()), backgroundColor: response.color()));
   }
 
-  void _back() => Navigator.of(context).pop();
+  void _back(BuildContext context) => Navigator.of(context).pop();
 }
 
 class UpdateBikeForm extends StatefulWidget {
@@ -103,6 +97,7 @@ class UpdateBikeForm extends StatefulWidget {
 }
 
 class _UpdateBikeFormState extends State<UpdateBikeForm> {
+  static DateFormat format = DateFormat('dd/MM/yyyy');
   final _keyForm = GlobalKey<FormState>();
 
   final _nameFocus = FocusNode();
@@ -135,7 +130,7 @@ class _UpdateBikeFormState extends State<UpdateBikeForm> {
             keyboardType: TextInputType.text,
             focusNode: _nameFocus,
             textfieldController: _name,
-            validator: fieldValidator,
+            validator: lengthValidator,
             hintText: 'Nom du vélo',
             label: 'Nom du vélo',
             icon: Icons.pedal_bike),
@@ -170,6 +165,8 @@ class _UpdateBikeFormState extends State<UpdateBikeForm> {
               }),
         ]),
         _buildBikesTypes(),
+        Text('Date : ${format.format(widget.bike.addedAt)}',
+            style: thirdTextStyle),
         AppButton(
             text: 'Modifier', callback: _onUpdate, icon: const Icon(Icons.save))
       ]));

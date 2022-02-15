@@ -5,10 +5,10 @@ import 'package:bike_life/services/component_service.dart';
 import 'package:bike_life/styles/animations.dart';
 import 'package:bike_life/styles/styles.dart';
 import 'package:bike_life/utils/constants.dart';
-import 'package:bike_life/views/member/click_region.dart';
+import 'package:bike_life/widgets/click_region.dart';
 import 'package:bike_life/views/member/component_historic.dart';
 import 'package:bike_life/widgets/loading.dart';
-import 'package:bike_life/widgets/top_left_button.dart';
+import 'package:bike_life/widgets/buttons/top_left_button.dart';
 import 'package:flutter/material.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
 
@@ -68,6 +68,7 @@ class _BikeComponentsPageState extends State<BikeComponentsPage> {
           return Text('${snapshot.error}');
         } else if (snapshot.hasData) {
           return ListView.builder(
+              physics: const ScrollPhysics(),
               itemCount: snapshot.data!.length,
               shrinkWrap: true,
               itemBuilder: (_, index) => _buildTile(snapshot.data![index]));
@@ -100,7 +101,11 @@ class _BikeComponentsPageState extends State<BikeComponentsPage> {
     final Duration diff = DateTime.now().difference(component.changedAt);
     double percent =
         diff.inDays * (widget.bike.kmPerWeek / 7) / component.duration;
-    percent = percent > 1.0 ? 1 : percent;
+    percent = percent > 1.0
+        ? 1
+        : percent < 0
+            ? 0
+            : percent;
 
     return AppClickRegion(
         child: GestureDetector(

@@ -7,6 +7,7 @@ class AppCalendar extends StatefulWidget {
   final DateTime selectedDate;
   final String text;
   final bool visible;
+  final DateTime minDate;
   final Function(DateRangePickerSelectionChangedArgs args) callback;
 
   const AppCalendar(
@@ -14,7 +15,8 @@ class AppCalendar extends StatefulWidget {
       required this.callback,
       required this.selectedDate,
       required this.text,
-      this.visible = false})
+      this.visible = false,
+      required this.minDate})
       : super(key: key);
 
   @override
@@ -23,6 +25,7 @@ class AppCalendar extends StatefulWidget {
 
 class _AppCalendarState extends State<AppCalendar> {
   late bool _isVisible;
+  final DateTime _maxDate = DateTime.now();
 
   @override
   void initState() {
@@ -46,6 +49,8 @@ class _AppCalendarState extends State<AppCalendar> {
         Visibility(
             visible: _isVisible,
             child: SfDateRangePicker(
+                minDate: widget.minDate,
+                maxDate: _maxDate,
                 initialSelectedDate: widget.selectedDate,
                 todayHighlightColor: primaryColor,
                 selectionColor: primaryColor,

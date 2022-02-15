@@ -6,7 +6,7 @@ import 'package:bike_life/services/tip_service.dart';
 import 'package:bike_life/styles/animations.dart';
 import 'package:bike_life/styles/styles.dart';
 import 'package:bike_life/utils/constants.dart';
-import 'package:bike_life/views/member/click_region.dart';
+import 'package:bike_life/widgets/click_region.dart';
 import 'package:bike_life/views/member/tip_details.dart';
 import 'package:bike_life/widgets/loading.dart';
 import 'package:flutter/material.dart';
@@ -53,37 +53,28 @@ class _TipsPageState extends State<TipsPage> {
           horizontal: MediaQuery.of(context).size.width / 12),
       child: _wideLayout(context));
 
-  Widget _wideLayout(BuildContext context) =>
-      Column(crossAxisAlignment: CrossAxisAlignment.center, children: <Widget>[
-        Padding(
-            padding: const EdgeInsets.all(secondSize),
-            child: Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text('Conseils', style: thirdTextStyle),
-                  IconButton(
-                      icon: const Icon(Icons.help),
-                      iconSize: 30,
-                      onPressed: () {
-                        // TODO: Help
-                      })
-                ])),
-        FutureBuilder<List<Tip>>(
-            future: _tips,
-            builder: (_, snapshot) {
-              if (snapshot.hasError) {
-                return Text('${snapshot.error}');
-              } else if (snapshot.hasData) {
-                return Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: <Widget>[
-                      for (Tip tip in snapshot.data!) _buildTip(tip)
-                    ]);
-              }
-              return const AppLoading();
-            })
-      ]);
+  Widget _wideLayout(BuildContext context) => ListView(
+          padding: const EdgeInsets.fromLTRB(
+              thirdSize, mainSize, thirdSize, thirdSize),
+          children: <Widget>[
+            Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+              Text('Conseils', style: thirdTextStyle),
+            ]),
+            FutureBuilder<List<Tip>>(
+                future: _tips,
+                builder: (_, snapshot) {
+                  if (snapshot.hasError) {
+                    return Text('${snapshot.error}');
+                  } else if (snapshot.hasData) {
+                    return Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: <Widget>[
+                          for (Tip tip in snapshot.data!) _buildTip(tip)
+                        ]);
+                  }
+                  return const AppLoading();
+                })
+          ]);
 
   Widget _buildTip(Tip tip) => Card(
       elevation: 5,

@@ -8,6 +8,7 @@ import 'package:bike_life/views/member/member_home.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_guards/flutter_guards.dart';
 import 'package:introduction_screen/introduction_screen.dart';
+import 'package:lottie/lottie.dart';
 
 class DiscoverPage extends StatefulWidget {
   const DiscoverPage({Key? key}) : super(key: key);
@@ -43,21 +44,24 @@ class _DiscoverPageState extends State<DiscoverPage> {
       pages: [
         PageViewModel(
             title: 'Gestion de vos vélos',
-            body: "Ajouter vos vélos dans l'application.",
-            image: const Icon(Icons.bike_scooter)),
-        PageViewModel(
-            title: 'Gestion des composants des vélos',
-            body:
-                "Ajouter les composants de votre vélo.\nGardez un oeil sur l'utilisation de ceux-ci.",
-            image: const Icon(Icons.health_and_safety)),
+            body: """
+Ajouter vos vélos dans l'application.
+Notez les dates de changements de composants.
+Suivez l'utilisation de vos composants.
+Soignez informé quand un composant doit-être changé.
+                 """,
+            image: Lottie.network(
+                'https://assets10.lottiefiles.com/packages/lf20_138qcknv.json')),
         PageViewModel(
             title: 'Une démarche écologique',
             body: 'Entretenir son vélo, un premier pas pour la planète',
-            image: const Icon(Icons.eco)),
+            image: Lottie.network(
+                'https://assets3.lottiefiles.com/private_files/lf30_flhopjdx.json')),
         PageViewModel(
             title: 'Une démarche économique',
             body: 'Entretenir son vélo, pour le garder plus longtemps',
-            image: const Icon(Icons.euro))
+            image: Lottie.network(
+                'https://assets10.lottiefiles.com/packages/lf20_h9pkkcih.json'))
       ],
       showSkipButton: true,
       skip: const Text('Passer', style: TextStyle(color: primaryColor)),

@@ -4,9 +4,9 @@ import 'package:bike_life/services/component_service.dart';
 import 'package:bike_life/styles/animations.dart';
 import 'package:bike_life/utils/constants.dart';
 import 'package:bike_life/views/member/member_home.dart';
-import 'package:bike_life/widgets/button.dart';
+import 'package:bike_life/widgets/buttons/button.dart';
 import 'package:bike_life/widgets/calendar.dart';
-import 'package:bike_life/widgets/top_left_button.dart';
+import 'package:bike_life/widgets/buttons/top_left_button.dart';
 import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 
@@ -41,6 +41,7 @@ class _ChangeComponentPageState extends State<ChangeComponentPage> {
         AppTopLeftButton(title: 'Changement de composant', callback: _back),
         Padding(
             child: AppCalendar(
+                minDate: widget.component.changedAt,
                 callback: _onDateChanged,
                 selectedDate: _changedDate,
                 text: 'Date du changement',

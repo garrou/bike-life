@@ -2,11 +2,12 @@ import 'dart:async';
 
 import 'package:bike_life/models/http_response.dart';
 import 'package:bike_life/services/member_service.dart';
+import 'package:bike_life/styles/animations.dart';
 import 'package:bike_life/utils/guard_helper.dart';
 import 'package:bike_life/utils/validator.dart';
 import 'package:bike_life/views/member/member_home.dart';
 import 'package:bike_life/styles/styles.dart';
-import 'package:bike_life/widgets/button.dart';
+import 'package:bike_life/widgets/buttons/button.dart';
 import 'package:bike_life/widgets/card.dart';
 import 'package:bike_life/widgets/link_page.dart';
 import 'package:bike_life/views/auth/signin.dart';
@@ -49,7 +50,7 @@ class _SignupPageState extends State<SignupPage> {
           child: SingleChildScrollView(
               child: Column(children: <Widget>[
         AppTitle(text: "S'inscrire", paddingTop: 0, style: mainTextStyle),
-        const AppCard(child: SignupForm(), elevation: secondSize),
+        AppCard(child: SignupForm(), elevation: secondSize),
         AppLinkToPage(
             padding: mainSize,
             child: Text('Déjà membre ? Se connecter', style: linkStyle),
@@ -64,14 +65,9 @@ class _SignupPageState extends State<SignupPage> {
   }
 }
 
-class SignupForm extends StatefulWidget {
-  const SignupForm({Key? key}) : super(key: key);
+class SignupForm extends StatelessWidget {
+  SignupForm({Key? key}) : super(key: key);
 
-  @override
-  _SignupFormState createState() => _SignupFormState();
-}
-
-class _SignupFormState extends State<SignupForm> {
   final _keyForm = GlobalKey<FormState>();
 
   final _emailFocus = FocusNode();
@@ -122,26 +118,25 @@ class _SignupFormState extends State<SignupForm> {
             icon: Icons.password),
         AppButton(
             text: "S'inscrire",
-            callback: _onSignup,
+            callback: () => _onSignup(context),
             icon: const Icon(Icons.person_add_alt_1))
       ]));
 
-  void _onSignup() {
+  void _onSignup(BuildContext context) {
     if (_keyForm.currentState!.validate()) {
       _keyForm.currentState!.save();
-      _createUser();
+      _createUser(context);
     }
   }
 
-  void _createUser() async {
+  void _createUser(BuildContext context) async {
     final HttpResponse response =
         await _memberService.signup(_email.text, _password.text);
 
     if (response.success()) {
       Navigator.pushAndRemoveUntil(
           context,
-          MaterialPageRoute(
-              builder: (BuildContext context) => const SigninPage()),
+          animationRightLeft(const SigninPage()),
           (Route<dynamic> route) => false);
     }
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(

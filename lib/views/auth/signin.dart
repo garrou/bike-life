@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:bike_life/models/http_response.dart';
+import 'package:bike_life/styles/animations.dart';
 import 'package:bike_life/styles/styles.dart';
 import 'package:bike_life/utils/constants.dart';
 import 'package:bike_life/utils/guard_helper.dart';
@@ -11,7 +12,7 @@ import 'package:bike_life/views/auth/signup.dart';
 import 'package:bike_life/views/member/member_home.dart';
 import 'package:bike_life/widgets/card.dart';
 import 'package:bike_life/widgets/link_page.dart';
-import 'package:bike_life/widgets/button.dart';
+import 'package:bike_life/widgets/buttons/button.dart';
 import 'package:bike_life/widgets/textfield.dart';
 import 'package:bike_life/widgets/title.dart';
 import 'package:flutter/material.dart';
@@ -50,7 +51,7 @@ class _SigninPageState extends State<SigninPage> {
           child: SingleChildScrollView(
               child: Column(children: <Widget>[
         AppTitle(text: 'Se connecter', paddingTop: 0, style: mainTextStyle),
-        const AppCard(child: SigninForm(), elevation: secondSize),
+        AppCard(child: SigninForm(), elevation: secondSize),
         AppLinkToPage(
             padding: mainSize,
             child: Text('Nouveau ? Créer un compte', style: linkStyle),
@@ -63,14 +64,9 @@ class _SigninPageState extends State<SigninPage> {
       child: wideLayout());
 }
 
-class SigninForm extends StatefulWidget {
-  const SigninForm({Key? key}) : super(key: key);
+class SigninForm extends StatelessWidget {
+  SigninForm({Key? key}) : super(key: key);
 
-  @override
-  _SigninFormState createState() => _SigninFormState();
-}
-
-class _SigninFormState extends State<SigninForm> {
   final _keyForm = GlobalKey<FormState>();
 
   final _emailFocus = FocusNode();
@@ -104,18 +100,18 @@ class _SigninFormState extends State<SigninForm> {
             icon: Icons.password),
         AppButton(
             text: 'Connexion',
-            callback: _onSignin,
+            callback: () => _onSignin(context),
             icon: const Icon(Icons.login))
       ]));
 
-  void _onSignin() {
+  void _onSignin(BuildContext context) {
     if (_keyForm.currentState!.validate()) {
       _keyForm.currentState!.save();
-      _authUser();
+      _authUser(context);
     }
   }
 
-  void _authUser() async {
+  void _authUser(BuildContext context) async {
     final HttpResponse response =
         await _memberService.login(_email.text, _password.text);
 
@@ -124,8 +120,7 @@ class _SigninFormState extends State<SigninForm> {
       Storage.setString('id', response.memberId());
       Navigator.pushAndRemoveUntil(
           context,
-          MaterialPageRoute(
-              builder: (context) => const MemberHomePage(initialPage: 0)),
+          animationRightLeft(const MemberHomePage(initialPage: 0)),
           (Route<dynamic> route) => false);
     } else {
       _password.text = '';

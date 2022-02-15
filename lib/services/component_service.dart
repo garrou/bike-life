@@ -36,4 +36,24 @@ class ComponentService {
         .get(Uri.parse('$endpoint/components/$componentId/change-historic'));
     return HttpResponse(response);
   }
+
+  Future<HttpResponse> getNbComponentsChangeStats(
+      String memberId, int year) async {
+    Response response = await client.get(Uri.parse(
+        '$endpoint/members/$memberId/components/nb-change-stats/years/$year'));
+    return HttpResponse(response);
+  }
+
+  Future<HttpResponse> getKmComponentsChangeStats(
+      String memberId, int year) async {
+    Response response = await client.get(Uri.parse(
+        '$endpoint/members/$memberId/components/km-change-stats/years/$year'));
+    return HttpResponse(response);
+  }
+
+  Future<HttpResponse> getTotalChanges(String memberId) async {
+    Response response = await client
+        .get(Uri.parse('$endpoint/members/$memberId/components/changes'));
+    return HttpResponse(response);
+  }
 }

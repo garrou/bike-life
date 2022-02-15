@@ -1,4 +1,4 @@
-import 'package:bike_life/models/change.dart';
+import 'package:bike_life/models/component_change.dart';
 import 'package:bike_life/models/component.dart';
 import 'package:bike_life/models/http_response.dart';
 import 'package:bike_life/services/component_service.dart';
@@ -7,7 +7,7 @@ import 'package:bike_life/styles/styles.dart';
 import 'package:bike_life/utils/constants.dart';
 import 'package:bike_life/views/member/change_component.dart';
 import 'package:bike_life/widgets/loading.dart';
-import 'package:bike_life/widgets/top_left_button.dart';
+import 'package:bike_life/widgets/buttons/top_left_button.dart';
 import 'package:flutter/material.dart';
 
 class ComponentHistoricPage extends StatefulWidget {
@@ -20,9 +20,9 @@ class ComponentHistoricPage extends StatefulWidget {
 }
 
 class _ComponentHistoricPageState extends State<ComponentHistoricPage> {
-  late Future<List<Change>> _historic;
+  late Future<List<ComponentChange>> _historic;
 
-  Future<List<Change>> _load() async {
+  Future<List<ComponentChange>> _load() async {
     final ComponentService componentService = ComponentService();
     HttpResponse response =
         await componentService.getChangeHistoric(widget.component.id);
@@ -62,11 +62,12 @@ class _ComponentHistoricPageState extends State<ComponentHistoricPage> {
   Widget _wideLayout() => Padding(
       padding: const EdgeInsets.all(15),
       child: Column(children: <Widget>[
-        AppTopLeftButton(title: 'Historique de changement', callback: _back),
+        AppTopLeftButton(
+            title: '${widget.component.type} : changements', callback: _back),
         _buildList()
       ]));
 
-  FutureBuilder _buildList() => FutureBuilder<List<Change>>(
+  FutureBuilder _buildList() => FutureBuilder<List<ComponentChange>>(
       future: _historic,
       builder: (context, snapshot) {
         if (snapshot.hasError) {
@@ -80,7 +81,7 @@ class _ComponentHistoricPageState extends State<ComponentHistoricPage> {
         return const AppLoading();
       });
 
-  ListTile _buildTile(Change change) => ListTile(
+  ListTile _buildTile(ComponentChange change) => ListTile(
       title: Text(change.changeAt),
       subtitle: Text('${change.km.toStringAsFixed(2)} km'));
 
