@@ -12,7 +12,7 @@ import 'package:bike_life/views/auth/signup.dart';
 import 'package:bike_life/views/member/member_home.dart';
 import 'package:bike_life/widgets/card.dart';
 import 'package:bike_life/widgets/link_page.dart';
-import 'package:bike_life/widgets/button.dart';
+import 'package:bike_life/widgets/buttons/button.dart';
 import 'package:bike_life/widgets/textfield.dart';
 import 'package:bike_life/widgets/title.dart';
 import 'package:flutter/material.dart';

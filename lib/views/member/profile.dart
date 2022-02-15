@@ -9,12 +9,11 @@ import 'package:bike_life/utils/storage.dart';
 import 'package:bike_life/utils/validator.dart';
 import 'package:bike_life/views/auth/signin.dart';
 import 'package:bike_life/styles/styles.dart';
-import 'package:bike_life/widgets/button.dart';
+import 'package:bike_life/widgets/buttons/button.dart';
 import 'package:bike_life/widgets/card.dart';
 import 'package:bike_life/widgets/loading.dart';
 import 'package:bike_life/widgets/textfield.dart';
-import 'package:bike_life/widgets/top_left_button.dart';
-import 'package:bike_life/widgets/top_right_button.dart';
+import 'package:bike_life/widgets/buttons/top_right_button.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -39,18 +38,11 @@ class ProfilePage extends StatelessWidget {
   Widget _wideLayout() =>
       Consumer<ThemeModel>(builder: (context, ThemeModel themeNotifier, child) {
         return ListView(children: <Widget>[
-          Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                AppTopLeftButton(
-                    title: 'Profil',
-                    callback: () => Navigator.of(context).pop()),
-                AppTopRightButton(
-                    callback: () => _onDisconnect(context),
-                    icon: const Icon(Icons.logout),
-                    color: red,
-                    padding: secondSize)
-              ]),
+          AppTopRightButton(
+              callback: () => _onDisconnect(context),
+              icon: const Icon(Icons.logout),
+              color: red,
+              padding: secondSize),
           Row(mainAxisAlignment: MainAxisAlignment.center, children: [
             Text('Thème', style: secondTextStyle),
             IconButton(

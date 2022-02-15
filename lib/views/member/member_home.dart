@@ -1,4 +1,5 @@
 import 'package:bike_life/views/member/home.dart';
+import 'package:bike_life/views/member/profile.dart';
 import 'package:bike_life/views/member/statistics.dart';
 import 'package:bike_life/views/member/tips.dart';
 import 'package:bike_life/styles/styles.dart';
@@ -32,7 +33,12 @@ class _MemberHomePageState extends State<MemberHomePage> {
   @override
   Widget build(BuildContext context) => Scaffold(
       body: PageView(
-        children: const <Widget>[AllBikesPage(), StatisticsPage(), TipsPage()],
+        children: const <Widget>[
+          AllBikesPage(),
+          StatisticsPage(),
+          TipsPage(),
+          ProfilePage()
+        ],
         onPageChanged: (page) {
           setState(() => _pageIndex = page);
         },
@@ -58,6 +64,10 @@ class _MemberHomePageState extends State<MemberHomePage> {
           BottomNavigationBarItem(
               icon: Icon(Icons.comment),
               label: 'Conseils',
+              backgroundColor: primaryColor),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.person),
+              label: 'Profil',
               backgroundColor: primaryColor)
         ],
       ));

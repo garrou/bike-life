@@ -6,7 +6,12 @@ import 'package:flutter/material.dart';
 class AppBarChart extends StatelessWidget {
   final String text;
   final List<ComponentStat> series;
-  const AppBarChart({Key? key, required this.series, required this.text})
+  final bool vertical;
+  const AppBarChart(
+      {Key? key,
+      required this.series,
+      required this.text,
+      this.vertical = false})
       : super(key: key);
 
   @override
@@ -16,20 +21,19 @@ class AppBarChart extends StatelessWidget {
           id: "Stats",
           data: series,
           domainFn: (ComponentStat series, _) => series.label,
-          measureFn: (ComponentStat series, _) => series.value,
-          colorFn: (_, __) => charts.MaterialPalette.green.shadeDefault)
+          measureFn: (ComponentStat series, _) => series.value)
     ];
 
     return SizedBox(
-      height: MediaQuery.of(context).size.height / 2,
-      width: MediaQuery.of(context).size.width / 2,
+      height: MediaQuery.of(context).size.height,
+      width: MediaQuery.of(context).size.width / 3,
       child: Card(
         elevation: 5,
         child: Column(
           children: <Widget>[
-            Text(text, style: thirdTextStyle),
+            Text(text, style: fourthTextStyle),
             Expanded(
-                child: charts.BarChart(data, animate: true, vertical: false))
+                child: charts.BarChart(data, animate: true, vertical: vertical))
           ],
         ),
       ),

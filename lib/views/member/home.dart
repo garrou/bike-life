@@ -15,10 +15,8 @@ import 'package:bike_life/styles/styles.dart';
 import 'package:bike_life/views/member/bike_components.dart';
 import 'package:bike_life/widgets/click_region.dart';
 import 'package:bike_life/views/member/component_historic.dart';
-import 'package:bike_life/views/member/update_bike.dart';
-import 'package:bike_life/views/member/profile.dart';
+import 'package:bike_life/views/member/bike_details.dart';
 import 'package:bike_life/widgets/loading.dart';
-import 'package:bike_life/widgets/top_right_button.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_guards/flutter_guards.dart';
@@ -64,23 +62,10 @@ class _AllBikesPageState extends State<AllBikesPage> {
 
   Widget _wideLayout() =>
       ListView(padding: const EdgeInsets.all(secondSize), children: [
-        Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text('Vélos', style: thirdTextStyle),
-              AppTopRightButton(
-                  color: Colors.black,
-                  callback: _onProfilePage,
-                  icon: const Icon(Icons.person),
-                  padding: 0),
-            ]),
+        Text('Vélos', style: thirdTextStyle),
         const Carousel(),
         const ComponentsAlerts()
       ]);
-
-  void _onProfilePage() =>
-      Navigator.push(context, animationRightLeft(const ProfilePage()));
 
   void _onAddBikePage() =>
       Navigator.push(context, animationRightLeft(const AddBikePage()));
@@ -196,7 +181,7 @@ class _CarouselState extends State<Carousel> {
       });
 
   void _onUpdateBikePage(Bike bike) =>
-      Navigator.push(context, animationRightLeft(UpdateBikePage(bike: bike)));
+      Navigator.push(context, animationRightLeft(BikeDetails(bike: bike)));
 
   void _onBikePage(Bike bike) => Navigator.push(
       context, animationRightLeft(BikeComponentsPage(bike: bike)));

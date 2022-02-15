@@ -1,7 +1,7 @@
 import 'package:bike_life/models/tip.dart';
 import 'package:bike_life/styles/styles.dart';
 import 'package:bike_life/utils/constants.dart';
-import 'package:bike_life/widgets/top_left_button.dart';
+import 'package:bike_life/widgets/buttons/top_left_button.dart';
 import 'package:flutter/material.dart';
 
 class TipDetailsPage extends StatelessWidget {

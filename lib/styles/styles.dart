@@ -20,6 +20,7 @@ TextStyle linkStyle = const TextStyle(
 TextStyle mainTextStyle = GoogleFonts.roboto(fontSize: mainSize);
 TextStyle secondTextStyle = GoogleFonts.roboto(fontSize: secondSize);
 TextStyle thirdTextStyle = GoogleFonts.roboto(fontSize: intermediateSize);
+TextStyle fourthTextStyle = GoogleFonts.roboto(fontSize: 14.0);
 
 TextStyle boldSubTitleStyle =
     GoogleFonts.roboto(fontSize: secondSize, fontWeight: FontWeight.bold);

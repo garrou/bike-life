@@ -7,15 +7,16 @@ import 'package:bike_life/utils/constants.dart';
 import 'package:bike_life/utils/validator.dart';
 import 'package:bike_life/widgets/click_region.dart';
 import 'package:bike_life/views/member/member_home.dart';
-import 'package:bike_life/widgets/button.dart';
+import 'package:bike_life/widgets/buttons/button.dart';
+import 'package:bike_life/widgets/buttons/top_left_button.dart';
+import 'package:bike_life/widgets/buttons/top_right_button.dart';
 import 'package:bike_life/widgets/textfield.dart';
-import 'package:bike_life/widgets/top_left_button.dart';
-import 'package:bike_life/widgets/top_right_button.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
-class UpdateBikePage extends StatelessWidget {
+class BikeDetails extends StatelessWidget {
   final Bike bike;
-  const UpdateBikePage({Key? key, required this.bike}) : super(key: key);
+  const BikeDetails({Key? key, required this.bike}) : super(key: key);
 
   @override
   Widget build(BuildContext context) =>
@@ -98,6 +99,7 @@ class UpdateBikeForm extends StatefulWidget {
 }
 
 class _UpdateBikeFormState extends State<UpdateBikeForm> {
+  static DateFormat format = DateFormat('dd/MM/yyyy');
   final _keyForm = GlobalKey<FormState>();
 
   final _nameFocus = FocusNode();
@@ -165,6 +167,8 @@ class _UpdateBikeFormState extends State<UpdateBikeForm> {
               }),
         ]),
         _buildBikesTypes(),
+        Text('Date : ${format.format(widget.bike.addedAt)}',
+            style: thirdTextStyle),
         AppButton(
             text: 'Modifier', callback: _onUpdate, icon: const Icon(Icons.save))
       ]));

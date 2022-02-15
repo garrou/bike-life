@@ -8,10 +8,10 @@ import 'package:bike_life/services/bike_service.dart';
 import 'package:bike_life/styles/styles.dart';
 import 'package:bike_life/widgets/click_region.dart';
 import 'package:bike_life/views/member/member_home.dart';
-import 'package:bike_life/widgets/button.dart';
+import 'package:bike_life/widgets/buttons/button.dart';
 import 'package:bike_life/widgets/calendar.dart';
 import 'package:bike_life/widgets/textfield.dart';
-import 'package:bike_life/widgets/top_left_button.dart';
+import 'package:bike_life/widgets/buttons/top_left_button.dart';
 import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 
@@ -110,6 +110,7 @@ class _AddBikeFormState extends State<AddBikeForm> {
         ]),
         _buildBikesTypes(),
         AppCalendar(
+            minDate: DateTime(1900),
             callback: _onDateChanged,
             selectedDate: _dateOfPurchase,
             text: "Date d'ajout"),
