@@ -15,6 +15,6 @@ class AppCard extends StatelessWidget {
           side: const BorderSide(color: primaryColor)),
       elevation: elevation,
       child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: mainSize),
+          padding: const EdgeInsets.symmetric(vertical: thirdSize),
           child: child));
 }

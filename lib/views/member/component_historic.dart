@@ -62,7 +62,8 @@ class _ComponentHistoricPageState extends State<ComponentHistoricPage> {
   Widget _wideLayout() => Padding(
       padding: const EdgeInsets.all(15),
       child: Column(children: <Widget>[
-        AppTopLeftButton(title: 'Historique de changement', callback: _back),
+        AppTopLeftButton(
+            title: '${widget.component.type} : changements', callback: _back),
         _buildList()
       ]));
 

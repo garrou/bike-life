@@ -33,7 +33,20 @@ class AppBarChart extends StatelessWidget {
           children: <Widget>[
             Text(text, style: fourthTextStyle),
             Expanded(
-                child: charts.BarChart(data, animate: true, vertical: vertical))
+                child: charts.BarChart(data,
+                    animate: true,
+                    vertical: vertical,
+                    primaryMeasureAxis: charts.NumericAxisSpec(
+                        renderSpec: charts.GridlineRendererSpec(
+                            labelStyle: charts.TextStyleSpec(
+                                color: colorByTheme(context)),
+                            lineStyle: charts.LineStyleSpec(
+                                color: colorByTheme(context)))),
+                    domainAxis: const charts.OrdinalAxisSpec(
+                        renderSpec: charts.NoneRenderSpec()),
+                    barRendererDecorator: charts.BarLabelDecorator(
+                        insideLabelStyleSpec: charts.TextStyleSpec(
+                            color: charts.MaterialPalette.white.lighter))))
           ],
         ),
       ),

@@ -1,10 +1,13 @@
-import 'package:bike_life/styles/theme_model.dart';
+import 'package:bike_life/providers/theme_provider.dart';
+import 'package:bike_life/providers/year_provider.dart';
 import 'package:bike_life/views/home/home.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 void main() {
-  runApp(const App());
+  runApp(MultiProvider(providers: [
+    ChangeNotifierProvider(create: (_) => Year(DateTime.now().year))
+  ], child: const App()));
 }
 
 class App extends StatelessWidget {

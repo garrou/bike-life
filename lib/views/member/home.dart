@@ -13,6 +13,7 @@ import 'package:bike_life/views/auth/signin.dart';
 import 'package:bike_life/views/member/add_bike.dart';
 import 'package:bike_life/styles/styles.dart';
 import 'package:bike_life/views/member/bike_components.dart';
+import 'package:bike_life/widgets/buttons/top_right_button.dart';
 import 'package:bike_life/widgets/click_region.dart';
 import 'package:bike_life/views/member/component_historic.dart';
 import 'package:bike_life/views/member/bike_details.dart';
@@ -60,12 +61,17 @@ class _AllBikesPageState extends State<AllBikesPage> {
           horizontal: MediaQuery.of(context).size.width / 8),
       child: _wideLayout());
 
-  Widget _wideLayout() =>
-      ListView(padding: const EdgeInsets.all(secondSize), children: [
-        Text('Vélos', style: thirdTextStyle),
-        const Carousel(),
-        const ComponentsAlerts()
-      ]);
+  Widget _wideLayout() => ListView(
+          padding: const EdgeInsets.fromLTRB(
+              thirdSize, mainSize, thirdSize, thirdSize),
+          children: <Widget>[
+            Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[Text('Vélos', style: secondTextStyle)]),
+            const Carousel(),
+            const ComponentsAlerts()
+          ]);
 
   void _onAddBikePage() =>
       Navigator.push(context, animationRightLeft(const AddBikePage()));
@@ -132,9 +138,7 @@ class _CarouselState extends State<Carousel> {
                 scrollDirection: Axis.horizontal,
                 shrinkWrap: true,
                 itemCount: cards.length,
-                itemBuilder: (_, i) {
-                  return _dotIndicator(i);
-                })),
+                itemBuilder: (_, i) => _dotIndicator(i))),
       ]);
 
   Widget _bikeCard(Bike bike) => GestureDetector(
@@ -144,19 +148,18 @@ class _CarouselState extends State<Carousel> {
               borderRadius: BorderRadius.circular(10),
               child: Container(
                   color: primaryColor,
-                  child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Padding(
-                            child: Text(bike.name,
-                                style: const TextStyle(color: Colors.white)),
-                            padding: const EdgeInsets.all(12)),
-                        IconButton(
-                            icon: const Icon(Icons.info_outline,
-                                size: 20, color: Colors.white),
-                            onPressed: () => _onUpdateBikePage(bike))
-                      ]),
+                  child: Column(children: <Widget>[
+                    AppTopRightButton(
+                        icon: const Icon(Icons.info_outline,
+                            size: mainSize, color: Colors.white),
+                        padding: 0,
+                        onPressed: () => _updateBikePage(bike)),
+                    Padding(
+                        child: Text(bike.name,
+                            style: const TextStyle(
+                                color: Colors.white, fontSize: mainSize)),
+                        padding: const EdgeInsets.all(12))
+                  ]),
                   width: MediaQuery.of(context).size.width,
                   height: 300))));
 
@@ -180,7 +183,7 @@ class _CarouselState extends State<Carousel> {
         _current = index;
       });
 
-  void _onUpdateBikePage(Bike bike) =>
+  void _updateBikePage(Bike bike) =>
       Navigator.push(context, animationRightLeft(BikeDetails(bike: bike)));
 
   void _onBikePage(Bike bike) => Navigator.push(

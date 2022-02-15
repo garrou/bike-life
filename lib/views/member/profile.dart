@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:bike_life/models/http_response.dart';
 import 'package:bike_life/services/member_service.dart';
 import 'package:bike_life/styles/animations.dart';
-import 'package:bike_life/styles/theme_model.dart';
+import 'package:bike_life/providers/theme_provider.dart';
 import 'package:bike_life/utils/constants.dart';
 import 'package:bike_life/utils/storage.dart';
 import 'package:bike_life/utils/validator.dart';
@@ -39,23 +39,26 @@ class ProfilePage extends StatelessWidget {
       Consumer<ThemeModel>(builder: (context, ThemeModel themeNotifier, child) {
         return ListView(children: <Widget>[
           AppTopRightButton(
-              callback: () => _onDisconnect(context),
+              onPressed: () => _onDisconnect(context),
               icon: const Icon(Icons.logout),
               color: red,
               padding: secondSize),
-          Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-            Text('Thème', style: secondTextStyle),
-            IconButton(
-              onPressed: () {
-                themeNotifier.isDark
-                    ? themeNotifier.isDark = false
-                    : themeNotifier.isDark = true;
-              },
-              icon: Icon(themeNotifier.isDark
-                  ? Icons.nightlight_round_outlined
-                  : Icons.wb_sunny),
-            )
-          ]),
+          AppCard(
+              child:
+                  Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+                Text('Thème', style: secondTextStyle),
+                IconButton(
+                  onPressed: () {
+                    themeNotifier.isDark
+                        ? themeNotifier.isDark = false
+                        : themeNotifier.isDark = true;
+                  },
+                  icon: Icon(themeNotifier.isDark
+                      ? Icons.nightlight_round_outlined
+                      : Icons.wb_sunny),
+                )
+              ]),
+              elevation: 5),
           const UpdateEmailForm(),
           UpdatePasswordForm()
         ]);

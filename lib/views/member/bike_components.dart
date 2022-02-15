@@ -68,6 +68,7 @@ class _BikeComponentsPageState extends State<BikeComponentsPage> {
           return Text('${snapshot.error}');
         } else if (snapshot.hasData) {
           return ListView.builder(
+              physics: const ScrollPhysics(),
               itemCount: snapshot.data!.length,
               shrinkWrap: true,
               itemBuilder: (_, index) => _buildTile(snapshot.data![index]));

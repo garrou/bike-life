@@ -35,9 +35,9 @@ class BikeDetails extends StatelessWidget {
 
   Widget _wideLayout(BuildContext context) => ListView(children: [
         Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-          AppTopLeftButton(title: bike.name, callback: () => _back(context)),
+          AppTopLeftButton(title: 'Détails', callback: () => _back(context)),
           AppTopRightButton(
-              callback: () => _showDeleteDialog(context),
+              onPressed: () => _showDeleteDialog(context),
               icon: const Icon(Icons.delete, color: red),
               padding: secondSize)
         ]),
@@ -66,9 +66,7 @@ class BikeDetails extends StatelessWidget {
               TextButton(
                 child: const Text('Annuler',
                     style: TextStyle(color: primaryColor)),
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
+                onPressed: () => Navigator.of(context).pop(),
               ),
             ],
           ));
@@ -132,7 +130,7 @@ class _UpdateBikeFormState extends State<UpdateBikeForm> {
             keyboardType: TextInputType.text,
             focusNode: _nameFocus,
             textfieldController: _name,
-            validator: fieldValidator,
+            validator: lengthValidator,
             hintText: 'Nom du vélo',
             label: 'Nom du vélo',
             icon: Icons.pedal_bike),
