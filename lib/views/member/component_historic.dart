@@ -42,17 +42,18 @@ class _ComponentHistoricPageState extends State<ComponentHistoricPage> {
 
   @override
   Widget build(BuildContext context) => Scaffold(
-      floatingActionButton: FloatingActionButton(
-          child: const Icon(Icons.restart_alt, color: Colors.white),
-          backgroundColor: primaryColor,
-          onPressed: () => _onComponentChangePage(widget.component)),
-      body: LayoutBuilder(builder: (context, constraints) {
-        if (constraints.maxWidth > maxWidth) {
-          return _narrowLayout(context);
-        } else {
-          return _wideLayout();
-        }
-      }));
+        floatingActionButton: FloatingActionButton(
+            child: const Icon(Icons.restart_alt, color: Colors.white),
+            backgroundColor: primaryColor,
+            onPressed: () => _onComponentChangePage(widget.component)),
+        body: LayoutBuilder(builder: (context, constraints) {
+          if (constraints.maxWidth > maxWidth) {
+            return _narrowLayout(context);
+          } else {
+            return _wideLayout();
+          }
+        }),
+      );
 
   Widget _narrowLayout(BuildContext context) => Padding(
       padding: EdgeInsets.symmetric(
@@ -60,12 +61,16 @@ class _ComponentHistoricPageState extends State<ComponentHistoricPage> {
       child: _wideLayout());
 
   Widget _wideLayout() => Padding(
-      padding: const EdgeInsets.all(15),
-      child: Column(children: <Widget>[
-        AppTopLeftButton(
-            title: '${widget.component.type} : changements', callback: _back),
-        _buildList()
-      ]));
+        padding: const EdgeInsets.all(15),
+        child: Column(
+          children: <Widget>[
+            AppTopLeftButton(
+                title: '${widget.component.type} : changements',
+                callback: _back),
+            _buildList()
+          ],
+        ),
+      );
 
   FutureBuilder _buildList() => FutureBuilder<List<ComponentChange>>(
       future: _historic,

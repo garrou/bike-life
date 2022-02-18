@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:bike_life/styles/styles.dart';
 import 'package:bike_life/utils/constants.dart';
-import 'package:bike_life/utils/guard_helper.dart';
+import 'package:bike_life/utils/storage.dart';
 import 'package:bike_life/views/home/home.dart';
 import 'package:bike_life/views/member/member_home.dart';
 import 'package:flutter/material.dart';
@@ -24,7 +24,7 @@ class _DiscoverPageState extends State<DiscoverPage> {
   @override
   void initState() {
     super.initState();
-    GuardHelper.checkIfLogged(_authState);
+    Storage.checkIfLogged(_authState);
   }
 
   void _onIntroEnd(BuildContext context) => Navigator.pushAndRemoveUntil(
@@ -72,9 +72,9 @@ Soignez informé quand un composant doit-être changé.
         size: Size(secondSize, secondSize),
         color: primaryColor,
         activeColor: primaryColor,
-        activeSize: Size(mainSize, secondSize),
+        activeSize: Size(firstSize, secondSize),
         activeShape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.all(Radius.circular(mainSize)),
+          borderRadius: BorderRadius.all(Radius.circular(firstSize)),
         ),
       ),
       onDone: () => _onIntroEnd(context),

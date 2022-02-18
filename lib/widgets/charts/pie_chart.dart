@@ -34,7 +34,7 @@ class AppPieChart extends StatelessWidget {
               behaviors: [
                 charts.DatumLegend<Object>(
                   entryTextStyle:
-                      charts.TextStyleSpec(color: colorByTheme(context)),
+                      charts.TextStyleSpec(color: chartColorByTheme(context)),
                   outsideJustification: charts.OutsideJustification.middle,
                   desiredMaxColumns: 2,
                   position: charts.BehaviorPosition.start,

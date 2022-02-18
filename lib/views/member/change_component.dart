@@ -23,36 +23,38 @@ class _ChangeComponentPageState extends State<ChangeComponentPage> {
   DateTime _changedDate = DateTime.now();
 
   @override
-  Widget build(BuildContext context) =>
-      Scaffold(body: LayoutBuilder(builder: (context, constraints) {
-        if (constraints.maxWidth > maxWidth) {
-          return _narrowLayout(context);
-        } else {
-          return _wideLayout();
-        }
-      }));
+  Widget build(BuildContext context) => Scaffold(
+        body: LayoutBuilder(builder: (context, constraints) {
+          if (constraints.maxWidth > maxWidth) {
+            return _narrowLayout(context);
+          } else {
+            return _wideLayout();
+          }
+        }),
+      );
 
   Widget _narrowLayout(BuildContext context) => Padding(
       padding: EdgeInsets.symmetric(
           horizontal: MediaQuery.of(context).size.width / 8),
       child: _wideLayout());
 
-  Widget _wideLayout() => ListView(children: [
-        AppTopLeftButton(title: 'Changement de composant', callback: _back),
-        Padding(
-            child: AppCalendar(
-                minDate: widget.component.changedAt,
-                callback: _onDateChanged,
-                selectedDate: _changedDate,
-                text: 'Date du changement',
-                visible: true),
-            padding: const EdgeInsets.all(20)),
-        // TODO: add ref of component
-        AppButton(
-            text: 'Changer le composant',
-            callback: _change,
-            icon: const Icon(Icons.save))
-      ]);
+  Widget _wideLayout() => ListView(
+        children: [
+          AppTopLeftButton(title: 'Changement de composant', callback: _back),
+          Padding(
+              child: AppCalendar(
+                  minDate: widget.component.changedAt,
+                  callback: _onDateChanged,
+                  selectedDate: _changedDate,
+                  text: 'Date du changement',
+                  visible: true),
+              padding: const EdgeInsets.all(20)),
+          AppButton(
+              text: 'Changer le composant',
+              callback: _change,
+              icon: const Icon(Icons.save))
+        ],
+      );
 
   void _onDateChanged(DateRangePickerSelectionChangedArgs args) {
     _changedDate = args.value;

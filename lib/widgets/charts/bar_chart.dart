@@ -39,9 +39,9 @@ class AppBarChart extends StatelessWidget {
                     primaryMeasureAxis: charts.NumericAxisSpec(
                         renderSpec: charts.GridlineRendererSpec(
                             labelStyle: charts.TextStyleSpec(
-                                color: colorByTheme(context)),
+                                color: chartColorByTheme(context)),
                             lineStyle: charts.LineStyleSpec(
-                                color: colorByTheme(context)))),
+                                color: chartColorByTheme(context)))),
                     domainAxis: const charts.OrdinalAxisSpec(
                         renderSpec: charts.NoneRenderSpec()),
                     barRendererDecorator: charts.BarLabelDecorator(

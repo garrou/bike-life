@@ -19,28 +19,34 @@ class AddBikePage extends StatelessWidget {
   const AddBikePage({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) =>
-      Scaffold(body: LayoutBuilder(builder: (context, constraints) {
-        if (constraints.maxWidth > maxWidth) {
-          return _narrowLayout(context);
-        } else {
-          return _wideLayout(context);
-        }
-      }));
+  Widget build(BuildContext context) => Scaffold(
+        body: LayoutBuilder(builder: (context, constraints) {
+          if (constraints.maxWidth > maxWidth) {
+            return _narrowLayout(context);
+          } else {
+            return _wideLayout(context);
+          }
+        }),
+      );
 
   Widget _narrowLayout(BuildContext context) => Padding(
       padding: EdgeInsets.symmetric(
           horizontal: MediaQuery.of(context).size.width / 12),
       child: _wideLayout(context));
 
-  Widget _wideLayout(BuildContext context) =>
-      ListView(padding: const EdgeInsets.all(thirdSize), children: <Widget>[
-        Row(children: <Widget>[
-          AppTopLeftButton(
-              title: 'Ajouter un vélo', callback: () => Navigator.pop(context))
-        ]),
-        const AddBikeForm()
-      ]);
+  Widget _wideLayout(BuildContext context) => ListView(
+        padding: const EdgeInsets.all(thirdSize),
+        children: <Widget>[
+          Row(
+            children: <Widget>[
+              AppTopLeftButton(
+                  title: 'Ajouter un vélo',
+                  callback: () => Navigator.pop(context))
+            ],
+          ),
+          const AddBikeForm()
+        ],
+      );
 }
 
 class AddBikeForm extends StatefulWidget {
@@ -68,59 +74,65 @@ class _AddBikeFormState extends State<AddBikeForm> {
 
   @override
   Widget build(BuildContext context) => Form(
-      key: _keyForm,
-      child: Column(children: <Widget>[
-        AppTextField(
-            keyboardType: TextInputType.text,
-            focusNode: _nameFocus,
-            textfieldController: _name,
-            validator: fieldValidator,
-            hintText: 'Nom du vélo',
-            label: 'Nom du vélo',
-            icon: Icons.pedal_bike),
-        AppTextField(
-            keyboardType: TextInputType.number,
-            focusNode: _kmWeekFocus,
-            textfieldController: _kmWeek,
-            validator: kmValidator,
-            hintText: 'Kilomètres par semaine',
-            label: 'Kilomètres par semaine',
-            icon: Icons.image),
-        Text('Utilisation par semaine', style: secondTextStyle),
-        Slider(
-            value: _nbPerWeek,
-            thumbColor: primaryColor,
-            activeColor: primaryColor,
-            inactiveColor: const Color.fromARGB(255, 156, 156, 156),
-            min: 1,
-            max: 7,
-            divisions: 6,
-            label: '$_nbPerWeek',
-            onChanged: (rating) {
-              setState(() => _nbPerWeek = rating);
-            }),
-        Row(mainAxisAlignment: MainAxisAlignment.center, children: <Widget>[
-          Text('Electrique', style: secondTextStyle),
-          Checkbox(
-              fillColor: MaterialStateProperty.all(primaryColor),
-              value: _electric,
-              onChanged: (bool? value) {
-                setState(() => _electric = value);
-              }),
-        ]),
-        _buildBikesTypes(),
-        AppCalendar(
-            minDate: DateTime(1900),
-            callback: _onDateChanged,
-            selectedDate: _dateOfPurchase,
-            text: "Date d'ajout"),
-        AppButton(
-            text: 'Ajouter', callback: _onAddBike, icon: const Icon(Icons.add))
-      ]));
+        key: _keyForm,
+        child: Column(
+          children: <Widget>[
+            AppTextField(
+                keyboardType: TextInputType.text,
+                focusNode: _nameFocus,
+                textfieldController: _name,
+                validator: fieldValidator,
+                hintText: 'Nom du vélo',
+                label: 'Nom du vélo',
+                icon: Icons.pedal_bike),
+            AppTextField(
+                keyboardType: TextInputType.number,
+                focusNode: _kmWeekFocus,
+                textfieldController: _kmWeek,
+                validator: kmValidator,
+                hintText: 'Kilomètres par semaine',
+                label: 'Kilomètres par semaine',
+                icon: Icons.image),
+            Text('Utilisation par semaine', style: secondTextStyle),
+            Slider(
+                value: _nbPerWeek,
+                thumbColor: primaryColor,
+                activeColor: primaryColor,
+                inactiveColor: const Color.fromARGB(255, 156, 156, 156),
+                min: 1,
+                max: 7,
+                divisions: 6,
+                label: '$_nbPerWeek',
+                onChanged: (rating) {
+                  setState(() => _nbPerWeek = rating);
+                }),
+            Row(mainAxisAlignment: MainAxisAlignment.center, children: <Widget>[
+              Text('Electrique', style: secondTextStyle),
+              Checkbox(
+                  fillColor: MaterialStateProperty.all(primaryColor),
+                  value: _electric,
+                  onChanged: (bool? value) {
+                    setState(() => _electric = value);
+                  }),
+            ]),
+            _buildBikesTypes(),
+            AppCalendar(
+                minDate: DateTime(1900),
+                callback: _onDateChanged,
+                selectedDate: _dateOfPurchase,
+                text: "Date d'ajout"),
+            AppButton(
+                text: 'Ajouter',
+                callback: _onAddBike,
+                icon: const Icon(Icons.add))
+          ],
+        ),
+      );
 
-  Widget _buildBikesTypes() => Column(children: <Widget>[
-        for (String type in _types)
-          ListTile(
+  Widget _buildBikesTypes() => Column(
+        children: <Widget>[
+          for (String type in _types)
+            ListTile(
               title: GestureDetector(
                   child: AppClickRegion(child: Text(type)),
                   onTap: () {
@@ -132,8 +144,10 @@ class _AddBikeFormState extends State<AddBikeForm> {
                   groupValue: _type,
                   onChanged: (String? value) {
                     setState(() => _type = value);
-                  }))
-      ]);
+                  }),
+            )
+        ],
+      );
 
   void _onDateChanged(DateRangePickerSelectionChangedArgs args) {
     _dateOfPurchase = args.value;
@@ -150,7 +164,7 @@ class _AddBikeFormState extends State<AddBikeForm> {
     final String memberId = await Storage.getMemberId();
     final BikeService bikeService = BikeService();
     final Bike bike = Bike('', _name.text, double.parse(_kmWeek.text),
-        _nbPerWeek.toInt(), _electric!, _type!, _dateOfPurchase);
+        _nbPerWeek.toInt(), _electric!, _type!, _dateOfPurchase, 0);
     final HttpResponse response = await bikeService.create(memberId, bike);
 
     if (response.success()) {

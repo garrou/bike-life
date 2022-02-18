@@ -16,14 +16,15 @@ class StatisticsPage extends StatelessWidget {
   const StatisticsPage({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) =>
-      Scaffold(body: LayoutBuilder(builder: (context, constraints) {
-        if (constraints.maxWidth > maxWidth) {
-          return _narrowLayout(context, constraints);
-        } else {
-          return _wideLayout(context, constraints);
-        }
-      }));
+  Widget build(BuildContext context) => Scaffold(
+        body: LayoutBuilder(builder: (context, constraints) {
+          if (constraints.maxWidth > maxWidth) {
+            return _narrowLayout(context, constraints);
+          } else {
+            return _wideLayout(context, constraints);
+          }
+        }),
+      );
 
   Widget _narrowLayout(
           BuildContext context, BoxConstraints constraints) =>
@@ -34,42 +35,45 @@ class StatisticsPage extends StatelessWidget {
 
   Widget _wideLayout(BuildContext context, BoxConstraints constraints) =>
       ListView(
-          physics: const ScrollPhysics(),
-          shrinkWrap: true,
-          children: <Widget>[
-            Card(
-              child: Column(
-                children: [
-                  Text('Année des statistiques', style: thirdTextStyle),
-                  Slider(
-                      value: context.watch<Year>().value.toDouble(),
-                      thumbColor: primaryColor,
-                      activeColor: primaryColor,
-                      inactiveColor: const Color.fromARGB(255, 156, 156, 156),
-                      min: 2010,
-                      max: DateTime.now().year.toDouble(),
-                      divisions: DateTime.now().year - 2010,
-                      label: '${context.watch<Year>().value}',
-                      onChanged: (rating) =>
-                          Provider.of<Year>(context, listen: false).value =
-                              rating.toInt())
-                ],
-              ),
+        controller: ScrollController(),
+        physics: const ScrollPhysics(),
+        shrinkWrap: true,
+        children: <Widget>[
+          Card(
+            child: Column(
+              children: [
+                Text('Année des statistiques', style: thirdTextStyle),
+                Slider(
+                    value: context.watch<Year>().value.toDouble(),
+                    thumbColor: primaryColor,
+                    activeColor: primaryColor,
+                    inactiveColor: const Color.fromARGB(255, 156, 156, 156),
+                    min: 2010,
+                    max: DateTime.now().year.toDouble(),
+                    divisions: DateTime.now().year - 2010,
+                    label: '${context.watch<Year>().value}',
+                    onChanged: (rating) =>
+                        Provider.of<Year>(context, listen: false).value =
+                            rating.toInt())
+              ],
             ),
-            GridView.count(
-                physics: const ScrollPhysics(),
-                shrinkWrap: true,
-                crossAxisCount: constraints.maxWidth > maxWidth + 400
-                    ? 3
-                    : constraints.maxWidth > maxWidth
-                        ? 2
-                        : 1,
-                children: const <Widget>[
-                  TotalChanges(),
-                  NbComponentsChangeYear(),
-                  AverageKmBeforeChange()
-                ])
-          ]);
+          ),
+          GridView.count(
+            physics: const ScrollPhysics(),
+            shrinkWrap: true,
+            crossAxisCount: constraints.maxWidth > maxWidth + 400
+                ? 3
+                : constraints.maxWidth > maxWidth
+                    ? 2
+                    : 1,
+            children: const <Widget>[
+              TotalChanges(),
+              NbComponentsChangeYear(),
+              AverageKmBeforeChange()
+            ],
+          )
+        ],
+      );
 }
 
 class TotalChanges extends StatefulWidget {

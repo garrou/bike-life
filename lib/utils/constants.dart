@@ -14,7 +14,7 @@ const double buttonHeight = 40.0;
 
 const double maxWidth = 700.0;
 
-const double mainSize = 30.0;
+const double firstSize = 30.0;
 const double secondSize = 20.0;
 const double intermediateSize = 18.0;
 const double thirdSize = 10.0;

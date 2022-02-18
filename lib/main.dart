@@ -4,6 +4,8 @@ import 'package:bike_life/views/home/home.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+// TODO: Fix bug date when update components
+
 void main() {
   runApp(MultiProvider(providers: [
     ChangeNotifierProvider(create: (_) => Year(DateTime.now().year))

@@ -8,15 +8,18 @@ class Component {
   final String type;
   final bool active;
   final DateTime changedAt;
+  final double totalKm;
 
-  Component(this.id, this.duration, this.type, this.active, this.changedAt);
+  Component(this.id, this.duration, this.type, this.active, this.changedAt,
+      this.totalKm);
 
   Component.fromJson(Map<String, dynamic> json)
       : id = json['id'],
         duration = double.parse(json['duration']),
         type = json['type'],
         active = json['active'],
-        changedAt = DateTime.parse(json['changedAt']);
+        changedAt = DateTime.parse(json['changedAt']),
+        totalKm = json['totalKm'];
 
   Map<String, dynamic> toJson() => {
         'id': id,
@@ -26,7 +29,9 @@ class Component {
         'changedAt': changedAt.toString()
       };
 
-  String changedAtToString() => format.format(changedAt);
+  String formatDate() => format.format(changedAt);
+
+  String formatKm() => totalKm.toStringAsFixed(2);
 }
 
 List<Component> createComponents(List<dynamic> records) =>

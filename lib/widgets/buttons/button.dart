@@ -21,13 +21,16 @@ class AppButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Padding(
-      padding: const EdgeInsets.all(thirdSize),
-      child: SizedBox(
+        padding: const EdgeInsets.all(thirdSize),
+        child: SizedBox(
           height: height,
           width: width,
           child: ElevatedButton.icon(
-              onPressed: callback,
-              icon: icon,
-              label: Text(text, style: thirdTextStyle),
-              style: roundedButtonStyle(color))));
+            onPressed: callback,
+            icon: icon,
+            label: Text(text, style: thirdTextStyle),
+            style: roundedButtonStyle(color),
+          ),
+        ),
+      );
 }

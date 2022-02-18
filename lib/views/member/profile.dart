@@ -37,31 +37,33 @@ class ProfilePage extends StatelessWidget {
 
   Widget _wideLayout() =>
       Consumer<ThemeModel>(builder: (context, ThemeModel themeNotifier, child) {
-        return ListView(children: <Widget>[
-          AppTopRightButton(
-              onPressed: () => _onDisconnect(context),
-              icon: const Icon(Icons.logout),
-              color: red,
-              padding: secondSize),
-          AppCard(
-              child:
-                  Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-                Text('Thème', style: secondTextStyle),
-                IconButton(
-                  onPressed: () {
-                    themeNotifier.isDark
-                        ? themeNotifier.isDark = false
-                        : themeNotifier.isDark = true;
-                  },
-                  icon: Icon(themeNotifier.isDark
-                      ? Icons.nightlight_round_outlined
-                      : Icons.wb_sunny),
-                )
-              ]),
-              elevation: 5),
-          const UpdateEmailForm(),
-          UpdatePasswordForm()
-        ]);
+        return ListView(
+          children: <Widget>[
+            AppTopRightButton(
+                onPressed: () => _onDisconnect(context),
+                icon: const Icon(Icons.logout),
+                color: red,
+                padding: secondSize),
+            AppCard(
+                child:
+                    Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+                  Text('Thème', style: secondTextStyle),
+                  IconButton(
+                    onPressed: () {
+                      themeNotifier.isDark
+                          ? themeNotifier.isDark = false
+                          : themeNotifier.isDark = true;
+                    },
+                    icon: Icon(themeNotifier.isDark
+                        ? Icons.nightlight_round_outlined
+                        : Icons.wb_sunny),
+                  )
+                ]),
+                elevation: 5),
+            const UpdateEmailForm(),
+            UpdatePasswordForm()
+          ],
+        );
       });
 
   void _onDisconnect(BuildContext context) {
@@ -95,11 +97,10 @@ class _UpdateEmailFormState extends State<UpdateEmailForm> {
     _userEmail = _load();
   }
 
-  // TODO: pref profile and cursor to display components
   Future<String> _load() async {
     final String memberId = await Storage.getMemberId();
     final HttpResponse response = await _memberService.getEmail(memberId);
-    // TODO: maybre store email and return on update email
+
     if (response.success()) {
       return response.email();
     } else {
@@ -109,12 +110,13 @@ class _UpdateEmailFormState extends State<UpdateEmailForm> {
 
   @override
   Widget build(BuildContext context) => Padding(
-      padding: const EdgeInsets.only(top: secondSize),
-      child: AppCard(
+        padding: const EdgeInsets.only(top: secondSize),
+        child: AppCard(
           elevation: 5,
           child: Form(
-              key: _keyForm,
-              child: Column(children: <Widget>[
+            key: _keyForm,
+            child: Column(
+              children: <Widget>[
                 Text("Modifier l'email", style: thirdTextStyle),
                 FutureBuilder(
                     future: _userEmail,
@@ -138,7 +140,11 @@ class _UpdateEmailFormState extends State<UpdateEmailForm> {
                     text: "Modifier",
                     callback: _onUpdate,
                     icon: const Icon(Icons.save))
-              ]))));
+              ],
+            ),
+          ),
+        ),
+      );
 
   void _onUpdate() {
     if (_keyForm.currentState!.validate()) {
@@ -170,12 +176,13 @@ class UpdatePasswordForm extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Padding(
-      padding: const EdgeInsets.only(top: secondSize),
-      child: AppCard(
+        padding: const EdgeInsets.only(top: secondSize),
+        child: AppCard(
           elevation: 5,
           child: Form(
-              key: _keyForm,
-              child: Column(children: <Widget>[
+            key: _keyForm,
+            child: Column(
+              children: <Widget>[
                 Text('Modifier le mot de passe', style: thirdTextStyle),
                 AppTextField(
                     keyboardType: TextInputType.text,
@@ -205,7 +212,11 @@ class UpdatePasswordForm extends StatelessWidget {
                     text: "Modifier",
                     callback: () => _onUpdate(context),
                     icon: const Icon(Icons.save))
-              ]))));
+              ],
+            ),
+          ),
+        ),
+      );
 
   void _onUpdate(BuildContext context) {
     if (_keyForm.currentState!.validate()) {

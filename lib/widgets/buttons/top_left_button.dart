@@ -14,17 +14,19 @@ class AppTopLeftButton extends StatelessWidget {
       : super(key: key);
 
   @override
-  Widget build(BuildContext context) => Row(children: <Widget>[
-        Visibility(
-            visible: iconVisible,
-            child: Align(
-                alignment: Alignment.topLeft,
-                child: Padding(
-                    padding: const EdgeInsets.fromLTRB(
-                        secondSize, secondSize, 0.0, 0.0),
-                    child: BackButton(onPressed: callback)))),
-        Padding(
-            padding: const EdgeInsets.only(top: secondSize),
-            child: Text(title, style: thirdTextStyle))
-      ]);
+  Widget build(BuildContext context) => Row(
+        children: <Widget>[
+          Visibility(
+              visible: iconVisible,
+              child: Align(
+                  alignment: Alignment.topLeft,
+                  child: Padding(
+                      padding: const EdgeInsets.fromLTRB(
+                          secondSize, secondSize, 0.0, 0.0),
+                      child: BackButton(onPressed: callback)))),
+          Padding(
+              padding: const EdgeInsets.only(top: secondSize),
+              child: Text(title, style: thirdTextStyle))
+        ],
+      );
 }

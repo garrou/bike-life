@@ -24,12 +24,13 @@ class TipDetailsPage extends StatelessWidget {
       child: _wideLayout(context));
 
   Widget _wideLayout(BuildContext context) => ListView(
-          padding: const EdgeInsets.symmetric(horizontal: thirdSize),
-          children: <Widget>[
-            AppTopLeftButton(title: 'Conseils', callback: () => _back(context)),
-            buildText(tip.title, boldSubTitleStyle, TextAlign.center),
-            buildText(tip.content, thirdTextStyle, TextAlign.center),
-          ]);
+        padding: const EdgeInsets.symmetric(horizontal: thirdSize),
+        children: <Widget>[
+          AppTopLeftButton(title: 'Conseils', callback: () => _back(context)),
+          buildText(tip.title, boldSubTitleStyle, TextAlign.center),
+          buildText(tip.content, thirdTextStyle, TextAlign.center),
+        ],
+      );
 
   Padding buildText(String text, TextStyle style, TextAlign textAlign) =>
       Padding(
