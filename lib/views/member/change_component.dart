@@ -42,17 +42,19 @@ class _ChangeComponentPageState extends State<ChangeComponentPage> {
         children: [
           AppTopLeftButton(title: 'Changement de composant', callback: _back),
           Padding(
-              child: AppCalendar(
-                  minDate: widget.component.changedAt,
-                  callback: _onDateChanged,
-                  selectedDate: _changedDate,
-                  text: 'Date du changement',
-                  visible: true),
-              padding: const EdgeInsets.all(20)),
+            child: AppCalendar(
+                minDate: widget.component.changedAt,
+                callback: _onDateChanged,
+                selectedDate: _changedDate,
+                text: 'Date du changement',
+                visible: true),
+            padding: const EdgeInsets.all(20),
+          ),
           AppButton(
-              text: 'Changer le composant',
-              callback: _change,
-              icon: const Icon(Icons.save))
+            text: 'Changer le composant',
+            callback: _change,
+            icon: const Icon(Icons.save),
+          )
         ],
       );
 
@@ -63,15 +65,19 @@ class _ChangeComponentPageState extends State<ChangeComponentPage> {
   void _back() => Navigator.pop(context);
 
   void _change() async {
-    final ComponentService componentService = ComponentService();
-    final HttpResponse response = await componentService.changeComponent(
-        widget.component.id, _changedDate);
+    final HttpResponse response = await ComponentService().changeComponent(
+        widget.component.id, _changedDate, widget.component.totalKm);
 
     if (response.success()) {
       Navigator.push(
           context, animationRightLeft(const MemberHomePage(initialPage: 0)));
     }
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: Text(response.message()), backgroundColor: response.color()));
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(response.message(),
+            style: const TextStyle(color: Colors.white)),
+        backgroundColor: response.color(),
+      ),
+    );
   }
 }

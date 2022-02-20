@@ -26,9 +26,8 @@ class _BikeComponentsPageState extends State<BikeComponentsPage> {
   }
 
   Future<List<Component>> _loadComponents() async {
-    final ComponentService componentService = ComponentService();
     final HttpResponse response =
-        await componentService.getBikeComponents(widget.bike.id);
+        await ComponentService().getBikeComponents(widget.bike.id);
 
     if (response.success()) {
       return createComponents(response.body());

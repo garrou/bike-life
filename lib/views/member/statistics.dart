@@ -87,10 +87,9 @@ class _TotalChangesState extends State<TotalChanges> {
   late Future<List<ComponentStat>> _totalChangeStats;
 
   Future<List<ComponentStat>> _loadTotalChanges() async {
-    final ComponentService componentService = ComponentService();
     final String memberId = await Storage.getMemberId();
     final HttpResponse response =
-        await componentService.getTotalChanges(memberId);
+        await ComponentService().getTotalChanges(memberId);
 
     if (response.success()) {
       return createComponentStats(response.body());
@@ -114,7 +113,9 @@ class _TotalChangesState extends State<TotalChanges> {
         } else if (snapshot.hasData) {
           return snapshot.data!.isEmpty
               ? AppTitle(
-                  text: 'Aucune donnée', paddingTop: 10, style: thirdTextStyle)
+                  text: 'Aucune statistique',
+                  paddingTop: 10,
+                  style: thirdTextStyle)
               : AppBarChart(
                   vertical: true,
                   series: snapshot.data!,
@@ -128,10 +129,9 @@ class NbComponentsChangeYear extends StatelessWidget {
   const NbComponentsChangeYear({Key? key}) : super(key: key);
 
   Future<List<ComponentStat>> _loadNbChangeByYear(int year) async {
-    final ComponentService componentService = ComponentService();
     final String memberId = await Storage.getMemberId();
     final HttpResponse response =
-        await componentService.getNbComponentsChangeStats(memberId, year);
+        await ComponentService().getNbComponentsChangeStats(memberId, year);
 
     if (response.success()) {
       return createComponentStats(response.body());
@@ -150,7 +150,9 @@ class NbComponentsChangeYear extends StatelessWidget {
           final String s = snapshot.data!.length > 1 ? 's' : '';
           return snapshot.data!.isEmpty
               ? AppTitle(
-                  text: 'Aucune donnée', paddingTop: 10, style: thirdTextStyle)
+                  text: 'Aucune statistique',
+                  paddingTop: 10,
+                  style: thirdTextStyle)
               : AppPieChart(
                   series: snapshot.data!,
                   text:
@@ -164,10 +166,9 @@ class AverageKmBeforeChange extends StatelessWidget {
   const AverageKmBeforeChange({Key? key}) : super(key: key);
 
   Future<List<ComponentStat>> _loadKmChangeByYear(int year) async {
-    final ComponentService componentService = ComponentService();
     final String memberId = await Storage.getMemberId();
     final HttpResponse response =
-        await componentService.getKmComponentsChangeStats(memberId, year);
+        await ComponentService().getKmComponentsChangeStats(memberId, year);
 
     if (response.success()) {
       return createComponentStats(response.body());
@@ -185,7 +186,9 @@ class AverageKmBeforeChange extends StatelessWidget {
         } else if (snapshot.hasData) {
           return snapshot.data!.isEmpty
               ? AppTitle(
-                  text: 'Aucune donnée', paddingTop: 10, style: thirdTextStyle)
+                  text: 'Aucune statistique',
+                  paddingTop: 10,
+                  style: thirdTextStyle)
               : AppBarChart(
                   series: snapshot.data!,
                   text:

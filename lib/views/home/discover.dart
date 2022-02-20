@@ -50,18 +50,15 @@ Notez les dates de changements de composants.
 Suivez l'utilisation de vos composants.
 Soignez informé quand un composant doit-être changé.
                  """,
-            image: Lottie.network(
-                'https://assets10.lottiefiles.com/packages/lf20_138qcknv.json')),
+            image: Lottie.network(manageLogo)),
         PageViewModel(
             title: 'Une démarche écologique',
             body: 'Entretenir son vélo, un premier pas pour la planète',
-            image: Lottie.network(
-                'https://assets3.lottiefiles.com/private_files/lf30_flhopjdx.json')),
+            image: Lottie.network(envLogo)),
         PageViewModel(
             title: 'Une démarche économique',
             body: 'Entretenir son vélo, pour le garder plus longtemps',
-            image: Lottie.network(
-                'https://assets10.lottiefiles.com/packages/lf20_h9pkkcih.json'))
+            image: Lottie.network(pigLogo))
       ],
       showSkipButton: true,
       skip: const Text('Passer', style: TextStyle(color: primaryColor)),

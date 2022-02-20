@@ -15,18 +15,19 @@ class Component {
 
   Component.fromJson(Map<String, dynamic> json)
       : id = json['id'],
-        duration = double.parse(json['duration']),
+        duration = json['duration'].toDouble(),
         type = json['type'],
         active = json['active'],
         changedAt = DateTime.parse(json['changedAt']),
-        totalKm = json['totalKm'];
+        totalKm = json['totalKm'].toDouble();
 
   Map<String, dynamic> toJson() => {
         'id': id,
         'duration': duration,
         'type': type,
         'active': active,
-        'changedAt': changedAt.toString()
+        'changedAt': changedAt.toString(),
+        'totalKm': totalKm
       };
 
   String formatDate() => format.format(changedAt);

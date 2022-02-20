@@ -159,7 +159,9 @@ class _UpdateEmailFormState extends State<UpdateEmailForm> {
         await _memberService.updateEmail(memberId, _email.text);
 
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: Text(response.message()), backgroundColor: response.color()));
+        content: Text(response.message(),
+            style: const TextStyle(color: Colors.white)),
+        backgroundColor: response.color()));
   }
 }
 
@@ -227,11 +229,12 @@ class UpdatePasswordForm extends StatelessWidget {
 
   void _updatePassword(BuildContext context) async {
     final String memberId = await Storage.getMemberId();
-    final MemberService memberService = MemberService();
     final HttpResponse response =
-        await memberService.updatePassword(memberId, _password.text);
+        await MemberService().updatePassword(memberId, _password.text);
 
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: Text(response.message()), backgroundColor: response.color()));
+        content: Text(response.message(),
+            style: const TextStyle(color: Colors.white)),
+        backgroundColor: response.color()));
   }
 }

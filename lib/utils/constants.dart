@@ -6,6 +6,14 @@ String endpoint =
         : "http://localhost:8100";
 
 const String title = "Bike's life";
+const String logo =
+    'https://assets2.lottiefiles.com/packages/lf20_lnji2epm.json';
+const String manageLogo =
+    'https://assets10.lottiefiles.com/packages/lf20_138qcknv.json';
+const String envLogo =
+    'https://assets3.lottiefiles.com/private_files/lf30_flhopjdx.json';
+const String pigLogo =
+    'https://assets10.lottiefiles.com/packages/lf20_h9pkkcih.json';
 
 const double ratio = 200.0;
 

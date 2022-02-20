@@ -46,8 +46,7 @@ class _HomePageState extends State<HomePage> {
             children: <Widget>[
               Padding(
                   padding: const EdgeInsets.all(thirdSize),
-                  child: Lottie.network(
-                      'https://assets2.lottiefiles.com/packages/lf20_lnji2epm.json')),
+                  child: Lottie.network(logo)),
               Padding(
                   padding: const EdgeInsets.symmetric(vertical: thirdSize),
                   child: Text("La santé de votre vélo se surveille de près.",

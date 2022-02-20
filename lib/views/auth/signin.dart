@@ -133,8 +133,10 @@ class SigninForm extends StatelessWidget {
           (Route<dynamic> route) => false);
     } else {
       _password.text = '';
-      ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(response.message()), backgroundColor: red));
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: Text(response.message(),
+              style: const TextStyle(color: Colors.white)),
+          backgroundColor: red));
     }
   }
 }

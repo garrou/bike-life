@@ -79,8 +79,7 @@ class BikeDetails extends StatelessWidget {
       );
 
   _onDelete(BuildContext context) async {
-    final BikeService bikeService = BikeService();
-    final HttpResponse response = await bikeService.delete(bike.id);
+    final HttpResponse response = await BikeService().delete(bike.id);
 
     if (response.success()) {
       Navigator.pushAndRemoveUntil(
@@ -89,7 +88,9 @@ class BikeDetails extends StatelessWidget {
           (Route<dynamic> route) => false);
     }
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: Text(response.message()), backgroundColor: response.color()));
+        content: Text(response.message(),
+            style: const TextStyle(color: Colors.white)),
+        backgroundColor: response.color()));
   }
 
   void _back(BuildContext context) => Navigator.of(context).pop();
@@ -113,20 +114,24 @@ class _UpdateBikeFormState extends State<UpdateBikeForm> {
   final _kmWeekFocus = FocusNode();
   final _kmWeek = TextEditingController();
 
+  final _kmRealisedFocus = FocusNode();
+  final _kmRealised = TextEditingController();
+
   final List<String> _types = ['VTT', 'Ville', 'Route'];
 
-  late int _nbPerWeek;
-  late bool? _electric;
+  late bool _electric;
+  late bool _automatic;
   late String? _type;
 
   @override
   void initState() {
     super.initState();
     _type = widget.bike.type;
-    _nbPerWeek = widget.bike.nbUsedPerWeek;
     _electric = widget.bike.electric;
     _kmWeek.text = '${widget.bike.kmPerWeek}';
     _name.text = widget.bike.name;
+    _automatic = widget.bike.automaticKm;
+    _kmRealised.text = widget.bike.formatKm();
   }
 
   @override
@@ -149,34 +154,40 @@ class _UpdateBikeFormState extends State<UpdateBikeForm> {
                 validator: kmValidator,
                 hintText: 'Kilomètres par semaine',
                 label: 'Kilomètres par semaine',
-                icon: Icons.image),
-            Text('Utilisation par semaine', style: secondTextStyle),
-            Slider(
-                value: _nbPerWeek.toDouble(),
-                thumbColor: primaryColor,
-                activeColor: primaryColor,
-                inactiveColor: const Color.fromARGB(255, 156, 156, 156),
-                min: 1,
-                max: 7,
-                divisions: 6,
-                label: '$_nbPerWeek',
-                onChanged: (rating) {
-                  setState(() => _nbPerWeek = rating.toInt());
-                }),
+                icon: Icons.add_road),
+            widget.bike.automaticKm
+                ? Container()
+                : AppTextField(
+                    keyboardType: TextInputType.number,
+                    focusNode: _kmRealisedFocus,
+                    textfieldController: _kmRealised,
+                    validator: kmValidator,
+                    hintText: 'Kilomètres réalisés',
+                    label: 'Kilomètres réalisés',
+                    icon: Icons.add_road),
+            Row(mainAxisAlignment: MainAxisAlignment.center, children: <Widget>[
+              Text('Ajout automatique des kilomètres', style: thirdTextStyle),
+              Switch(
+                  activeColor: primaryColor,
+                  value: _automatic,
+                  onChanged: (bool value) {
+                    setState(() => _automatic = value);
+                  }),
+            ]),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 Text('Electrique', style: secondTextStyle),
-                Checkbox(
-                    fillColor: MaterialStateProperty.all(primaryColor),
+                Switch(
+                    activeColor: primaryColor,
                     value: _electric,
-                    onChanged: (bool? value) {
+                    onChanged: (bool value) {
                       setState(() => _electric = value);
                     }),
               ],
             ),
             _buildBikesTypes(),
-            Text('Date : ${format.format(widget.bike.addedAt)}',
+            Text('Ajouté le : ${format.format(widget.bike.addedAt)}',
                 style: thirdTextStyle),
             AppButton(
                 text: 'Modifier',
@@ -218,13 +229,14 @@ class _UpdateBikeFormState extends State<UpdateBikeForm> {
         widget.bike.id,
         _name.text,
         double.parse(_kmWeek.text),
-        _nbPerWeek,
-        _electric!,
+        _electric,
         _type!,
         widget.bike.addedAt,
-        0);
-    final BikeService bikeService = BikeService();
-    final HttpResponse response = await bikeService.update(bike);
+        widget.bike.automaticKm
+            ? widget.bike.totalKm
+            : double.parse(_kmRealised.text),
+        _automatic);
+    final HttpResponse response = await BikeService().update(bike);
 
     if (response.success()) {
       Navigator.pushAndRemoveUntil(
@@ -233,6 +245,8 @@ class _UpdateBikeFormState extends State<UpdateBikeForm> {
           (Route<dynamic> route) => false);
     }
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: Text(response.message()), backgroundColor: response.color()));
+        content: Text(response.message(),
+            style: const TextStyle(color: Colors.white)),
+        backgroundColor: response.color()));
   }
 }

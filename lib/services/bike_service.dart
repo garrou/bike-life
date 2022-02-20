@@ -14,31 +14,32 @@ class BikeService {
   ]);
 
   Future<HttpResponse> create(String memberId, Bike bike) async {
-    Response response = await client.post(
+    final Response response = await client.post(
         Uri.parse('$endpoint/members/$memberId/bikes'),
         body: jsonEncode(bike));
     return HttpResponse(response);
   }
 
   Future<HttpResponse> getOne(String bikeId) async {
-    Response response = await client.get(Uri.parse('$endpoint/bikes/$bikeId'));
+    final Response response =
+        await client.get(Uri.parse('$endpoint/bikes/$bikeId'));
     return HttpResponse(response);
   }
 
   Future<HttpResponse> getByMember(String memberId) async {
-    Response response =
+    final Response response =
         await client.get(Uri.parse('$endpoint/members/$memberId/bikes'));
     return HttpResponse(response);
   }
 
   Future<HttpResponse> delete(String bikeId) async {
-    Response response =
+    final Response response =
         await client.delete(Uri.parse('$endpoint/bikes/$bikeId'));
     return HttpResponse(response);
   }
 
   Future<HttpResponse> update(Bike bike) async {
-    Response response = await client.put(
+    final Response response = await client.put(
         Uri.parse('$endpoint/bikes/${bike.id}'),
         body: jsonEncode(<String, dynamic>{'bike': jsonEncode(bike)}));
     return HttpResponse(response);

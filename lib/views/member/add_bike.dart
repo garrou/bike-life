@@ -35,15 +35,10 @@ class AddBikePage extends StatelessWidget {
       child: _wideLayout(context));
 
   Widget _wideLayout(BuildContext context) => ListView(
-        padding: const EdgeInsets.all(thirdSize),
+        padding: const EdgeInsets.symmetric(horizontal: thirdSize),
         children: <Widget>[
-          Row(
-            children: <Widget>[
-              AppTopLeftButton(
-                  title: 'Ajouter un vélo',
-                  callback: () => Navigator.pop(context))
-            ],
-          ),
+          AppTopLeftButton(
+              title: 'Ajouter un vélo', callback: () => Navigator.pop(context)),
           const AddBikeForm()
         ],
       );
@@ -65,17 +60,23 @@ class _AddBikeFormState extends State<AddBikeForm> {
   final _kmWeekFocus = FocusNode();
   final _kmWeek = TextEditingController();
 
+  final _kmRealisedFocus = FocusNode();
+  final _kmRealised = TextEditingController();
+
   final List<String> _types = ['VTT', 'Ville', 'Route'];
 
   DateTime _dateOfPurchase = DateTime.now();
-  double _nbPerWeek = 1;
-  bool? _electric = false;
+  bool _electric = false;
+  bool _automatic = true;
   String? _type = 'VTT';
 
   @override
   Widget build(BuildContext context) => Form(
         key: _keyForm,
-        child: Column(
+        child: ListView(
+          physics: const ScrollPhysics(),
+          shrinkWrap: true,
+          scrollDirection: Axis.vertical,
           children: <Widget>[
             AppTextField(
                 keyboardType: TextInputType.text,
@@ -92,26 +93,30 @@ class _AddBikeFormState extends State<AddBikeForm> {
                 validator: kmValidator,
                 hintText: 'Kilomètres par semaine',
                 label: 'Kilomètres par semaine',
-                icon: Icons.image),
-            Text('Utilisation par semaine', style: secondTextStyle),
-            Slider(
-                value: _nbPerWeek,
-                thumbColor: primaryColor,
-                activeColor: primaryColor,
-                inactiveColor: const Color.fromARGB(255, 156, 156, 156),
-                min: 1,
-                max: 7,
-                divisions: 6,
-                label: '$_nbPerWeek',
-                onChanged: (rating) {
-                  setState(() => _nbPerWeek = rating);
-                }),
+                icon: Icons.add_road),
+            AppTextField(
+                keyboardType: TextInputType.number,
+                focusNode: _kmRealisedFocus,
+                textfieldController: _kmRealised,
+                validator: kmValidator,
+                hintText: 'Kilomètres réalisés',
+                label: 'Kilomètres réalisés',
+                icon: Icons.add_road),
             Row(mainAxisAlignment: MainAxisAlignment.center, children: <Widget>[
-              Text('Electrique', style: secondTextStyle),
-              Checkbox(
-                  fillColor: MaterialStateProperty.all(primaryColor),
+              Text('Ajout quotidien des km ?', style: thirdTextStyle),
+              Switch(
+                  activeColor: primaryColor,
+                  value: _automatic,
+                  onChanged: (bool value) {
+                    setState(() => _automatic = value);
+                  }),
+            ]),
+            Row(mainAxisAlignment: MainAxisAlignment.center, children: <Widget>[
+              Text('Electrique', style: thirdTextStyle),
+              Switch(
+                  activeColor: primaryColor,
                   value: _electric,
-                  onChanged: (bool? value) {
+                  onChanged: (bool value) {
                     setState(() => _electric = value);
                   }),
             ]),
@@ -162,16 +167,24 @@ class _AddBikeFormState extends State<AddBikeForm> {
 
   void _addBike() async {
     final String memberId = await Storage.getMemberId();
-    final BikeService bikeService = BikeService();
-    final Bike bike = Bike('', _name.text, double.parse(_kmWeek.text),
-        _nbPerWeek.toInt(), _electric!, _type!, _dateOfPurchase, 0);
-    final HttpResponse response = await bikeService.create(memberId, bike);
+    final Bike bike = Bike(
+        '',
+        _name.text,
+        double.parse(_kmWeek.text),
+        _electric,
+        _type!,
+        _dateOfPurchase,
+        double.parse(_kmRealised.text),
+        _automatic);
+    final HttpResponse response = await BikeService().create(memberId, bike);
 
     if (response.success()) {
       _onMemberHomePage();
     }
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: Text(response.message()), backgroundColor: response.color()));
+        content: Text(response.message(),
+            style: const TextStyle(color: Colors.white)),
+        backgroundColor: response.color()));
   }
 
   void _onMemberHomePage() => Navigator.pushAndRemoveUntil(

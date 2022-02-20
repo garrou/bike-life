@@ -23,9 +23,8 @@ class _ComponentHistoricPageState extends State<ComponentHistoricPage> {
   late Future<List<ComponentChange>> _historic;
 
   Future<List<ComponentChange>> _load() async {
-    final ComponentService componentService = ComponentService();
-    HttpResponse response =
-        await componentService.getChangeHistoric(widget.component.id);
+    final HttpResponse response =
+        await ComponentService().getChangeHistoric(widget.component.id);
 
     if (response.success()) {
       return createChanges(response.body());

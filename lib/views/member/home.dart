@@ -92,8 +92,7 @@ class _CarouselState extends State<Carousel> {
 
   Future<List<Bike>> _loadBikes() async {
     final String memberId = await Storage.getMemberId();
-    final BikeService bikeService = BikeService();
-    final HttpResponse response = await bikeService.getByMember(memberId);
+    final HttpResponse response = await BikeService().getByMember(memberId);
 
     if (response.success()) {
       return createBikes(response.body());
@@ -125,7 +124,7 @@ class _CarouselState extends State<Carousel> {
                 onPageChanged: (index, _) {
                   setState(() => _current = index);
                 },
-                height: 200,
+                height: 400,
                 enlargeCenterPage: true,
                 enableInfiniteScroll: false),
           ),
@@ -147,7 +146,7 @@ class _CarouselState extends State<Carousel> {
           child: ClipRRect(
             borderRadius: BorderRadius.circular(10),
             child: Container(
-              padding: const EdgeInsets.all(10),
+              padding: const EdgeInsets.symmetric(horizontal: 10),
               color: primaryColor,
               child: Column(
                 children: <Widget>[
@@ -160,18 +159,21 @@ class _CarouselState extends State<Carousel> {
                       child: Text(bike.name,
                           style: const TextStyle(
                               color: Colors.white, fontSize: secondSize)),
-                      padding: const EdgeInsets.all(12)),
-                  Row(
+                      padding: const EdgeInsets.only(bottom: 10)),
+                  IntrinsicHeight(
+                      child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text('${bike.formatKm()} km',
                           style: const TextStyle(
                               color: Colors.white, fontSize: secondSize)),
+                      const VerticalDivider(
+                          thickness: 2, width: 2, color: Colors.white),
                       Text(bike.formatDate(),
                           style: const TextStyle(
                               color: Colors.white, fontSize: secondSize))
                     ],
-                  ),
+                  )),
                 ],
               ),
               width: MediaQuery.of(context).size.width,
@@ -222,9 +224,8 @@ class _ComponentsAlertsState extends State<ComponentsAlerts> {
 
   Future<List<Component>> _loadComponentsAlerts() async {
     final String memberId = await Storage.getMemberId();
-    final ComponentService componentService = ComponentService();
     final HttpResponse response =
-        await componentService.getComponentsAlerts(memberId);
+        await ComponentService().getComponentsAlerts(memberId);
 
     if (response.success()) {
       return createComponents(response.body());

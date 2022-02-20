@@ -10,7 +10,7 @@ class ComponentChange {
 
   ComponentChange.fromJson(Map<String, dynamic> json)
       : changeAt = format.format(DateTime.parse(json['label'])),
-        km = double.parse(json['value']);
+        km = json['value'].toDouble();
 }
 
 List<ComponentChange> createChanges(List<dynamic> records) => records

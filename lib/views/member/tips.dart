@@ -28,8 +28,7 @@ class _TipsPageState extends State<TipsPage> {
   }
 
   Future<List<Tip>> _loadTips() async {
-    final TipService tipService = TipService();
-    final HttpResponse response = await tipService.getByTopic('%');
+    final HttpResponse response = await TipService().getByTopic('%');
 
     if (response.success()) {
       return createTips(response.body());

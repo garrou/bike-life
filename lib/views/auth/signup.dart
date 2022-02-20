@@ -149,6 +149,8 @@ class SignupForm extends StatelessWidget {
           (Route<dynamic> route) => false);
     }
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: Text(response.message()), backgroundColor: response.color()));
+        content: Text(response.message(),
+            style: const TextStyle(color: Colors.white)),
+        backgroundColor: response.color()));
   }
 }
