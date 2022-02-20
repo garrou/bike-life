@@ -10,7 +10,7 @@ class ComponentTypesService {
   ]);
 
   Future<HttpResponse> getTypes() async {
-    Response response =
+    final Response response =
         await client.get(Uri.parse('$endpoint/component-types'));
     return HttpResponse(response);
   }

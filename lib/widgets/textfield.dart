@@ -29,23 +29,26 @@ class AppTextField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Padding(
-      padding: const EdgeInsets.all(thirdSize),
-      child: TextFormField(
-          enabled: enabled,
-          keyboardType: keyboardType,
-          maxLines: maxLines,
-          focusNode: focusNode,
-          controller: textfieldController,
-          obscureText: obscureText,
-          decoration: InputDecoration(
-              focusedBorder: textFieldBorder(mainSize, primaryColor),
-              prefixIcon: Icon(icon,
-                  color: focusNode.hasFocus ? intermediateColor : primaryColor),
-              border: textFieldBorder(mainSize, intermediateColor),
-              labelText: label,
-              labelStyle: TextStyle(
-                  color: focusNode.hasFocus ? intermediateColor : primaryColor),
-              hintText: hintText),
-          cursorColor: primaryColor,
-          validator: validator));
+        padding: const EdgeInsets.all(thirdSize),
+        child: TextFormField(
+            enabled: enabled,
+            keyboardType: keyboardType,
+            maxLines: maxLines,
+            focusNode: focusNode,
+            controller: textfieldController,
+            obscureText: obscureText,
+            decoration: InputDecoration(
+                focusedBorder: textFieldBorder(firstSize, primaryColor),
+                prefixIcon: Icon(icon,
+                    color:
+                        focusNode.hasFocus ? intermediateColor : primaryColor),
+                border: textFieldBorder(firstSize, intermediateColor),
+                labelText: label,
+                labelStyle: TextStyle(
+                    color:
+                        focusNode.hasFocus ? intermediateColor : primaryColor),
+                hintText: hintText),
+            cursorColor: primaryColor,
+            validator: validator),
+      );
 }

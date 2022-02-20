@@ -32,45 +32,46 @@ class _MemberHomePageState extends State<MemberHomePage> {
 
   @override
   Widget build(BuildContext context) => Scaffold(
-      body: PageView(
-        children: const <Widget>[
-          AllBikesPage(),
-          StatisticsPage(),
-          TipsPage(),
-          ProfilePage()
-        ],
-        onPageChanged: (page) {
-          setState(() => _pageIndex = page);
-        },
-        controller: _pageController,
-      ),
-      bottomNavigationBar: BottomNavigationBar(
-        type: BottomNavigationBarType.fixed,
-        showSelectedLabels: false,
-        showUnselectedLabels: false,
-        currentIndex: _pageIndex,
-        onTap: _onTabTapped,
-        backgroundColor: primaryColor,
-        selectedItemColor: Colors.white,
-        items: const <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-              icon: Icon(Icons.directions_bike),
-              label: 'Vélos',
-              backgroundColor: primaryColor),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.bar_chart),
-              label: 'Statistiques',
-              backgroundColor: primaryColor),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.comment),
-              label: 'Conseils',
-              backgroundColor: primaryColor),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.person),
-              label: 'Profil',
-              backgroundColor: primaryColor)
-        ],
-      ));
+        body: PageView(
+          children: const <Widget>[
+            AllBikesPage(),
+            StatisticsPage(),
+            TipsPage(),
+            ProfilePage()
+          ],
+          onPageChanged: (page) {
+            setState(() => _pageIndex = page);
+          },
+          controller: _pageController,
+        ),
+        bottomNavigationBar: BottomNavigationBar(
+          type: BottomNavigationBarType.fixed,
+          showSelectedLabels: false,
+          showUnselectedLabels: false,
+          currentIndex: _pageIndex,
+          onTap: _onTabTapped,
+          backgroundColor: primaryColor,
+          selectedItemColor: Colors.white,
+          items: const <BottomNavigationBarItem>[
+            BottomNavigationBarItem(
+                icon: Icon(Icons.directions_bike),
+                label: 'Vélos',
+                backgroundColor: primaryColor),
+            BottomNavigationBarItem(
+                icon: Icon(Icons.bar_chart),
+                label: 'Statistiques',
+                backgroundColor: primaryColor),
+            BottomNavigationBarItem(
+                icon: Icon(Icons.comment),
+                label: 'Conseils',
+                backgroundColor: primaryColor),
+            BottomNavigationBarItem(
+                icon: Icon(Icons.person),
+                label: 'Profil',
+                backgroundColor: primaryColor)
+          ],
+        ),
+      );
 
   void _onTabTapped(int index) => _pageController.animateToPage(index,
       duration: const Duration(milliseconds: 500), curve: Curves.easeInOut);

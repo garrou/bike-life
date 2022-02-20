@@ -17,12 +17,14 @@ class AppTopRightButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Align(
-      alignment: Alignment.topRight,
-      child: Padding(
+        alignment: Alignment.topRight,
+        child: Padding(
           padding: EdgeInsets.fromLTRB(0.0, padding, padding, 0.0),
           child: IconButton(
               onPressed: onPressed,
               icon: icon,
               color: color,
-              iconSize: mainSize)));
+              iconSize: firstSize),
+        ),
+      );
 }

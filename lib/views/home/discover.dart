@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:bike_life/styles/styles.dart';
 import 'package:bike_life/utils/constants.dart';
-import 'package:bike_life/utils/guard_helper.dart';
+import 'package:bike_life/utils/storage.dart';
 import 'package:bike_life/views/home/home.dart';
 import 'package:bike_life/views/member/member_home.dart';
 import 'package:flutter/material.dart';
@@ -24,7 +24,7 @@ class _DiscoverPageState extends State<DiscoverPage> {
   @override
   void initState() {
     super.initState();
-    GuardHelper.checkIfLogged(_authState);
+    Storage.checkIfLogged(_authState);
   }
 
   void _onIntroEnd(BuildContext context) => Navigator.pushAndRemoveUntil(
@@ -50,18 +50,15 @@ Notez les dates de changements de composants.
 Suivez l'utilisation de vos composants.
 Soignez informé quand un composant doit-être changé.
                  """,
-            image: Lottie.network(
-                'https://assets10.lottiefiles.com/packages/lf20_138qcknv.json')),
+            image: Lottie.network(manageLogo)),
         PageViewModel(
             title: 'Une démarche écologique',
             body: 'Entretenir son vélo, un premier pas pour la planète',
-            image: Lottie.network(
-                'https://assets3.lottiefiles.com/private_files/lf30_flhopjdx.json')),
+            image: Lottie.network(envLogo)),
         PageViewModel(
             title: 'Une démarche économique',
             body: 'Entretenir son vélo, pour le garder plus longtemps',
-            image: Lottie.network(
-                'https://assets10.lottiefiles.com/packages/lf20_h9pkkcih.json'))
+            image: Lottie.network(pigLogo))
       ],
       showSkipButton: true,
       skip: const Text('Passer', style: TextStyle(color: primaryColor)),
@@ -72,9 +69,9 @@ Soignez informé quand un composant doit-être changé.
         size: Size(secondSize, secondSize),
         color: primaryColor,
         activeColor: primaryColor,
-        activeSize: Size(mainSize, secondSize),
+        activeSize: Size(firstSize, secondSize),
         activeShape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.all(Radius.circular(mainSize)),
+          borderRadius: BorderRadius.all(Radius.circular(firstSize)),
         ),
       ),
       onDone: () => _onIntroEnd(context),

@@ -28,8 +28,7 @@ class _TipsPageState extends State<TipsPage> {
   }
 
   Future<List<Tip>> _loadTips() async {
-    final TipService tipService = TipService();
-    final HttpResponse response = await tipService.getByTopic('%');
+    final HttpResponse response = await TipService().getByTopic('%');
 
     if (response.success()) {
       return createTips(response.body());
@@ -55,7 +54,7 @@ class _TipsPageState extends State<TipsPage> {
 
   Widget _wideLayout(BuildContext context) => ListView(
           padding: const EdgeInsets.fromLTRB(
-              thirdSize, mainSize, thirdSize, thirdSize),
+              thirdSize, firstSize, thirdSize, thirdSize),
           children: <Widget>[
             Row(mainAxisAlignment: MainAxisAlignment.center, children: [
               Text('Conseils', style: thirdTextStyle),
@@ -77,11 +76,14 @@ class _TipsPageState extends State<TipsPage> {
           ]);
 
   Widget _buildTip(Tip tip) => Card(
-      elevation: 5,
-      child: GestureDetector(
+        elevation: 5,
+        child: GestureDetector(
           onTap: () => Navigator.push(
               context, animationRightLeft(TipDetailsPage(tip: tip))),
           child: ListTile(
-              title: AppClickRegion(child: Text(tip.title)),
-              subtitle: AppClickRegion(child: Text(tip.writeDate)))));
+            title: AppClickRegion(child: Text(tip.title)),
+            subtitle: AppClickRegion(child: Text(tip.writeDate)),
+          ),
+        ),
+      );
 }

@@ -13,7 +13,7 @@ class MemberService {
   ]);
 
   Future<HttpResponse> login(String email, String password) async {
-    Response response = await http.post(
+    final Response response = await http.post(
       Uri.parse('$endpoint/members/login'),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8'
@@ -24,7 +24,7 @@ class MemberService {
   }
 
   Future<HttpResponse> signup(String email, String password) async {
-    Response response = await http.post(
+    final Response response = await http.post(
       Uri.parse('$endpoint/members/signup'),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8'
@@ -35,21 +35,21 @@ class MemberService {
   }
 
   Future<HttpResponse> updatePassword(String memberId, String password) async {
-    Response response = await client.patch(
+    final Response response = await client.patch(
         Uri.parse('$endpoint/members/$memberId/password'),
         body: jsonEncode(<String, String>{'password': password}));
     return HttpResponse(response);
   }
 
   Future<HttpResponse> updateEmail(String memberId, String email) async {
-    Response response = await client.patch(
+    final Response response = await client.patch(
         Uri.parse('$endpoint/members/$memberId/email'),
         body: jsonEncode(<String, String>{'email': email}));
     return HttpResponse(response);
   }
 
   Future<HttpResponse> getEmail(String id) async {
-    Response response =
+    final Response response =
         await client.get(Uri.parse('$endpoint/members/$id/email'));
     return HttpResponse(response);
   }

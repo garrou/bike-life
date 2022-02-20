@@ -35,27 +35,31 @@ class _AppCalendarState extends State<AppCalendar> {
 
   @override
   Widget build(BuildContext context) => Padding(
-      padding: const EdgeInsets.only(top: thirdSize),
-      child: Column(children: <Widget>[
-        GestureDetector(
-          child: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-            Text(widget.text, style: secondTextStyle),
-            Icon(_isVisible ? Icons.arrow_drop_up : Icons.arrow_drop_down)
-          ]),
-          onTap: () {
-            setState(() => _isVisible = !_isVisible);
-          },
+        padding: const EdgeInsets.only(top: thirdSize),
+        child: Column(
+          children: <Widget>[
+            GestureDetector(
+              child:
+                  Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+                Text(widget.text, style: secondTextStyle),
+                Icon(_isVisible ? Icons.arrow_drop_up : Icons.arrow_drop_down)
+              ]),
+              onTap: () {
+                setState(() => _isVisible = !_isVisible);
+              },
+            ),
+            Visibility(
+                visible: _isVisible,
+                child: SfDateRangePicker(
+                    minDate: widget.minDate,
+                    maxDate: _maxDate,
+                    initialSelectedDate: widget.selectedDate,
+                    todayHighlightColor: primaryColor,
+                    selectionColor: primaryColor,
+                    view: DateRangePickerView.month,
+                    selectionMode: DateRangePickerSelectionMode.single,
+                    onSelectionChanged: widget.callback)),
+          ],
         ),
-        Visibility(
-            visible: _isVisible,
-            child: SfDateRangePicker(
-                minDate: widget.minDate,
-                maxDate: _maxDate,
-                initialSelectedDate: widget.selectedDate,
-                todayHighlightColor: primaryColor,
-                selectionColor: primaryColor,
-                view: DateRangePickerView.month,
-                selectionMode: DateRangePickerSelectionMode.single,
-                onSelectionChanged: widget.callback)),
-      ]));
+      );
 }

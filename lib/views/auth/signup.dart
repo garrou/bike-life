@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:bike_life/models/http_response.dart';
 import 'package:bike_life/services/member_service.dart';
 import 'package:bike_life/styles/animations.dart';
-import 'package:bike_life/utils/guard_helper.dart';
+import 'package:bike_life/utils/storage.dart';
 import 'package:bike_life/utils/validator.dart';
 import 'package:bike_life/views/member/member_home.dart';
 import 'package:bike_life/styles/styles.dart';
@@ -30,12 +30,12 @@ class _SignupPageState extends State<SignupPage> {
   @override
   void initState() {
     super.initState();
-    GuardHelper.checkIfLogged(_authState);
+    Storage.checkIfLogged(_authState);
   }
 
   @override
   Widget build(BuildContext context) => Scaffold(
-      body: AuthGuard(
+        body: AuthGuard(
           authStream: _authState.stream,
           signedIn: const MemberHomePage(initialPage: 0),
           signedOut: LayoutBuilder(builder: (context, constraints) {
@@ -44,18 +44,24 @@ class _SignupPageState extends State<SignupPage> {
             } else {
               return wideLayout();
             }
-          })));
+          }),
+        ),
+      );
 
   Center wideLayout() => Center(
-          child: SingleChildScrollView(
-              child: Column(children: <Widget>[
-        AppTitle(text: "S'inscrire", paddingTop: 0, style: mainTextStyle),
-        AppCard(child: SignupForm(), elevation: secondSize),
-        AppLinkToPage(
-            padding: mainSize,
-            child: Text('Déjà membre ? Se connecter', style: linkStyle),
-            destination: const SigninPage())
-      ])));
+        child: SingleChildScrollView(
+          child: Column(
+            children: <Widget>[
+              AppTitle(text: "S'inscrire", paddingTop: 0, style: mainTextStyle),
+              AppCard(child: SignupForm(), elevation: secondSize),
+              AppLinkToPage(
+                  padding: firstSize,
+                  child: Text('Déjà membre ? Se connecter', style: linkStyle),
+                  destination: const SigninPage())
+            ],
+          ),
+        ),
+      );
 
   Padding narrowLayout(BuildContext context) {
     return Padding(
@@ -83,44 +89,47 @@ class SignupForm extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Form(
-      key: _keyForm,
-      child: Column(children: <Widget>[
-        AppTextField(
-            keyboardType: TextInputType.emailAddress,
-            label: 'Email',
-            hintText: 'Entrer un email valide',
-            focusNode: _emailFocus,
-            textfieldController: _email,
-            validator: emailValidator,
-            icon: Icons.alternate_email),
-        AppTextField(
-            keyboardType: TextInputType.text,
-            label: 'Mot de passe',
-            hintText: 'Mot de passe, $minPasswordSize caractères minimum',
-            focusNode: _passwordFocus,
-            textfieldController: _password,
-            validator: passwordValidator,
-            obscureText: true,
-            icon: Icons.password),
-        AppTextField(
-            keyboardType: TextInputType.text,
-            label: 'Confirmer le mot de passe',
-            hintText: 'Mot de passe, $minPasswordSize caractères minimum',
-            focusNode: _confirmPasswordFocus,
-            textfieldController: _confirmPassword,
-            // ignore: body_might_complete_normally_nullable
-            validator: (value) {
-              if (_password.text != value || value!.isEmpty) {
-                return 'Mot de passe incorrect';
-              }
-            },
-            obscureText: true,
-            icon: Icons.password),
-        AppButton(
-            text: "S'inscrire",
-            callback: () => _onSignup(context),
-            icon: const Icon(Icons.person_add_alt_1))
-      ]));
+        key: _keyForm,
+        child: Column(
+          children: <Widget>[
+            AppTextField(
+                keyboardType: TextInputType.emailAddress,
+                label: 'Email',
+                hintText: 'Entrer un email valide',
+                focusNode: _emailFocus,
+                textfieldController: _email,
+                validator: emailValidator,
+                icon: Icons.alternate_email),
+            AppTextField(
+                keyboardType: TextInputType.text,
+                label: 'Mot de passe',
+                hintText: 'Mot de passe, $minPasswordSize caractères minimum',
+                focusNode: _passwordFocus,
+                textfieldController: _password,
+                validator: passwordValidator,
+                obscureText: true,
+                icon: Icons.password),
+            AppTextField(
+                keyboardType: TextInputType.text,
+                label: 'Confirmer le mot de passe',
+                hintText: 'Mot de passe, $minPasswordSize caractères minimum',
+                focusNode: _confirmPasswordFocus,
+                textfieldController: _confirmPassword,
+                // ignore: body_might_complete_normally_nullable
+                validator: (value) {
+                  if (_password.text != value || value!.isEmpty) {
+                    return 'Mot de passe incorrect';
+                  }
+                },
+                obscureText: true,
+                icon: Icons.password),
+            AppButton(
+                text: "S'inscrire",
+                callback: () => _onSignup(context),
+                icon: const Icon(Icons.person_add_alt_1))
+          ],
+        ),
+      );
 
   void _onSignup(BuildContext context) {
     if (_keyForm.currentState!.validate()) {
@@ -140,6 +149,8 @@ class SignupForm extends StatelessWidget {
           (Route<dynamic> route) => false);
     }
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: Text(response.message()), backgroundColor: response.color()));
+        content: Text(response.message(),
+            style: const TextStyle(color: Colors.white)),
+        backgroundColor: response.color()));
   }
 }

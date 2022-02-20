@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:shared_preferences/shared_preferences.dart';
 
 class Storage {
@@ -32,5 +34,10 @@ class Storage {
   static setString(String key, String value) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.setString(key, value);
+  }
+
+  static checkIfLogged(StreamController streamController) async {
+    String token = await getToken();
+    streamController.add(token.isNotEmpty);
   }
 }

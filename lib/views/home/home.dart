@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:bike_life/utils/constants.dart';
-import 'package:bike_life/utils/guard_helper.dart';
+import 'package:bike_life/utils/storage.dart';
 import 'package:bike_life/views/auth/signin.dart';
 import 'package:bike_life/views/home/discover.dart';
 import 'package:bike_life/views/member/member_home.dart';
@@ -24,7 +24,7 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
-    GuardHelper.checkIfLogged(_authState);
+    Storage.checkIfLogged(_authState);
   }
 
   @override
@@ -34,27 +34,33 @@ class _HomePageState extends State<HomePage> {
           signedIn: const MemberHomePage(initialPage: 0),
           signedOut: _layout()));
 
-  Widget _layout() => ListView(children: <Widget>[
-        Row(children: <Widget>[
-          Padding(
-              padding: const EdgeInsets.fromLTRB(mainSize, mainSize, 0, 0),
-              child: Text(title, style: secondTextStyle)),
-        ]),
-        Column(mainAxisAlignment: MainAxisAlignment.center, children: <Widget>[
-          Padding(
-              padding: const EdgeInsets.all(thirdSize),
-              child: Lottie.network(
-                  'https://assets2.lottiefiles.com/packages/lf20_lnji2epm.json')),
-          Padding(
-              padding: const EdgeInsets.symmetric(vertical: thirdSize),
-              child: Text("La santé de votre vélo se surveille de près.",
-                  style: italicTextStyle)),
-          const AppNavButton(
-              text: 'Découvrir',
-              destination: DiscoverPage(),
-              color: primaryColor),
-          const AppNavButton(
-              text: 'Connexion', destination: SigninPage(), color: primaryColor)
-        ])
-      ]);
+  Widget _layout() => ListView(
+        children: <Widget>[
+          Row(children: <Widget>[
+            Padding(
+                padding: const EdgeInsets.fromLTRB(firstSize, firstSize, 0, 0),
+                child: Text(title, style: secondTextStyle)),
+          ]),
+          Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Padding(
+                  padding: const EdgeInsets.all(thirdSize),
+                  child: Lottie.network(logo)),
+              Padding(
+                  padding: const EdgeInsets.symmetric(vertical: thirdSize),
+                  child: Text("La santé de votre vélo se surveille de près.",
+                      style: italicTextStyle)),
+              const AppNavButton(
+                  text: 'Découvrir',
+                  destination: DiscoverPage(),
+                  color: primaryColor),
+              const AppNavButton(
+                  text: 'Connexion',
+                  destination: SigninPage(),
+                  color: primaryColor)
+            ],
+          )
+        ],
+      );
 }

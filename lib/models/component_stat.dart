@@ -3,8 +3,8 @@ class ComponentStat {
   final double value;
 
   ComponentStat.fromJson(Map<String, dynamic> json)
-      : label = json['label'].toString(),
-        value = double.parse(json['value']);
+      : label = json['label'],
+        value = json['value'].toDouble();
 
   ComponentStat(this.label, this.value);
 }

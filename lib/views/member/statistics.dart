@@ -16,14 +16,15 @@ class StatisticsPage extends StatelessWidget {
   const StatisticsPage({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) =>
-      Scaffold(body: LayoutBuilder(builder: (context, constraints) {
-        if (constraints.maxWidth > maxWidth) {
-          return _narrowLayout(context, constraints);
-        } else {
-          return _wideLayout(context, constraints);
-        }
-      }));
+  Widget build(BuildContext context) => Scaffold(
+        body: LayoutBuilder(builder: (context, constraints) {
+          if (constraints.maxWidth > maxWidth) {
+            return _narrowLayout(context, constraints);
+          } else {
+            return _wideLayout(context, constraints);
+          }
+        }),
+      );
 
   Widget _narrowLayout(
           BuildContext context, BoxConstraints constraints) =>
@@ -34,42 +35,45 @@ class StatisticsPage extends StatelessWidget {
 
   Widget _wideLayout(BuildContext context, BoxConstraints constraints) =>
       ListView(
-          physics: const ScrollPhysics(),
-          shrinkWrap: true,
-          children: <Widget>[
-            Card(
-              child: Column(
-                children: [
-                  Text('Année des statistiques', style: thirdTextStyle),
-                  Slider(
-                      value: context.watch<Year>().value.toDouble(),
-                      thumbColor: primaryColor,
-                      activeColor: primaryColor,
-                      inactiveColor: const Color.fromARGB(255, 156, 156, 156),
-                      min: 2010,
-                      max: DateTime.now().year.toDouble(),
-                      divisions: DateTime.now().year - 2010,
-                      label: '${context.watch<Year>().value}',
-                      onChanged: (rating) =>
-                          Provider.of<Year>(context, listen: false).value =
-                              rating.toInt())
-                ],
-              ),
+        controller: ScrollController(),
+        physics: const ScrollPhysics(),
+        shrinkWrap: true,
+        children: <Widget>[
+          Card(
+            child: Column(
+              children: [
+                Text('Année des statistiques', style: thirdTextStyle),
+                Slider(
+                    value: context.watch<Year>().value.toDouble(),
+                    thumbColor: primaryColor,
+                    activeColor: primaryColor,
+                    inactiveColor: const Color.fromARGB(255, 156, 156, 156),
+                    min: 2010,
+                    max: DateTime.now().year.toDouble(),
+                    divisions: DateTime.now().year - 2010,
+                    label: '${context.watch<Year>().value}',
+                    onChanged: (rating) =>
+                        Provider.of<Year>(context, listen: false).value =
+                            rating.toInt())
+              ],
             ),
-            GridView.count(
-                physics: const ScrollPhysics(),
-                shrinkWrap: true,
-                crossAxisCount: constraints.maxWidth > maxWidth + 400
-                    ? 3
-                    : constraints.maxWidth > maxWidth
-                        ? 2
-                        : 1,
-                children: const <Widget>[
-                  TotalChanges(),
-                  NbComponentsChangeYear(),
-                  AverageKmBeforeChange()
-                ])
-          ]);
+          ),
+          GridView.count(
+            physics: const ScrollPhysics(),
+            shrinkWrap: true,
+            crossAxisCount: constraints.maxWidth > maxWidth + 400
+                ? 3
+                : constraints.maxWidth > maxWidth
+                    ? 2
+                    : 1,
+            children: const <Widget>[
+              TotalChanges(),
+              NbComponentsChangeYear(),
+              AverageKmBeforeChange()
+            ],
+          )
+        ],
+      );
 }
 
 class TotalChanges extends StatefulWidget {
@@ -83,10 +87,9 @@ class _TotalChangesState extends State<TotalChanges> {
   late Future<List<ComponentStat>> _totalChangeStats;
 
   Future<List<ComponentStat>> _loadTotalChanges() async {
-    final ComponentService componentService = ComponentService();
     final String memberId = await Storage.getMemberId();
     final HttpResponse response =
-        await componentService.getTotalChanges(memberId);
+        await ComponentService().getTotalChanges(memberId);
 
     if (response.success()) {
       return createComponentStats(response.body());
@@ -110,7 +113,9 @@ class _TotalChangesState extends State<TotalChanges> {
         } else if (snapshot.hasData) {
           return snapshot.data!.isEmpty
               ? AppTitle(
-                  text: 'Aucune donnée', paddingTop: 10, style: thirdTextStyle)
+                  text: 'Aucune statistique',
+                  paddingTop: 10,
+                  style: thirdTextStyle)
               : AppBarChart(
                   vertical: true,
                   series: snapshot.data!,
@@ -124,10 +129,9 @@ class NbComponentsChangeYear extends StatelessWidget {
   const NbComponentsChangeYear({Key? key}) : super(key: key);
 
   Future<List<ComponentStat>> _loadNbChangeByYear(int year) async {
-    final ComponentService componentService = ComponentService();
     final String memberId = await Storage.getMemberId();
     final HttpResponse response =
-        await componentService.getNbComponentsChangeStats(memberId, year);
+        await ComponentService().getNbComponentsChangeStats(memberId, year);
 
     if (response.success()) {
       return createComponentStats(response.body());
@@ -146,7 +150,9 @@ class NbComponentsChangeYear extends StatelessWidget {
           final String s = snapshot.data!.length > 1 ? 's' : '';
           return snapshot.data!.isEmpty
               ? AppTitle(
-                  text: 'Aucune donnée', paddingTop: 10, style: thirdTextStyle)
+                  text: 'Aucune statistique',
+                  paddingTop: 10,
+                  style: thirdTextStyle)
               : AppPieChart(
                   series: snapshot.data!,
                   text:
@@ -160,10 +166,9 @@ class AverageKmBeforeChange extends StatelessWidget {
   const AverageKmBeforeChange({Key? key}) : super(key: key);
 
   Future<List<ComponentStat>> _loadKmChangeByYear(int year) async {
-    final ComponentService componentService = ComponentService();
     final String memberId = await Storage.getMemberId();
     final HttpResponse response =
-        await componentService.getKmComponentsChangeStats(memberId, year);
+        await ComponentService().getKmComponentsChangeStats(memberId, year);
 
     if (response.success()) {
       return createComponentStats(response.body());
@@ -181,7 +186,9 @@ class AverageKmBeforeChange extends StatelessWidget {
         } else if (snapshot.hasData) {
           return snapshot.data!.isEmpty
               ? AppTitle(
-                  text: 'Aucune donnée', paddingTop: 10, style: thirdTextStyle)
+                  text: 'Aucune statistique',
+                  paddingTop: 10,
+                  style: thirdTextStyle)
               : AppBarChart(
                   series: snapshot.data!,
                   text:

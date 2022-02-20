@@ -16,7 +16,19 @@ TextStyle linkStyle = const TextStyle(
     decoration: TextDecoration.underline,
     color: Colors.blue,
     fontSize: secondSize);
-TextStyle mainTextStyle = GoogleFonts.roboto(fontSize: mainSize);
+
+TextStyle setStyle(BuildContext context, double size) =>
+    GoogleFonts.roboto(fontSize: size, color: colorByTheme(context));
+
+charts.Color chartColorByTheme(BuildContext context) =>
+    context.read<ThemeModel>().isDark
+        ? charts.MaterialPalette.white
+        : charts.MaterialPalette.black;
+
+Color colorByTheme(BuildContext context) =>
+    context.watch<ThemeModel>().isDark ? Colors.white : Colors.black;
+
+TextStyle mainTextStyle = GoogleFonts.roboto(fontSize: firstSize);
 TextStyle secondTextStyle = GoogleFonts.roboto(fontSize: secondSize);
 TextStyle thirdTextStyle = GoogleFonts.roboto(fontSize: intermediateSize);
 TextStyle fourthTextStyle = GoogleFonts.roboto(fontSize: 14.0);
@@ -36,8 +48,3 @@ OutlineInputBorder textFieldBorder(double radius, Color borderColor) =>
     OutlineInputBorder(
         borderRadius: BorderRadius.circular(radius),
         borderSide: BorderSide(color: borderColor));
-
-charts.Color colorByTheme(BuildContext context) =>
-    context.read<ThemeModel>().isDark
-        ? charts.MaterialPalette.white
-        : charts.MaterialPalette.black;

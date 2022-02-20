@@ -15,13 +15,16 @@ class AppNavButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Padding(
-      padding: const EdgeInsets.only(top: thirdSize),
-      child: SizedBox(
+        padding: const EdgeInsets.only(top: thirdSize),
+        child: SizedBox(
           height: buttonHeight,
           width: buttonWidth,
           child: ElevatedButton(
-              child: Text(text),
-              onPressed: () => Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => destination)),
-              style: roundedButtonStyle(color))));
+            child: Text(text),
+            onPressed: () => Navigator.push(
+                context, MaterialPageRoute(builder: (context) => destination)),
+            style: roundedButtonStyle(color),
+          ),
+        ),
+      );
 }

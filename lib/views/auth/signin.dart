@@ -4,7 +4,6 @@ import 'package:bike_life/models/http_response.dart';
 import 'package:bike_life/styles/animations.dart';
 import 'package:bike_life/styles/styles.dart';
 import 'package:bike_life/utils/constants.dart';
-import 'package:bike_life/utils/guard_helper.dart';
 import 'package:bike_life/utils/storage.dart';
 import 'package:bike_life/utils/validator.dart';
 import 'package:bike_life/services/member_service.dart';
@@ -31,12 +30,12 @@ class _SigninPageState extends State<SigninPage> {
   @override
   void initState() {
     super.initState();
-    GuardHelper.checkIfLogged(_authState);
+    Storage.checkIfLogged(_authState);
   }
 
   @override
   Widget build(BuildContext context) => Scaffold(
-      body: AuthGuard(
+        body: AuthGuard(
           authStream: _authState.stream,
           signedIn: const MemberHomePage(initialPage: 0),
           signedOut: LayoutBuilder(builder: (context, constraints) {
@@ -45,18 +44,25 @@ class _SigninPageState extends State<SigninPage> {
             } else {
               return wideLayout();
             }
-          })));
+          }),
+        ),
+      );
 
   Center wideLayout() => Center(
-          child: SingleChildScrollView(
-              child: Column(children: <Widget>[
-        AppTitle(text: 'Se connecter', paddingTop: 0, style: mainTextStyle),
-        AppCard(child: SigninForm(), elevation: secondSize),
-        AppLinkToPage(
-            padding: mainSize,
-            child: Text('Nouveau ? Créer un compte', style: linkStyle),
-            destination: const SignupPage())
-      ])));
+        child: SingleChildScrollView(
+          child: Column(
+            children: <Widget>[
+              AppTitle(
+                  text: 'Se connecter', paddingTop: 0, style: mainTextStyle),
+              AppCard(child: SigninForm(), elevation: secondSize),
+              AppLinkToPage(
+                  padding: firstSize,
+                  child: Text('Nouveau ? Créer un compte', style: linkStyle),
+                  destination: const SignupPage())
+            ],
+          ),
+        ),
+      );
 
   Padding narrowLayout(BuildContext context) => Padding(
       padding: EdgeInsets.symmetric(
@@ -79,30 +85,33 @@ class SigninForm extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Form(
-      key: _keyForm,
-      child: Column(children: <Widget>[
-        AppTextField(
-            keyboardType: TextInputType.emailAddress,
-            label: 'Email',
-            hintText: 'Entrer un email valide',
-            focusNode: _emailFocus,
-            textfieldController: _email,
-            validator: emailValidator,
-            icon: Icons.alternate_email),
-        AppTextField(
-            keyboardType: TextInputType.text,
-            label: 'Mot de passe',
-            hintText: 'Entrer votre mot de passe',
-            focusNode: _passwordFocus,
-            textfieldController: _password,
-            validator: passwordValidator,
-            obscureText: true,
-            icon: Icons.password),
-        AppButton(
-            text: 'Connexion',
-            callback: () => _onSignin(context),
-            icon: const Icon(Icons.login))
-      ]));
+        key: _keyForm,
+        child: Column(
+          children: <Widget>[
+            AppTextField(
+                keyboardType: TextInputType.emailAddress,
+                label: 'Email',
+                hintText: 'Entrer un email valide',
+                focusNode: _emailFocus,
+                textfieldController: _email,
+                validator: emailValidator,
+                icon: Icons.alternate_email),
+            AppTextField(
+                keyboardType: TextInputType.text,
+                label: 'Mot de passe',
+                hintText: 'Entrer votre mot de passe',
+                focusNode: _passwordFocus,
+                textfieldController: _password,
+                validator: passwordValidator,
+                obscureText: true,
+                icon: Icons.password),
+            AppButton(
+                text: 'Connexion',
+                callback: () => _onSignin(context),
+                icon: const Icon(Icons.login))
+          ],
+        ),
+      );
 
   void _onSignin(BuildContext context) {
     if (_keyForm.currentState!.validate()) {
@@ -124,8 +133,10 @@ class SigninForm extends StatelessWidget {
           (Route<dynamic> route) => false);
     } else {
       _password.text = '';
-      ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(response.message()), backgroundColor: red));
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: Text(response.message(),
+              style: const TextStyle(color: Colors.white)),
+          backgroundColor: red));
     }
   }
 }

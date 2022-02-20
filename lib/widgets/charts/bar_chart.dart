@@ -21,7 +21,9 @@ class AppBarChart extends StatelessWidget {
           id: "Stats",
           data: series,
           domainFn: (ComponentStat series, _) => series.label,
-          measureFn: (ComponentStat series, _) => series.value)
+          measureFn: (ComponentStat series, _) => series.value,
+          labelAccessorFn: (ComponentStat series, _) =>
+              '${series.label} : ${series.value.toStringAsFixed(2)}')
     ];
 
     return SizedBox(
@@ -38,10 +40,8 @@ class AppBarChart extends StatelessWidget {
                     vertical: vertical,
                     primaryMeasureAxis: charts.NumericAxisSpec(
                         renderSpec: charts.GridlineRendererSpec(
-                            labelStyle: charts.TextStyleSpec(
-                                color: colorByTheme(context)),
                             lineStyle: charts.LineStyleSpec(
-                                color: colorByTheme(context)))),
+                                color: chartColorByTheme(context)))),
                     domainAxis: const charts.OrdinalAxisSpec(
                         renderSpec: charts.NoneRenderSpec()),
                     barRendererDecorator: charts.BarLabelDecorator(
