@@ -1,5 +1,6 @@
 import 'package:bike_life/models/component_stat.dart';
 import 'package:bike_life/styles/styles.dart';
+import 'package:bike_life/utils/constants.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
 import 'package:flutter/material.dart';
 
@@ -33,7 +34,10 @@ class AppBarChart extends StatelessWidget {
         elevation: 5,
         child: Column(
           children: <Widget>[
-            Text(text, style: fourthTextStyle),
+            Padding(
+              padding: const EdgeInsets.all(thirdSize),
+              child: Text(text, style: fourthTextStyle),
+            ),
             Expanded(
                 child: charts.BarChart(data,
                     animate: true,

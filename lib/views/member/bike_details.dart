@@ -35,10 +35,10 @@ class BikeDetails extends StatelessWidget {
       child: _wideLayout(context));
 
   Widget _wideLayout(BuildContext context) => ListView(
-        children: [
+        children: <Widget>[
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
+            children: <Widget>[
               AppTopLeftButton(
                   title: 'Détails', callback: () => _back(context)),
               AppTopRightButton(

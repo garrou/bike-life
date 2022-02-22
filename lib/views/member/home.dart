@@ -16,6 +16,7 @@ import 'package:bike_life/widgets/buttons/top_right_button.dart';
 import 'package:bike_life/widgets/click_region.dart';
 import 'package:bike_life/views/member/bike_details.dart';
 import 'package:bike_life/widgets/component_card.dart';
+import 'package:bike_life/widgets/error.dart';
 import 'package:bike_life/widgets/loading.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
@@ -97,7 +98,7 @@ class _CarouselState extends State<Carousel> {
     if (response.success()) {
       return createBikes(response.body());
     } else {
-      throw Exception('Impossible de récupérer les données');
+      throw Exception(response.message());
     }
   }
 
@@ -106,7 +107,7 @@ class _CarouselState extends State<Carousel> {
       future: _bikes,
       builder: (context, snapshot) {
         if (snapshot.hasError) {
-          return Text('${snapshot.error}');
+          return AppError(message: '${snapshot.error}');
         } else if (snapshot.hasData) {
           List<Widget> cards =
               snapshot.data!.map((bike) => _bikeCard(bike)).toList();
@@ -116,7 +117,7 @@ class _CarouselState extends State<Carousel> {
       });
 
   Widget _buildCarousel(List<Widget> cards) => Column(
-        children: [
+        children: <Widget>[
           CarouselSlider(
             items: cards,
             carouselController: _carouselController,
@@ -163,7 +164,7 @@ class _CarouselState extends State<Carousel> {
                   IntrinsicHeight(
                       child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
+                    children: <Widget>[
                       Text('${bike.formatKm()} km',
                           style: const TextStyle(
                               color: Colors.white, fontSize: secondSize)),
@@ -230,7 +231,7 @@ class _ComponentsAlertsState extends State<ComponentsAlerts> {
     if (response.success()) {
       return createComponents(response.body());
     } else {
-      throw Exception('Impossible de récupérer les données');
+      throw Exception(response.message());
     }
   }
 
@@ -245,7 +246,7 @@ class _ComponentsAlertsState extends State<ComponentsAlerts> {
       future: _components,
       builder: (context, snapshot) {
         if (snapshot.hasError) {
-          return Text('${snapshot.error}');
+          return AppError(message: '${snapshot.error}');
         } else if (snapshot.hasData) {
           final int nb = snapshot.data!.length;
           final String s = nb > 1 ? 's' : '';

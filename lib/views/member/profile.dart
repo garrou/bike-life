@@ -11,6 +11,7 @@ import 'package:bike_life/views/auth/signin.dart';
 import 'package:bike_life/styles/styles.dart';
 import 'package:bike_life/widgets/buttons/button.dart';
 import 'package:bike_life/widgets/card.dart';
+import 'package:bike_life/widgets/error.dart';
 import 'package:bike_life/widgets/loading.dart';
 import 'package:bike_life/widgets/textfield.dart';
 import 'package:bike_life/widgets/buttons/top_right_button.dart';
@@ -45,20 +46,21 @@ class ProfilePage extends StatelessWidget {
                 color: red,
                 padding: secondSize),
             AppCard(
-                child:
-                    Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-                  Text('Thème', style: secondTextStyle),
-                  IconButton(
-                    onPressed: () {
-                      themeNotifier.isDark
-                          ? themeNotifier.isDark = false
-                          : themeNotifier.isDark = true;
-                    },
-                    icon: Icon(themeNotifier.isDark
-                        ? Icons.nightlight_round_outlined
-                        : Icons.wb_sunny),
-                  )
-                ]),
+                child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      Text('Thème', style: secondTextStyle),
+                      IconButton(
+                        onPressed: () {
+                          themeNotifier.isDark
+                              ? themeNotifier.isDark = false
+                              : themeNotifier.isDark = true;
+                        },
+                        icon: Icon(themeNotifier.isDark
+                            ? Icons.nightlight_round_outlined
+                            : Icons.wb_sunny),
+                      )
+                    ]),
                 elevation: 5),
             const UpdateEmailForm(),
             UpdatePasswordForm()
@@ -104,7 +106,7 @@ class _UpdateEmailFormState extends State<UpdateEmailForm> {
     if (response.success()) {
       return response.email();
     } else {
-      throw Exception("Impossible de récupérer l'email");
+      throw Exception(response.message());
     }
   }
 
@@ -122,7 +124,7 @@ class _UpdateEmailFormState extends State<UpdateEmailForm> {
                     future: _userEmail,
                     builder: (_, snapshot) {
                       if (snapshot.hasError) {
-                        return Text('${snapshot.error}');
+                        return AppError(message: '${snapshot.error}');
                       } else if (snapshot.hasData) {
                         _email.text = snapshot.data.toString();
                         return AppTextField(

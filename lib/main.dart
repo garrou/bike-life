@@ -17,12 +17,14 @@ class App extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => ChangeNotifierProvider(
-      create: (_) => ThemeModel(),
-      child: Consumer<ThemeModel>(
-          builder: (context, ThemeModel themeNotifier, child) {
-        return MaterialApp(
-            title: "Bike's Life",
-            theme: themeNotifier.isDark ? ThemeData.dark() : ThemeData.light(),
-            home: const HomePage());
-      }));
+        create: (_) => ThemeModel(),
+        child: Consumer<ThemeModel>(
+            builder: (context, ThemeModel themeNotifier, child) {
+          return MaterialApp(
+              title: "Bike's Life",
+              theme:
+                  themeNotifier.isDark ? ThemeData.dark() : ThemeData.light(),
+              home: const HomePage());
+        }),
+      );
 }

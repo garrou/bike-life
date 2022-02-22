@@ -40,7 +40,8 @@ class _AppCalendarState extends State<AppCalendar> {
           children: <Widget>[
             GestureDetector(
               child:
-                  Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+                  Row(mainAxisAlignment: MainAxisAlignment.center, children: <
+                      Widget>[
                 Text(widget.text, style: secondTextStyle),
                 Icon(_isVisible ? Icons.arrow_drop_up : Icons.arrow_drop_down)
               ]),

@@ -8,6 +8,7 @@ import 'package:bike_life/styles/styles.dart';
 import 'package:bike_life/utils/constants.dart';
 import 'package:bike_life/widgets/click_region.dart';
 import 'package:bike_life/views/member/tip_details.dart';
+import 'package:bike_life/widgets/error.dart';
 import 'package:bike_life/widgets/loading.dart';
 import 'package:flutter/material.dart';
 
@@ -33,7 +34,7 @@ class _TipsPageState extends State<TipsPage> {
     if (response.success()) {
       return createTips(response.body());
     } else {
-      throw Exception('Impossible de récupérer les conseils');
+      throw Exception(response.message());
     }
   }
 
@@ -56,14 +57,14 @@ class _TipsPageState extends State<TipsPage> {
           padding: const EdgeInsets.fromLTRB(
               thirdSize, firstSize, thirdSize, thirdSize),
           children: <Widget>[
-            Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+            Row(mainAxisAlignment: MainAxisAlignment.center, children: <Widget>[
               Text('Conseils', style: thirdTextStyle),
             ]),
             FutureBuilder<List<Tip>>(
                 future: _tips,
                 builder: (_, snapshot) {
                   if (snapshot.hasError) {
-                    return Text('${snapshot.error}');
+                    return AppError(message: '${snapshot.error}');
                   } else if (snapshot.hasData) {
                     return Column(
                         crossAxisAlignment: CrossAxisAlignment.center,

@@ -6,6 +6,7 @@ import 'package:bike_life/styles/styles.dart';
 import 'package:bike_life/utils/constants.dart';
 import 'package:bike_life/utils/storage.dart';
 import 'package:bike_life/widgets/charts/bar_chart.dart';
+import 'package:bike_life/widgets/error.dart';
 import 'package:bike_life/widgets/loading.dart';
 import 'package:bike_life/widgets/charts/pie_chart.dart';
 import 'package:bike_life/widgets/title.dart';
@@ -41,7 +42,7 @@ class StatisticsPage extends StatelessWidget {
         children: <Widget>[
           Card(
             child: Column(
-              children: [
+              children: <Widget>[
                 Text('Année des statistiques', style: thirdTextStyle),
                 Slider(
                     value: context.watch<Year>().value.toDouble(),
@@ -94,7 +95,7 @@ class _TotalChangesState extends State<TotalChanges> {
     if (response.success()) {
       return createComponentStats(response.body());
     } else {
-      throw Exception('Impossible de récupérer les données');
+      throw Exception(response.message());
     }
   }
 
@@ -109,7 +110,7 @@ class _TotalChangesState extends State<TotalChanges> {
       future: _totalChangeStats,
       builder: (context, snapshot) {
         if (snapshot.hasError) {
-          return Text('${snapshot.error}');
+          return AppError(message: '${snapshot.error}');
         } else if (snapshot.hasData) {
           return snapshot.data!.isEmpty
               ? AppTitle(
@@ -136,7 +137,7 @@ class NbComponentsChangeYear extends StatelessWidget {
     if (response.success()) {
       return createComponentStats(response.body());
     } else {
-      throw Exception('Impossible de récupérer les données');
+      throw Exception(response.message());
     }
   }
 
@@ -145,7 +146,7 @@ class NbComponentsChangeYear extends StatelessWidget {
       future: _loadNbChangeByYear(context.watch<Year>().value),
       builder: (context, snapshot) {
         if (snapshot.hasError) {
-          return Text('${snapshot.error}');
+          return AppError(message: '${snapshot.error}');
         } else if (snapshot.hasData) {
           final String s = snapshot.data!.length > 1 ? 's' : '';
           return snapshot.data!.isEmpty
@@ -173,7 +174,7 @@ class AverageKmBeforeChange extends StatelessWidget {
     if (response.success()) {
       return createComponentStats(response.body());
     } else {
-      throw Exception('Impossible de récupérer les données');
+      throw Exception(response.message());
     }
   }
 
@@ -182,7 +183,7 @@ class AverageKmBeforeChange extends StatelessWidget {
       future: _loadKmChangeByYear(context.watch<Year>().value),
       builder: (context, snapshot) {
         if (snapshot.hasError) {
-          return Text('${snapshot.error}');
+          return AppError(message: '${snapshot.error}');
         } else if (snapshot.hasData) {
           return snapshot.data!.isEmpty
               ? AppTitle(

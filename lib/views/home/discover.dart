@@ -41,7 +41,7 @@ class _DiscoverPageState extends State<DiscoverPage> {
 
   IntroductionScreen _buildIntroductionScreen() => IntroductionScreen(
       key: introKey,
-      pages: [
+      pages: <PageViewModel>[
         PageViewModel(
             title: 'Gestion de vos vélos',
             body: """
