@@ -39,18 +39,22 @@ class AppBarChart extends StatelessWidget {
               child: Text(text, style: fourthTextStyle),
             ),
             Expanded(
-                child: charts.BarChart(data,
-                    animate: true,
-                    vertical: vertical,
-                    primaryMeasureAxis: charts.NumericAxisSpec(
-                        renderSpec: charts.GridlineRendererSpec(
-                            lineStyle: charts.LineStyleSpec(
-                                color: chartColorByTheme(context)))),
-                    domainAxis: const charts.OrdinalAxisSpec(
-                        renderSpec: charts.NoneRenderSpec()),
-                    barRendererDecorator: charts.BarLabelDecorator(
-                        insideLabelStyleSpec: charts.TextStyleSpec(
-                            color: charts.MaterialPalette.white.lighter))))
+              child: charts.BarChart(
+                data,
+                animate: true,
+                vertical: vertical,
+                primaryMeasureAxis: const charts.NumericAxisSpec(
+                    renderSpec: charts.NoneRenderSpec()),
+                domainAxis: const charts.OrdinalAxisSpec(
+                    renderSpec: charts.NoneRenderSpec()),
+                barRendererDecorator: charts.BarLabelDecorator(
+                  insideLabelStyleSpec: charts.TextStyleSpec(
+                      color: charts.MaterialPalette.white.lighter),
+                  outsideLabelStyleSpec:
+                      charts.TextStyleSpec(color: chartColorByTheme(context)),
+                ),
+              ),
+            )
           ],
         ),
       ),

@@ -69,8 +69,9 @@ class StatisticsPage extends StatelessWidget {
                     : 1,
             children: const <Widget>[
               TotalChanges(),
+              AveragePercentChanges(),
               NbComponentsChangeYear(),
-              AverageKmBeforeChange()
+              AverageKmBeforeChange(),
             ],
           )
         ],
@@ -194,6 +195,41 @@ class AverageKmBeforeChange extends StatelessWidget {
                   series: snapshot.data!,
                   text:
                       'Km moyens avant remplacement (${context.watch<Year>().value})');
+        }
+        return const AppLoading();
+      });
+}
+
+class AveragePercentChanges extends StatelessWidget {
+  const AveragePercentChanges({Key? key}) : super(key: key);
+
+  Future<List<ComponentStat>> _loadAvgPercents() async {
+    final String memberId = await Storage.getMemberId();
+    final HttpResponse response =
+        await ComponentService().getAvgPercentsChanges(memberId);
+
+    if (response.success()) {
+      return createComponentStats(response.body());
+    } else {
+      throw Exception(response.message());
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) => FutureBuilder<List<ComponentStat>>(
+      future: _loadAvgPercents(),
+      builder: (context, snapshot) {
+        if (snapshot.hasError) {
+          return AppError(message: '${snapshot.error}');
+        } else if (snapshot.hasData) {
+          return snapshot.data!.isEmpty
+              ? AppTitle(
+                  text: 'Aucune statistique',
+                  paddingTop: 10,
+                  style: thirdTextStyle)
+              : AppBarChart(
+                  series: snapshot.data!,
+                  text: 'Utilisation des composants avant changement (%)');
         }
         return const AppLoading();
       });

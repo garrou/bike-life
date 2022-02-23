@@ -178,7 +178,7 @@ class _CarouselState extends State<Carousel> {
                 ],
               ),
               width: MediaQuery.of(context).size.width,
-              height: 300,
+              height: 500,
             ),
           ),
         ),
