@@ -177,7 +177,7 @@ class _UpdateBikeFormState extends State<UpdateBikeForm> {
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
-                Text('Electrique', style: secondTextStyle),
+                Text('Electrique', style: thirdTextStyle),
                 Switch(
                     activeColor: primaryColor,
                     value: _electric,

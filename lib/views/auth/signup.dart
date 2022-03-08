@@ -8,7 +8,6 @@ import 'package:bike_life/utils/validator.dart';
 import 'package:bike_life/views/member/member_home.dart';
 import 'package:bike_life/styles/styles.dart';
 import 'package:bike_life/widgets/buttons/button.dart';
-import 'package:bike_life/widgets/card.dart';
 import 'package:bike_life/widgets/link_page.dart';
 import 'package:bike_life/views/auth/signin.dart';
 import 'package:bike_life/utils/constants.dart';
@@ -48,19 +47,16 @@ class _SignupPageState extends State<SignupPage> {
         ),
       );
 
-  Center wideLayout() => Center(
-        child: SingleChildScrollView(
-          child: Column(
-            children: <Widget>[
-              AppTitle(text: "S'inscrire", paddingTop: 0, style: mainTextStyle),
-              AppCard(child: SignupForm(), elevation: secondSize),
-              AppLinkToPage(
-                  padding: firstSize,
-                  child: Text('Déjà membre ? Se connecter', style: linkStyle),
-                  destination: const SigninPage())
-            ],
+  Widget wideLayout() => ListView(
+        children: <Widget>[
+          AppTitle(text: "S'inscrire", paddingTop: 0, style: mainTextStyle),
+          SignupForm(),
+          AppLinkToPage(
+            padding: firstSize,
+            child: Text('Déjà membre ? Se connecter', style: linkStyle),
+            destination: const SigninPage(),
           ),
-        ),
+        ],
       );
 
   Padding narrowLayout(BuildContext context) {

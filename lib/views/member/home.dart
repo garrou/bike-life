@@ -22,6 +22,8 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_guards/flutter_guards.dart';
 
+double height = 400.0;
+
 class AllBikesPage extends StatefulWidget {
   const AllBikesPage({Key? key}) : super(key: key);
 
@@ -59,7 +61,8 @@ class _AllBikesPageState extends State<AllBikesPage> {
 
   Widget _narrowLayout(BuildContext context) => Padding(
         padding: EdgeInsets.symmetric(
-            horizontal: MediaQuery.of(context).size.width / 8),
+          horizontal: MediaQuery.of(context).size.width / 8,
+        ),
         child: _wideLayout(),
       );
 
@@ -125,7 +128,7 @@ class _CarouselState extends State<Carousel> {
                 onPageChanged: (index, _) {
                   setState(() => _current = index);
                 },
-                height: 400,
+                height: height,
                 enlargeCenterPage: true,
                 enableInfiniteScroll: false),
           ),
@@ -141,46 +144,59 @@ class _CarouselState extends State<Carousel> {
         ],
       );
 
-  Widget _bikeCard(Bike bike) => GestureDetector(
-        onTap: () => _onBikePage(bike),
-        child: AppClickRegion(
-          child: ClipRRect(
-            borderRadius: BorderRadius.circular(10),
-            child: Container(
-              padding: const EdgeInsets.symmetric(horizontal: 10),
-              color: primaryColor,
-              child: Column(
-                children: <Widget>[
-                  AppTopRightButton(
-                      icon: const Icon(Icons.info_outline,
-                          size: firstSize, color: Colors.white),
-                      padding: 0,
-                      onPressed: () => _updateBikePage(bike)),
-                  Padding(
-                      child: Text(bike.name,
-                          style: const TextStyle(
-                              color: Colors.white, fontSize: secondSize)),
-                      padding: const EdgeInsets.only(bottom: 10)),
-                  IntrinsicHeight(
-                      child: Row(
+  Widget _bikeCard(Bike bike) => ClipRRect(
+        borderRadius: BorderRadius.circular(10),
+        child: Container(
+          padding: const EdgeInsets.symmetric(horizontal: 10),
+          color: primaryColor,
+          child: Column(
+            children: <Widget>[
+              AppTopRightButton(
+                icon: const Icon(Icons.info_outline,
+                    size: firstSize, color: Colors.white),
+                padding: 0,
+                onPressed: () => _updateBikePage(bike),
+              ),
+              Text(
+                bike.name,
+                style: const TextStyle(
+                  color: Colors.white,
+                  fontSize: secondSize,
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 10),
+                child: IntrinsicHeight(
+                  child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
-                      Text('${bike.formatKm()} km',
-                          style: const TextStyle(
-                              color: Colors.white, fontSize: secondSize)),
-                      const VerticalDivider(
-                          thickness: 2, width: 2, color: Colors.white),
-                      Text(bike.formatDate(),
-                          style: const TextStyle(
-                              color: Colors.white, fontSize: secondSize))
+                      Text(
+                        '${bike.formatKm()} km',
+                        style: const TextStyle(
+                          color: Colors.white,
+                          fontSize: secondSize,
+                        ),
+                      ),
+                      Text(
+                        bike.formatDate(),
+                        style: const TextStyle(
+                          color: Colors.white,
+                          fontSize: secondSize,
+                        ),
+                      )
                     ],
-                  )),
-                ],
+                  ),
+                ),
               ),
-              width: MediaQuery.of(context).size.width,
-              height: 500,
-            ),
+              IconButton(
+                icon: const Icon(Icons.arrow_forward),
+                onPressed: () => _onBikePage(bike),
+                color: Colors.white,
+              ),
+            ],
           ),
+          width: MediaQuery.of(context).size.width,
+          height: height,
         ),
       );
 

@@ -48,20 +48,15 @@ class _SigninPageState extends State<SigninPage> {
         ),
       );
 
-  Center wideLayout() => Center(
-        child: SingleChildScrollView(
-          child: Column(
-            children: <Widget>[
-              AppTitle(
-                  text: 'Se connecter', paddingTop: 0, style: mainTextStyle),
-              AppCard(child: SigninForm(), elevation: secondSize),
-              AppLinkToPage(
-                  padding: firstSize,
-                  child: Text('Nouveau ? Créer un compte', style: linkStyle),
-                  destination: const SignupPage())
-            ],
-          ),
-        ),
+  Widget wideLayout() => ListView(
+        children: <Widget>[
+          AppTitle(text: 'Se connecter', paddingTop: 0, style: mainTextStyle),
+          SigninForm(),
+          AppLinkToPage(
+              padding: firstSize,
+              child: Text('Nouveau ? Créer un compte', style: linkStyle),
+              destination: const SignupPage())
+        ],
       );
 
   Padding narrowLayout(BuildContext context) => Padding(

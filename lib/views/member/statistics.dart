@@ -43,7 +43,8 @@ class StatisticsPage extends StatelessWidget {
           Card(
             child: Column(
               children: <Widget>[
-                Text('Année des statistiques', style: thirdTextStyle),
+                Text('Année des statistiques (${context.watch<Year>().value})',
+                    style: thirdTextStyle),
                 Slider(
                     value: context.watch<Year>().value.toDouble(),
                     thumbColor: primaryColor,

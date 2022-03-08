@@ -1,9 +1,9 @@
-import 'package:flutter/foundation.dart';
-
-String endpoint =
+String endpoint = 'http://bikelifeservices.alwaysdata.net';
+/*
     [TargetPlatform.android, TargetPlatform.iOS].contains(defaultTargetPlatform)
         ? "http://10.0.2.2:8100"
         : "http://localhost:8100";
+      */
 
 const String title = "Bike's life";
 const String logo =
@@ -14,6 +14,7 @@ const String envLogo =
     'https://assets3.lottiefiles.com/private_files/lf30_flhopjdx.json';
 const String pigLogo =
     'https://assets10.lottiefiles.com/packages/lf20_h9pkkcih.json';
+const String check = 'https://assets1.lottiefiles.com/temp/lf20_5tgmik.json';
 
 const double ratio = 200.0;
 
