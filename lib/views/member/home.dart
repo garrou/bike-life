@@ -12,7 +12,6 @@ import 'package:bike_life/views/auth/signin.dart';
 import 'package:bike_life/views/member/add_bike.dart';
 import 'package:bike_life/styles/styles.dart';
 import 'package:bike_life/views/member/bike_components.dart';
-import 'package:bike_life/widgets/buttons/top_right_button.dart';
 import 'package:bike_life/widgets/click_region.dart';
 import 'package:bike_life/views/member/bike_details.dart';
 import 'package:bike_life/widgets/component_card.dart';
@@ -22,7 +21,7 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_guards/flutter_guards.dart';
 
-double height = 400.0;
+double height = 450.0;
 
 class AllBikesPage extends StatefulWidget {
   const AllBikesPage({Key? key}) : super(key: key);
@@ -66,10 +65,12 @@ class _AllBikesPageState extends State<AllBikesPage> {
         child: _wideLayout(),
       );
 
-  Widget _wideLayout() => ListView(
-        padding: const EdgeInsets.fromLTRB(
-            thirdSize, firstSize, thirdSize, thirdSize),
-        children: const <Widget>[Carousel(), ComponentsAlerts()],
+  Widget _wideLayout() => Center(
+        child: SingleChildScrollView(
+          child: Column(
+            children: const <Widget>[Carousel(), ComponentsAlerts()],
+          ),
+        ),
       );
 
   void _onAddBikePage() =>
@@ -125,12 +126,13 @@ class _CarouselState extends State<Carousel> {
             items: cards,
             carouselController: _carouselController,
             options: CarouselOptions(
-                onPageChanged: (index, _) {
-                  setState(() => _current = index);
-                },
-                height: height,
-                enlargeCenterPage: true,
-                enableInfiniteScroll: false),
+              onPageChanged: (index, _) {
+                setState(() => _current = index);
+              },
+              height: height,
+              enlargeCenterPage: true,
+              enableInfiniteScroll: false,
+            ),
           ),
           SizedBox(
             height: 30,
@@ -147,16 +149,10 @@ class _CarouselState extends State<Carousel> {
   Widget _bikeCard(Bike bike) => ClipRRect(
         borderRadius: BorderRadius.circular(10),
         child: Container(
-          padding: const EdgeInsets.symmetric(horizontal: 10),
+          padding: const EdgeInsets.all(10.0),
           color: primaryColor,
           child: Column(
             children: <Widget>[
-              AppTopRightButton(
-                icon: const Icon(Icons.info_outline,
-                    size: firstSize, color: Colors.white),
-                padding: 0,
-                onPressed: () => _updateBikePage(bike),
-              ),
               Text(
                 bike.name,
                 style: const TextStyle(
@@ -164,34 +160,55 @@ class _CarouselState extends State<Carousel> {
                   fontSize: secondSize,
                 ),
               ),
+              const Divider(color: Colors.white, thickness: 2.0),
               Padding(
-                padding: const EdgeInsets.symmetric(vertical: 10),
-                child: IntrinsicHeight(
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: <Widget>[
-                      Text(
-                        '${bike.formatKm()} km',
-                        style: const TextStyle(
-                          color: Colors.white,
-                          fontSize: secondSize,
-                        ),
-                      ),
-                      Text(
-                        bike.formatDate(),
-                        style: const TextStyle(
-                          color: Colors.white,
-                          fontSize: secondSize,
-                        ),
-                      )
-                    ],
+                padding: const EdgeInsets.only(top: 10),
+                child: Text(
+                  bike.formatDate(),
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontSize: secondSize,
                   ),
                 ),
               ),
-              IconButton(
-                icon: const Icon(Icons.arrow_forward),
-                onPressed: () => _onBikePage(bike),
-                color: Colors.white,
+              Padding(
+                padding: const EdgeInsets.only(top: 10),
+                child: Text(
+                  '${bike.formatKm()} km',
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontSize: secondSize,
+                  ),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(top: 10),
+                child: Image.asset(
+                  'assets/bike.jpg',
+                  height: 200,
+                  width: MediaQuery.of(context).size.width,
+                ),
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: <Widget>[
+                  IconButton(
+                    icon: const Icon(
+                      Icons.info_outline,
+                      size: 30,
+                    ),
+                    onPressed: () => _updateBikePage(bike),
+                    color: Colors.white,
+                  ),
+                  IconButton(
+                    icon: const Icon(
+                      Icons.directions_bike,
+                      size: 30,
+                    ),
+                    onPressed: () => _onBikePage(bike),
+                    color: Colors.white,
+                  ),
+                ],
               ),
             ],
           ),

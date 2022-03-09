@@ -41,6 +41,7 @@ class StatisticsPage extends StatelessWidget {
         shrinkWrap: true,
         children: <Widget>[
           Card(
+            margin: const EdgeInsets.only(top: 20),
             child: Column(
               children: <Widget>[
                 Text('Année des statistiques (${context.watch<Year>().value})',
