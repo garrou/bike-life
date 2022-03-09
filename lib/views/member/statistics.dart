@@ -6,6 +6,7 @@ import 'package:bike_life/styles/styles.dart';
 import 'package:bike_life/utils/constants.dart';
 import 'package:bike_life/utils/storage.dart';
 import 'package:bike_life/widgets/charts/bar_chart.dart';
+import 'package:bike_life/widgets/error.dart';
 import 'package:bike_life/widgets/loading.dart';
 import 'package:bike_life/widgets/charts/pie_chart.dart';
 import 'package:bike_life/widgets/title.dart';
@@ -40,9 +41,11 @@ class StatisticsPage extends StatelessWidget {
         shrinkWrap: true,
         children: <Widget>[
           Card(
+            margin: const EdgeInsets.only(top: 20),
             child: Column(
-              children: [
-                Text('Année des statistiques', style: thirdTextStyle),
+              children: <Widget>[
+                Text('Année des statistiques (${context.watch<Year>().value})',
+                    style: thirdTextStyle),
                 Slider(
                     value: context.watch<Year>().value.toDouble(),
                     thumbColor: primaryColor,
@@ -68,8 +71,9 @@ class StatisticsPage extends StatelessWidget {
                     : 1,
             children: const <Widget>[
               TotalChanges(),
+              AveragePercentChanges(),
               NbComponentsChangeYear(),
-              AverageKmBeforeChange()
+              AverageKmBeforeChange(),
             ],
           )
         ],
@@ -94,7 +98,7 @@ class _TotalChangesState extends State<TotalChanges> {
     if (response.success()) {
       return createComponentStats(response.body());
     } else {
-      throw Exception('Impossible de récupérer les données');
+      throw Exception(response.message());
     }
   }
 
@@ -109,7 +113,7 @@ class _TotalChangesState extends State<TotalChanges> {
       future: _totalChangeStats,
       builder: (context, snapshot) {
         if (snapshot.hasError) {
-          return Text('${snapshot.error}');
+          return AppError(message: '${snapshot.error}');
         } else if (snapshot.hasData) {
           return snapshot.data!.isEmpty
               ? AppTitle(
@@ -136,7 +140,7 @@ class NbComponentsChangeYear extends StatelessWidget {
     if (response.success()) {
       return createComponentStats(response.body());
     } else {
-      throw Exception('Impossible de récupérer les données');
+      throw Exception(response.message());
     }
   }
 
@@ -145,7 +149,7 @@ class NbComponentsChangeYear extends StatelessWidget {
       future: _loadNbChangeByYear(context.watch<Year>().value),
       builder: (context, snapshot) {
         if (snapshot.hasError) {
-          return Text('${snapshot.error}');
+          return AppError(message: '${snapshot.error}');
         } else if (snapshot.hasData) {
           final String s = snapshot.data!.length > 1 ? 's' : '';
           return snapshot.data!.isEmpty
@@ -173,7 +177,7 @@ class AverageKmBeforeChange extends StatelessWidget {
     if (response.success()) {
       return createComponentStats(response.body());
     } else {
-      throw Exception('Impossible de récupérer les données');
+      throw Exception(response.message());
     }
   }
 
@@ -182,7 +186,7 @@ class AverageKmBeforeChange extends StatelessWidget {
       future: _loadKmChangeByYear(context.watch<Year>().value),
       builder: (context, snapshot) {
         if (snapshot.hasError) {
-          return Text('${snapshot.error}');
+          return AppError(message: '${snapshot.error}');
         } else if (snapshot.hasData) {
           return snapshot.data!.isEmpty
               ? AppTitle(
@@ -193,6 +197,41 @@ class AverageKmBeforeChange extends StatelessWidget {
                   series: snapshot.data!,
                   text:
                       'Km moyens avant remplacement (${context.watch<Year>().value})');
+        }
+        return const AppLoading();
+      });
+}
+
+class AveragePercentChanges extends StatelessWidget {
+  const AveragePercentChanges({Key? key}) : super(key: key);
+
+  Future<List<ComponentStat>> _loadAvgPercents() async {
+    final String memberId = await Storage.getMemberId();
+    final HttpResponse response =
+        await ComponentService().getAvgPercentsChanges(memberId);
+
+    if (response.success()) {
+      return createComponentStats(response.body());
+    } else {
+      throw Exception(response.message());
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) => FutureBuilder<List<ComponentStat>>(
+      future: _loadAvgPercents(),
+      builder: (context, snapshot) {
+        if (snapshot.hasError) {
+          return AppError(message: '${snapshot.error}');
+        } else if (snapshot.hasData) {
+          return snapshot.data!.isEmpty
+              ? AppTitle(
+                  text: 'Aucune statistique',
+                  paddingTop: 10,
+                  style: thirdTextStyle)
+              : AppBarChart(
+                  series: snapshot.data!,
+                  text: 'Utilisation des composants avant changement (%)');
         }
         return const AppLoading();
       });

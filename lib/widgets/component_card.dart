@@ -23,7 +23,7 @@ class AppComponentCard extends StatelessWidget {
                   Padding(
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
+                      children: <Widget>[
                         Text(component.type, style: setStyle(context, 18)),
                         Text(
                           component.formatDate(),
@@ -41,7 +41,7 @@ class AppComponentCard extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: <Widget>[
                         Column(
-                          children: [
+                          children: <Widget>[
                             Text(component.formatKm(),
                                 style: setStyle(context, 15)),
                             Text('Parcourus', style: setStyle(context, 13))
@@ -49,7 +49,7 @@ class AppComponentCard extends StatelessWidget {
                         ),
                         const VerticalDivider(thickness: 2, width: 2),
                         Column(
-                          children: [
+                          children: <Widget>[
                             Text('${component.duration}',
                                 style: setStyle(context, 15)),
                             Text('Kilomètres max', style: setStyle(context, 13))

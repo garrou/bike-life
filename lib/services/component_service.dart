@@ -54,7 +54,13 @@ class ComponentService {
 
   Future<HttpResponse> getTotalChanges(String memberId) async {
     final Response response = await client
-        .get(Uri.parse('$endpoint/members/$memberId/components/changes'));
+        .get(Uri.parse('$endpoint/members/$memberId/components/nb-changes'));
+    return HttpResponse(response);
+  }
+
+  Future<HttpResponse> getAvgPercentsChanges(String memberId) async {
+    final Response response = await client
+        .get(Uri.parse('$endpoint/members/$memberId/components/percents'));
     return HttpResponse(response);
   }
 }

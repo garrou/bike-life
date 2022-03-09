@@ -6,6 +6,7 @@ import 'package:bike_life/styles/animations.dart';
 import 'package:bike_life/styles/styles.dart';
 import 'package:bike_life/utils/constants.dart';
 import 'package:bike_life/views/member/change_component.dart';
+import 'package:bike_life/widgets/error.dart';
 import 'package:bike_life/widgets/loading.dart';
 import 'package:bike_life/widgets/buttons/top_left_button.dart';
 import 'package:flutter/material.dart';
@@ -29,7 +30,7 @@ class _ComponentHistoricPageState extends State<ComponentHistoricPage> {
     if (response.success()) {
       return createChanges(response.body());
     } else {
-      throw Exception('Erreur durant la récupération des données');
+      throw Exception(response.message());
     }
   }
 
@@ -75,7 +76,7 @@ class _ComponentHistoricPageState extends State<ComponentHistoricPage> {
       future: _historic,
       builder: (context, snapshot) {
         if (snapshot.hasError) {
-          return Text('${snapshot.error}');
+          return AppError(message: '${snapshot.error}');
         } else if (snapshot.hasData) {
           return ListView.builder(
               itemCount: snapshot.data!.length,

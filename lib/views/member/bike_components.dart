@@ -4,6 +4,7 @@ import 'package:bike_life/models/http_response.dart';
 import 'package:bike_life/services/component_service.dart';
 import 'package:bike_life/utils/constants.dart';
 import 'package:bike_life/widgets/component_card.dart';
+import 'package:bike_life/widgets/error.dart';
 import 'package:bike_life/widgets/loading.dart';
 import 'package:bike_life/widgets/buttons/top_left_button.dart';
 import 'package:flutter/material.dart';
@@ -32,7 +33,7 @@ class _BikeComponentsPageState extends State<BikeComponentsPage> {
     if (response.success()) {
       return createComponents(response.body());
     } else {
-      throw Exception('Impossible de récupérer les données');
+      throw Exception(response.message());
     }
   }
 
@@ -52,7 +53,7 @@ class _BikeComponentsPageState extends State<BikeComponentsPage> {
           horizontal: MediaQuery.of(context).size.width / 8),
       child: _wideLayout());
 
-  Widget _wideLayout() => ListView(children: [
+  Widget _wideLayout() => ListView(children: <Widget>[
         AppTopLeftButton(title: 'Composants', callback: _back),
         _buildList()
       ]);
@@ -61,7 +62,7 @@ class _BikeComponentsPageState extends State<BikeComponentsPage> {
       future: _components,
       builder: (context, snapshot) {
         if (snapshot.hasError) {
-          return Text('${snapshot.error}');
+          return AppError(message: '${snapshot.error}');
         } else if (snapshot.hasData) {
           return ListView.builder(
               physics: const ScrollPhysics(),

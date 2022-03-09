@@ -12,14 +12,16 @@ import 'package:bike_life/views/auth/signin.dart';
 import 'package:bike_life/views/member/add_bike.dart';
 import 'package:bike_life/styles/styles.dart';
 import 'package:bike_life/views/member/bike_components.dart';
-import 'package:bike_life/widgets/buttons/top_right_button.dart';
 import 'package:bike_life/widgets/click_region.dart';
 import 'package:bike_life/views/member/bike_details.dart';
 import 'package:bike_life/widgets/component_card.dart';
+import 'package:bike_life/widgets/error.dart';
 import 'package:bike_life/widgets/loading.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_guards/flutter_guards.dart';
+
+double height = 450.0;
 
 class AllBikesPage extends StatefulWidget {
   const AllBikesPage({Key? key}) : super(key: key);
@@ -58,14 +60,17 @@ class _AllBikesPageState extends State<AllBikesPage> {
 
   Widget _narrowLayout(BuildContext context) => Padding(
         padding: EdgeInsets.symmetric(
-            horizontal: MediaQuery.of(context).size.width / 8),
+          horizontal: MediaQuery.of(context).size.width / 8,
+        ),
         child: _wideLayout(),
       );
 
-  Widget _wideLayout() => ListView(
-        padding: const EdgeInsets.fromLTRB(
-            thirdSize, firstSize, thirdSize, thirdSize),
-        children: const <Widget>[Carousel(), ComponentsAlerts()],
+  Widget _wideLayout() => Center(
+        child: SingleChildScrollView(
+          child: Column(
+            children: const <Widget>[Carousel(), ComponentsAlerts()],
+          ),
+        ),
       );
 
   void _onAddBikePage() =>
@@ -97,7 +102,7 @@ class _CarouselState extends State<Carousel> {
     if (response.success()) {
       return createBikes(response.body());
     } else {
-      throw Exception('Impossible de récupérer les données');
+      throw Exception(response.message());
     }
   }
 
@@ -106,7 +111,7 @@ class _CarouselState extends State<Carousel> {
       future: _bikes,
       builder: (context, snapshot) {
         if (snapshot.hasError) {
-          return Text('${snapshot.error}');
+          return AppError(message: '${snapshot.error}');
         } else if (snapshot.hasData) {
           List<Widget> cards =
               snapshot.data!.map((bike) => _bikeCard(bike)).toList();
@@ -116,17 +121,18 @@ class _CarouselState extends State<Carousel> {
       });
 
   Widget _buildCarousel(List<Widget> cards) => Column(
-        children: [
+        children: <Widget>[
           CarouselSlider(
             items: cards,
             carouselController: _carouselController,
             options: CarouselOptions(
-                onPageChanged: (index, _) {
-                  setState(() => _current = index);
-                },
-                height: 400,
-                enlargeCenterPage: true,
-                enableInfiniteScroll: false),
+              onPageChanged: (index, _) {
+                setState(() => _current = index);
+              },
+              height: height,
+              enlargeCenterPage: true,
+              enableInfiniteScroll: false,
+            ),
           ),
           SizedBox(
             height: 30,
@@ -140,46 +146,74 @@ class _CarouselState extends State<Carousel> {
         ],
       );
 
-  Widget _bikeCard(Bike bike) => GestureDetector(
-        onTap: () => _onBikePage(bike),
-        child: AppClickRegion(
-          child: ClipRRect(
-            borderRadius: BorderRadius.circular(10),
-            child: Container(
-              padding: const EdgeInsets.symmetric(horizontal: 10),
-              color: primaryColor,
-              child: Column(
+  Widget _bikeCard(Bike bike) => ClipRRect(
+        borderRadius: BorderRadius.circular(10),
+        child: Container(
+          padding: const EdgeInsets.all(10.0),
+          color: primaryColor,
+          child: Column(
+            children: <Widget>[
+              Text(
+                bike.name,
+                style: const TextStyle(
+                  color: Colors.white,
+                  fontSize: secondSize,
+                ),
+              ),
+              const Divider(color: Colors.white, thickness: 2.0),
+              Padding(
+                padding: const EdgeInsets.only(top: 10),
+                child: Text(
+                  bike.formatDate(),
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontSize: secondSize,
+                  ),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(top: 10),
+                child: Text(
+                  '${bike.formatKm()} km',
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontSize: secondSize,
+                  ),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(top: 10),
+                child: Image.asset(
+                  'assets/bike.jpg',
+                  height: 200,
+                  width: MediaQuery.of(context).size.width,
+                ),
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: <Widget>[
-                  AppTopRightButton(
-                      icon: const Icon(Icons.info_outline,
-                          size: firstSize, color: Colors.white),
-                      padding: 0,
-                      onPressed: () => _updateBikePage(bike)),
-                  Padding(
-                      child: Text(bike.name,
-                          style: const TextStyle(
-                              color: Colors.white, fontSize: secondSize)),
-                      padding: const EdgeInsets.only(bottom: 10)),
-                  IntrinsicHeight(
-                      child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text('${bike.formatKm()} km',
-                          style: const TextStyle(
-                              color: Colors.white, fontSize: secondSize)),
-                      const VerticalDivider(
-                          thickness: 2, width: 2, color: Colors.white),
-                      Text(bike.formatDate(),
-                          style: const TextStyle(
-                              color: Colors.white, fontSize: secondSize))
-                    ],
-                  )),
+                  IconButton(
+                    icon: const Icon(
+                      Icons.info_outline,
+                      size: 30,
+                    ),
+                    onPressed: () => _updateBikePage(bike),
+                    color: Colors.white,
+                  ),
+                  IconButton(
+                    icon: const Icon(
+                      Icons.directions_bike,
+                      size: 30,
+                    ),
+                    onPressed: () => _onBikePage(bike),
+                    color: Colors.white,
+                  ),
                 ],
               ),
-              width: MediaQuery.of(context).size.width,
-              height: 300,
-            ),
+            ],
           ),
+          width: MediaQuery.of(context).size.width,
+          height: height,
         ),
       );
 
@@ -230,7 +264,7 @@ class _ComponentsAlertsState extends State<ComponentsAlerts> {
     if (response.success()) {
       return createComponents(response.body());
     } else {
-      throw Exception('Impossible de récupérer les données');
+      throw Exception(response.message());
     }
   }
 
@@ -245,7 +279,7 @@ class _ComponentsAlertsState extends State<ComponentsAlerts> {
       future: _components,
       builder: (context, snapshot) {
         if (snapshot.hasError) {
-          return Text('${snapshot.error}');
+          return AppError(message: '${snapshot.error}');
         } else if (snapshot.hasData) {
           final int nb = snapshot.data!.length;
           final String s = nb > 1 ? 's' : '';

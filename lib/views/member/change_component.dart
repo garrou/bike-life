@@ -39,7 +39,7 @@ class _ChangeComponentPageState extends State<ChangeComponentPage> {
       child: _wideLayout());
 
   Widget _wideLayout() => ListView(
-        children: [
+        children: <Widget>[
           AppTopLeftButton(title: 'Changement de composant', callback: _back),
           Padding(
             child: AppCalendar(
