@@ -1,9 +1,9 @@
-String endpoint = 'http://bikelifeservices.alwaysdata.net';
-/*
+import 'package:flutter/foundation.dart';
+
+String endpoint =
     [TargetPlatform.android, TargetPlatform.iOS].contains(defaultTargetPlatform)
         ? "http://10.0.2.2:8100"
         : "http://localhost:8100";
-      */
 
 const String title = "Bike's life";
 const String logo =

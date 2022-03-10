@@ -32,7 +32,7 @@ TextStyle mainTextStyle = GoogleFonts.abel(fontSize: firstSize);
 TextStyle secondTextStyle = GoogleFonts.abel(fontSize: secondSize);
 TextStyle thirdTextStyle = GoogleFonts.abel(fontSize: intermediateSize);
 TextStyle fourthTextStyle = GoogleFonts.abel(fontSize: 14.0);
-TextStyle boldSubTitleStyle =
+TextStyle boldTextStyle =
     GoogleFonts.abel(fontSize: secondSize, fontWeight: FontWeight.bold);
 TextStyle italicTextStyle =
     GoogleFonts.abel(fontSize: 20.0, fontStyle: FontStyle.italic);

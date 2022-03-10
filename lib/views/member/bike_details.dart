@@ -119,7 +119,6 @@ class _UpdateBikeFormState extends State<UpdateBikeForm> {
 
   final List<String> _types = ['VTT', 'Ville', 'Route'];
 
-  late bool _electric;
   late bool _automatic;
   late String? _type;
 
@@ -127,7 +126,6 @@ class _UpdateBikeFormState extends State<UpdateBikeForm> {
   void initState() {
     super.initState();
     _type = widget.bike.type;
-    _electric = widget.bike.electric;
     _kmWeek.text = '${widget.bike.kmPerWeek}';
     _name.text = widget.bike.name;
     _automatic = widget.bike.automaticKm;
@@ -175,15 +173,13 @@ class _UpdateBikeFormState extends State<UpdateBikeForm> {
                   }),
             ]),
             Row(
-              mainAxisAlignment: MainAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: <Widget>[
                 Text('Electrique', style: thirdTextStyle),
-                Switch(
-                    activeColor: primaryColor,
-                    value: _electric,
-                    onChanged: (bool value) {
-                      setState(() => _electric = value);
-                    }),
+                Icon(
+                  widget.bike.electric ? Icons.toggle_on : Icons.toggle_off,
+                  size: 40,
+                )
               ],
             ),
             _buildBikesTypes(),
@@ -229,7 +225,7 @@ class _UpdateBikeFormState extends State<UpdateBikeForm> {
         widget.bike.id,
         _name.text,
         double.parse(_kmWeek.text),
-        _electric,
+        widget.bike.electric,
         _type!,
         widget.bike.addedAt,
         widget.bike.automaticKm

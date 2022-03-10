@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:bike_life/models/bike.dart';
-import 'package:bike_life/models/component.dart';
 import 'package:bike_life/models/http_response.dart';
 import 'package:bike_life/services/component_service.dart';
 import 'package:bike_life/styles/animations.dart';
@@ -14,7 +13,6 @@ import 'package:bike_life/styles/styles.dart';
 import 'package:bike_life/views/member/bike_components.dart';
 import 'package:bike_life/widgets/click_region.dart';
 import 'package:bike_life/views/member/bike_details.dart';
-import 'package:bike_life/widgets/component_card.dart';
 import 'package:bike_life/widgets/error.dart';
 import 'package:bike_life/widgets/loading.dart';
 import 'package:carousel_slider/carousel_slider.dart';
@@ -153,12 +151,25 @@ class _CarouselState extends State<Carousel> {
           color: primaryColor,
           child: Column(
             children: <Widget>[
-              Text(
-                bike.name,
-                style: const TextStyle(
-                  color: Colors.white,
-                  fontSize: secondSize,
-                ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  Padding(
+                    child: Text(
+                      bike.name,
+                      style: const TextStyle(
+                        color: Colors.white,
+                        fontSize: secondSize,
+                      ),
+                    ),
+                    padding: const EdgeInsets.only(right: 10),
+                  ),
+                  if (bike.electric)
+                    const Icon(
+                      Icons.electric_bike,
+                      color: Colors.white,
+                    ),
+                ],
               ),
               const Divider(color: Colors.white, thickness: 2.0),
               Padding(
@@ -185,7 +196,7 @@ class _CarouselState extends State<Carousel> {
                 padding: const EdgeInsets.only(top: 10),
                 child: Image.asset(
                   'assets/bike.jpg',
-                  height: 200,
+                  height: 180,
                   width: MediaQuery.of(context).size.width,
                 ),
               ),
@@ -202,7 +213,7 @@ class _CarouselState extends State<Carousel> {
                   ),
                   IconButton(
                     icon: const Icon(
-                      Icons.directions_bike,
+                      Icons.settings,
                       size: 30,
                     ),
                     onPressed: () => _onBikePage(bike),
@@ -254,15 +265,15 @@ class ComponentsAlerts extends StatefulWidget {
 }
 
 class _ComponentsAlertsState extends State<ComponentsAlerts> {
-  late Future<List<Component>> _components;
+  late Future<int> _totalAlerts;
 
-  Future<List<Component>> _loadComponentsAlerts() async {
+  Future<int> _loadNbAlerts() async {
     final String memberId = await Storage.getMemberId();
     final HttpResponse response =
         await ComponentService().getComponentsAlerts(memberId);
 
     if (response.success()) {
-      return createComponents(response.body());
+      return response.body()['total'];
     } else {
       throw Exception(response.message());
     }
@@ -271,30 +282,22 @@ class _ComponentsAlertsState extends State<ComponentsAlerts> {
   @override
   void initState() {
     super.initState();
-    _components = _loadComponentsAlerts();
+    _totalAlerts = _loadNbAlerts();
   }
 
   @override
-  Widget build(BuildContext context) => FutureBuilder<List<Component>>(
-      future: _components,
+  Widget build(BuildContext context) => FutureBuilder<int>(
+      future: _totalAlerts,
       builder: (context, snapshot) {
         if (snapshot.hasError) {
           return AppError(message: '${snapshot.error}');
         } else if (snapshot.hasData) {
-          final int nb = snapshot.data!.length;
+          final int nb = snapshot.data!;
           final String s = nb > 1 ? 's' : '';
 
-          return Column(
-            children: <Widget>[
-              Text(nb > 0 ? '$nb composant$s à changer' : '',
-                  style: thirdTextStyle),
-              ListView.builder(
-                  physics: const ScrollPhysics(),
-                  itemCount: snapshot.data!.length,
-                  shrinkWrap: true,
-                  itemBuilder: (_, index) =>
-                      AppComponentCard(component: snapshot.data![index]))
-            ],
+          return Text(
+            nb > 0 ? '$nb composant$s à changer' : '',
+            style: boldTextStyle,
           );
         }
         return const AppLoading();

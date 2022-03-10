@@ -27,7 +27,7 @@ class TipDetailsPage extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: thirdSize),
         children: <Widget>[
           AppTopLeftButton(title: 'Conseils', callback: () => _back(context)),
-          buildText(tip.title, boldSubTitleStyle, TextAlign.center),
+          buildText(tip.title, boldTextStyle, TextAlign.center),
           buildText(tip.content, thirdTextStyle, TextAlign.center),
         ],
       );
