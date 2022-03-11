@@ -94,11 +94,11 @@ class _SignupPageState extends State<SignupPage> {
                             'Mot de passe, $minPasswordSize caractères minimum',
                         focusNode: _confirmPasswordFocus,
                         textfieldController: _confirmPassword,
+                        // ignore: body_might_complete_normally_nullable
                         validator: (value) {
                           if (_password.text != value || value!.isEmpty) {
                             return 'Mot de passe incorrect';
                           }
-                          return '';
                         },
                         obscureText: true,
                         icon: Icons.password),

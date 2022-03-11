@@ -59,6 +59,7 @@ class _ChangeComponentPageState extends State<ChangeComponentPage> {
             AppTextField(
                 focusNode: _kmFocus,
                 textfieldController: _km,
+                // ignore: body_might_complete_normally_nullable
                 validator: (String? value) {
                   if (value == null ||
                       value.isEmpty ||
@@ -67,7 +68,6 @@ class _ChangeComponentPageState extends State<ChangeComponentPage> {
                       double.parse(value) > widget.component.totalKm) {
                     return 'Saisie invalide';
                   }
-                  return '';
                 },
                 hintText: 'Km parcourus avant le changement',
                 label: 'Km parcourus avant le changement',
