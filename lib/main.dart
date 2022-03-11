@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 // TODO: Fix bug date when update components
-// TODO: Ask if already change compo
 // TODO: store km change
 
 void main() {

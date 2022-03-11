@@ -64,11 +64,11 @@ class _UpdatePasswordState extends State<UpdatePassword> {
                   hintText: 'Confirmer le mot de passe',
                   focusNode: _confirmPassFocus,
                   textfieldController: _confirmPass,
-                  // ignore: body_might_complete_normally_nullable
                   validator: (value) {
                     if (_password.text != value || value!.isEmpty) {
                       return 'Mot de passe incorrect';
                     }
+                    return '';
                   },
                   obscureText: true,
                   icon: Icons.password),

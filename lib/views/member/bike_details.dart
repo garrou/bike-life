@@ -238,7 +238,9 @@ class _UpdateBikeFormState extends State<UpdateBikeForm> {
     if (response.success()) {
       Navigator.pushAndRemoveUntil(
           context,
-          animationRightLeft(const MemberHomePage(initialPage: 0)),
+          MaterialPageRoute(
+              builder: (BuildContext context) =>
+                  const MemberHomePage(initialPage: 0)),
           (Route<dynamic> route) => false);
     }
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(

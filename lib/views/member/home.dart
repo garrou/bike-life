@@ -195,7 +195,7 @@ class _CarouselState extends State<Carousel> {
                 children: <Widget>[
                   IconButton(
                     icon: const Icon(
-                      Icons.info_outline,
+                      Icons.settings,
                       size: 30,
                     ),
                     onPressed: () => _updateBikePage(bike),
@@ -203,7 +203,7 @@ class _CarouselState extends State<Carousel> {
                   ),
                   IconButton(
                     icon: const Icon(
-                      Icons.settings,
+                      Icons.info_outline,
                       size: 30,
                     ),
                     onPressed: () => _onBikePage(bike),
