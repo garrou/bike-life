@@ -8,11 +8,12 @@ class Bike {
   final double kmPerWeek;
   final bool electric;
   final String type;
+  final DateTime buyAt;
   final DateTime addedAt;
   final double totalKm;
   final bool automaticKm;
 
-  Bike(this.id, this.name, this.kmPerWeek, this.electric, this.type,
+  Bike(this.id, this.name, this.kmPerWeek, this.electric, this.type, this.buyAt,
       this.addedAt, this.totalKm, this.automaticKm);
 
   Bike.fromJson(Map<String, dynamic> json)
@@ -21,6 +22,7 @@ class Bike {
         kmPerWeek = json['kmPerWeek'].toDouble(),
         electric = json['electric'],
         type = json['type'],
+        buyAt = DateTime.parse(json['buyAt']),
         addedAt = DateTime.parse(json['addedAt']),
         totalKm = json['totalKm'].toDouble(),
         automaticKm = json['automaticKm'];
@@ -31,12 +33,15 @@ class Bike {
         'kmPerWeek': kmPerWeek,
         'electric': electric,
         'type': type,
+        'buyAt': buyAt.toString(),
         'addedAt': addedAt.toString(),
         'totalKm': totalKm,
         'automaticKm': automaticKm
       };
 
-  String formatDate() => format.format(addedAt);
+  String formatBuyDate() => format.format(buyAt);
+
+  String formatAddedDate() => format.format(addedAt);
 
   String formatKm() => totalKm.toStringAsFixed(2);
 }

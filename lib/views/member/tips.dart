@@ -58,7 +58,7 @@ class _TipsPageState extends State<TipsPage> {
               thirdSize, firstSize, thirdSize, thirdSize),
           children: <Widget>[
             Row(mainAxisAlignment: MainAxisAlignment.center, children: <Widget>[
-              Text('Conseils', style: thirdTextStyle),
+              Text('Conseils', style: secondTextStyle),
             ]),
             FutureBuilder<List<Tip>>(
                 future: _tips,

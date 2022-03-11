@@ -6,8 +6,8 @@ import 'package:bike_life/views/auth/signin.dart';
 import 'package:bike_life/styles/styles.dart';
 import 'package:bike_life/views/member/update_email.dart';
 import 'package:bike_life/views/member/update_password.dart';
-import 'package:bike_life/widgets/buttons/top_right_button.dart';
-import 'package:bike_life/widgets/link_page.dart';
+import 'package:bike_life/widgets/buttons/button.dart';
+import 'package:bike_life/widgets/click_card.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -32,41 +32,45 @@ class ProfilePage extends StatelessWidget {
 
   Widget _wideLayout() =>
       Consumer<ThemeModel>(builder: (context, ThemeModel themeNotifier, child) {
-        return Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: <Widget>[
-            AppTopRightButton(
-                onPressed: () => _onDisconnect(context),
-                icon: const Icon(
-                  Icons.logout,
-                ),
+        return Padding(
+          padding: const EdgeInsets.only(top: 20),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: <Widget>[
+              Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Text('Thème', style: secondTextStyle),
+                    IconButton(
+                      onPressed: () {
+                        themeNotifier.isDark
+                            ? themeNotifier.isDark = false
+                            : themeNotifier.isDark = true;
+                      },
+                      icon: Icon(themeNotifier.isDark
+                          ? Icons.nightlight_round_outlined
+                          : Icons.wb_sunny),
+                      iconSize: 30,
+                    )
+                  ]),
+              const AppClickCard(
+                icon: Icon(Icons.alternate_email),
+                text: 'Changer votre email',
+                destination: UpdateEmail(),
+              ),
+              const AppClickCard(
+                icon: Icon(Icons.password),
+                text: 'Changer votre mot de passe',
+                destination: UpdatePassword(),
+              ),
+              AppButton(
+                text: 'Déconnexion',
                 color: red,
-                padding: secondSize),
-            Row(mainAxisAlignment: MainAxisAlignment.center, children: <Widget>[
-              Text('Thème', style: mainTextStyle),
-              IconButton(
-                onPressed: () {
-                  themeNotifier.isDark
-                      ? themeNotifier.isDark = false
-                      : themeNotifier.isDark = true;
-                },
-                icon: Icon(themeNotifier.isDark
-                    ? Icons.nightlight_round_outlined
-                    : Icons.wb_sunny),
-                iconSize: 30,
+                callback: () => _onDisconnect(context),
+                icon: const Icon(Icons.logout),
               )
-            ]),
-            AppLinkToPage(
-              padding: 5,
-              child: Text("Changer votre email", style: linkStyle),
-              destination: const UpdateEmail(),
-            ),
-            AppLinkToPage(
-              padding: 5,
-              child: Text("Changer votre mot de passe", style: linkStyle),
-              destination: const UpdatePassword(),
-            ),
-          ],
+            ],
+          ),
         );
       });
 

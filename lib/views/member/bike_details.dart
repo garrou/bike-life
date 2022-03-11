@@ -12,7 +12,6 @@ import 'package:bike_life/widgets/buttons/top_left_button.dart';
 import 'package:bike_life/widgets/buttons/top_right_button.dart';
 import 'package:bike_life/widgets/textfield.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 
 class BikeDetails extends StatelessWidget {
   final Bike bike;
@@ -105,7 +104,6 @@ class UpdateBikeForm extends StatefulWidget {
 }
 
 class _UpdateBikeFormState extends State<UpdateBikeForm> {
-  static DateFormat format = DateFormat('dd/MM/yyyy');
   final _keyForm = GlobalKey<FormState>();
 
   final _nameFocus = FocusNode();
@@ -183,7 +181,9 @@ class _UpdateBikeFormState extends State<UpdateBikeForm> {
               ],
             ),
             _buildBikesTypes(),
-            Text('Ajouté le : ${format.format(widget.bike.addedAt)}',
+            Text('Acheté le : ${widget.bike.formatBuyDate()}',
+                style: thirdTextStyle),
+            Text('Ajouté le : ${widget.bike.formatAddedDate()}',
                 style: thirdTextStyle),
             AppButton(
                 text: 'Modifier',
@@ -227,6 +227,7 @@ class _UpdateBikeFormState extends State<UpdateBikeForm> {
         double.parse(_kmWeek.text),
         widget.bike.electric,
         _type!,
+        widget.bike.buyAt,
         widget.bike.addedAt,
         widget.bike.automaticKm
             ? widget.bike.totalKm

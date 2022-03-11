@@ -175,16 +175,6 @@ class _CarouselState extends State<Carousel> {
               Padding(
                 padding: const EdgeInsets.only(top: 10),
                 child: Text(
-                  bike.formatDate(),
-                  style: const TextStyle(
-                    color: Colors.white,
-                    fontSize: secondSize,
-                  ),
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(top: 10),
-                child: Text(
                   '${bike.formatKm()} km',
                   style: const TextStyle(
                     color: Colors.white,

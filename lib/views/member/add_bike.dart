@@ -125,7 +125,7 @@ class _AddBikeFormState extends State<AddBikeForm> {
                 minDate: DateTime(1900),
                 callback: _onDateChanged,
                 selectedDate: _dateOfPurchase,
-                text: "Date d'ajout"),
+                text: "Date d'achat"),
             AppButton(
                 text: 'Ajouter',
                 callback: _onAddBike,
@@ -174,6 +174,7 @@ class _AddBikeFormState extends State<AddBikeForm> {
         _electric,
         _type!,
         _dateOfPurchase,
+        DateTime.now(),
         double.parse(_kmRealised.text),
         _automatic);
     final HttpResponse response = await BikeService().create(memberId, bike);
