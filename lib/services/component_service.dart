@@ -23,15 +23,12 @@ class ComponentService {
     return HttpResponse(response);
   }
 
-  Future<HttpResponse> changeComponent(String componentId, DateTime date,
-      double km, double kmBeforeChange) async {
+  Future<HttpResponse> changeComponent(
+      String componentId, DateTime date, double km) async {
     final Response response = await client.patch(
         Uri.parse('$endpoint/components/$componentId'),
-        body: jsonEncode(<String, dynamic>{
-          'changedAt': date.toString(),
-          'km': km,
-          'kmBeforeChange': kmBeforeChange
-        }));
+        body: jsonEncode(
+            <String, dynamic>{'changedAt': date.toString(), 'km': km}));
     return HttpResponse(response);
   }
 

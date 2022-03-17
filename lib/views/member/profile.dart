@@ -65,7 +65,7 @@ class ProfilePage extends StatelessWidget {
               ),
               AppButton(
                 text: 'Déconnexion',
-                color: red,
+                color: Colors.red[900]!,
                 callback: () => _onDisconnect(context),
                 icon: const Icon(Icons.logout),
               )

@@ -8,7 +8,7 @@ class AppLinkToPage extends StatelessWidget {
       {Key? key,
       required this.child,
       required this.destination,
-      required this.padding})
+      this.padding = 0})
       : super(key: key);
 
   @override

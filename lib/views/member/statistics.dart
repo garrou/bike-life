@@ -51,9 +51,9 @@ class StatisticsPage extends StatelessWidget {
                     thumbColor: primaryColor,
                     activeColor: primaryColor,
                     inactiveColor: const Color.fromARGB(255, 156, 156, 156),
-                    min: 2010,
+                    min: 2021,
                     max: DateTime.now().year.toDouble(),
-                    divisions: DateTime.now().year - 2010,
+                    divisions: DateTime.now().year - 2021,
                     label: '${context.watch<Year>().value}',
                     onChanged: (rating) =>
                         Provider.of<Year>(context, listen: false).value =

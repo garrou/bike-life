@@ -1,11 +1,11 @@
-/*
 import 'package:flutter/foundation.dart';
 
-String endpoint = [TargetPlatform.android, TargetPlatform.iOS].contains(defaultTargetPlatform)
+String endpoint =
+    [TargetPlatform.android, TargetPlatform.iOS].contains(defaultTargetPlatform)
         ? "http://10.0.2.2:8100"
         : "http://localhost:8100";
-*/
-String endpoint = 'http://bikelifeservices.alwaysdata.net';
+
+// String endpoint = 'http://bikelifeservices.alwaysdata.net';
 
 const String title = "Bike's life";
 

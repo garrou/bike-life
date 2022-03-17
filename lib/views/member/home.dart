@@ -7,14 +7,19 @@ import 'package:bike_life/styles/animations.dart';
 import 'package:bike_life/utils/constants.dart';
 import 'package:bike_life/services/bike_service.dart';
 import 'package:bike_life/utils/storage.dart';
+import 'package:bike_life/utils/validator.dart';
 import 'package:bike_life/views/auth/signin.dart';
 import 'package:bike_life/views/member/add_bike.dart';
 import 'package:bike_life/styles/styles.dart';
 import 'package:bike_life/views/member/bike_components.dart';
+import 'package:bike_life/views/member/member_home.dart';
+import 'package:bike_life/widgets/buttons/button.dart';
 import 'package:bike_life/widgets/click_region.dart';
 import 'package:bike_life/views/member/bike_details.dart';
 import 'package:bike_life/widgets/error.dart';
+import 'package:bike_life/widgets/link_page.dart';
 import 'package:bike_life/widgets/loading.dart';
+import 'package:bike_life/widgets/textfield.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_guards/flutter_guards.dart';
@@ -63,11 +68,9 @@ class _AllBikesPageState extends State<AllBikesPage> {
         child: _wideLayout(),
       );
 
-  Widget _wideLayout() => Center(
+  Widget _wideLayout() => const Center(
         child: SingleChildScrollView(
-          child: Column(
-            children: const <Widget>[Carousel(), ComponentsAlerts()],
-          ),
+          child: Carousel(),
         ),
       );
 
@@ -112,7 +115,7 @@ class _CarouselState extends State<Carousel> {
           return AppError(message: '${snapshot.error}');
         } else if (snapshot.hasData) {
           List<Widget> cards =
-              snapshot.data!.map((bike) => _bikeCard(bike)).toList();
+              snapshot.data!.map((bike) => BikeCard(bike: bike)).toList();
           return _buildCarousel(cards);
         }
         return const AppLoading();
@@ -144,7 +147,45 @@ class _CarouselState extends State<Carousel> {
         ],
       );
 
-  Widget _bikeCard(Bike bike) => ClipRRect(
+  Widget _dotIndicator(int index) => GestureDetector(
+        onTap: () => _onTap(index),
+        child: AppClickRegion(
+          child: Container(
+            width: 20.0,
+            height: 20.0,
+            margin: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 1.0),
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              color: _current == index
+                  ? primaryColor
+                  : const Color.fromRGBO(0, 0, 0, 0.4),
+            ),
+          ),
+        ),
+      );
+
+  void _onTap(int index) => setState(() {
+        _carouselController.animateToPage(index);
+        _current = index;
+      });
+}
+
+class BikeCard extends StatefulWidget {
+  final Bike bike;
+  const BikeCard({Key? key, required this.bike}) : super(key: key);
+
+  @override
+  State<BikeCard> createState() => _BikeCardState();
+}
+
+class _BikeCardState extends State<BikeCard> {
+  final _keyForm = GlobalKey<FormState>();
+
+  final _kmFocus = FocusNode();
+  final _km = TextEditingController();
+
+  @override
+  Widget build(BuildContext context) => ClipRRect(
         borderRadius: BorderRadius.circular(10),
         child: Container(
           padding: const EdgeInsets.all(10.0),
@@ -156,7 +197,7 @@ class _CarouselState extends State<Carousel> {
                 children: <Widget>[
                   Padding(
                     child: Text(
-                      bike.name,
+                      widget.bike.name,
                       style: const TextStyle(
                         color: Colors.white,
                         fontSize: secondSize,
@@ -164,18 +205,16 @@ class _CarouselState extends State<Carousel> {
                     ),
                     padding: const EdgeInsets.only(right: 10),
                   ),
-                  if (bike.electric)
-                    const Icon(
-                      Icons.electric_bike,
-                      color: Colors.white,
-                    ),
+                  widget.bike.electric
+                      ? const Icon(Icons.electric_bike, color: Colors.white)
+                      : const Icon(Icons.pedal_bike, color: Colors.white)
                 ],
               ),
               const Divider(color: Colors.white, thickness: 2.0),
               Padding(
                 padding: const EdgeInsets.only(top: 10),
                 child: Text(
-                  '${bike.formatKm()} km',
+                  '${widget.bike.formatKm()} km',
                   style: const TextStyle(
                     color: Colors.white,
                     fontSize: secondSize,
@@ -198,19 +237,31 @@ class _CarouselState extends State<Carousel> {
                       Icons.settings,
                       size: 30,
                     ),
-                    onPressed: () => _updateBikePage(bike),
+                    onPressed: () => _updateBikePage(context, widget.bike),
                     color: Colors.white,
                   ),
                   IconButton(
+                    onPressed: () => showDialog(
+                      context: context,
+                      builder: (BuildContext context) =>
+                          _buildAddKmPopup(context),
+                    ),
                     icon: const Icon(
-                      Icons.info_outline,
+                      Icons.add_road,
+                      color: Colors.white,
+                    ),
+                  ),
+                  IconButton(
+                    icon: const Icon(
+                      Icons.amp_stories_outlined,
                       size: 30,
                     ),
-                    onPressed: () => _onBikePage(bike),
+                    onPressed: () => _onBikePage(context, widget.bike),
                     color: Colors.white,
                   ),
                 ],
               ),
+              ComponentsAlerts(bike: widget.bike)
             ],
           ),
           width: MediaQuery.of(context).size.width,
@@ -218,37 +269,70 @@ class _CarouselState extends State<Carousel> {
         ),
       );
 
-  Widget _dotIndicator(int index) => GestureDetector(
-        onTap: () => _onTap(index),
-        child: AppClickRegion(
-          child: Container(
-            width: 20.0,
-            height: 20.0,
-            margin: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 1.0),
-            decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              color: _current == index
-                  ? primaryColor
-                  : const Color.fromRGBO(0, 0, 0, 0.4),
-            ),
-          ),
-        ),
-      );
-
-  void _onTap(int index) => setState(() {
-        _carouselController.animateToPage(index);
-        _current = index;
-      });
-
-  void _updateBikePage(Bike bike) =>
+  void _updateBikePage(BuildContext context, Bike bike) =>
       Navigator.push(context, animationRightLeft(BikeDetails(bike: bike)));
 
-  void _onBikePage(Bike bike) => Navigator.push(
+  void _onBikePage(BuildContext context, Bike bike) => Navigator.push(
       context, animationRightLeft(BikeComponentsPage(bike: bike)));
+
+  Widget _buildAddKmPopup(BuildContext context) {
+    return AlertDialog(
+      title: const Text('Ajouter des kilomètres'),
+      content: Form(
+        key: _keyForm,
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            AppTextField(
+              focusNode: _kmFocus,
+              textfieldController: _km,
+              validator: kmValidator,
+              hintText: 'Kilomètres à ajouter',
+              label: 'Kilomètres à ajouter',
+              icon: Icons.add_road,
+              keyboardType: TextInputType.number,
+            )
+          ],
+        ),
+      ),
+      actions: <Widget>[
+        AppButton(
+            text: 'Ajouter', callback: _onAddKm, icon: const Icon(Icons.add))
+      ],
+    );
+  }
+
+  void _onAddKm() {
+    if (_keyForm.currentState!.validate()) {
+      _keyForm.currentState!.save();
+      _addKm();
+    }
+  }
+
+  void _addKm() async {
+    final HttpResponse response =
+        await BikeService().addKm(widget.bike.id, double.parse(_km.text));
+
+    if (response.success()) {
+      Navigator.pushAndRemoveUntil(
+          context,
+          animationRightLeft(const MemberHomePage(initialPage: 0)),
+          (Route<dynamic> route) => false);
+    }
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(response.message(),
+            style: const TextStyle(color: Colors.white)),
+        backgroundColor: response.color(),
+      ),
+    );
+  }
 }
 
 class ComponentsAlerts extends StatefulWidget {
-  const ComponentsAlerts({Key? key}) : super(key: key);
+  final Bike bike;
+  const ComponentsAlerts({Key? key, required this.bike}) : super(key: key);
 
   @override
   _ComponentsAlertsState createState() => _ComponentsAlertsState();
@@ -258,9 +342,8 @@ class _ComponentsAlertsState extends State<ComponentsAlerts> {
   late Future<int> _totalAlerts;
 
   Future<int> _loadNbAlerts() async {
-    final String memberId = await Storage.getMemberId();
     final HttpResponse response =
-        await ComponentService().getComponentsAlerts(memberId);
+        await ComponentService().getComponentsAlerts(widget.bike.id);
 
     if (response.success()) {
       return response.body()['total'];
@@ -285,9 +368,10 @@ class _ComponentsAlertsState extends State<ComponentsAlerts> {
           final int nb = snapshot.data!;
           final String s = nb > 1 ? 's' : '';
 
-          return Text(
-            nb > 0 ? '$nb composant$s à changer' : '',
-            style: boldTextStyle,
+          return AppLinkToPage(
+            child: Text(nb > 0 ? '$nb composant$s à changer' : '',
+                style: boldTextStyle),
+            destination: BikeComponentsPage(bike: widget.bike),
           );
         }
         return const AppLoading();

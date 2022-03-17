@@ -181,12 +181,10 @@ class _UpdateBikeFormState extends State<UpdateBikeForm> {
               ],
             ),
             _buildBikesTypes(),
-            Text('Acheté le : ${widget.bike.formatBuyDate()}',
-                style: thirdTextStyle),
             Text('Ajouté le : ${widget.bike.formatAddedDate()}',
                 style: thirdTextStyle),
             AppButton(
-                text: 'Modifier',
+                text: 'Enregistrer',
                 callback: _onUpdate,
                 icon: const Icon(Icons.save))
           ],
@@ -227,7 +225,6 @@ class _UpdateBikeFormState extends State<UpdateBikeForm> {
         double.parse(_kmWeek.text),
         widget.bike.electric,
         _type!,
-        widget.bike.buyAt,
         widget.bike.addedAt,
         widget.bike.automaticKm
             ? widget.bike.totalKm
