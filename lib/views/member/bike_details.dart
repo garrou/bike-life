@@ -174,9 +174,9 @@ class _UpdateBikeFormState extends State<UpdateBikeForm> {
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: <Widget>[
                 Text('Electrique', style: thirdTextStyle),
-                Icon(
-                  widget.bike.electric ? Icons.toggle_on : Icons.toggle_off,
-                  size: 40,
+                Text(
+                  widget.bike.electric ? 'Oui' : 'Non',
+                  style: thirdTextStyle,
                 )
               ],
             ),

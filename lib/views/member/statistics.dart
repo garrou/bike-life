@@ -8,7 +8,6 @@ import 'package:bike_life/utils/storage.dart';
 import 'package:bike_life/widgets/charts/bar_chart.dart';
 import 'package:bike_life/widgets/error.dart';
 import 'package:bike_life/widgets/loading.dart';
-import 'package:bike_life/widgets/charts/pie_chart.dart';
 import 'package:bike_life/widgets/title.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -122,6 +121,7 @@ class _TotalChangesState extends State<TotalChanges> {
                   style: thirdTextStyle)
               : AppBarChart(
                   vertical: true,
+                  color: const Color.fromARGB(255, 95, 15, 64),
                   series: snapshot.data!,
                   text: 'Composants changés par année');
         }
@@ -157,8 +157,9 @@ class NbComponentsChangeYear extends StatelessWidget {
                   text: 'Aucune statistique',
                   paddingTop: 10,
                   style: thirdTextStyle)
-              : AppPieChart(
+              : AppBarChart(
                   series: snapshot.data!,
+                  color: const Color.fromARGB(255, 251, 139, 36),
                   text:
                       'Composant$s changé$s (${context.watch<Year>().value})');
         }
@@ -195,6 +196,7 @@ class AverageKmBeforeChange extends StatelessWidget {
                   style: thirdTextStyle)
               : AppBarChart(
                   series: snapshot.data!,
+                  color: const Color.fromARGB(255, 227, 100, 20),
                   text:
                       'Km moyens avant remplacement (${context.watch<Year>().value})');
         }
@@ -231,6 +233,7 @@ class AveragePercentChanges extends StatelessWidget {
                   style: thirdTextStyle)
               : AppBarChart(
                   series: snapshot.data!,
+                  color: const Color.fromARGB(255, 15, 76, 92),
                   text: 'Utilisation des composants avant changement (%)');
         }
         return const AppLoading();

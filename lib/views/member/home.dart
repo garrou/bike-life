@@ -24,7 +24,7 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_guards/flutter_guards.dart';
 
-double height = 450.0;
+double height = 500.0;
 
 class AllBikesPage extends StatefulWidget {
   const AllBikesPage({Key? key}) : super(key: key);
@@ -249,6 +249,7 @@ class _BikeCardState extends State<BikeCard> {
                     icon: const Icon(
                       Icons.add_road,
                       color: Colors.white,
+                      size: 30,
                     ),
                   ),
                   IconButton(
@@ -289,7 +290,7 @@ class _BikeCardState extends State<BikeCard> {
               textfieldController: _km,
               validator: kmValidator,
               hintText: 'Kilomètres à ajouter',
-              label: 'Kilomètres à ajouter',
+              label: 'Kilomètres',
               icon: Icons.add_road,
               keyboardType: TextInputType.number,
             )
@@ -368,10 +369,14 @@ class _ComponentsAlertsState extends State<ComponentsAlerts> {
           final int nb = snapshot.data!;
           final String s = nb > 1 ? 's' : '';
 
-          return AppLinkToPage(
-            child: Text(nb > 0 ? '$nb composant$s à changer' : '',
-                style: boldTextStyle),
-            destination: BikeComponentsPage(bike: widget.bike),
+          return AppClickRegion(
+            child: AppLinkToPage(
+              child: Text(
+                nb > 0 ? '$nb composant$s à changer' : '',
+                style: whiteLinkStyle,
+              ),
+              destination: BikeComponentsPage(bike: widget.bike),
+            ),
           );
         }
         return const AppLoading();

@@ -7,6 +7,7 @@ import 'package:provider/provider.dart';
 // TODO: Fix bug date when update components
 // TODO: store km change
 // TODO; inactive when change email
+// TODO: suggest components with user components
 
 void main() {
   runApp(MultiProvider(providers: [

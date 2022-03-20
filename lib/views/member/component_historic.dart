@@ -78,10 +78,16 @@ class _ComponentHistoricPageState extends State<ComponentHistoricPage> {
         if (snapshot.hasError) {
           return AppError(message: '${snapshot.error}');
         } else if (snapshot.hasData) {
-          return ListView.builder(
-              itemCount: snapshot.data!.length,
-              shrinkWrap: true,
-              itemBuilder: (_, index) => _buildTile(snapshot.data![index]));
+          final int nb = snapshot.data!.length;
+          final String s = nb > 1 ? 's' : '';
+
+          return Column(children: [
+            ListView.builder(
+                itemCount: nb,
+                shrinkWrap: true,
+                itemBuilder: (_, index) => _buildTile(snapshot.data![index])),
+            Text('${snapshot.data!.length} changement$s')
+          ]);
         }
         return const AppLoading();
       });
