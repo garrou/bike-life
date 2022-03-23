@@ -76,7 +76,7 @@ class _ComponentHistoricPageState extends State<ComponentHistoricPage> {
       future: _historic,
       builder: (context, snapshot) {
         if (snapshot.hasError) {
-          return AppError(message: '${snapshot.error}');
+          return const AppError(message: 'Erreur de connexion avec le serveur');
         } else if (snapshot.hasData) {
           final int nb = snapshot.data!.length;
           final String s = nb > 1 ? 's' : '';

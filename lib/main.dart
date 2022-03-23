@@ -8,6 +8,7 @@ import 'package:provider/provider.dart';
 // TODO: store km change
 // TODO; inactive when change email
 // TODO: suggest components with user components
+// TODO: check if icon are all empty or full
 
 void main() {
   runApp(MultiProvider(providers: [

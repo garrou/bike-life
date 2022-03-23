@@ -64,7 +64,8 @@ class _TipsPageState extends State<TipsPage> {
                 future: _tips,
                 builder: (_, snapshot) {
                   if (snapshot.hasError) {
-                    return AppError(message: '${snapshot.error}');
+                    return const AppError(
+                        message: 'Erreur de connexion avec le serveur');
                   } else if (snapshot.hasData) {
                     return Column(
                         crossAxisAlignment: CrossAxisAlignment.center,

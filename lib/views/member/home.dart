@@ -17,7 +17,6 @@ import 'package:bike_life/widgets/buttons/button.dart';
 import 'package:bike_life/widgets/click_region.dart';
 import 'package:bike_life/views/member/bike_details.dart';
 import 'package:bike_life/widgets/error.dart';
-import 'package:bike_life/widgets/link_page.dart';
 import 'package:bike_life/widgets/loading.dart';
 import 'package:bike_life/widgets/textfield.dart';
 import 'package:carousel_slider/carousel_slider.dart';
@@ -112,7 +111,7 @@ class _CarouselState extends State<Carousel> {
       future: _bikes,
       builder: (context, snapshot) {
         if (snapshot.hasError) {
-          return AppError(message: '${snapshot.error}');
+          return const AppError(message: 'Erreur de connexion avec le serveur');
         } else if (snapshot.hasData) {
           List<Widget> cards =
               snapshot.data!.map((bike) => BikeCard(bike: bike)).toList();
@@ -232,33 +231,62 @@ class _BikeCardState extends State<BikeCard> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: <Widget>[
-                  IconButton(
+                  TextButton.icon(
+                    label: const Text('Réglages du vélo'),
                     icon: const Icon(
                       Icons.settings,
-                      size: 30,
+                      size: 20,
                     ),
                     onPressed: () => _updateBikePage(context, widget.bike),
-                    color: Colors.white,
+                    style: ButtonStyle(
+                      foregroundColor:
+                          MaterialStateProperty.all<Color>(Colors.white),
+                    ),
                   ),
-                  IconButton(
+                  TextButton.icon(
+                    label: const Text('Ajout de km'),
+                    icon: const Icon(
+                      Icons.add_road,
+                      size: 20,
+                    ),
                     onPressed: () => showDialog(
                       context: context,
                       builder: (BuildContext context) =>
                           _buildAddKmPopup(context),
                     ),
-                    icon: const Icon(
-                      Icons.add_road,
-                      color: Colors.white,
-                      size: 30,
+                    style: ButtonStyle(
+                      foregroundColor:
+                          MaterialStateProperty.all<Color>(Colors.white),
                     ),
                   ),
-                  IconButton(
+                ],
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: <Widget>[
+                  TextButton.icon(
+                    label: const Text('Composants'),
                     icon: const Icon(
                       Icons.amp_stories_outlined,
-                      size: 30,
+                      size: 20,
                     ),
                     onPressed: () => _onBikePage(context, widget.bike),
-                    color: Colors.white,
+                    style: ButtonStyle(
+                      foregroundColor:
+                          MaterialStateProperty.all<Color>(Colors.white),
+                    ),
+                  ),
+                  TextButton.icon(
+                    label: const Text('Auto-test'),
+                    icon: const Icon(
+                      Icons.checklist_rounded,
+                      size: 20,
+                    ),
+                    onPressed: () => {},
+                    style: ButtonStyle(
+                      foregroundColor:
+                          MaterialStateProperty.all<Color>(Colors.white),
+                    ),
                   ),
                 ],
               ),
@@ -364,20 +392,37 @@ class _ComponentsAlertsState extends State<ComponentsAlerts> {
       future: _totalAlerts,
       builder: (context, snapshot) {
         if (snapshot.hasError) {
-          return AppError(message: '${snapshot.error}');
+          return const AppError(message: 'Erreur de connexion avec le serveur');
         } else if (snapshot.hasData) {
           final int nb = snapshot.data!;
           final String s = nb > 1 ? 's' : '';
 
-          return AppClickRegion(
-            child: AppLinkToPage(
-              child: Text(
-                nb > 0 ? '$nb composant$s à changer' : '',
-                style: whiteLinkStyle,
-              ),
-              destination: BikeComponentsPage(bike: widget.bike),
-            ),
-          );
+          return nb > 0
+              ? TextButton.icon(
+                  onPressed: () => Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) =>
+                          BikeComponentsPage(bike: widget.bike),
+                    ),
+                  ),
+                  label: Text(
+                    nb > 0 ? '$nb composant$s à changer' : '',
+                    style: thirdTextStyle,
+                  ),
+                  icon: const Icon(Icons.warning_amber),
+                  style: ButtonStyle(
+                    foregroundColor:
+                        MaterialStateProperty.all<Color>(Colors.red),
+                    shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                      RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(20.0),
+                        side: const BorderSide(color: Colors.red),
+                      ),
+                    ),
+                  ),
+                )
+              : const Text('');
         }
         return const AppLoading();
       });
