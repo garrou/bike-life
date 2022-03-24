@@ -58,13 +58,14 @@ class _TipsPageState extends State<TipsPage> {
               thirdSize, firstSize, thirdSize, thirdSize),
           children: <Widget>[
             Row(mainAxisAlignment: MainAxisAlignment.center, children: <Widget>[
-              Text('Conseils', style: thirdTextStyle),
+              Text('Conseils', style: secondTextStyle),
             ]),
             FutureBuilder<List<Tip>>(
                 future: _tips,
                 builder: (_, snapshot) {
                   if (snapshot.hasError) {
-                    return AppError(message: '${snapshot.error}');
+                    return const AppError(
+                        message: 'Erreur de connexion avec le serveur');
                   } else if (snapshot.hasData) {
                     return Column(
                         crossAxisAlignment: CrossAxisAlignment.center,

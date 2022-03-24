@@ -36,7 +36,7 @@ class Bike {
         'automaticKm': automaticKm
       };
 
-  String formatDate() => format.format(addedAt);
+  String formatAddedDate() => format.format(addedAt);
 
   String formatKm() => totalKm.toStringAsFixed(2);
 }

@@ -35,4 +35,4 @@ String? lengthValidator(String? value) {
   }
 }
 
-String? emptyValidator(String? value) {}
+String? emptyValidator(String? value) => '';

@@ -33,15 +33,15 @@ Notez les dates de changements de composants.
 Suivez l'utilisation de vos composants.
 Soyez informé quand un composant doit-être changé.
                  """,
-                image: Lottie.network(manageLogo)),
+                image: Lottie.asset('assets/manage.json')),
             PageViewModel(
                 title: 'Une démarche écologique',
                 body: 'Entretenir son vélo, un premier pas pour la planète',
-                image: Lottie.network(envLogo)),
+                image: Lottie.asset('assets/ecolo.json')),
             PageViewModel(
                 title: 'Une démarche économique',
                 body: 'Entretenir son vélo, pour le garder plus longtemps',
-                image: Lottie.network(pigLogo))
+                image: Lottie.asset('assets/pig.json'))
           ],
           showSkipButton: true,
           skip: const Text('Passer', style: TextStyle(color: primaryColor)),

@@ -62,7 +62,7 @@ class _BikeComponentsPageState extends State<BikeComponentsPage> {
       future: _components,
       builder: (context, snapshot) {
         if (snapshot.hasError) {
-          return AppError(message: '${snapshot.error}');
+          return const AppError(message: 'Erreur de connexion avec le serveur');
         } else if (snapshot.hasData) {
           return ListView.builder(
               physics: const ScrollPhysics(),

@@ -2,6 +2,7 @@ import 'package:bike_life/models/component.dart';
 import 'package:bike_life/models/http_response.dart';
 import 'package:bike_life/services/component_service.dart';
 import 'package:bike_life/styles/animations.dart';
+import 'package:bike_life/styles/styles.dart';
 import 'package:bike_life/utils/constants.dart';
 import 'package:bike_life/views/member/member_home.dart';
 import 'package:bike_life/widgets/buttons/button.dart';
@@ -41,6 +42,13 @@ class _ChangeComponentPageState extends State<ChangeComponentPage> {
   Widget _wideLayout() => ListView(
         children: <Widget>[
           AppTopLeftButton(title: 'Changement de composant', callback: _back),
+          Center(
+            child: Padding(
+              child: Text('Utilisation : ${widget.component.totalKm} km',
+                  style: thirdTextStyle),
+              padding: const EdgeInsets.symmetric(vertical: 20),
+            ),
+          ),
           Padding(
             child: AppCalendar(
                 minDate: widget.component.changedAt,

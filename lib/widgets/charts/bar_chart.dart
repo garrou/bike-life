@@ -8,10 +8,12 @@ class AppBarChart extends StatelessWidget {
   final String text;
   final List<ComponentStat> series;
   final bool vertical;
+  final Color color;
   const AppBarChart(
       {Key? key,
       required this.series,
       required this.text,
+      required this.color,
       this.vertical = false})
       : super(key: key);
 
@@ -21,6 +23,7 @@ class AppBarChart extends StatelessWidget {
       charts.Series(
           id: "Stats",
           data: series,
+          colorFn: (__, ___) => charts.ColorUtil.fromDartColor(color),
           domainFn: (ComponentStat series, _) => series.label,
           measureFn: (ComponentStat series, _) => series.value,
           labelAccessorFn: (ComponentStat series, _) =>

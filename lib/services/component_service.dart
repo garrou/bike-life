@@ -19,7 +19,7 @@ class ComponentService {
 
   Future<HttpResponse> getComponentsAlerts(String memberId) async {
     final Response response = await client
-        .get(Uri.parse('$endpoint/members/$memberId/components/alerts'));
+        .get(Uri.parse('$endpoint/members/$memberId/components/nb-alerts'));
     return HttpResponse(response);
   }
 

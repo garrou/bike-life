@@ -12,7 +12,6 @@ import 'package:bike_life/widgets/buttons/top_left_button.dart';
 import 'package:bike_life/widgets/buttons/top_right_button.dart';
 import 'package:bike_life/widgets/textfield.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 
 class BikeDetails extends StatelessWidget {
   final Bike bike;
@@ -105,7 +104,6 @@ class UpdateBikeForm extends StatefulWidget {
 }
 
 class _UpdateBikeFormState extends State<UpdateBikeForm> {
-  static DateFormat format = DateFormat('dd/MM/yyyy');
   final _keyForm = GlobalKey<FormState>();
 
   final _nameFocus = FocusNode();
@@ -119,7 +117,6 @@ class _UpdateBikeFormState extends State<UpdateBikeForm> {
 
   final List<String> _types = ['VTT', 'Ville', 'Route'];
 
-  late bool _electric;
   late bool _automatic;
   late String? _type;
 
@@ -127,7 +124,6 @@ class _UpdateBikeFormState extends State<UpdateBikeForm> {
   void initState() {
     super.initState();
     _type = widget.bike.type;
-    _electric = widget.bike.electric;
     _kmWeek.text = '${widget.bike.kmPerWeek}';
     _name.text = widget.bike.name;
     _automatic = widget.bike.automaticKm;
@@ -175,22 +171,20 @@ class _UpdateBikeFormState extends State<UpdateBikeForm> {
                   }),
             ]),
             Row(
-              mainAxisAlignment: MainAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: <Widget>[
                 Text('Electrique', style: thirdTextStyle),
-                Switch(
-                    activeColor: primaryColor,
-                    value: _electric,
-                    onChanged: (bool value) {
-                      setState(() => _electric = value);
-                    }),
+                Text(
+                  widget.bike.electric ? 'Oui' : 'Non',
+                  style: thirdTextStyle,
+                )
               ],
             ),
             _buildBikesTypes(),
-            Text('Ajouté le : ${format.format(widget.bike.addedAt)}',
+            Text('Ajouté le : ${widget.bike.formatAddedDate()}',
                 style: thirdTextStyle),
             AppButton(
-                text: 'Modifier',
+                text: 'Enregistrer',
                 callback: _onUpdate,
                 icon: const Icon(Icons.save))
           ],
@@ -229,7 +223,7 @@ class _UpdateBikeFormState extends State<UpdateBikeForm> {
         widget.bike.id,
         _name.text,
         double.parse(_kmWeek.text),
-        _electric,
+        widget.bike.electric,
         _type!,
         widget.bike.addedAt,
         widget.bike.automaticKm
@@ -241,7 +235,9 @@ class _UpdateBikeFormState extends State<UpdateBikeForm> {
     if (response.success()) {
       Navigator.pushAndRemoveUntil(
           context,
-          animationRightLeft(const MemberHomePage(initialPage: 0)),
+          MaterialPageRoute(
+              builder: (BuildContext context) =>
+                  const MemberHomePage(initialPage: 0)),
           (Route<dynamic> route) => false);
     }
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(

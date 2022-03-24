@@ -8,7 +8,6 @@ import 'package:bike_life/utils/storage.dart';
 import 'package:bike_life/widgets/charts/bar_chart.dart';
 import 'package:bike_life/widgets/error.dart';
 import 'package:bike_life/widgets/loading.dart';
-import 'package:bike_life/widgets/charts/pie_chart.dart';
 import 'package:bike_life/widgets/title.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -45,15 +44,15 @@ class StatisticsPage extends StatelessWidget {
             child: Column(
               children: <Widget>[
                 Text('Année des statistiques (${context.watch<Year>().value})',
-                    style: thirdTextStyle),
+                    style: secondTextStyle),
                 Slider(
                     value: context.watch<Year>().value.toDouble(),
                     thumbColor: primaryColor,
                     activeColor: primaryColor,
                     inactiveColor: const Color.fromARGB(255, 156, 156, 156),
-                    min: 2010,
+                    min: 2021,
                     max: DateTime.now().year.toDouble(),
-                    divisions: DateTime.now().year - 2010,
+                    divisions: DateTime.now().year - 2021,
                     label: '${context.watch<Year>().value}',
                     onChanged: (rating) =>
                         Provider.of<Year>(context, listen: false).value =
@@ -72,8 +71,8 @@ class StatisticsPage extends StatelessWidget {
             children: const <Widget>[
               TotalChanges(),
               AveragePercentChanges(),
-              NbComponentsChangeYear(),
               AverageKmBeforeChange(),
+              NbComponentsChangeYear(),
             ],
           )
         ],
@@ -113,7 +112,7 @@ class _TotalChangesState extends State<TotalChanges> {
       future: _totalChangeStats,
       builder: (context, snapshot) {
         if (snapshot.hasError) {
-          return AppError(message: '${snapshot.error}');
+          return const AppError(message: 'Erreur de connexion avec le serveur');
         } else if (snapshot.hasData) {
           return snapshot.data!.isEmpty
               ? AppTitle(
@@ -122,6 +121,7 @@ class _TotalChangesState extends State<TotalChanges> {
                   style: thirdTextStyle)
               : AppBarChart(
                   vertical: true,
+                  color: const Color.fromARGB(255, 0, 165, 207),
                   series: snapshot.data!,
                   text: 'Composants changés par année');
         }
@@ -149,7 +149,7 @@ class NbComponentsChangeYear extends StatelessWidget {
       future: _loadNbChangeByYear(context.watch<Year>().value),
       builder: (context, snapshot) {
         if (snapshot.hasError) {
-          return AppError(message: '${snapshot.error}');
+          return Container();
         } else if (snapshot.hasData) {
           final String s = snapshot.data!.length > 1 ? 's' : '';
           return snapshot.data!.isEmpty
@@ -157,8 +157,9 @@ class NbComponentsChangeYear extends StatelessWidget {
                   text: 'Aucune statistique',
                   paddingTop: 10,
                   style: thirdTextStyle)
-              : AppPieChart(
+              : AppBarChart(
                   series: snapshot.data!,
+                  color: const Color.fromARGB(255, 251, 139, 36),
                   text:
                       'Composant$s changé$s (${context.watch<Year>().value})');
         }
@@ -186,7 +187,7 @@ class AverageKmBeforeChange extends StatelessWidget {
       future: _loadKmChangeByYear(context.watch<Year>().value),
       builder: (context, snapshot) {
         if (snapshot.hasError) {
-          return AppError(message: '${snapshot.error}');
+          return Container();
         } else if (snapshot.hasData) {
           return snapshot.data!.isEmpty
               ? AppTitle(
@@ -195,6 +196,7 @@ class AverageKmBeforeChange extends StatelessWidget {
                   style: thirdTextStyle)
               : AppBarChart(
                   series: snapshot.data!,
+                  color: const Color.fromARGB(255, 227, 100, 20),
                   text:
                       'Km moyens avant remplacement (${context.watch<Year>().value})');
         }
@@ -222,7 +224,7 @@ class AveragePercentChanges extends StatelessWidget {
       future: _loadAvgPercents(),
       builder: (context, snapshot) {
         if (snapshot.hasError) {
-          return AppError(message: '${snapshot.error}');
+          return Container();
         } else if (snapshot.hasData) {
           return snapshot.data!.isEmpty
               ? AppTitle(
@@ -231,6 +233,7 @@ class AveragePercentChanges extends StatelessWidget {
                   style: thirdTextStyle)
               : AppBarChart(
                   series: snapshot.data!,
+                  color: const Color.fromARGB(255, 15, 76, 92),
                   text: 'Utilisation des composants avant changement (%)');
         }
         return const AppLoading();
