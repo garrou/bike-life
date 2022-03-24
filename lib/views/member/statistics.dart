@@ -71,8 +71,8 @@ class StatisticsPage extends StatelessWidget {
             children: const <Widget>[
               TotalChanges(),
               AveragePercentChanges(),
-              NbComponentsChangeYear(),
               AverageKmBeforeChange(),
+              NbComponentsChangeYear(),
             ],
           )
         ],
@@ -121,7 +121,7 @@ class _TotalChangesState extends State<TotalChanges> {
                   style: thirdTextStyle)
               : AppBarChart(
                   vertical: true,
-                  color: const Color.fromARGB(255, 95, 15, 64),
+                  color: const Color.fromARGB(255, 0, 165, 207),
                   series: snapshot.data!,
                   text: 'Composants changés par année');
         }
@@ -149,7 +149,7 @@ class NbComponentsChangeYear extends StatelessWidget {
       future: _loadNbChangeByYear(context.watch<Year>().value),
       builder: (context, snapshot) {
         if (snapshot.hasError) {
-          return const AppError(message: 'Erreur de connexion avec le serveur');
+          return Container();
         } else if (snapshot.hasData) {
           final String s = snapshot.data!.length > 1 ? 's' : '';
           return snapshot.data!.isEmpty
@@ -187,7 +187,7 @@ class AverageKmBeforeChange extends StatelessWidget {
       future: _loadKmChangeByYear(context.watch<Year>().value),
       builder: (context, snapshot) {
         if (snapshot.hasError) {
-          return const AppError(message: 'Erreur de connexion avec le serveur');
+          return Container();
         } else if (snapshot.hasData) {
           return snapshot.data!.isEmpty
               ? AppTitle(
@@ -224,7 +224,7 @@ class AveragePercentChanges extends StatelessWidget {
       future: _loadAvgPercents(),
       builder: (context, snapshot) {
         if (snapshot.hasError) {
-          return const AppError(message: 'Erreur de connexion avec le serveur');
+          return Container();
         } else if (snapshot.hasData) {
           return snapshot.data!.isEmpty
               ? AppTitle(

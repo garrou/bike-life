@@ -412,12 +412,11 @@ class _ComponentsAlertsState extends State<ComponentsAlerts> {
                   ),
                   icon: const Icon(Icons.warning_amber),
                   style: ButtonStyle(
-                    foregroundColor:
-                        MaterialStateProperty.all<Color>(Colors.red),
+                    foregroundColor: MaterialStateProperty.all<Color>(orange),
                     shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                       RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(20.0),
-                        side: const BorderSide(color: Colors.red),
+                        side: const BorderSide(color: orange),
                       ),
                     ),
                   ),
