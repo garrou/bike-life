@@ -62,7 +62,7 @@ class _MemberHomePageState extends State<MemberHomePage> {
                 label: 'Statistiques',
                 backgroundColor: primaryColor),
             BottomNavigationBarItem(
-                icon: Icon(Icons.comment),
+                icon: Icon(Icons.help),
                 label: 'Conseils',
                 backgroundColor: primaryColor),
             BottomNavigationBarItem(

@@ -19,5 +19,5 @@ class Tip {
         writeDate = format.format(DateTime.parse(json['date']));
 }
 
-List<Tip> createTips(List records) =>
+List<Tip> createTips(List<dynamic> records) =>
     records.map((json) => Tip.fromJson(json)).toList(growable: false);

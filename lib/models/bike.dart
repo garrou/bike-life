@@ -41,5 +41,5 @@ class Bike {
   String formatKm() => totalKm.toStringAsFixed(2);
 }
 
-List<Bike> createBikes(List records) =>
+List<Bike> createBikes(List<dynamic> records) =>
     records.map((json) => Bike.fromJson(json)).toList(growable: false);

@@ -13,7 +13,7 @@ class DiscoverPage extends StatefulWidget {
 }
 
 class _DiscoverPageState extends State<DiscoverPage> {
-  final introKey = GlobalKey<IntroductionScreenState>();
+  final _introKey = GlobalKey<IntroductionScreenState>();
 
   void _onIntroEnd(BuildContext context) => Navigator.pushAndRemoveUntil(
       context,
@@ -23,7 +23,7 @@ class _DiscoverPageState extends State<DiscoverPage> {
   @override
   Widget build(BuildContext context) => Scaffold(
         body: IntroductionScreen(
-          key: introKey,
+          key: _introKey,
           pages: <PageViewModel>[
             PageViewModel(
                 title: 'Gestion de vos vélos',

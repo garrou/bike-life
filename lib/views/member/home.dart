@@ -11,6 +11,7 @@ import 'package:bike_life/utils/validator.dart';
 import 'package:bike_life/views/auth/signin.dart';
 import 'package:bike_life/views/member/add_bike.dart';
 import 'package:bike_life/styles/styles.dart';
+import 'package:bike_life/views/member/bike_diagnostic.dart';
 import 'package:bike_life/views/member/bike_components.dart';
 import 'package:bike_life/views/member/member_home.dart';
 import 'package:bike_life/widgets/buttons/button.dart';
@@ -277,12 +278,13 @@ class _BikeCardState extends State<BikeCard> {
                     ),
                   ),
                   TextButton.icon(
-                    label: const Text('Auto-test'),
+                    label: const Text('Diagnostique'),
                     icon: const Icon(
                       Icons.checklist_rounded,
                       size: 20,
                     ),
-                    onPressed: () => {},
+                    onPressed: () => Navigator.push(context,
+                        animationRightLeft(BikeDiagnostic(bike: widget.bike))),
                     style: ButtonStyle(
                       foregroundColor:
                           MaterialStateProperty.all<Color>(Colors.white),
