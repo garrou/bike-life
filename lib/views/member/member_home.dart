@@ -1,7 +1,7 @@
 import 'package:bike_life/views/member/home.dart';
 import 'package:bike_life/views/member/profile.dart';
 import 'package:bike_life/views/member/statistics.dart';
-import 'package:bike_life/views/member/tips.dart';
+import 'package:bike_life/views/member/help.dart';
 import 'package:bike_life/styles/styles.dart';
 import 'package:flutter/material.dart';
 
@@ -36,7 +36,7 @@ class _MemberHomePageState extends State<MemberHomePage> {
           children: const <Widget>[
             AllBikesPage(),
             StatisticsPage(),
-            TipsPage(),
+            HelpPage(),
             ProfilePage()
           ],
           onPageChanged: (page) {
@@ -63,7 +63,7 @@ class _MemberHomePageState extends State<MemberHomePage> {
                 backgroundColor: primaryColor),
             BottomNavigationBarItem(
                 icon: Icon(Icons.help),
-                label: 'Conseils',
+                label: 'Aide et conseils',
                 backgroundColor: primaryColor),
             BottomNavigationBarItem(
                 icon: Icon(Icons.person),

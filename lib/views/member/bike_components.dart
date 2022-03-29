@@ -6,7 +6,6 @@ import 'package:bike_life/utils/constants.dart';
 import 'package:bike_life/widgets/component_card.dart';
 import 'package:bike_life/widgets/error.dart';
 import 'package:bike_life/widgets/loading.dart';
-import 'package:bike_life/widgets/buttons/top_left_button.dart';
 import 'package:flutter/material.dart';
 
 class BikeComponentsPage extends StatefulWidget {
@@ -53,12 +52,7 @@ class _BikeComponentsPageState extends State<BikeComponentsPage> {
           horizontal: MediaQuery.of(context).size.width / 8),
       child: _wideLayout());
 
-  Widget _wideLayout() => ListView(children: <Widget>[
-        AppTopLeftButton(title: 'Composants', callback: _back),
-        _buildList()
-      ]);
-
-  FutureBuilder _buildList() => FutureBuilder<List<Component>>(
+  Widget _wideLayout() => FutureBuilder<List<Component>>(
       future: _components,
       builder: (context, snapshot) {
         if (snapshot.hasError) {
@@ -73,6 +67,4 @@ class _BikeComponentsPageState extends State<BikeComponentsPage> {
         }
         return const AppLoading();
       });
-
-  void _back() => Navigator.of(context).pop();
 }

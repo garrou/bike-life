@@ -56,12 +56,12 @@ class ProfilePage extends StatelessWidget {
               const AppClickCard(
                 icon: Icon(Icons.alternate_email),
                 text: 'Changer votre email',
-                destination: UpdateEmail(),
+                destination: UpdateEmailPage(),
               ),
               const AppClickCard(
                 icon: Icon(Icons.password),
                 text: 'Changer votre mot de passe',
-                destination: UpdatePassword(),
+                destination: UpdatePasswordPage(),
               ),
               AppButton(
                 text: 'Déconnexion',
