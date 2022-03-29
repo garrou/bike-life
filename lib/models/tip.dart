@@ -4,19 +4,17 @@ class Tip {
   static DateFormat format = DateFormat('dd/MM/yyyy');
 
   final int id;
-  final String componentType;
+  final String? componentType;
   final String title;
   final String content;
-  final String writeDate;
 
-  Tip(this.id, this.componentType, this.title, this.content, this.writeDate);
+  Tip(this.id, this.componentType, this.title, this.content);
 
   Tip.fromJson(Map<String, dynamic> json)
       : id = json['id'],
         componentType = json['type'],
         title = json['title'],
-        content = json['content'],
-        writeDate = format.format(DateTime.parse(json['date']));
+        content = json['content'];
 }
 
 List<Tip> createTips(List<dynamic> records) =>

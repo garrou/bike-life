@@ -62,6 +62,7 @@ class _BikeDiagnosticPageState extends State<BikeDiagnosticPage> {
             return Column(children: [
               Expanded(
                 child: ListView.builder(
+                  controller: ScrollController(),
                   itemCount: snapshot.data!.length,
                   itemBuilder: ((context, index) =>
                       _buildCard(snapshot.data![index])),

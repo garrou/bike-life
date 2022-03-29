@@ -3,6 +3,7 @@ import 'package:bike_life/styles/styles.dart';
 import 'package:bike_life/views/member/bike_components.dart';
 import 'package:bike_life/views/member/bike_diagnostic.dart';
 import 'package:bike_life/views/member/bike_settings.dart';
+import 'package:bike_life/views/member/bike_stats.dart';
 import 'package:flutter/material.dart';
 
 class BikeDetailsPage extends StatelessWidget {
@@ -11,7 +12,7 @@ class BikeDetailsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => DefaultTabController(
-        length: 3,
+        length: 4,
         child: Scaffold(
           appBar: AppBar(
             backgroundColor: primaryColor,
@@ -20,6 +21,7 @@ class BikeDetailsPage extends StatelessWidget {
               indicatorColor: primaryColor,
               tabs: [
                 Tab(icon: Icon(Icons.amp_stories_outlined)),
+                Tab(icon: Icon(Icons.bar_chart)),
                 Tab(icon: Icon(Icons.checklist_outlined)),
                 Tab(icon: Icon(Icons.settings)),
               ],
@@ -27,6 +29,7 @@ class BikeDetailsPage extends StatelessWidget {
           ),
           body: TabBarView(children: [
             BikeComponentsPage(bike: bike),
+            BikeStatsPage(bike: bike),
             BikeDiagnosticPage(bike: bike),
             BikeSettingsPage(bike: bike)
           ]),

@@ -18,16 +18,15 @@ class TipsPage extends StatefulWidget {
 }
 
 class _TipsPageState extends State<TipsPage> {
-  late Future<List<Tip>> _tips;
+  String _topic = '%';
 
   @override
   void initState() {
     super.initState();
-    _tips = _loadTips();
   }
 
-  Future<List<Tip>> _loadTips() async {
-    final HttpResponse response = await TipService().getByTopic('%');
+  Future<List<Tip>> _loadTips(String topic) async {
+    final HttpResponse response = await TipService().getByTopic(topic);
 
     if (response.success()) {
       return createTips(response.body());
@@ -52,7 +51,7 @@ class _TipsPageState extends State<TipsPage> {
       child: _wideLayout(context));
 
   Widget _wideLayout(BuildContext context) => FutureBuilder<List<Tip>>(
-      future: _tips,
+      future: _loadTips(_topic),
       builder: (_, snapshot) {
         if (snapshot.hasError) {
           return const AppError(message: 'Erreur de connexion avec le serveur');
@@ -60,22 +59,60 @@ class _TipsPageState extends State<TipsPage> {
           return Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
-                for (Tip tip in snapshot.data!) _buildTip(tip)
+                _buildDropdownButton(),
+                Expanded(
+                  child: ListView(children: <Widget>[
+                    for (Tip tip in snapshot.data!) _buildTip(tip)
+                  ]),
+                )
               ]);
         }
         return const AppLoading();
       });
 
   Widget _buildTip(Tip tip) => Card(
-        elevation: 5,
         child: GestureDetector(
           onTap: () => Navigator.push(
               context, animationRightLeft(TipDetailsPage(tip: tip))),
-          child: ListTile(
-            title: AppClickRegion(child: Text(tip.title)),
-            subtitle: AppClickRegion(child: Text(tip.writeDate)),
+          child: Padding(
+            padding: const EdgeInsets.fromLTRB(5.0, 10.0, 5.0, 10.0),
+            child: Column(children: <Widget>[
+              AppClickRegion(
+                child: Padding(
+                  padding: const EdgeInsets.only(bottom: 5.0),
+                  child:
+                      Text(tip.componentType ?? 'Vélo', style: boldTextStyle),
+                ),
+              ),
+              AppClickRegion(child: Text(tip.title, style: secondTextStyle)),
+            ]),
           ),
         ),
+      );
+
+  Widget _buildDropdownButton() => DropdownButton<String>(
+        value: _topic,
+        icon: const Icon(Icons.arrow_drop_down),
+        elevation: 16,
+        onChanged: (String? newValue) {
+          setState(() => _topic = newValue!);
+        },
+        items: <String>[
+          'Tout',
+          'Chaîne',
+          'Batterie',
+          'Pneus',
+          'Freins',
+          'Plaquettes',
+          'Dérailleurs',
+          'Cassette',
+          'Transmission'
+        ].map<DropdownMenuItem<String>>((String value) {
+          return DropdownMenuItem<String>(
+            value: value == 'Tout' ? '%' : value,
+            child: Text(value),
+          );
+        }).toList(),
       );
 }
 

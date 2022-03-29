@@ -17,7 +17,7 @@ class HelpPage extends StatelessWidget {
               indicatorColor: primaryColor,
               tabs: [
                 Tab(icon: Icon(Icons.help)),
-                Tab(icon: Icon(Icons.photo_library_outlined)),
+                Tab(icon: Icon(Icons.photo_library)),
               ],
             ),
           ),

@@ -6,6 +6,7 @@ import 'package:bike_life/styles/styles.dart';
 import 'package:bike_life/utils/constants.dart';
 import 'package:bike_life/utils/storage.dart';
 import 'package:bike_life/widgets/charts/bar_chart.dart';
+import 'package:bike_life/widgets/charts/pie_chart.dart';
 import 'package:bike_life/widgets/error.dart';
 import 'package:bike_life/widgets/loading.dart';
 import 'package:bike_life/widgets/title.dart';
@@ -59,7 +60,7 @@ class StatisticsPage extends StatelessWidget {
                   value: context.watch<Year>().value.toDouble(),
                   thumbColor: primaryColor,
                   activeColor: primaryColor,
-                  inactiveColor: const Color.fromARGB(255, 156, 156, 156),
+                  inactiveColor: const Color.fromARGB(255, 52, 160, 164),
                   min: 2020,
                   max: DateTime.now().year.toDouble(),
                   divisions: DateTime.now().year - 2020,
@@ -113,11 +114,8 @@ class _TotalChangesState extends State<TotalChanges> {
                   text: 'Aucune statistique',
                   paddingTop: 10,
                   style: thirdTextStyle)
-              : AppBarChart(
-                  vertical: true,
-                  color: const Color.fromARGB(255, 0, 165, 207),
-                  series: snapshot.data!,
-                  text: 'Composants changés par année');
+              : AppPieChart(
+                  series: snapshot.data!, text: 'Composants changés par année');
         }
         return const AppLoading();
       });
@@ -153,7 +151,7 @@ class NbComponentsChangeYear extends StatelessWidget {
                   style: thirdTextStyle)
               : AppBarChart(
                   series: snapshot.data!,
-                  color: const Color.fromARGB(255, 251, 139, 36),
+                  color: const Color.fromARGB(255, 24, 78, 119),
                   text:
                       'Composant$s changé$s (${context.watch<Year>().value})');
         }
@@ -190,7 +188,7 @@ class AverageKmBeforeChange extends StatelessWidget {
                   style: thirdTextStyle)
               : AppBarChart(
                   series: snapshot.data!,
-                  color: const Color.fromARGB(255, 227, 100, 20),
+                  color: const Color.fromARGB(255, 26, 117, 159),
                   text:
                       'Km moyens avant remplacement (${context.watch<Year>().value})');
         }
@@ -227,7 +225,7 @@ class AveragePercentChanges extends StatelessWidget {
                   style: thirdTextStyle)
               : AppBarChart(
                   series: snapshot.data!,
-                  color: const Color.fromARGB(255, 15, 76, 92),
+                  color: const Color.fromARGB(255, 22, 138, 173),
                   text: 'Utilisation des composants avant changement (%)');
         }
         return const AppLoading();

@@ -14,10 +14,13 @@ class AppPieChart extends StatelessWidget {
   Widget build(BuildContext context) {
     final List<charts.Series<ComponentStat, String>> data = [
       charts.Series(
-          id: "Stats",
-          data: series,
-          domainFn: (ComponentStat series, _) => series.label,
-          measureFn: (ComponentStat series, _) => series.value)
+        id: "Stats",
+        data: series,
+        colorFn: (ComponentStat series, _) =>
+            charts.ColorUtil.fromDartColor(series.color),
+        domainFn: (ComponentStat series, _) => series.label,
+        measureFn: (ComponentStat series, _) => series.value,
+      )
     ];
 
     return SizedBox(

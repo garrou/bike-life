@@ -63,4 +63,22 @@ class ComponentService {
         .get(Uri.parse('$endpoint/members/$memberId/components/percents'));
     return HttpResponse(response);
   }
+
+  Future<HttpResponse> getNbChangesByBike(String bikeId) async {
+    final Response response = await client
+        .get(Uri.parse('$endpoint/bikes/$bikeId/components/nb-change-stats'));
+    return HttpResponse(response);
+  }
+
+  Future<HttpResponse> getAvgPercentChangesByBike(String bikeId) async {
+    final Response response = await client
+        .get(Uri.parse('$endpoint/bikes/$bikeId/components/percents'));
+    return HttpResponse(response);
+  }
+
+  Future<HttpResponse> getNumOfCompoChangedByBike(String bikeId) async {
+    final Response response = await client
+        .get(Uri.parse('$endpoint/bikes/$bikeId/components/nb-change-stats'));
+    return HttpResponse(response);
+  }
 }
