@@ -10,14 +10,14 @@ import 'package:bike_life/widgets/loading.dart';
 import 'package:bike_life/widgets/textfield.dart';
 import 'package:flutter/material.dart';
 
-class UpdateEmail extends StatefulWidget {
-  const UpdateEmail({Key? key}) : super(key: key);
+class UpdateEmailPage extends StatefulWidget {
+  const UpdateEmailPage({Key? key}) : super(key: key);
 
   @override
-  State<UpdateEmail> createState() => _UpdateEmailState();
+  State<UpdateEmailPage> createState() => _UpdateEmailPageState();
 }
 
-class _UpdateEmailState extends State<UpdateEmail> {
+class _UpdateEmailPageState extends State<UpdateEmailPage> {
   final _keyForm = GlobalKey<FormState>();
 
   final _emailFocus = FocusNode();

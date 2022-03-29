@@ -8,14 +8,14 @@ import 'package:bike_life/widgets/buttons/top_left_button.dart';
 import 'package:bike_life/widgets/textfield.dart';
 import 'package:flutter/material.dart';
 
-class UpdatePassword extends StatefulWidget {
-  const UpdatePassword({Key? key}) : super(key: key);
+class UpdatePasswordPage extends StatefulWidget {
+  const UpdatePasswordPage({Key? key}) : super(key: key);
 
   @override
-  State<UpdatePassword> createState() => _UpdatePasswordState();
+  State<UpdatePasswordPage> createState() => _UpdatePasswordPageState();
 }
 
-class _UpdatePasswordState extends State<UpdatePassword> {
+class _UpdatePasswordPageState extends State<UpdatePasswordPage> {
   final _keyForm = GlobalKey<FormState>();
 
   final _passwordFocus = FocusNode();

@@ -4,12 +4,12 @@ import 'package:bike_life/utils/constants.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
 import 'package:flutter/material.dart';
 
-class AppBarChart extends StatelessWidget {
+class AppLineChart extends StatelessWidget {
   final String text;
   final List<ComponentStat> series;
   final bool vertical;
   final Color color;
-  const AppBarChart(
+  const AppLineChart(
       {Key? key,
       required this.series,
       required this.text,
@@ -19,15 +19,13 @@ class AppBarChart extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final List<charts.Series<ComponentStat, String>> data = [
+    final List<charts.Series<ComponentStat, double>> data = [
       charts.Series(
         id: "Stats",
         data: series,
         colorFn: (__, ___) => charts.ColorUtil.fromDartColor(color),
-        domainFn: (ComponentStat series, _) => series.label,
-        measureFn: (ComponentStat series, _) => series.value,
-        labelAccessorFn: (ComponentStat series, _) =>
-            '${series.label} : ${series.value.toStringAsFixed(2)}',
+        domainFn: (ComponentStat series, _) => series.value,
+        measureFn: (ComponentStat series, _) => double.parse(series.label),
       )
     ];
 
@@ -43,20 +41,9 @@ class AppBarChart extends StatelessWidget {
               child: Text(text, style: fourthTextStyle),
             ),
             Expanded(
-              child: charts.BarChart(
+              child: charts.LineChart(
                 data,
                 animate: true,
-                vertical: vertical,
-                primaryMeasureAxis: const charts.NumericAxisSpec(
-                    renderSpec: charts.NoneRenderSpec()),
-                domainAxis: const charts.OrdinalAxisSpec(
-                    renderSpec: charts.NoneRenderSpec()),
-                barRendererDecorator: charts.BarLabelDecorator(
-                  insideLabelStyleSpec: charts.TextStyleSpec(
-                      color: charts.MaterialPalette.white.lighter),
-                  outsideLabelStyleSpec:
-                      charts.TextStyleSpec(color: chartColorByTheme(context)),
-                ),
               ),
             )
           ],
