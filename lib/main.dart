@@ -25,10 +25,10 @@ class App extends StatelessWidget {
         child: Consumer<ThemeModel>(
             builder: (context, ThemeModel themeNotifier, child) {
           return MaterialApp(
-              title: "Bike's Life",
-              theme:
-                  themeNotifier.isDark ? ThemeData.dark() : ThemeData.light(),
-              home: const HomePage());
+            title: "Bike's Life",
+            theme: themeNotifier.isDark ? ThemeData.dark() : ThemeData.light(),
+            home: const HomePage(),
+          );
         }),
       );
 }

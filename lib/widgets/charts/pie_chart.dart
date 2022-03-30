@@ -32,7 +32,7 @@ class AppPieChart extends StatelessWidget {
           children: <Widget>[
             Padding(
               padding: const EdgeInsets.all(thirdSize),
-              child: Text(text, style: fourthTextStyle),
+              child: Text(text, style: secondTextStyle),
             ),
             Expanded(
                 child: charts.PieChart(

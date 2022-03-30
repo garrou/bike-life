@@ -1,7 +1,7 @@
+import 'package:bike_life/views/member/help/help.dart';
 import 'package:bike_life/views/member/home.dart';
-import 'package:bike_life/views/member/profile.dart';
-import 'package:bike_life/views/member/statistics.dart';
-import 'package:bike_life/views/member/help.dart';
+import 'package:bike_life/views/member/profile/profile.dart';
+import 'package:bike_life/views/member/statistics/statistics.dart';
 import 'package:bike_life/styles/styles.dart';
 import 'package:flutter/material.dart';
 

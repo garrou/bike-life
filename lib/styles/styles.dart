@@ -36,7 +36,6 @@ Color colorByTheme(BuildContext context) =>
 TextStyle mainTextStyle = GoogleFonts.abel(fontSize: firstSize);
 TextStyle secondTextStyle = GoogleFonts.abel(fontSize: secondSize);
 TextStyle thirdTextStyle = GoogleFonts.abel(fontSize: intermediateSize);
-TextStyle fourthTextStyle = GoogleFonts.abel(fontSize: 14.0);
 TextStyle boldTextStyle =
     GoogleFonts.abel(fontSize: secondSize, fontWeight: FontWeight.bold);
 TextStyle italicTextStyle =

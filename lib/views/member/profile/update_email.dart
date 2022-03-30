@@ -76,20 +76,22 @@ class _UpdateEmailPageState extends State<UpdateEmailPage> {
                   } else if (snapshot.hasData) {
                     _email.text = snapshot.data.toString();
                     return AppTextField(
-                        keyboardType: TextInputType.emailAddress,
-                        label: 'Email',
-                        hintText: 'Entrer un email valide',
-                        focusNode: _emailFocus,
-                        textfieldController: _email,
-                        validator: emailValidator,
-                        icon: Icons.alternate_email);
+                      keyboardType: TextInputType.emailAddress,
+                      label: 'Email',
+                      hintText: 'Entrer un email valide',
+                      focusNode: _emailFocus,
+                      textfieldController: _email,
+                      validator: emailValidator,
+                      icon: Icons.alternate_email,
+                    );
                   }
                   return const AppLoading();
                 }),
             AppButton(
-                text: "Modifier",
-                callback: _onUpdate,
-                icon: const Icon(Icons.save))
+              text: "Modifier",
+              callback: _onUpdate,
+              icon: const Icon(Icons.save),
+            )
           ],
         ),
       );

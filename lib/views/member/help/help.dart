@@ -1,6 +1,6 @@
 import 'package:bike_life/styles/styles.dart';
-import 'package:bike_life/views/member/components_pictures.dart';
-import 'package:bike_life/views/member/tips.dart';
+import 'package:bike_life/views/member/help/components_pictures.dart';
+import 'package:bike_life/views/member/help/tips.dart';
 import 'package:flutter/material.dart';
 
 class HelpPage extends StatelessWidget {

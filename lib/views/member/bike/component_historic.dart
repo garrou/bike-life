@@ -5,7 +5,7 @@ import 'package:bike_life/services/component_service.dart';
 import 'package:bike_life/styles/animations.dart';
 import 'package:bike_life/styles/styles.dart';
 import 'package:bike_life/utils/constants.dart';
-import 'package:bike_life/views/member/change_component.dart';
+import 'package:bike_life/views/member/bike/change_component.dart';
 import 'package:bike_life/widgets/error.dart';
 import 'package:bike_life/widgets/loading.dart';
 import 'package:bike_life/widgets/buttons/top_left_button.dart';

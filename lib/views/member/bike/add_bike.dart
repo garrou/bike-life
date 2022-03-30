@@ -6,7 +6,6 @@ import 'package:bike_life/utils/storage.dart';
 import 'package:bike_life/utils/validator.dart';
 import 'package:bike_life/services/bike_service.dart';
 import 'package:bike_life/styles/styles.dart';
-import 'package:bike_life/widgets/click_region.dart';
 import 'package:bike_life/views/member/member_home.dart';
 import 'package:bike_life/widgets/buttons/button.dart';
 import 'package:bike_life/widgets/textfield.dart';
@@ -119,11 +118,10 @@ class _AddBikeFormState extends State<AddBikeForm> {
         children: <Widget>[
           for (String type in _types)
             ListTile(
-              title: GestureDetector(
-                  child: AppClickRegion(child: Text(type)),
-                  onTap: () {
-                    setState(() => _type = type);
-                  }),
+              title: InkWell(child: Text(type)),
+              onTap: () {
+                setState(() => _type = type);
+              },
               leading: Radio<String>(
                   activeColor: primaryColor,
                   value: type,
