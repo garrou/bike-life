@@ -1,7 +1,6 @@
 import 'package:bike_life/styles/styles.dart';
 import 'package:bike_life/utils/constants.dart';
 import 'package:flutter/material.dart';
-import 'package:photo_view/photo_view.dart';
 
 class ComponentsPicturesPage extends StatefulWidget {
   const ComponentsPicturesPage({Key? key}) : super(key: key);
@@ -48,30 +47,26 @@ class _ComponentsPicturesPageState extends State<ComponentsPicturesPage> {
 
   Widget _wideLayout(BuildContext context, BoxConstraints constraints) =>
       ScrollConfiguration(
-        behavior: const ScrollBehavior().copyWith(overscroll: false),
-        child: GridView.builder(
-          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisSpacing: 5,
-            mainAxisSpacing: 5,
-            crossAxisCount: 3,
-          ),
-          itemCount: _pictures.length,
-          itemBuilder: (_, int index) {
-            return _buildImageContainer(
-                _pictures[index].name, _pictures[index].path);
-          },
-        ),
-      );
+          behavior: const ScrollBehavior().copyWith(overscroll: false),
+          child: GridView.count(
+              crossAxisCount: constraints.maxWidth > maxWidth + 400
+                  ? 3
+                  : constraints.maxWidth > maxWidth
+                      ? 2
+                      : 1,
+              children: <Widget>[
+                for (Picture picture in _pictures) _buildImageContainer(picture)
+              ]));
 
-  Widget _buildImageContainer(String title, String image) => Column(
+  Widget _buildImageContainer(Picture picture) => Column(
         children: <Widget>[
           Padding(
-            child: Text(title, style: secondTextStyle),
+            child: Text(picture.name, style: secondTextStyle),
             padding: const EdgeInsets.all(5.0),
           ),
           Padding(
             child: Image.asset(
-              image,
+              picture.path,
               fit: BoxFit.contain,
             ),
             padding: const EdgeInsets.all(5.0),

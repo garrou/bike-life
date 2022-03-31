@@ -148,10 +148,7 @@ class NbComponentsChangeYear extends StatelessWidget {
         } else if (snapshot.hasData) {
           final String s = snapshot.data!.length > 1 ? 's' : '';
           return snapshot.data!.isEmpty
-              ? AppTitle(
-                  text: 'Aucune statistique',
-                  paddingTop: 10,
-                  style: thirdTextStyle)
+              ? Container()
               : AppBarChart(
                   series: snapshot.data!,
                   color: const Color.fromARGB(255, 24, 78, 119),
@@ -185,10 +182,7 @@ class AverageKmBeforeChange extends StatelessWidget {
           return Container();
         } else if (snapshot.hasData) {
           return snapshot.data!.isEmpty
-              ? AppTitle(
-                  text: 'Aucune statistique',
-                  paddingTop: 10,
-                  style: thirdTextStyle)
+              ? Container()
               : AppBarChart(
                   series: snapshot.data!,
                   color: const Color.fromARGB(255, 26, 117, 159),
@@ -222,10 +216,7 @@ class AveragePercentChanges extends StatelessWidget {
           return Container();
         } else if (snapshot.hasData) {
           return snapshot.data!.isEmpty
-              ? AppTitle(
-                  text: 'Aucune statistique',
-                  paddingTop: 10,
-                  style: thirdTextStyle)
+              ? Container()
               : AppBarChart(
                   series: snapshot.data!,
                   color: const Color.fromARGB(255, 22, 138, 173),
