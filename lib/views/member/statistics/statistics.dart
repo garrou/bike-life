@@ -35,43 +35,46 @@ class StatisticsPage extends StatelessWidget {
           child: _wideLayout(context, constraints));
 
   Widget _wideLayout(BuildContext context, BoxConstraints constraints) =>
-      Column(children: [
-        Expanded(
-          child: GridView.count(
-            crossAxisCount: constraints.maxWidth > maxWidth + 400
-                ? 3
-                : constraints.maxWidth > maxWidth
-                    ? 2
-                    : 1,
-            children: const <Widget>[
-              TotalChanges(),
-              AveragePercentChanges(),
-              AverageKmBeforeChange(),
-              NbComponentsChangeYear(),
-            ],
+      ScrollConfiguration(
+        behavior: const ScrollBehavior().copyWith(overscroll: false),
+        child: Column(children: [
+          Expanded(
+            child: GridView.count(
+              crossAxisCount: constraints.maxWidth > maxWidth + 400
+                  ? 3
+                  : constraints.maxWidth > maxWidth
+                      ? 2
+                      : 1,
+              children: const <Widget>[
+                TotalChanges(),
+                AveragePercentChanges(),
+                AverageKmBeforeChange(),
+                NbComponentsChangeYear(),
+              ],
+            ),
           ),
-        ),
-        Card(
-          child: Column(
-            children: <Widget>[
-              Text('Année des statistiques (${context.watch<Year>().value})',
-                  style: secondTextStyle),
-              Slider(
-                  value: context.watch<Year>().value.toDouble(),
-                  thumbColor: primaryColor,
-                  activeColor: primaryColor,
-                  inactiveColor: const Color.fromARGB(255, 52, 160, 164),
-                  min: 2020,
-                  max: DateTime.now().year.toDouble(),
-                  divisions: DateTime.now().year - 2020,
-                  label: '${context.watch<Year>().value}',
-                  onChanged: (rating) =>
-                      Provider.of<Year>(context, listen: false).value =
-                          rating.toInt())
-            ],
+          Card(
+            child: Column(
+              children: <Widget>[
+                Text('Année des statistiques (${context.watch<Year>().value})',
+                    style: secondTextStyle),
+                Slider(
+                    value: context.watch<Year>().value.toDouble(),
+                    thumbColor: primaryColor,
+                    activeColor: primaryColor,
+                    inactiveColor: const Color.fromARGB(255, 52, 160, 164),
+                    min: 2020,
+                    max: DateTime.now().year.toDouble(),
+                    divisions: DateTime.now().year - 2020,
+                    label: '${context.watch<Year>().value}',
+                    onChanged: (rating) =>
+                        Provider.of<Year>(context, listen: false).value =
+                            rating.toInt())
+              ],
+            ),
           ),
-        ),
-      ]);
+        ]),
+      );
 }
 
 class TotalChanges extends StatefulWidget {
@@ -145,10 +148,7 @@ class NbComponentsChangeYear extends StatelessWidget {
         } else if (snapshot.hasData) {
           final String s = snapshot.data!.length > 1 ? 's' : '';
           return snapshot.data!.isEmpty
-              ? AppTitle(
-                  text: 'Aucune statistique',
-                  paddingTop: 10,
-                  style: thirdTextStyle)
+              ? Container()
               : AppBarChart(
                   series: snapshot.data!,
                   color: const Color.fromARGB(255, 24, 78, 119),
@@ -182,10 +182,7 @@ class AverageKmBeforeChange extends StatelessWidget {
           return Container();
         } else if (snapshot.hasData) {
           return snapshot.data!.isEmpty
-              ? AppTitle(
-                  text: 'Aucune statistique',
-                  paddingTop: 10,
-                  style: thirdTextStyle)
+              ? Container()
               : AppBarChart(
                   series: snapshot.data!,
                   color: const Color.fromARGB(255, 26, 117, 159),
@@ -219,10 +216,7 @@ class AveragePercentChanges extends StatelessWidget {
           return Container();
         } else if (snapshot.hasData) {
           return snapshot.data!.isEmpty
-              ? AppTitle(
-                  text: 'Aucune statistique',
-                  paddingTop: 10,
-                  style: thirdTextStyle)
+              ? Container()
               : AppBarChart(
                   series: snapshot.data!,
                   color: const Color.fromARGB(255, 22, 138, 173),

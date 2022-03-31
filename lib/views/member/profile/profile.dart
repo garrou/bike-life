@@ -4,10 +4,9 @@ import 'package:bike_life/utils/constants.dart';
 import 'package:bike_life/utils/storage.dart';
 import 'package:bike_life/views/auth/signin.dart';
 import 'package:bike_life/styles/styles.dart';
-import 'package:bike_life/views/member/update_email.dart';
-import 'package:bike_life/views/member/update_password.dart';
+import 'package:bike_life/views/member/profile/update_email.dart';
+import 'package:bike_life/views/member/profile/update_password.dart';
 import 'package:bike_life/widgets/buttons/button.dart';
-import 'package:bike_life/widgets/click_card.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -33,7 +32,7 @@ class ProfilePage extends StatelessWidget {
   Widget _wideLayout() =>
       Consumer<ThemeModel>(builder: (context, ThemeModel themeNotifier, child) {
         return Padding(
-          padding: const EdgeInsets.only(top: 20),
+          padding: const EdgeInsets.only(top: 30),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
@@ -81,4 +80,34 @@ class ProfilePage extends StatelessWidget {
         animationRightLeft(const SigninPage()),
         (Route<dynamic> route) => false);
   }
+}
+
+class AppClickCard extends StatelessWidget {
+  final String text;
+  final Widget destination;
+  final Icon icon;
+  const AppClickCard(
+      {Key? key,
+      required this.text,
+      required this.destination,
+      required this.icon})
+      : super(key: key);
+
+  @override
+  Widget build(BuildContext context) => Card(
+        elevation: 5,
+        child: InkWell(
+          child: ListTile(
+            leading: icon,
+            title: Text(
+              text,
+              style: secondTextStyle,
+            ),
+          ),
+          onTap: () => Navigator.push(
+            context,
+            animationRightLeft(destination),
+          ),
+        ),
+      );
 }

@@ -4,8 +4,7 @@ import 'package:bike_life/services/tip_service.dart';
 import 'package:bike_life/styles/animations.dart';
 import 'package:bike_life/styles/styles.dart';
 import 'package:bike_life/utils/constants.dart';
-import 'package:bike_life/widgets/buttons/top_left_button.dart';
-import 'package:bike_life/widgets/click_region.dart';
+import 'package:bike_life/views/member/help/tip_details.dart';
 import 'package:bike_life/widgets/error.dart';
 import 'package:bike_life/widgets/loading.dart';
 import 'package:flutter/material.dart';
@@ -36,14 +35,15 @@ class _TipsPageState extends State<TipsPage> {
   }
 
   @override
-  Widget build(BuildContext context) =>
-      Scaffold(body: LayoutBuilder(builder: (context, constraints) {
-        if (constraints.maxWidth > maxWidth) {
-          return _narrowLayout(context);
-        } else {
-          return _wideLayout(context);
-        }
-      }));
+  Widget build(BuildContext context) => Scaffold(
+        body: LayoutBuilder(builder: (context, constraints) {
+          if (constraints.maxWidth > maxWidth) {
+            return _narrowLayout(context);
+          } else {
+            return _wideLayout(context);
+          }
+        }),
+      );
 
   Widget _narrowLayout(BuildContext context) => Padding(
       padding: EdgeInsets.symmetric(
@@ -56,35 +56,35 @@ class _TipsPageState extends State<TipsPage> {
         if (snapshot.hasError) {
           return const AppError(message: 'Erreur de connexion avec le serveur');
         } else if (snapshot.hasData) {
-          return Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: <Widget>[
-                _buildDropdownButton(),
-                Expanded(
-                  child: ListView(children: <Widget>[
-                    for (Tip tip in snapshot.data!) _buildTip(tip)
-                  ]),
-                )
-              ]);
+          return ScrollConfiguration(
+            behavior: const ScrollBehavior().copyWith(overscroll: false),
+            child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: <Widget>[
+                  _buildDropdownButton(),
+                  Expanded(
+                    child: ListView(children: <Widget>[
+                      for (Tip tip in snapshot.data!) _buildTip(tip)
+                    ]),
+                  )
+                ]),
+          );
         }
         return const AppLoading();
       });
 
   Widget _buildTip(Tip tip) => Card(
-        child: GestureDetector(
+        child: InkWell(
           onTap: () => Navigator.push(
               context, animationRightLeft(TipDetailsPage(tip: tip))),
           child: Padding(
             padding: const EdgeInsets.fromLTRB(5.0, 10.0, 5.0, 10.0),
             child: Column(children: <Widget>[
-              AppClickRegion(
-                child: Padding(
-                  padding: const EdgeInsets.only(bottom: 5.0),
-                  child:
-                      Text(tip.componentType ?? 'Vélo', style: boldTextStyle),
-                ),
+              Padding(
+                padding: const EdgeInsets.only(bottom: 5.0),
+                child: Text(tip.componentType ?? 'Vélo', style: boldTextStyle),
               ),
-              AppClickRegion(child: Text(tip.title, style: secondTextStyle)),
+              Text(tip.title, style: secondTextStyle),
             ]),
           ),
         ),
@@ -114,40 +114,4 @@ class _TipsPageState extends State<TipsPage> {
           );
         }).toList(),
       );
-}
-
-class TipDetailsPage extends StatelessWidget {
-  final Tip tip;
-  const TipDetailsPage({Key? key, required this.tip}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) =>
-      Scaffold(body: LayoutBuilder(builder: (context, constraints) {
-        if (constraints.maxWidth > maxWidth) {
-          return _narrowLayout(context);
-        } else {
-          return _wideLayout(context);
-        }
-      }));
-
-  Widget _narrowLayout(BuildContext context) => Padding(
-      padding: EdgeInsets.symmetric(
-          horizontal: MediaQuery.of(context).size.width / 12),
-      child: _wideLayout(context));
-
-  Widget _wideLayout(BuildContext context) => ListView(
-        padding: const EdgeInsets.symmetric(horizontal: thirdSize),
-        children: <Widget>[
-          AppTopLeftButton(title: 'Conseils', callback: () => _back(context)),
-          buildText(tip.title, boldTextStyle, TextAlign.center),
-          buildText(tip.content, thirdTextStyle, TextAlign.center),
-        ],
-      );
-
-  Padding buildText(String text, TextStyle style, TextAlign textAlign) =>
-      Padding(
-          padding: const EdgeInsets.symmetric(vertical: thirdSize),
-          child: Text(text, textAlign: textAlign, style: style));
-
-  void _back(BuildContext context) => Navigator.pop(context);
 }

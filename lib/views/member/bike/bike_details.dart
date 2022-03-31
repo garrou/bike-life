@@ -1,9 +1,9 @@
 import 'package:bike_life/models/bike.dart';
 import 'package:bike_life/styles/styles.dart';
-import 'package:bike_life/views/member/bike_components.dart';
-import 'package:bike_life/views/member/bike_diagnostic.dart';
-import 'package:bike_life/views/member/bike_settings.dart';
-import 'package:bike_life/views/member/bike_stats.dart';
+import 'package:bike_life/views/member/bike/bike_components.dart';
+import 'package:bike_life/views/member/bike/bike_diagnostic.dart';
+import 'package:bike_life/views/member/bike/bike_settings.dart';
+import 'package:bike_life/views/member/bike/bike_stats.dart';
 import 'package:flutter/material.dart';
 
 class BikeDetailsPage extends StatelessWidget {

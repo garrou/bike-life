@@ -7,14 +7,16 @@ class Tip {
   final String? componentType;
   final String title;
   final String content;
+  final String? videoUrl;
 
-  Tip(this.id, this.componentType, this.title, this.content);
+  Tip(this.id, this.componentType, this.title, this.content, this.videoUrl);
 
   Tip.fromJson(Map<String, dynamic> json)
       : id = json['id'],
         componentType = json['type'],
         title = json['title'],
-        content = json['content'];
+        content = json['content'],
+        videoUrl = json['video'];
 }
 
 List<Tip> createTips(List<dynamic> records) =>
