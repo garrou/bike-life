@@ -5,7 +5,7 @@ import 'package:bike_life/services/component_service.dart';
 import 'package:bike_life/utils/constants.dart';
 import 'package:bike_life/styles/animations.dart';
 import 'package:bike_life/styles/styles.dart';
-import 'package:bike_life/views/member/bike/component_historic.dart';
+import 'package:bike_life/views/member/bike/components/component_details.dart';
 import 'package:bike_life/widgets/error.dart';
 import 'package:bike_life/widgets/loading.dart';
 import 'package:flutter/material.dart';
@@ -78,7 +78,7 @@ class AppComponentCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => InkWell(
-        onTap: () => _onComponentHistoricPage(context),
+        onTap: () => _onComponentDetailsPage(context),
         child: Card(
           child: Padding(
             padding: const EdgeInsets.all(10),
@@ -153,6 +153,6 @@ class AppComponentCard extends StatelessWidget {
     );
   }
 
-  void _onComponentHistoricPage(BuildContext context) => Navigator.push(
-      context, animationRightLeft(ComponentHistoricPage(component: component)));
+  void _onComponentDetailsPage(BuildContext context) => Navigator.push(
+      context, animationRightLeft(ComponentDetailsPage(component: component)));
 }

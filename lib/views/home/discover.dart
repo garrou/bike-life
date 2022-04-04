@@ -28,19 +28,21 @@ class _DiscoverPageState extends State<DiscoverPage> {
             PageViewModel(
                 title: 'Gestion de vos vélos',
                 body: """
-Ajouter vos vélos dans l'application.
-Notez les dates de changements de composants.
-Suivez l'utilisation de vos composants.
-Soyez informé quand un composant doit-être changé.
+Une application permettant de gérer l'utilisation des composants de votre vélo... mais pas que.
                  """,
                 image: Lottie.asset('assets/manage.json')),
             PageViewModel(
                 title: 'Une démarche écologique',
-                body: 'Entretenir son vélo, un premier pas pour la planète',
+                body: """
+Profitez d'un suivi de l'utilisation de votre vélo, de ses composants. 
+Prendre soin de son vélo, une garantie de le garder longtemps et en bon état mais aussi de moins le remplacer.
+Un bon point pour votre tirelire mais également pour la planète !
+                      """,
                 image: Lottie.asset('assets/ecolo.json')),
             PageViewModel(
                 title: 'Une démarche économique',
-                body: 'Entretenir son vélo, pour le garder plus longtemps',
+                body:
+                    "Ayez un suivi de l'utilisation de votre vélo, de l'usure des composants et de votre budget vélo au fil des années.",
                 image: Lottie.asset('assets/pig.json'))
           ],
           showSkipButton: true,

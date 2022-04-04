@@ -57,6 +57,9 @@ class _AddBikeFormState extends State<AddBikeForm> {
   final _kmWeekFocus = FocusNode();
   final _kmWeek = TextEditingController();
 
+  final _priceFocus = FocusNode();
+  final _price = TextEditingController();
+
   final List<String> _types = ['VTT', 'Ville', 'Route'];
 
   bool _electric = false;
@@ -72,21 +75,32 @@ class _AddBikeFormState extends State<AddBikeForm> {
           scrollDirection: Axis.vertical,
           children: <Widget>[
             AppTextField(
-                keyboardType: TextInputType.text,
-                focusNode: _nameFocus,
-                textfieldController: _name,
-                validator: fieldValidator,
-                hintText: 'Nom du vélo',
-                label: 'Nom du vélo',
-                icon: Icons.pedal_bike),
+              keyboardType: TextInputType.text,
+              focusNode: _nameFocus,
+              textfieldController: _name,
+              validator: fieldValidator,
+              hintText: 'Nom du vélo',
+              label: 'Nom du vélo',
+              icon: Icons.pedal_bike,
+            ),
             AppTextField(
-                keyboardType: TextInputType.number,
-                focusNode: _kmWeekFocus,
-                textfieldController: _kmWeek,
-                validator: kmValidator,
-                hintText: 'Kilomètres par semaine',
-                label: 'Kilomètres par semaine',
-                icon: Icons.add_road),
+              keyboardType: TextInputType.number,
+              focusNode: _kmWeekFocus,
+              textfieldController: _kmWeek,
+              validator: positiveValidator,
+              hintText: 'Kilomètres par semaine',
+              label: 'Kilomètres par semaine',
+              icon: Icons.add_road,
+            ),
+            AppTextField(
+              keyboardType: TextInputType.number,
+              focusNode: _priceFocus,
+              textfieldController: _price,
+              validator: positiveValidator,
+              hintText: 'Prix du vélo',
+              label: 'Prix du vélo',
+              icon: Icons.euro,
+            ),
             Row(mainAxisAlignment: MainAxisAlignment.center, children: <Widget>[
               Text('Ajout quotidien des km ?', style: thirdTextStyle),
               Switch(
@@ -142,8 +156,16 @@ class _AddBikeFormState extends State<AddBikeForm> {
 
   void _addBike() async {
     final String memberId = await Storage.getMemberId();
-    final Bike bike = Bike('', _name.text, double.parse(_kmWeek.text),
-        _electric, _type!, DateTime.now(), 0, _automatic);
+    final Bike bike = Bike(
+        '',
+        _name.text,
+        double.parse(_kmWeek.text),
+        _electric,
+        _type!,
+        DateTime.now(),
+        0,
+        _automatic,
+        double.parse(_price.text));
     final HttpResponse response = await BikeService().create(memberId, bike);
 
     if (response.success()) {

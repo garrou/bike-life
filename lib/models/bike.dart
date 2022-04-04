@@ -11,9 +11,10 @@ class Bike {
   final DateTime addedAt;
   final double totalKm;
   final bool automaticKm;
+  final double price;
 
   Bike(this.id, this.name, this.kmPerWeek, this.electric, this.type,
-      this.addedAt, this.totalKm, this.automaticKm);
+      this.addedAt, this.totalKm, this.automaticKm, this.price);
 
   Bike.fromJson(Map<String, dynamic> json)
       : id = json['id'],
@@ -23,7 +24,8 @@ class Bike {
         type = json['type'],
         addedAt = DateTime.parse(json['addedAt']),
         totalKm = json['totalKm'].toDouble(),
-        automaticKm = json['automaticKm'];
+        automaticKm = json['automaticKm'],
+        price = json['price'].toDouble();
 
   Map<String, dynamic> toJson() => {
         'id': id,
@@ -33,7 +35,8 @@ class Bike {
         'type': type,
         'addedAt': addedAt.toString(),
         'totalKm': totalKm,
-        'automaticKm': automaticKm
+        'automaticKm': automaticKm,
+        'price': price
       };
 
   String formatAddedDate() => format.format(addedAt);

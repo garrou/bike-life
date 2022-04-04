@@ -56,6 +56,9 @@ class _UpdateBikeFormState extends State<UpdateBikeForm> {
   final _kmRealisedFocus = FocusNode();
   final _kmRealised = TextEditingController();
 
+  final _priceFocus = FocusNode();
+  final _price = TextEditingController();
+
   final List<String> _types = ['VTT', 'Ville', 'Route'];
 
   late bool _automatic;
@@ -69,6 +72,7 @@ class _UpdateBikeFormState extends State<UpdateBikeForm> {
     _name.text = widget.bike.name;
     _automatic = widget.bike.automaticKm;
     _kmRealised.text = widget.bike.formatKm();
+    _price.text = widget.bike.price.toString();
   }
 
   @override
@@ -88,17 +92,25 @@ class _UpdateBikeFormState extends State<UpdateBikeForm> {
                 keyboardType: TextInputType.number,
                 focusNode: _kmWeekFocus,
                 textfieldController: _kmWeek,
-                validator: kmValidator,
+                validator: positiveValidator,
                 hintText: 'Kilomètres par semaine',
                 label: 'Kilomètres par semaine',
                 icon: Icons.add_road),
+            AppTextField(
+                keyboardType: TextInputType.number,
+                focusNode: _priceFocus,
+                textfieldController: _price,
+                validator: positiveValidator,
+                hintText: 'Prix du vélo',
+                label: 'Prix du vélo',
+                icon: Icons.euro),
             widget.bike.automaticKm
                 ? Container()
                 : AppTextField(
                     keyboardType: TextInputType.number,
                     focusNode: _kmRealisedFocus,
                     textfieldController: _kmRealised,
-                    validator: kmValidator,
+                    validator: positiveValidator,
                     hintText: 'Kilomètres réalisés',
                     label: 'Kilomètres réalisés',
                     icon: Icons.add_road),
@@ -174,7 +186,8 @@ class _UpdateBikeFormState extends State<UpdateBikeForm> {
         widget.bike.automaticKm
             ? widget.bike.totalKm
             : double.parse(_kmRealised.text),
-        _automatic);
+        _automatic,
+        double.parse(_price.text));
     final HttpResponse response = await BikeService().update(bike);
 
     if (response.success()) {

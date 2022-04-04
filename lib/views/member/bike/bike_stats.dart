@@ -142,10 +142,7 @@ class _AvgChangeComponentsBikeState extends State<AvgChangeComponentsBike> {
           return Container();
         } else if (snapshot.hasData) {
           return snapshot.data!.isEmpty
-              ? AppTitle(
-                  text: 'Aucune statistique',
-                  paddingTop: 10,
-                  style: thirdTextStyle)
+              ? Container()
               : AppBarChart(
                   series: snapshot.data!,
                   color: const Color.fromARGB(255, 26, 117, 159),
@@ -191,14 +188,11 @@ class _NbChangeState extends State<NbChange> {
           return Container();
         } else if (snapshot.hasData) {
           return snapshot.data!.isEmpty
-              ? AppTitle(
-                  text: 'Aucune statistique',
-                  paddingTop: 10,
-                  style: thirdTextStyle)
+              ? Container()
               : AppBarChart(
                   series: snapshot.data!,
                   color: const Color.fromARGB(255, 30, 96, 145),
-                  text: 'Utilisation des composants avant changement (%)');
+                  text: 'Composants changés sur ce vélo par années');
         }
         return const AppLoading();
       });
