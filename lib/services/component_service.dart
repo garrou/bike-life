@@ -89,4 +89,22 @@ class ComponentService {
         .get(Uri.parse('$endpoint/bikes/$bikeId/components/nb-change-stats'));
     return HttpResponse(response);
   }
+
+  Future<HttpResponse> getSumPriceComponentsMember(String memberId) async {
+    final Response response = await client
+        .get(Uri.parse('$endpoint/members/$memberId/components/price'));
+    return HttpResponse(response);
+  }
+
+  Future<HttpResponse> getSumPriceComponentsBike(String bikeId) async {
+    final Response response =
+        await client.get(Uri.parse('$endpoint/bikes/$bikeId/components/price'));
+    return HttpResponse(response);
+  }
+
+  Future<HttpResponse> getComponentsBySearch(String search) async {
+    final Response response =
+        await client.get(Uri.parse('$endpoint/components/$search'));
+    return HttpResponse(response);
+  }
 }

@@ -63,7 +63,9 @@ class _UpdateComponentFormState extends State<UpdateComponentForm> {
   @override
   Widget build(BuildContext context) => Form(
       key: _keyForm,
-      child: Column(children: <Widget>[
+      child: Column(
+        
+        children: <Widget>[
         AppTextField(
           focusNode: _brandFocus,
           textfieldController: _brand,

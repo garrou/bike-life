@@ -48,8 +48,9 @@ class _BikeStatsPageState extends State<BikeStatsPage> {
                     : 1,
             children: <Widget>[
               NbChangeStats(bikeId: widget.bike.id),
+              SumPriceBikeComponents(bikeId: widget.bike.id),
               AvgChangeComponentsBike(bikeId: widget.bike.id),
-              NbChange(bikeId: widget.bike.id)
+              NbChange(bikeId: widget.bike.id),
             ],
           ),
         )
@@ -193,6 +194,54 @@ class _NbChangeState extends State<NbChange> {
                   series: snapshot.data!,
                   color: const Color.fromARGB(255, 30, 96, 145),
                   text: 'Composants changés sur ce vélo par années');
+        }
+        return const AppLoading();
+      });
+}
+
+class SumPriceBikeComponents extends StatefulWidget {
+  final String bikeId;
+  const SumPriceBikeComponents({Key? key, required this.bikeId})
+      : super(key: key);
+
+  @override
+  State<SumPriceBikeComponents> createState() => _SumPriceBikeComponentsState();
+}
+
+class _SumPriceBikeComponentsState extends State<SumPriceBikeComponents> {
+  late Future<List<ComponentStat>> _sumPriceCompoStats;
+
+  @override
+  void initState() {
+    super.initState();
+    _sumPriceCompoStats = _loadSumPriceBikeComponents(widget.bikeId);
+  }
+
+  Future<List<ComponentStat>> _loadSumPriceBikeComponents(String bikeId) async {
+    final HttpResponse response =
+        await ComponentService().getSumPriceComponentsBike(bikeId);
+
+    if (response.success()) {
+      return createComponentStats(response.body());
+    } else {
+      throw Exception(response.message());
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) => FutureBuilder<List<ComponentStat>>(
+      future: _sumPriceCompoStats,
+      builder: (context, snapshot) {
+        if (snapshot.hasError) {
+          return Container();
+        } else if (snapshot.hasData) {
+          return snapshot.data!.isEmpty
+              ? Container()
+              : AppBarChart(
+                  vertical: true,
+                  series: snapshot.data!,
+                  color: const Color.fromARGB(255, 3, 139, 139),
+                  text: 'Sommes dépensés en composants sur ce vélo');
         }
         return const AppLoading();
       });

@@ -154,5 +154,9 @@ class AppComponentCard extends StatelessWidget {
   }
 
   void _onComponentDetailsPage(BuildContext context) => Navigator.push(
-      context, animationRightLeft(ComponentDetailsPage(component: component)));
+        context,
+        animationRightLeft(
+          ComponentDetailsPage(component: component),
+        ),
+      );
 }
