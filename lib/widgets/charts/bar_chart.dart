@@ -54,8 +54,9 @@ class AppBarChart extends StatelessWidget {
                 barRendererDecorator: charts.BarLabelDecorator(
                   insideLabelStyleSpec: charts.TextStyleSpec(
                       color: charts.MaterialPalette.white.lighter),
-                  outsideLabelStyleSpec:
-                      charts.TextStyleSpec(color: chartColorByTheme(context)),
+                  outsideLabelStyleSpec: charts.TextStyleSpec(
+                    color: chartColorByTheme(context),
+                  ),
                 ),
               ),
             )

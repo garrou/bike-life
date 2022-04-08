@@ -10,7 +10,7 @@ import 'package:bike_life/utils/storage.dart';
 import 'package:bike_life/utils/validator.dart';
 import 'package:bike_life/views/auth/signin.dart';
 import 'package:bike_life/views/member/bike/bike_details.dart';
-import 'package:bike_life/views/member/bike/add_bike.dart';
+import 'package:bike_life/views/member/bike/bike_add.dart';
 import 'package:bike_life/styles/styles.dart';
 import 'package:bike_life/views/member/member_home.dart';
 import 'package:bike_life/widgets/buttons/button.dart';
@@ -21,7 +21,7 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_guards/flutter_guards.dart';
 
-double height = 480.0;
+double height = 500.0;
 
 class AllBikesPage extends StatefulWidget {
   const AllBikesPage({Key? key}) : super(key: key);
@@ -242,6 +242,12 @@ class _BikeCardState extends State<BikeCard> {
                   style: ButtonStyle(
                     foregroundColor:
                         MaterialStateProperty.all<Color>(Colors.white),
+                    shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                      RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(20.0),
+                        side: const BorderSide(color: Colors.white),
+                      ),
+                    ),
                   ),
                 ),
                 ComponentsAlerts(bike: widget.bike)
@@ -267,7 +273,7 @@ class _BikeCardState extends State<BikeCard> {
             AppTextField(
               focusNode: _kmFocus,
               textfieldController: _km,
-              validator: kmValidator,
+              validator: positiveValidator,
               hintText: 'Kilomètres à ajouter',
               label: 'Kilomètres',
               icon: Icons.add_road,

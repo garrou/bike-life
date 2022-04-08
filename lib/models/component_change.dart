@@ -3,14 +3,31 @@ import 'package:intl/intl.dart';
 class ComponentChange {
   static DateFormat format = DateFormat('dd/MM/yyyy');
 
-  final String changeAt;
+  final DateTime changedAt;
   final double km;
+  final double price;
+  final String brand;
 
-  ComponentChange(this.changeAt, this.km);
+  ComponentChange(this.changedAt, this.km, this.price, this.brand);
 
   ComponentChange.fromJson(Map<String, dynamic> json)
-      : changeAt = format.format(DateTime.parse(json['label'])),
-        km = json['value'].toDouble();
+      : changedAt = DateTime.parse(json['changedAt']),
+        km = json['kmRealised'].toDouble(),
+        price = json['price'].toDouble(),
+        brand = json['brand'];
+
+  Map<String, dynamic> toJson() => {
+        'changedAt': changedAt.toString(),
+        'kmRealised': km,
+        'price': price,
+        'brand': brand
+      };
+
+  String formatChangedAt() => format.format(changedAt);
+
+  String formatKm() => km.toStringAsFixed(2);
+
+  String formatPrice() => price.toStringAsFixed(2);
 }
 
 List<ComponentChange> createChanges(List<dynamic> records) => records

@@ -17,13 +17,11 @@ TextStyle linkStyle = const TextStyle(
     color: Colors.blue,
     fontSize: secondSize);
 
-TextStyle whiteLinkStyle = const TextStyle(
-    decoration: TextDecoration.underline,
-    color: Colors.white,
-    fontSize: secondSize);
-
 TextStyle setStyle(BuildContext context, double size) =>
     GoogleFonts.abel(fontSize: size, color: colorByTheme(context));
+
+TextStyle setBoldStyle(BuildContext context, double size) => GoogleFonts.abel(
+    fontSize: size, color: colorByTheme(context), fontWeight: FontWeight.bold);
 
 charts.Color chartColorByTheme(BuildContext context) =>
     context.read<ThemeModel>().isDark

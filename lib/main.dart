@@ -9,6 +9,7 @@ import 'package:provider/provider.dart';
 // TODO; inactive when change email
 // TODO: suggest components with user components
 // TODO: check if icon are all empty or full
+// TODO: check brand length server side and front
 
 void main() {
   runApp(MultiProvider(providers: [

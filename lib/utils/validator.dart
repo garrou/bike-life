@@ -20,7 +20,7 @@ String? fieldValidator(String? value) {
   }
 }
 
-String? kmValidator(String? value) {
+String? positiveValidator(String? value) {
   if (value == null ||
       value.isEmpty ||
       double.tryParse(value) == null ||
@@ -34,5 +34,3 @@ String? lengthValidator(String? value) {
     return 'Saisie invalide, le nom doit faire entre 1 et $maxBikeName caractères';
   }
 }
-
-String? emptyValidator(String? value) => '';
