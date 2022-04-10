@@ -7,6 +7,7 @@ import 'package:bike_life/widgets/buttons/button.dart';
 import 'package:bike_life/widgets/buttons/top_left_button.dart';
 import 'package:bike_life/widgets/error.dart';
 import 'package:bike_life/widgets/loading.dart';
+import 'package:bike_life/widgets/snackbar.dart';
 import 'package:bike_life/widgets/textfield.dart';
 import 'package:flutter/material.dart';
 
@@ -63,16 +64,16 @@ class _UpdateEmailPageState extends State<UpdateEmailPage> {
         key: _keyForm,
         child: Column(
           children: <Widget>[
-            AppTopLeftButton(
-              title: "Changer l'email",
-              callback: () => Navigator.pop(context),
-            ),
+            if (!isWeb)
+              AppTopLeftButton(
+                title: "Changer l'email",
+                callback: () => Navigator.pop(context),
+              ),
             FutureBuilder(
                 future: _userEmail,
                 builder: (_, snapshot) {
                   if (snapshot.hasError) {
-                    return const AppError(
-                        message: 'Erreur de connexion avec le serveur');
+                    return const AppError(message: 'Erreur serveur');
                   } else if (snapshot.hasData) {
                     _email.text = snapshot.data.toString();
                     return AppTextField(
@@ -108,9 +109,10 @@ class _UpdateEmailPageState extends State<UpdateEmailPage> {
     final HttpResponse response =
         await _memberService.updateEmail(memberId, _email.text);
 
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: Text(response.message(),
-            style: const TextStyle(color: Colors.white)),
-        backgroundColor: response.color()));
+    if (response.success()) {
+      showSuccessSnackBar(context, response.message());
+    } else {
+      showErrorSnackBar(context, response.message());
+    }
   }
 }

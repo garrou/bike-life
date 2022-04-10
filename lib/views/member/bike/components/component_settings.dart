@@ -1,17 +1,21 @@
+import 'package:bike_life/models/bike.dart';
 import 'package:bike_life/models/component.dart';
 import 'package:bike_life/models/http_response.dart';
 import 'package:bike_life/services/component_service.dart';
 import 'package:bike_life/styles/animations.dart';
 import 'package:bike_life/utils/constants.dart';
 import 'package:bike_life/utils/validator.dart';
-import 'package:bike_life/views/member/member_home.dart';
+import 'package:bike_life/views/member/bike/bike_details.dart';
 import 'package:bike_life/widgets/buttons/button.dart';
+import 'package:bike_life/widgets/snackbar.dart';
 import 'package:bike_life/widgets/textfield.dart';
 import 'package:flutter/material.dart';
 
 class ComponentSettingsPage extends StatelessWidget {
   final Component component;
-  const ComponentSettingsPage({Key? key, required this.component})
+  final Bike bike;
+  const ComponentSettingsPage(
+      {Key? key, required this.component, required this.bike})
       : super(key: key);
 
   @override
@@ -31,13 +35,17 @@ class ComponentSettingsPage extends StatelessWidget {
       child: _wideLayout(context));
 
   Widget _wideLayout(BuildContext context) => ListView(
-        children: <Widget>[UpdateComponentForm(component: component)],
+        children: <Widget>[
+          UpdateComponentForm(component: component, bike: bike)
+        ],
       );
 }
 
 class UpdateComponentForm extends StatefulWidget {
   final Component component;
-  const UpdateComponentForm({Key? key, required this.component})
+  final Bike bike;
+  const UpdateComponentForm(
+      {Key? key, required this.component, required this.bike})
       : super(key: key);
 
   @override
@@ -63,9 +71,7 @@ class _UpdateComponentFormState extends State<UpdateComponentForm> {
   @override
   Widget build(BuildContext context) => Form(
       key: _keyForm,
-      child: Column(
-        
-        children: <Widget>[
+      child: Column(children: <Widget>[
         AppTextField(
           focusNode: _brandFocus,
           textfieldController: _brand,
@@ -111,14 +117,12 @@ class _UpdateComponentFormState extends State<UpdateComponentForm> {
 
     if (response.success()) {
       Navigator.push(
-          context, animationRightLeft(const MemberHomePage(initialPage: 0)));
+        context,
+        animationRightLeft(BikeDetailsPage(bike: widget.bike)),
+      );
+      showSuccessSnackBar(context, response.message());
+    } else {
+      showErrorSnackBar(context, response.message());
     }
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(response.message(),
-            style: const TextStyle(color: Colors.white)),
-        backgroundColor: response.color(),
-      ),
-    );
   }
 }

@@ -27,7 +27,7 @@ class ComponentChange {
 
   String formatKm() => km.toStringAsFixed(2);
 
-  String formatPrice() => price.toStringAsFixed(2);
+  String formatPrice() => '${price.toStringAsFixed(2)} €';
 }
 
 List<ComponentChange> createChanges(List<dynamic> records) => records

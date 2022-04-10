@@ -8,6 +8,7 @@ import 'package:bike_life/services/bike_service.dart';
 import 'package:bike_life/styles/styles.dart';
 import 'package:bike_life/views/member/member_home.dart';
 import 'package:bike_life/widgets/buttons/button.dart';
+import 'package:bike_life/widgets/snackbar.dart';
 import 'package:bike_life/widgets/textfield.dart';
 import 'package:bike_life/widgets/buttons/top_left_button.dart';
 import 'package:flutter/material.dart';
@@ -34,8 +35,10 @@ class AddBikePage extends StatelessWidget {
   Widget _wideLayout(BuildContext context) => ListView(
         padding: const EdgeInsets.symmetric(horizontal: thirdSize),
         children: <Widget>[
-          AppTopLeftButton(
-              title: 'Ajouter un vélo', callback: () => Navigator.pop(context)),
+          if (!isWeb)
+            AppTopLeftButton(
+                title: 'Ajouter un vélo',
+                callback: () => Navigator.pop(context)),
           const AddBikeForm()
         ],
       );
@@ -170,18 +173,14 @@ class _AddBikeFormState extends State<AddBikeForm> {
 
     if (response.success()) {
       _onMemberHomePage();
+      showSuccessSnackBar(context, response.message());
+    } else {
+      showErrorSnackBar(context, response.message());
     }
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(response.message(),
-            style: const TextStyle(color: Colors.white)),
-        backgroundColor: response.color(),
-      ),
-    );
   }
 
   void _onMemberHomePage() => Navigator.pushAndRemoveUntil(
       context,
-      animationRightLeft(const MemberHomePage(initialPage: 0)),
+      animationRightLeft(const MemberHomePage()),
       (Route<dynamic> route) => false);
 }

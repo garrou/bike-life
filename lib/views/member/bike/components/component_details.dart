@@ -1,3 +1,4 @@
+import 'package:bike_life/models/bike.dart';
 import 'package:bike_life/models/component.dart';
 import 'package:bike_life/styles/styles.dart';
 import 'package:bike_life/views/member/bike/components/component_historic.dart';
@@ -6,7 +7,9 @@ import 'package:flutter/material.dart';
 
 class ComponentDetailsPage extends StatelessWidget {
   final Component component;
-  const ComponentDetailsPage({Key? key, required this.component})
+  final Bike bike;
+  const ComponentDetailsPage(
+      {Key? key, required this.component, required this.bike})
       : super(key: key);
 
   @override
@@ -25,8 +28,8 @@ class ComponentDetailsPage extends StatelessWidget {
             ),
           ),
           body: TabBarView(children: [
-            ComponentHistoricPage(component: component),
-            ComponentSettingsPage(component: component),
+            ComponentHistoricPage(component: component, bike: bike),
+            ComponentSettingsPage(component: component, bike: bike),
           ]),
         ),
       );

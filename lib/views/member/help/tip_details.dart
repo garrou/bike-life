@@ -26,17 +26,15 @@ class TipDetailsPage extends StatelessWidget {
           horizontal: MediaQuery.of(context).size.width / 12),
       child: _wideLayout(context));
 
-  Widget _wideLayout(BuildContext context) => ScrollConfiguration(
-        behavior: const ScrollBehavior().copyWith(overscroll: false),
-        child: ListView(
-          padding: const EdgeInsets.symmetric(horizontal: thirdSize),
-          children: <Widget>[
+  Widget _wideLayout(BuildContext context) => ListView(
+        padding: const EdgeInsets.symmetric(horizontal: thirdSize),
+        children: <Widget>[
+          if (!isWeb)
             AppTopLeftButton(title: 'Conseils', callback: () => _back(context)),
-            buildText(tip.title, boldTextStyle, TextAlign.center),
-            buildText(tip.content, thirdTextStyle, TextAlign.center),
-            if (tip.videoUrl != null) VideoPlayer(video: tip.videoUrl!)
-          ],
-        ),
+          buildText(tip.title, boldTextStyle, TextAlign.center),
+          buildText(tip.content, thirdTextStyle, TextAlign.center),
+          if (tip.videoUrl != null) VideoPlayer(video: tip.videoUrl!)
+        ],
       );
 
   Padding buildText(String text, TextStyle style, TextAlign textAlign) =>

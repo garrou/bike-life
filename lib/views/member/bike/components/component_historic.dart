@@ -1,3 +1,4 @@
+import 'package:bike_life/models/bike.dart';
 import 'package:bike_life/models/component_change.dart';
 import 'package:bike_life/models/component.dart';
 import 'package:bike_life/models/http_response.dart';
@@ -12,7 +13,9 @@ import 'package:flutter/material.dart';
 
 class ComponentHistoricPage extends StatefulWidget {
   final Component component;
-  const ComponentHistoricPage({Key? key, required this.component})
+  final Bike bike;
+  const ComponentHistoricPage(
+      {Key? key, required this.component, required this.bike})
       : super(key: key);
 
   @override
@@ -67,13 +70,12 @@ class _ComponentHistoricPageState extends State<ComponentHistoricPage> {
                 future: _historic,
                 builder: (context, snapshot) {
                   if (snapshot.hasError) {
-                    return const AppError(
-                        message: 'Erreur de connexion avec le serveur');
+                    return const AppError(message: 'Erreur serveur');
                   } else if (snapshot.hasData) {
                     final int nb = snapshot.data!.length;
                     final String s = nb > 1 ? 's' : '';
 
-                    return Column(children: [
+                    return ListView(shrinkWrap: true, children: [
                       ListView.builder(
                           itemCount: nb,
                           shrinkWrap: true,
@@ -115,7 +117,7 @@ class _ComponentHistoricPageState extends State<ComponentHistoricPage> {
                       style: setStyle(context, 16))),
               Padding(
                   padding: const EdgeInsets.only(bottom: 5),
-                  child: Text('Prix du composant : ${change.formatPrice()} €',
+                  child: Text('Prix du composant : ${change.formatPrice()}',
                       style: setStyle(context, 16))),
             ],
           ),
@@ -123,5 +125,7 @@ class _ComponentHistoricPageState extends State<ComponentHistoricPage> {
       );
 
   void _onComponentChangePage(Component component) => Navigator.push(
-      context, animationRightLeft(ChangeComponentPage(component: component)));
+      context,
+      animationRightLeft(
+          ChangeComponentPage(component: component, bike: widget.bike)));
 }

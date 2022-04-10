@@ -35,11 +35,11 @@ class StatisticsPage extends StatelessWidget {
           child: _wideLayout(context, constraints));
 
   Widget _wideLayout(BuildContext context, BoxConstraints constraints) =>
-      ScrollConfiguration(
-        behavior: const ScrollBehavior().copyWith(overscroll: false),
-        child: Column(children: [
+      Column(
+        children: [
           Expanded(
             child: GridView.count(
+              controller: ScrollController(),
               crossAxisCount: constraints.maxWidth > maxWidth + 400
                   ? 3
                   : constraints.maxWidth > maxWidth
@@ -74,7 +74,7 @@ class StatisticsPage extends StatelessWidget {
               ],
             ),
           ),
-        ]),
+        ],
       );
 }
 
@@ -111,7 +111,7 @@ class _TotalChangesState extends State<TotalChanges> {
       future: _totalChangeStats,
       builder: (context, snapshot) {
         if (snapshot.hasError) {
-          return const AppError(message: 'Erreur de connexion avec le serveur');
+          return const AppError(message: 'Erreur serveur');
         } else if (snapshot.hasData) {
           return snapshot.data!.isEmpty
               ? AppTitle(

@@ -54,20 +54,18 @@ class _TipsPageState extends State<TipsPage> {
       future: _loadTips(_topic),
       builder: (_, snapshot) {
         if (snapshot.hasError) {
-          return const AppError(message: 'Erreur de connexion avec le serveur');
+          return const AppError(message: 'Erreur serveur');
         } else if (snapshot.hasData) {
-          return ScrollConfiguration(
-            behavior: const ScrollBehavior().copyWith(overscroll: false),
-            child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: <Widget>[
-                  _buildDropdownButton(),
-                  Expanded(
-                    child: ListView(children: <Widget>[
-                      for (Tip tip in snapshot.data!) _buildTip(tip)
-                    ]),
-                  )
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: <Widget>[
+              _buildDropdownButton(),
+              Expanded(
+                child: ListView(children: <Widget>[
+                  for (Tip tip in snapshot.data!) _buildTip(tip)
                 ]),
+              )
+            ],
           );
         }
         return const AppLoading();

@@ -5,9 +5,10 @@ import 'package:bike_life/styles/animations.dart';
 import 'package:bike_life/styles/styles.dart';
 import 'package:bike_life/utils/constants.dart';
 import 'package:bike_life/utils/validator.dart';
+import 'package:bike_life/views/member/bike/bike_details.dart';
 import 'package:bike_life/views/member/member_home.dart';
 import 'package:bike_life/widgets/buttons/button.dart';
-
+import 'package:bike_life/widgets/snackbar.dart';
 import 'package:bike_life/widgets/textfield.dart';
 import 'package:flutter/material.dart';
 
@@ -53,9 +54,6 @@ class _UpdateBikeFormState extends State<UpdateBikeForm> {
   final _kmWeekFocus = FocusNode();
   final _kmWeek = TextEditingController();
 
-  final _kmRealisedFocus = FocusNode();
-  final _kmRealised = TextEditingController();
-
   final _priceFocus = FocusNode();
   final _price = TextEditingController();
 
@@ -71,7 +69,6 @@ class _UpdateBikeFormState extends State<UpdateBikeForm> {
     _kmWeek.text = '${widget.bike.kmPerWeek}';
     _name.text = widget.bike.name;
     _automatic = widget.bike.automaticKm;
-    _kmRealised.text = widget.bike.formatKm();
     _price.text = widget.bike.price.toString();
   }
 
@@ -104,16 +101,6 @@ class _UpdateBikeFormState extends State<UpdateBikeForm> {
                 hintText: 'Prix du vélo',
                 label: 'Prix du vélo',
                 icon: Icons.euro),
-            widget.bike.automaticKm
-                ? Container()
-                : AppTextField(
-                    keyboardType: TextInputType.number,
-                    focusNode: _kmRealisedFocus,
-                    textfieldController: _kmRealised,
-                    validator: positiveValidator,
-                    hintText: 'Kilomètres réalisés',
-                    label: 'Kilomètres réalisés',
-                    icon: Icons.add_road),
             Row(mainAxisAlignment: MainAxisAlignment.center, children: <Widget>[
               Text('Ajout automatique des kilomètres', style: thirdTextStyle),
               Switch(
@@ -183,9 +170,7 @@ class _UpdateBikeFormState extends State<UpdateBikeForm> {
         widget.bike.electric,
         _type!,
         widget.bike.addedAt,
-        widget.bike.automaticKm
-            ? widget.bike.totalKm
-            : double.parse(_kmRealised.text),
+        widget.bike.totalKm,
         _automatic,
         double.parse(_price.text));
     final HttpResponse response = await BikeService().update(bike);
@@ -194,14 +179,16 @@ class _UpdateBikeFormState extends State<UpdateBikeForm> {
       Navigator.pushAndRemoveUntil(
           context,
           MaterialPageRoute(
-              builder: (BuildContext context) =>
-                  const MemberHomePage(initialPage: 0)),
+              builder: (BuildContext context) => const MemberHomePage()),
           (Route<dynamic> route) => false);
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (BuildContext context) => BikeDetailsPage(bike: bike)));
+      showSuccessSnackBar(context, response.message());
+    } else {
+      showErrorSnackBar(context, response.message());
     }
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: Text(response.message(),
-            style: const TextStyle(color: Colors.white)),
-        backgroundColor: response.color()));
   }
 
   Future _showDeleteDialog(BuildContext context) async => showDialog(
@@ -219,7 +206,7 @@ class _UpdateBikeFormState extends State<UpdateBikeForm> {
                   _onDelete(context);
                   Navigator.pushAndRemoveUntil(
                       context,
-                      animationRightLeft(const MemberHomePage(initialPage: 0)),
+                      animationRightLeft(const MemberHomePage()),
                       (Route<dynamic> route) => false);
                 }),
             TextButton(
@@ -237,12 +224,11 @@ class _UpdateBikeFormState extends State<UpdateBikeForm> {
     if (response.success()) {
       Navigator.pushAndRemoveUntil(
           context,
-          animationRightLeft(const MemberHomePage(initialPage: 0)),
+          animationRightLeft(const MemberHomePage()),
           (Route<dynamic> route) => false);
+      showSuccessSnackBar(context, response.message());
+    } else {
+      showErrorSnackBar(context, response.message());
     }
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: Text(response.message(),
-            style: const TextStyle(color: Colors.white)),
-        backgroundColor: response.color()));
   }
 }

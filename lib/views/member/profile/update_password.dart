@@ -5,6 +5,7 @@ import 'package:bike_life/utils/storage.dart';
 import 'package:bike_life/utils/validator.dart';
 import 'package:bike_life/widgets/buttons/button.dart';
 import 'package:bike_life/widgets/buttons/top_left_button.dart';
+import 'package:bike_life/widgets/snackbar.dart';
 import 'package:bike_life/widgets/textfield.dart';
 import 'package:flutter/material.dart';
 
@@ -44,10 +45,11 @@ class _UpdatePasswordPageState extends State<UpdatePasswordPage> {
           key: _keyForm,
           child: Column(
             children: <Widget>[
-              AppTopLeftButton(
-                title: "Changer le mot de passe",
-                callback: () => Navigator.pop(context),
-              ),
+              if (!isWeb)
+                AppTopLeftButton(
+                  title: "Changer le mot de passe",
+                  callback: () => Navigator.pop(context),
+                ),
               AppTextField(
                   keyboardType: TextInputType.text,
                   label: 'Mot de passe',
@@ -93,9 +95,10 @@ class _UpdatePasswordPageState extends State<UpdatePasswordPage> {
     final HttpResponse response =
         await MemberService().updatePassword(memberId, _password.text);
 
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: Text(response.message(),
-            style: const TextStyle(color: Colors.white)),
-        backgroundColor: response.color()));
+    if (response.success()) {
+      showSuccessSnackBar(context, response.message());
+    } else {
+      showErrorSnackBar(context, response.message());
+    }
   }
 }

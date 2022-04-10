@@ -1,19 +1,24 @@
+import 'package:bike_life/models/bike.dart';
 import 'package:bike_life/models/component.dart';
 import 'package:bike_life/models/component_change.dart';
 import 'package:bike_life/models/http_response.dart';
 import 'package:bike_life/services/component_service.dart';
 import 'package:bike_life/styles/animations.dart';
 import 'package:bike_life/utils/constants.dart';
+import 'package:bike_life/views/member/bike/bike_details.dart';
 import 'package:bike_life/views/member/member_home.dart';
 import 'package:bike_life/widgets/buttons/button.dart';
 import 'package:bike_life/widgets/calendar.dart';
 import 'package:bike_life/widgets/buttons/top_left_button.dart';
+import 'package:bike_life/widgets/snackbar.dart';
 import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 
 class ChangeComponentPage extends StatefulWidget {
   final Component component;
-  const ChangeComponentPage({Key? key, required this.component})
+  final Bike bike;
+  const ChangeComponentPage(
+      {Key? key, required this.component, required this.bike})
       : super(key: key);
 
   @override
@@ -41,7 +46,8 @@ class _ChangeComponentPageState extends State<ChangeComponentPage> {
 
   Widget _wideLayout() => ListView(
         children: <Widget>[
-          AppTopLeftButton(title: 'Changement de composant', callback: _back),
+          if (!isWeb)
+            AppTopLeftButton(title: 'Changement de composant', callback: _back),
           Padding(
             child: AppCalendar(
                 minDate: widget.component.changedAt,
@@ -72,15 +78,14 @@ class _ChangeComponentPageState extends State<ChangeComponentPage> {
             widget.component.price, widget.component.brand));
 
     if (response.success()) {
+      Navigator.pushAndRemoveUntil(context,
+          animationRightLeft(const MemberHomePage()), (route) => false);
       Navigator.push(
-          context, animationRightLeft(const MemberHomePage(initialPage: 0)));
+          context, animationRightLeft(BikeDetailsPage(bike: widget.bike)));
+
+      showSuccessSnackBar(context, response.message());
+    } else {
+      showErrorSnackBar(context, response.message());
     }
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(response.message(),
-            style: const TextStyle(color: Colors.white)),
-        backgroundColor: response.color(),
-      ),
-    );
   }
 }

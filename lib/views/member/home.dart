@@ -16,12 +16,13 @@ import 'package:bike_life/views/member/member_home.dart';
 import 'package:bike_life/widgets/buttons/button.dart';
 import 'package:bike_life/widgets/error.dart';
 import 'package:bike_life/widgets/loading.dart';
+import 'package:bike_life/widgets/snackbar.dart';
 import 'package:bike_life/widgets/textfield.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_guards/flutter_guards.dart';
 
-double height = 500.0;
+double height = 505.0;
 
 class AllBikesPage extends StatefulWidget {
   const AllBikesPage({Key? key}) : super(key: key);
@@ -109,7 +110,7 @@ class _CarouselState extends State<Carousel> {
       future: _bikes,
       builder: (context, snapshot) {
         if (snapshot.hasError) {
-          return const AppError(message: 'Erreur de connexion avec le serveur');
+          return const AppError(message: 'Erreur serveur');
         } else if (snapshot.hasData) {
           List<Widget> cards =
               snapshot.data!.map((bike) => BikeCard(bike: bike)).toList();
@@ -120,19 +121,16 @@ class _CarouselState extends State<Carousel> {
 
   Widget _buildCarousel(List<Widget> cards) => Column(
         children: <Widget>[
-          ScrollConfiguration(
-            behavior: const ScrollBehavior().copyWith(overscroll: false),
-            child: CarouselSlider(
-              items: cards,
-              carouselController: _carouselController,
-              options: CarouselOptions(
-                onPageChanged: (index, _) {
-                  setState(() => _current = index);
-                },
-                height: height,
-                enlargeCenterPage: true,
-                enableInfiniteScroll: false,
-              ),
+          CarouselSlider(
+            items: cards,
+            carouselController: _carouselController,
+            options: CarouselOptions(
+              onPageChanged: (index, _) {
+                setState(() => _current = index);
+              },
+              height: height,
+              enlargeCenterPage: true,
+              enableInfiniteScroll: false,
             ),
           ),
           SizedBox(
@@ -228,24 +226,27 @@ class _BikeCardState extends State<BikeCard> {
                     width: MediaQuery.of(context).size.width,
                   ),
                 ),
-                TextButton.icon(
-                  label: const Text('Ajouter des km'),
-                  icon: const Icon(
-                    Icons.add_road,
-                    size: 20,
-                  ),
-                  onPressed: () => showDialog(
-                    context: context,
-                    builder: (BuildContext context) =>
-                        _buildAddKmPopup(context),
-                  ),
-                  style: ButtonStyle(
-                    foregroundColor:
-                        MaterialStateProperty.all<Color>(Colors.white),
-                    shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                      RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(20.0),
-                        side: const BorderSide(color: Colors.white),
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 10.0),
+                  child: TextButton.icon(
+                    label: const Text('Ajouter des km'),
+                    icon: const Icon(
+                      Icons.add_road,
+                      size: 20,
+                    ),
+                    onPressed: () => showDialog(
+                      context: context,
+                      builder: (BuildContext context) =>
+                          _buildAddKmPopup(context),
+                    ),
+                    style: ButtonStyle(
+                      foregroundColor:
+                          MaterialStateProperty.all<Color>(Colors.white),
+                      shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                        RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(20.0),
+                          side: const BorderSide(color: Colors.white),
+                        ),
                       ),
                     ),
                   ),
@@ -303,16 +304,12 @@ class _BikeCardState extends State<BikeCard> {
     if (response.success()) {
       Navigator.pushAndRemoveUntil(
           context,
-          animationRightLeft(const MemberHomePage(initialPage: 0)),
+          animationRightLeft(const MemberHomePage()),
           (Route<dynamic> route) => false);
+      showSuccessSnackBar(context, response.message());
+    } else {
+      showErrorSnackBar(context, response.message());
     }
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(response.message(),
-            style: const TextStyle(color: Colors.white)),
-        backgroundColor: response.color(),
-      ),
-    );
   }
 }
 
@@ -349,7 +346,7 @@ class _ComponentsAlertsState extends State<ComponentsAlerts> {
       future: _totalAlerts,
       builder: (context, snapshot) {
         if (snapshot.hasError) {
-          return const AppError(message: 'Erreur de connexion avec le serveur');
+          return const AppError(message: 'Erreur serveur');
         } else if (snapshot.hasData) {
           final int nb = snapshot.data!;
           final String s = nb > 1 ? 's' : '';
