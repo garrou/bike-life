@@ -81,7 +81,7 @@ class _AddBikeFormState extends State<AddBikeForm> {
               keyboardType: TextInputType.text,
               focusNode: _nameFocus,
               textfieldController: _name,
-              validator: fieldValidator,
+              validator: lengthValidator,
               hintText: 'Nom du vélo',
               label: 'Nom du vélo',
               icon: Icons.pedal_bike,

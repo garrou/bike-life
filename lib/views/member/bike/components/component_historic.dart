@@ -64,35 +64,34 @@ class _ComponentHistoricPageState extends State<ComponentHistoricPage> {
 
   Widget _wideLayout() => Padding(
         padding: const EdgeInsets.all(15),
-        child: Column(
-          children: <Widget>[
-            FutureBuilder<List<ComponentChange>>(
-                future: _historic,
-                builder: (context, snapshot) {
-                  if (snapshot.hasError) {
-                    return const AppError(message: 'Erreur serveur');
-                  } else if (snapshot.hasData) {
-                    final int nb = snapshot.data!.length;
-                    final String s = nb > 1 ? 's' : '';
+        child: FutureBuilder<List<ComponentChange>>(
+            future: _historic,
+            builder: (context, snapshot) {
+              if (snapshot.hasError) {
+                return const AppError(message: 'Erreur serveur');
+              } else if (snapshot.hasData) {
+                final int nb = snapshot.data!.length;
+                final String s = nb > 1 ? 's' : '';
 
-                    return ListView(shrinkWrap: true, children: [
-                      ListView.builder(
-                          itemCount: nb,
-                          shrinkWrap: true,
-                          itemBuilder: (_, index) =>
-                              _buildCard(snapshot.data![index])),
-                      Padding(
-                          child: Text(
-                            '${snapshot.data!.length} changement$s',
-                            style: thirdTextStyle,
-                          ),
-                          padding: const EdgeInsets.all(10.0)),
-                    ]);
-                  }
-                  return const AppLoading();
-                })
-          ],
-        ),
+                return Column(children: [
+                  Padding(
+                      child: Text(
+                        '${snapshot.data!.length} changement$s',
+                        style: thirdTextStyle,
+                      ),
+                      padding: const EdgeInsets.all(10.0)),
+                  Flexible(
+                    child: ListView.builder(
+                      itemCount: nb,
+                      shrinkWrap: true,
+                      itemBuilder: (_, index) =>
+                          _buildCard(snapshot.data![index]),
+                    ),
+                  ),
+                ]);
+              }
+              return const AppLoading();
+            }),
       );
 
   Card _buildCard(ComponentChange change) => Card(
