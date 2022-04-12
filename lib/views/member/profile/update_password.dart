@@ -45,11 +45,10 @@ class _UpdatePasswordPageState extends State<UpdatePasswordPage> {
           key: _keyForm,
           child: Column(
             children: <Widget>[
-              if (!isWeb)
-                AppTopLeftButton(
-                  title: "Changer le mot de passe",
-                  callback: () => Navigator.pop(context),
-                ),
+              AppTopLeftButton(
+                title: "Changer le mot de passe",
+                callback: () => Navigator.pop(context),
+              ),
               AppTextField(
                   keyboardType: TextInputType.text,
                   label: 'Mot de passe',

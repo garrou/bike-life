@@ -64,11 +64,10 @@ class _UpdateEmailPageState extends State<UpdateEmailPage> {
         key: _keyForm,
         child: Column(
           children: <Widget>[
-            if (!isWeb)
-              AppTopLeftButton(
-                title: "Changer l'email",
-                callback: () => Navigator.pop(context),
-              ),
+            AppTopLeftButton(
+              title: "Changer l'email",
+              callback: () => Navigator.pop(context),
+            ),
             FutureBuilder(
                 future: _userEmail,
                 builder: (_, snapshot) {

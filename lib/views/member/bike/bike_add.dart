@@ -35,10 +35,8 @@ class AddBikePage extends StatelessWidget {
   Widget _wideLayout(BuildContext context) => ListView(
         padding: const EdgeInsets.symmetric(horizontal: thirdSize),
         children: <Widget>[
-          if (!isWeb)
-            AppTopLeftButton(
-                title: 'Ajouter un vélo',
-                callback: () => Navigator.pop(context)),
+          AppTopLeftButton(
+              title: 'Ajouter un vélo', callback: () => Navigator.pop(context)),
           const AddBikeForm()
         ],
       );

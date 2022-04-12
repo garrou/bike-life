@@ -18,79 +18,24 @@ import 'package:bike_life/widgets/error.dart';
 import 'package:bike_life/widgets/loading.dart';
 import 'package:bike_life/widgets/snackbar.dart';
 import 'package:bike_life/widgets/textfield.dart';
-import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_guards/flutter_guards.dart';
 
-double height = 505.0;
-
-class AllBikesPage extends StatefulWidget {
-  const AllBikesPage({Key? key}) : super(key: key);
+class HomPage extends StatefulWidget {
+  const HomPage({Key? key}) : super(key: key);
 
   @override
-  _AllBikesPageState createState() => _AllBikesPageState();
+  _HomPageState createState() => _HomPageState();
 }
 
-class _AllBikesPageState extends State<AllBikesPage> {
+class _HomPageState extends State<HomPage> {
   final StreamController<bool> _authState = StreamController();
+  late Future<List<Bike>> _bikes;
 
   @override
   void initState() {
     super.initState();
     Storage.checkIfLogged(_authState);
-  }
-
-  @override
-  Widget build(BuildContext context) => Scaffold(
-        body: AuthGuard(
-            authStream: _authState.stream,
-            signedIn: LayoutBuilder(builder: (context, constraints) {
-              if (constraints.maxWidth > maxWidth) {
-                return _narrowLayout(context);
-              } else {
-                return _wideLayout();
-              }
-            }),
-            signedOut: const SigninPage()),
-        floatingActionButton: FloatingActionButton(
-          backgroundColor: primaryColor,
-          onPressed: _onAddBikePage,
-          child: const Icon(Icons.add, color: Colors.white),
-        ),
-      );
-
-  Widget _narrowLayout(BuildContext context) => Padding(
-        padding: EdgeInsets.symmetric(
-          horizontal: MediaQuery.of(context).size.width / 8,
-        ),
-        child: _wideLayout(),
-      );
-
-  Widget _wideLayout() => const Center(
-        child: SingleChildScrollView(
-          child: Carousel(),
-        ),
-      );
-
-  void _onAddBikePage() =>
-      Navigator.push(context, animationRightLeft(const AddBikePage()));
-}
-
-class Carousel extends StatefulWidget {
-  const Carousel({Key? key}) : super(key: key);
-
-  @override
-  _CarouselState createState() => _CarouselState();
-}
-
-class _CarouselState extends State<Carousel> {
-  final CarouselController _carouselController = CarouselController();
-  late Future<List<Bike>> _bikes;
-  int _current = 0;
-
-  @override
-  void initState() {
-    super.initState();
     _bikes = _loadBikes();
   }
 
@@ -106,64 +51,56 @@ class _CarouselState extends State<Carousel> {
   }
 
   @override
-  Widget build(BuildContext context) => FutureBuilder<List<Bike>>(
+  Widget build(BuildContext context) => Scaffold(
+        body: AuthGuard(
+          authStream: _authState.stream,
+          signedIn: LayoutBuilder(builder: (context, constraints) {
+            if (constraints.maxWidth > maxWidth) {
+              return _narrowLayout(constraints);
+            } else {
+              return _wideLayout(constraints);
+            }
+          }),
+          signedOut: const SigninPage(),
+        ),
+        floatingActionButton: FloatingActionButton(
+          backgroundColor: primaryColor,
+          onPressed: _onAddBikePage,
+          child: const Icon(Icons.add, color: Colors.white),
+        ),
+      );
+
+  Widget _narrowLayout(BoxConstraints constraints) => Padding(
+        padding: EdgeInsets.symmetric(
+          horizontal: MediaQuery.of(context).size.width / 8,
+        ),
+        child: _wideLayout(constraints),
+      );
+
+  Widget _wideLayout(BoxConstraints constraints) => FutureBuilder<List<Bike>>(
       future: _bikes,
       builder: (context, snapshot) {
         if (snapshot.hasError) {
           return const AppError(message: 'Erreur serveur');
         } else if (snapshot.hasData) {
-          List<Widget> cards =
-              snapshot.data!.map((bike) => BikeCard(bike: bike)).toList();
-          return _buildCarousel(cards);
+          return GridView.count(
+            childAspectRatio: 0.7,
+            controller: ScrollController(),
+            crossAxisCount: constraints.maxWidth > maxWidth + 400
+                ? 3
+                : constraints.maxWidth > maxWidth
+                    ? 2
+                    : 1,
+            children: <Widget>[
+              for (Bike bike in snapshot.data!) BikeCard(bike: bike),
+            ],
+          );
         }
         return const AppLoading();
       });
 
-  Widget _buildCarousel(List<Widget> cards) => Column(
-        children: <Widget>[
-          CarouselSlider(
-            items: cards,
-            carouselController: _carouselController,
-            options: CarouselOptions(
-              onPageChanged: (index, _) {
-                setState(() => _current = index);
-              },
-              height: height,
-              enlargeCenterPage: true,
-              enableInfiniteScroll: false,
-            ),
-          ),
-          SizedBox(
-            height: 30,
-            child: ListView.builder(
-              scrollDirection: Axis.horizontal,
-              shrinkWrap: true,
-              itemCount: cards.length,
-              itemBuilder: (_, i) => _dotIndicator(i),
-            ),
-          ),
-        ],
-      );
-
-  Widget _dotIndicator(int index) => InkWell(
-        onTap: () => _onTap(index),
-        child: Container(
-          width: 20.0,
-          height: 20.0,
-          margin: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 1.0),
-          decoration: BoxDecoration(
-            shape: BoxShape.circle,
-            color: _current == index
-                ? primaryColor
-                : const Color.fromRGBO(0, 0, 0, 0.4),
-          ),
-        ),
-      );
-
-  void _onTap(int index) => setState(() {
-        _carouselController.animateToPage(index);
-        _current = index;
-      });
+  void _onAddBikePage() =>
+      Navigator.push(context, animationRightLeft(const AddBikePage()));
 }
 
 class BikeCard extends StatefulWidget {
@@ -181,55 +118,76 @@ class _BikeCardState extends State<BikeCard> {
   final _km = TextEditingController();
 
   @override
-  Widget build(BuildContext context) => Material(
-        borderRadius: BorderRadius.circular(10),
-        color: primaryColor,
-        child: InkWell(
-          child: Container(
-            padding: const EdgeInsets.fromLTRB(10.0, 10.0, 10.0, 0),
+  Widget build(BuildContext context) => InkWell(
+        onTap: () => Navigator.push(
+            context, animationRightLeft(BikeDetailsPage(bike: widget.bike))),
+        child: Card(
+          elevation: 5,
+          child: Padding(
+            padding: const EdgeInsets.all(10.0),
             child: Column(
               children: <Widget>[
+                Padding(
+                    child: Text(widget.bike.name, style: setStyle(context, 20)),
+                    padding: const EdgeInsets.all(10.0)),
                 Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: <Widget>[
-                    Padding(
-                      child: Text(
-                        widget.bike.name,
-                        style: const TextStyle(
-                          color: Colors.white,
-                          fontSize: secondSize,
-                        ),
-                      ),
-                      padding: const EdgeInsets.only(right: 10.0),
-                    ),
+                    Text(widget.bike.type, style: setStyle(context, 18)),
+                    const VerticalDivider(thickness: 2, width: 2),
                     widget.bike.electric
-                        ? const Icon(Icons.electric_bike, color: Colors.white)
-                        : const Icon(Icons.pedal_bike, color: Colors.white)
+                        ? const Icon(Icons.electric_bike)
+                        : const Icon(Icons.pedal_bike)
                   ],
                 ),
-                const Divider(color: Colors.white, thickness: 2.0),
-                Padding(
-                  padding: const EdgeInsets.only(top: 10),
-                  child: Text(
-                    '${widget.bike.formatKm()} km',
-                    style: const TextStyle(
-                      color: Colors.white,
-                      fontSize: secondSize,
-                    ),
-                  ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    widget.bike.electric
+                        ? Text(
+                            'Vélo électrique',
+                            style: setStyle(context, 18),
+                          )
+                        : Text(
+                            '',
+                            style: setStyle(context, 18),
+                          )
+                  ],
                 ),
-                Padding(
-                  padding: const EdgeInsets.only(top: 10),
-                  child: Image.asset(
-                    'assets/bike.jpg',
-                    height: 180,
-                    width: MediaQuery.of(context).size.width,
+                IntrinsicHeight(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: <Widget>[
+                      Column(
+                        children: <Widget>[
+                          Text(widget.bike.formatKm(),
+                              style: setStyle(context, 18)),
+                          Text('Parcourus', style: setStyle(context, 14))
+                        ],
+                      ),
+                      const VerticalDivider(thickness: 2, width: 2),
+                      Column(
+                        children: <Widget>[
+                          Text('${widget.bike.price}',
+                              style: setStyle(context, 18)),
+                          Text('Prix', style: setStyle(context, 14))
+                        ],
+                      ),
+                    ],
                   ),
                 ),
                 Padding(
                   padding: const EdgeInsets.symmetric(vertical: 10.0),
+                  child: ComponentsAlerts(bike: widget.bike),
+                ),
+                Padding(
+                  child: Image.asset('assets/bike.jpg', fit: BoxFit.contain),
+                  padding: const EdgeInsets.only(top: 10.0),
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 10),
                   child: TextButton.icon(
-                    label: const Text('Ajouter des km'),
+                    label: Text('Ajouter des km', style: thirdTextStyle),
                     icon: const Icon(
                       Icons.add_road,
                       size: 20,
@@ -237,34 +195,29 @@ class _BikeCardState extends State<BikeCard> {
                     onPressed: () => showDialog(
                       context: context,
                       builder: (BuildContext context) =>
-                          _buildAddKmPopup(context),
+                          _buildAddKmPopup(context, widget.bike),
                     ),
                     style: ButtonStyle(
-                      foregroundColor:
-                          MaterialStateProperty.all<Color>(Colors.white),
+                      foregroundColor: MaterialStateProperty.all<Color>(
+                          colorByTheme(context)),
                       shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                         RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(20.0),
-                          side: const BorderSide(color: Colors.white),
+                          side: BorderSide(color: colorByTheme(context)),
                         ),
                       ),
                     ),
                   ),
                 ),
-                ComponentsAlerts(bike: widget.bike)
               ],
             ),
-            width: MediaQuery.of(context).size.width,
-            height: height,
           ),
-          onTap: () => Navigator.push(
-              context, animationRightLeft(BikeDetailsPage(bike: widget.bike))),
         ),
       );
 
-  Widget _buildAddKmPopup(BuildContext context) {
+  Widget _buildAddKmPopup(BuildContext context, Bike bike) {
     return AlertDialog(
-      title: const Text('Ajouter des kilomètres'),
+      title: Text("Ajouter des kilomètres à '${bike.name}'"),
       content: Form(
         key: _keyForm,
         child: Column(
@@ -285,7 +238,10 @@ class _BikeCardState extends State<BikeCard> {
       ),
       actions: <Widget>[
         AppButton(
-            text: 'Ajouter', callback: _onAddKm, icon: const Icon(Icons.add))
+          text: 'Ajouter',
+          callback: _onAddKm,
+          icon: const Icon(Icons.add),
+        )
       ],
     );
   }

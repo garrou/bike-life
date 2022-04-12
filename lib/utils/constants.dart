@@ -1,5 +1,4 @@
-import 'package:flutter/foundation.dart'
-    show defaultTargetPlatform, kIsWeb, TargetPlatform;
+import 'package:flutter/foundation.dart';
 
 String endpoint =
     [TargetPlatform.android, TargetPlatform.iOS].contains(defaultTargetPlatform)
@@ -8,7 +7,6 @@ String endpoint =
 
 // String endpoint = 'https://bikelifeservices.alwaysdata.net';
 
-const bool isWeb = kIsWeb;
 const String title = "Bike's life";
 
 const double ratio = 200.0;

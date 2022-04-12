@@ -34,7 +34,7 @@ class _MemberHomePageState extends State<MemberHomePage> {
   Widget build(BuildContext context) => Scaffold(
         body: PageView(
           children: const <Widget>[
-            AllBikesPage(),
+            HomPage(),
             StatisticsPage(),
             HelpPage(),
             ProfilePage()

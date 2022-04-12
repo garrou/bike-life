@@ -46,8 +46,7 @@ class _ChangeComponentPageState extends State<ChangeComponentPage> {
 
   Widget _wideLayout() => ListView(
         children: <Widget>[
-          if (!isWeb)
-            AppTopLeftButton(title: 'Changement de composant', callback: _back),
+          AppTopLeftButton(title: 'Changement de composant', callback: _back),
           Padding(
             child: AppCalendar(
                 minDate: widget.component.changedAt,

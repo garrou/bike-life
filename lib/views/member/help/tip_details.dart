@@ -29,8 +29,7 @@ class TipDetailsPage extends StatelessWidget {
   Widget _wideLayout(BuildContext context) => ListView(
         padding: const EdgeInsets.symmetric(horizontal: thirdSize),
         children: <Widget>[
-          if (!isWeb)
-            AppTopLeftButton(title: 'Conseils', callback: () => _back(context)),
+          AppTopLeftButton(title: 'Conseils', callback: () => _back(context)),
           buildText(tip.title, boldTextStyle, TextAlign.center),
           buildText(tip.content, thirdTextStyle, TextAlign.center),
           if (tip.videoUrl != null) VideoPlayer(video: tip.videoUrl!)
@@ -62,6 +61,7 @@ class _VideoPlayerState extends State<VideoPlayer> {
     super.initState();
 
     if (kIsWeb) {
+      _controller.dispose();
       _webController = iframe.YoutubePlayerController(
         initialVideoId: widget.video,
         params: const iframe.YoutubePlayerParams(
@@ -70,6 +70,7 @@ class _VideoPlayerState extends State<VideoPlayer> {
         ),
       );
     } else {
+      _webController.close();
       _controller = YoutubePlayerController(
         initialVideoId: widget.video,
         flags: const YoutubePlayerFlags(
