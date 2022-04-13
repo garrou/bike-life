@@ -7,20 +7,22 @@ import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
 
 class MemberHomePage extends StatefulWidget {
-  const MemberHomePage({Key? key}) : super(key: key);
+  final int initialIndex;
+  const MemberHomePage({Key? key, this.initialIndex = 0}) : super(key: key);
 
   @override
   _MemberHomePageState createState() => _MemberHomePageState();
 }
 
 class _MemberHomePageState extends State<MemberHomePage> {
-  int _pageIndex = 0;
+  late int _pageIndex;
   late PageController _pageController;
   final GlobalKey<CurvedNavigationBarState> _bottomNavigationKey = GlobalKey();
 
   @override
   void initState() {
     super.initState();
+    _pageIndex = widget.initialIndex;
     _pageController = PageController(initialPage: _pageIndex);
   }
 

@@ -14,7 +14,7 @@ class AppTopLeftButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Padding(
-        padding: const EdgeInsets.only(top: 20),
+        padding: const EdgeInsets.only(top: 30),
         child: Row(
           children: <Widget>[
             Visibility(

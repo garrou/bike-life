@@ -49,9 +49,14 @@ class _HomePageState extends State<HomePage> {
                   padding: const EdgeInsets.all(thirdSize),
                   child: Lottie.asset('assets/bike.json', fit: BoxFit.contain)),
               Padding(
-                  padding: const EdgeInsets.symmetric(vertical: thirdSize),
-                  child: Text("La santé de votre vélo se surveille de près.",
-                      style: italicTextStyle)),
+                padding: const EdgeInsets.symmetric(vertical: thirdSize),
+                child: Center(
+                  child: Text(
+                    "La santé de votre vélo se surveille de près.",
+                    style: italicTextStyle,
+                  ),
+                ),
+              ),
               const AppNavButton(
                   text: 'Découvrir',
                   destination: DiscoverPage(),

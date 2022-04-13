@@ -1,7 +1,9 @@
 import 'package:bike_life/models/http_response.dart';
 import 'package:bike_life/services/member_service.dart';
 import 'package:bike_life/utils/constants.dart';
+import 'package:bike_life/utils/redirects.dart';
 import 'package:bike_life/utils/validator.dart';
+import 'package:bike_life/views/member/member_home.dart';
 import 'package:bike_life/widgets/buttons/button.dart';
 import 'package:bike_life/widgets/buttons/top_left_button.dart';
 import 'package:bike_life/widgets/snackbar.dart';
@@ -93,6 +95,7 @@ class _UpdatePasswordPageState extends State<UpdatePasswordPage> {
         await MemberService().updatePassword(_password.text.trim());
 
     if (response.success()) {
+      pushAndRemove(context, const MemberHomePage(initialIndex: 3));
       showSuccessSnackBar(context, response.message());
     } else {
       showErrorSnackBar(context, response.message());
