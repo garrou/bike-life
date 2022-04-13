@@ -1,7 +1,7 @@
 import 'package:bike_life/models/http_response.dart';
 import 'package:bike_life/models/tip.dart';
 import 'package:bike_life/services/tip_service.dart';
-import 'package:bike_life/styles/animations.dart';
+import 'package:bike_life/utils/redirects.dart';
 import 'package:bike_life/styles/styles.dart';
 import 'package:bike_life/utils/constants.dart';
 import 'package:bike_life/views/member/help/tip_details.dart';
@@ -73,8 +73,7 @@ class _TipsPageState extends State<TipsPage> {
 
   Widget _buildTip(Tip tip) => Card(
         child: InkWell(
-          onTap: () => Navigator.push(
-              context, animationRightLeft(TipDetailsPage(tip: tip))),
+          onTap: () => push(context, TipDetailsPage(tip: tip)),
           child: Padding(
             padding: const EdgeInsets.fromLTRB(5.0, 10.0, 5.0, 10.0),
             child: Column(children: <Widget>[

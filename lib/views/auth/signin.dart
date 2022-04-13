@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:bike_life/models/http_response.dart';
-import 'package:bike_life/styles/animations.dart';
+import 'package:bike_life/utils/redirects.dart';
 import 'package:bike_life/styles/styles.dart';
 import 'package:bike_life/utils/constants.dart';
 import 'package:bike_life/utils/storage.dart';
@@ -122,11 +122,7 @@ class _SigninPageState extends State<SigninPage> {
 
     if (response.success()) {
       Storage.setString('jwt', response.token());
-      Storage.setString('id', response.memberId());
-      Navigator.pushAndRemoveUntil(
-          context,
-          animationRightLeft(const MemberHomePage()),
-          (Route<dynamic> route) => false);
+      pushAndRemove(context, const MemberHomePage());
     } else {
       _password.text = '';
       showErrorSnackBar(context, response.message());

@@ -2,7 +2,7 @@ import 'package:bike_life/models/bike.dart';
 import 'package:bike_life/models/component.dart';
 import 'package:bike_life/models/http_response.dart';
 import 'package:bike_life/services/component_service.dart';
-import 'package:bike_life/styles/animations.dart';
+import 'package:bike_life/utils/redirects.dart';
 import 'package:bike_life/utils/constants.dart';
 import 'package:bike_life/utils/validator.dart';
 import 'package:bike_life/views/member/bike/bike_details.dart';
@@ -116,10 +116,7 @@ class _UpdateComponentFormState extends State<UpdateComponentForm> {
             double.parse(_price.text)));
 
     if (response.success()) {
-      Navigator.push(
-        context,
-        animationRightLeft(BikeDetailsPage(bike: widget.bike)),
-      );
+      push(context, BikeDetailsPage(bike: widget.bike));
       showSuccessSnackBar(context, response.message());
     } else {
       showErrorSnackBar(context, response.message());

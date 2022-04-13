@@ -3,7 +3,7 @@ import 'package:bike_life/models/component_change.dart';
 import 'package:bike_life/models/component.dart';
 import 'package:bike_life/models/http_response.dart';
 import 'package:bike_life/services/component_service.dart';
-import 'package:bike_life/styles/animations.dart';
+import 'package:bike_life/utils/redirects.dart';
 import 'package:bike_life/styles/styles.dart';
 import 'package:bike_life/utils/constants.dart';
 import 'package:bike_life/views/member/bike/components/component_change.dart';
@@ -45,9 +45,13 @@ class _ComponentHistoricPageState extends State<ComponentHistoricPage> {
   @override
   Widget build(BuildContext context) => Scaffold(
         floatingActionButton: FloatingActionButton(
-            child: const Icon(Icons.restart_alt, color: Colors.white),
-            backgroundColor: primaryColor,
-            onPressed: () => _onComponentChangePage(widget.component)),
+          child: const Icon(Icons.restart_alt, color: Colors.white),
+          backgroundColor: primaryColor,
+          onPressed: () => push(
+            context,
+            ChangeComponentPage(component: widget.component, bike: widget.bike),
+          ),
+        ),
         body: LayoutBuilder(builder: (context, constraints) {
           if (constraints.maxWidth > maxWidth) {
             return _narrowLayout(context);
@@ -122,9 +126,4 @@ class _ComponentHistoricPageState extends State<ComponentHistoricPage> {
           ),
         ),
       );
-
-  void _onComponentChangePage(Component component) => Navigator.push(
-      context,
-      animationRightLeft(
-          ChangeComponentPage(component: component, bike: widget.bike)));
 }

@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:bike_life/models/bike.dart';
 import 'package:bike_life/models/http_response.dart';
 import 'package:bike_life/services/component_service.dart';
-import 'package:bike_life/styles/animations.dart';
+import 'package:bike_life/utils/redirects.dart';
 import 'package:bike_life/utils/constants.dart';
 import 'package:bike_life/services/bike_service.dart';
 import 'package:bike_life/utils/storage.dart';
@@ -64,7 +64,7 @@ class _HomPageState extends State<HomPage> {
             signedOut: const SigninPage()),
         floatingActionButton: FloatingActionButton(
           backgroundColor: primaryColor,
-          onPressed: _onAddBikePage,
+          onPressed: () => push(context, const AddBikePage()),
           child: const Icon(Icons.add, color: Colors.white),
         ),
       );
@@ -110,9 +110,6 @@ class _HomPageState extends State<HomPage> {
         }
         return const AppLoading();
       });
-
-  void _onAddBikePage() =>
-      Navigator.push(context, animationRightLeft(const AddBikePage()));
 }
 
 class BikeCard extends StatefulWidget {
@@ -133,24 +130,26 @@ class _BikeCardState extends State<BikeCard> {
   Widget build(BuildContext context) => Card(
         elevation: 5,
         child: InkWell(
-          onTap: () => Navigator.push(
-              context, animationRightLeft(BikeDetailsPage(bike: widget.bike))),
+          onTap: () => push(context, BikeDetailsPage(bike: widget.bike)),
           child: Padding(
-            padding: const EdgeInsets.all(10.0),
+            padding: const EdgeInsets.all(5.0),
             child: Column(
               children: <Widget>[
                 Padding(
                     child: Text(widget.bike.name, style: setStyle(context, 20)),
                     padding: const EdgeInsets.all(10.0)),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: <Widget>[
-                    Text(widget.bike.type, style: setStyle(context, 18)),
-                    const VerticalDivider(thickness: 2, width: 2),
-                    widget.bike.electric
-                        ? const Icon(Icons.electric_bike)
-                        : const Icon(Icons.pedal_bike)
-                  ],
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 10.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: <Widget>[
+                      Text(widget.bike.type, style: setStyle(context, 18)),
+                      const VerticalDivider(thickness: 2, width: 2),
+                      widget.bike.electric
+                          ? const Icon(Icons.electric_bike)
+                          : const Icon(Icons.pedal_bike)
+                    ],
+                  ),
                 ),
                 IntrinsicHeight(
                   child: Row(
@@ -175,15 +174,15 @@ class _BikeCardState extends State<BikeCard> {
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 10.0),
+                  padding: const EdgeInsets.only(top: 10),
                   child: ComponentsAlerts(bike: widget.bike),
                 ),
                 Padding(
+                  padding: const EdgeInsets.only(top: 10),
                   child: Image.asset('assets/bike.jpg', fit: BoxFit.contain),
-                  padding: const EdgeInsets.only(top: 10.0),
                 ),
                 Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 10),
+                  padding: const EdgeInsets.only(top: 10),
                   child: TextButton.icon(
                     label: Text('Ajouter des km', style: thirdTextStyle),
                     icon: const Icon(
@@ -256,10 +255,7 @@ class _BikeCardState extends State<BikeCard> {
         await BikeService().addKm(widget.bike.id, double.parse(_km.text));
 
     if (response.success()) {
-      Navigator.pushAndRemoveUntil(
-          context,
-          animationRightLeft(const MemberHomePage()),
-          (Route<dynamic> route) => false);
+      pushAndRemove(context, const MemberHomePage());
       showSuccessSnackBar(context, response.message());
     } else {
       showErrorSnackBar(context, response.message());

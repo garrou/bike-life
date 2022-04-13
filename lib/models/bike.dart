@@ -41,7 +41,7 @@ class Bike {
 
   String formatAddedDate() => format.format(addedAt);
 
-  String formatKm() => totalKm.toStringAsFixed(2);
+  String formatKm() => '${totalKm.toStringAsFixed(2)} km';
 }
 
 List<Bike> createBikes(List<dynamic> records) =>

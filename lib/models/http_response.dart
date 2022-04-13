@@ -14,8 +14,6 @@ class HttpResponse {
 
   String token() => _body['accessToken'];
 
-  String memberId() => _body['memberId'];
-
   String email() => _body['email'];
 
   bool success() => _success;

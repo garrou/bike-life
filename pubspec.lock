@@ -546,13 +546,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.2.0"
-  youtube_player_flutter:
-    dependency: "direct main"
-    description:
-      name: youtube_player_flutter
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "8.0.0"
   youtube_player_iframe:
     dependency: "direct main"
     description:

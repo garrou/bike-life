@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:bike_life/models/http_response.dart';
 import 'package:bike_life/services/member_service.dart';
-import 'package:bike_life/styles/animations.dart';
+import 'package:bike_life/utils/redirects.dart';
 import 'package:bike_life/utils/storage.dart';
 import 'package:bike_life/utils/validator.dart';
 import 'package:bike_life/styles/styles.dart';
@@ -138,10 +138,7 @@ class _SignupPageState extends State<SignupPage> {
         await _memberService.signup(_email.text.trim(), _password.text.trim());
 
     if (response.success()) {
-      Navigator.pushAndRemoveUntil(
-          context,
-          animationRightLeft(const SigninPage()),
-          (Route<dynamic> route) => false);
+      pushAndRemove(context, const SigninPage());
       showSuccessSnackBar(context, response.message());
     } else {
       showErrorSnackBar(context, response.message());

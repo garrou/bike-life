@@ -1,7 +1,7 @@
 import 'package:bike_life/models/bike.dart';
 import 'package:bike_life/models/http_response.dart';
 import 'package:bike_life/services/bike_service.dart';
-import 'package:bike_life/styles/animations.dart';
+import 'package:bike_life/utils/redirects.dart';
 import 'package:bike_life/styles/styles.dart';
 import 'package:bike_life/utils/constants.dart';
 import 'package:bike_life/utils/validator.dart';
@@ -204,10 +204,7 @@ class _UpdateBikeFormState extends State<UpdateBikeForm> {
                 child: const Text('Confirmer', style: TextStyle(color: red)),
                 onPressed: () {
                   _onDelete(context);
-                  Navigator.pushAndRemoveUntil(
-                      context,
-                      animationRightLeft(const MemberHomePage()),
-                      (Route<dynamic> route) => false);
+                  pushAndRemove(context, const MemberHomePage());
                 }),
             TextButton(
               child:
@@ -222,10 +219,7 @@ class _UpdateBikeFormState extends State<UpdateBikeForm> {
     final HttpResponse response = await BikeService().delete(widget.bike.id);
 
     if (response.success()) {
-      Navigator.pushAndRemoveUntil(
-          context,
-          animationRightLeft(const MemberHomePage()),
-          (Route<dynamic> route) => false);
+      pushAndRemove(context, const MemberHomePage());
       showSuccessSnackBar(context, response.message());
     } else {
       showErrorSnackBar(context, response.message());

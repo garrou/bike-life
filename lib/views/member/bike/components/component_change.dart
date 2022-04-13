@@ -3,7 +3,7 @@ import 'package:bike_life/models/component.dart';
 import 'package:bike_life/models/component_change.dart';
 import 'package:bike_life/models/http_response.dart';
 import 'package:bike_life/services/component_service.dart';
-import 'package:bike_life/styles/animations.dart';
+import 'package:bike_life/utils/redirects.dart';
 import 'package:bike_life/utils/constants.dart';
 import 'package:bike_life/views/member/bike/bike_details.dart';
 import 'package:bike_life/views/member/member_home.dart';
@@ -77,11 +77,8 @@ class _ChangeComponentPageState extends State<ChangeComponentPage> {
             widget.component.price, widget.component.brand));
 
     if (response.success()) {
-      Navigator.pushAndRemoveUntil(context,
-          animationRightLeft(const MemberHomePage()), (route) => false);
-      Navigator.push(
-          context, animationRightLeft(BikeDetailsPage(bike: widget.bike)));
-
+      doublePush(
+          context, const MemberHomePage(), BikeDetailsPage(bike: widget.bike));
       showSuccessSnackBar(context, response.message());
     } else {
       showErrorSnackBar(context, response.message());

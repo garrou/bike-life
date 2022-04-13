@@ -1,6 +1,6 @@
 import 'package:bike_life/models/bike.dart';
 import 'package:bike_life/models/http_response.dart';
-import 'package:bike_life/styles/animations.dart';
+import 'package:bike_life/utils/redirects.dart';
 import 'package:bike_life/utils/constants.dart';
 import 'package:bike_life/utils/validator.dart';
 import 'package:bike_life/services/bike_service.dart';
@@ -168,15 +168,10 @@ class _AddBikeFormState extends State<AddBikeForm> {
     final HttpResponse response = await BikeService().create(bike);
 
     if (response.success()) {
-      _onMemberHomePage();
+      pushAndRemove(context, const MemberHomePage());
       showSuccessSnackBar(context, response.message());
     } else {
       showErrorSnackBar(context, response.message());
     }
   }
-
-  void _onMemberHomePage() => Navigator.pushAndRemoveUntil(
-      context,
-      animationRightLeft(const MemberHomePage()),
-      (Route<dynamic> route) => false);
 }

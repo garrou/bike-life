@@ -3,7 +3,7 @@ import 'package:bike_life/models/component.dart';
 import 'package:bike_life/models/http_response.dart';
 import 'package:bike_life/services/component_service.dart';
 import 'package:bike_life/utils/constants.dart';
-import 'package:bike_life/styles/animations.dart';
+import 'package:bike_life/utils/redirects.dart';
 import 'package:bike_life/styles/styles.dart';
 import 'package:bike_life/views/member/bike/components/component_details.dart';
 import 'package:bike_life/widgets/error.dart';
@@ -84,7 +84,8 @@ class AppComponentCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Card(
         child: InkWell(
-          onTap: () => _onComponentDetailsPage(context),
+          onTap: () => push(
+              context, ComponentDetailsPage(component: component, bike: bike)),
           child: Padding(
             padding: const EdgeInsets.all(10),
             child: Column(
@@ -173,11 +174,4 @@ class AppComponentCard extends StatelessWidget {
       barRadius: const Radius.circular(50),
     );
   }
-
-  void _onComponentDetailsPage(BuildContext context) => Navigator.push(
-        context,
-        animationRightLeft(
-          ComponentDetailsPage(bike: bike, component: component),
-        ),
-      );
 }
