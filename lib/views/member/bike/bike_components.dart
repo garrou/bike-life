@@ -82,9 +82,9 @@ class AppComponentCard extends StatelessWidget {
       : super(key: key);
 
   @override
-  Widget build(BuildContext context) => InkWell(
-        onTap: () => _onComponentDetailsPage(context),
-        child: Card(
+  Widget build(BuildContext context) => Card(
+        child: InkWell(
+          onTap: () => _onComponentDetailsPage(context),
           child: Padding(
             padding: const EdgeInsets.all(10),
             child: Column(

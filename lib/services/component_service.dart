@@ -19,9 +19,9 @@ class ComponentService {
     return HttpResponse(response);
   }
 
-  Future<HttpResponse> getComponentsAlerts(String memberId) async {
+  Future<HttpResponse> getComponentsAlerts(String bikeId) async {
     final Response response = await client
-        .get(Uri.parse('$endpoint/members/$memberId/components/nb-alerts'));
+        .get(Uri.parse('$endpoint/bikes/$bikeId/components/nb-alerts'));
     return HttpResponse(response);
   }
 
@@ -46,29 +46,27 @@ class ComponentService {
     return HttpResponse(response);
   }
 
-  Future<HttpResponse> getNbComponentsChangeStats(
-      String memberId, int year) async {
-    final Response response = await client.get(Uri.parse(
-        '$endpoint/members/$memberId/components/nb-change-stats/years/$year'));
-    return HttpResponse(response);
-  }
-
-  Future<HttpResponse> getKmComponentsChangeStats(
-      String memberId, int year) async {
-    final Response response = await client.get(Uri.parse(
-        '$endpoint/members/$memberId/components/km-change-stats/years/$year'));
-    return HttpResponse(response);
-  }
-
-  Future<HttpResponse> getTotalChanges(String memberId) async {
+  Future<HttpResponse> getNbComponentsChangeStats(int year) async {
     final Response response = await client
-        .get(Uri.parse('$endpoint/members/$memberId/components/nb-changes'));
+        .get(Uri.parse('$endpoint/components/nb-change-stats/years/$year'));
     return HttpResponse(response);
   }
 
-  Future<HttpResponse> getAvgPercentsChanges(String memberId) async {
+  Future<HttpResponse> getKmComponentsChangeStats(int year) async {
     final Response response = await client
-        .get(Uri.parse('$endpoint/members/$memberId/components/percents'));
+        .get(Uri.parse('$endpoint/components/km-change-stats/years/$year'));
+    return HttpResponse(response);
+  }
+
+  Future<HttpResponse> getTotalChanges() async {
+    final Response response =
+        await client.get(Uri.parse('$endpoint/components/nb-changes'));
+    return HttpResponse(response);
+  }
+
+  Future<HttpResponse> getAvgPercentsChanges() async {
+    final Response response =
+        await client.get(Uri.parse('$endpoint/components/percents'));
     return HttpResponse(response);
   }
 
@@ -90,9 +88,9 @@ class ComponentService {
     return HttpResponse(response);
   }
 
-  Future<HttpResponse> getSumPriceComponentsMember(String memberId) async {
-    final Response response = await client
-        .get(Uri.parse('$endpoint/members/$memberId/components/price'));
+  Future<HttpResponse> getSumPriceComponentsMember() async {
+    final Response response =
+        await client.get(Uri.parse('$endpoint/components/price'));
     return HttpResponse(response);
   }
 

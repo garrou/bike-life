@@ -4,7 +4,6 @@ import 'package:bike_life/providers/year_provider.dart';
 import 'package:bike_life/services/component_service.dart';
 import 'package:bike_life/styles/styles.dart';
 import 'package:bike_life/utils/constants.dart';
-import 'package:bike_life/utils/storage.dart';
 import 'package:bike_life/widgets/charts/bar_chart.dart';
 import 'package:bike_life/widgets/charts/pie_chart.dart';
 import 'package:bike_life/widgets/error.dart';
@@ -89,9 +88,7 @@ class _TotalChangesState extends State<TotalChanges> {
   late Future<List<ComponentStat>> _totalChangeStats;
 
   Future<List<ComponentStat>> _loadTotalChanges() async {
-    final String memberId = await Storage.getMemberId();
-    final HttpResponse response =
-        await ComponentService().getTotalChanges(memberId);
+    final HttpResponse response = await ComponentService().getTotalChanges();
 
     if (response.success()) {
       return createComponentStats(response.body());
@@ -129,9 +126,8 @@ class NbComponentsChangeYear extends StatelessWidget {
   const NbComponentsChangeYear({Key? key}) : super(key: key);
 
   Future<List<ComponentStat>> _loadNbChangeByYear(int year) async {
-    final String memberId = await Storage.getMemberId();
     final HttpResponse response =
-        await ComponentService().getNbComponentsChangeStats(memberId, year);
+        await ComponentService().getNbComponentsChangeStats(year);
 
     if (response.success()) {
       return createComponentStats(response.body());
@@ -164,9 +160,8 @@ class AverageKmBeforeChange extends StatelessWidget {
   const AverageKmBeforeChange({Key? key}) : super(key: key);
 
   Future<List<ComponentStat>> _loadKmChangeByYear(int year) async {
-    final String memberId = await Storage.getMemberId();
     final HttpResponse response =
-        await ComponentService().getKmComponentsChangeStats(memberId, year);
+        await ComponentService().getKmComponentsChangeStats(year);
 
     if (response.success()) {
       return createComponentStats(response.body());
@@ -198,9 +193,8 @@ class AveragePercentChanges extends StatelessWidget {
   const AveragePercentChanges({Key? key}) : super(key: key);
 
   Future<List<ComponentStat>> _loadAvgPercents() async {
-    final String memberId = await Storage.getMemberId();
     final HttpResponse response =
-        await ComponentService().getAvgPercentsChanges(memberId);
+        await ComponentService().getAvgPercentsChanges();
 
     if (response.success()) {
       return createComponentStats(response.body());
@@ -231,9 +225,8 @@ class SumPriceComponent extends StatelessWidget {
   const SumPriceComponent({Key? key}) : super(key: key);
 
   Future<List<ComponentStat>> _loadSumPrice() async {
-    final String memberId = await Storage.getMemberId();
     final HttpResponse response =
-        await ComponentService().getSumPriceComponentsMember(memberId);
+        await ComponentService().getSumPriceComponentsMember();
 
     if (response.success()) {
       return createComponentStats(response.body());

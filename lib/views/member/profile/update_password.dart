@@ -1,7 +1,6 @@
 import 'package:bike_life/models/http_response.dart';
 import 'package:bike_life/services/member_service.dart';
 import 'package:bike_life/utils/constants.dart';
-import 'package:bike_life/utils/storage.dart';
 import 'package:bike_life/utils/validator.dart';
 import 'package:bike_life/widgets/buttons/button.dart';
 import 'package:bike_life/widgets/buttons/top_left_button.dart';
@@ -90,9 +89,8 @@ class _UpdatePasswordPageState extends State<UpdatePasswordPage> {
   }
 
   void _updatePassword(BuildContext context) async {
-    final String memberId = await Storage.getMemberId();
     final HttpResponse response =
-        await MemberService().updatePassword(memberId, _password.text);
+        await MemberService().updatePassword(_password.text.trim());
 
     if (response.success()) {
       showSuccessSnackBar(context, response.message());

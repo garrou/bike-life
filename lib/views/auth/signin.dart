@@ -118,7 +118,7 @@ class _SigninPageState extends State<SigninPage> {
 
   void _authUser(BuildContext context) async {
     final HttpResponse response =
-        await _memberService.login(_email.text, _password.text);
+        await _memberService.login(_email.text.trim(), _password.text.trim());
 
     if (response.success()) {
       Storage.setString('jwt', response.token());

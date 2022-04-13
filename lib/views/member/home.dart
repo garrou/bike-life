@@ -20,6 +20,7 @@ import 'package:bike_life/widgets/snackbar.dart';
 import 'package:bike_life/widgets/textfield.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_guards/flutter_guards.dart';
+import 'package:lottie/lottie.dart';
 
 class HomPage extends StatefulWidget {
   const HomPage({Key? key}) : super(key: key);
@@ -40,8 +41,7 @@ class _HomPageState extends State<HomPage> {
   }
 
   Future<List<Bike>> _loadBikes() async {
-    final String memberId = await Storage.getMemberId();
-    final HttpResponse response = await BikeService().getByMember(memberId);
+    final HttpResponse response = await BikeService().getByMember();
 
     if (response.success()) {
       return createBikes(response.body());
@@ -53,16 +53,15 @@ class _HomPageState extends State<HomPage> {
   @override
   Widget build(BuildContext context) => Scaffold(
         body: AuthGuard(
-          authStream: _authState.stream,
-          signedIn: LayoutBuilder(builder: (context, constraints) {
-            if (constraints.maxWidth > maxWidth) {
-              return _narrowLayout(constraints);
-            } else {
-              return _wideLayout(constraints);
-            }
-          }),
-          signedOut: const SigninPage(),
-        ),
+            authStream: _authState.stream,
+            signedIn: LayoutBuilder(builder: (context, constraints) {
+              if (constraints.maxWidth > maxWidth) {
+                return _narrowLayout(constraints);
+              } else {
+                return _wideLayout(constraints);
+              }
+            }),
+            signedOut: const SigninPage()),
         floatingActionButton: FloatingActionButton(
           backgroundColor: primaryColor,
           onPressed: _onAddBikePage,
@@ -83,18 +82,31 @@ class _HomPageState extends State<HomPage> {
         if (snapshot.hasError) {
           return const AppError(message: 'Erreur serveur');
         } else if (snapshot.hasData) {
-          return GridView.count(
-            childAspectRatio: 0.7,
-            controller: ScrollController(),
-            crossAxisCount: constraints.maxWidth > maxWidth + 400
-                ? 3
-                : constraints.maxWidth > maxWidth
-                    ? 2
-                    : 1,
-            children: <Widget>[
-              for (Bike bike in snapshot.data!) BikeCard(bike: bike),
-            ],
-          );
+          return snapshot.data!.isEmpty
+              ? Center(
+                  child: Column(children: <Widget>[
+                    Padding(
+                      child: Text(
+                        'Aucun vélo ajouté ! Pour en ajouter un, cliquer sur le +',
+                        style: secondTextStyle,
+                      ),
+                      padding: const EdgeInsets.only(top: 20.0),
+                    ),
+                    Lottie.asset('assets/empty.json')
+                  ]),
+                )
+              : GridView.count(
+                  childAspectRatio: 0.7,
+                  controller: ScrollController(),
+                  crossAxisCount: constraints.maxWidth > maxWidth + 400
+                      ? 3
+                      : constraints.maxWidth > maxWidth
+                          ? 2
+                          : 1,
+                  children: <Widget>[
+                    for (Bike bike in snapshot.data!) BikeCard(bike: bike),
+                  ],
+                );
         }
         return const AppLoading();
       });
@@ -118,11 +130,11 @@ class _BikeCardState extends State<BikeCard> {
   final _km = TextEditingController();
 
   @override
-  Widget build(BuildContext context) => InkWell(
-        onTap: () => Navigator.push(
-            context, animationRightLeft(BikeDetailsPage(bike: widget.bike))),
-        child: Card(
-          elevation: 5,
+  Widget build(BuildContext context) => Card(
+        elevation: 5,
+        child: InkWell(
+          onTap: () => Navigator.push(
+              context, animationRightLeft(BikeDetailsPage(bike: widget.bike))),
           child: Padding(
             padding: const EdgeInsets.all(10.0),
             child: Column(
@@ -138,20 +150,6 @@ class _BikeCardState extends State<BikeCard> {
                     widget.bike.electric
                         ? const Icon(Icons.electric_bike)
                         : const Icon(Icons.pedal_bike)
-                  ],
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    widget.bike.electric
-                        ? Text(
-                            'Vélo électrique',
-                            style: setStyle(context, 18),
-                          )
-                        : Text(
-                            '',
-                            style: setStyle(context, 18),
-                          )
                   ],
                 ),
                 IntrinsicHeight(

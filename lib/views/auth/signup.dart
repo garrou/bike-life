@@ -135,7 +135,7 @@ class _SignupPageState extends State<SignupPage> {
 
   void _createUser(BuildContext context) async {
     final HttpResponse response =
-        await _memberService.signup(_email.text, _password.text);
+        await _memberService.signup(_email.text.trim(), _password.text.trim());
 
     if (response.success()) {
       Navigator.pushAndRemoveUntil(

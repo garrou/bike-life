@@ -1,7 +1,6 @@
 import 'package:bike_life/models/http_response.dart';
 import 'package:bike_life/services/member_service.dart';
 import 'package:bike_life/utils/constants.dart';
-import 'package:bike_life/utils/storage.dart';
 import 'package:bike_life/utils/validator.dart';
 import 'package:bike_life/widgets/buttons/button.dart';
 import 'package:bike_life/widgets/buttons/top_left_button.dart';
@@ -34,8 +33,7 @@ class _UpdateEmailPageState extends State<UpdateEmailPage> {
   }
 
   Future<String> _load() async {
-    final String memberId = await Storage.getMemberId();
-    final HttpResponse response = await _memberService.getEmail(memberId);
+    final HttpResponse response = await _memberService.getEmail();
 
     if (response.success()) {
       return response.email();
@@ -104,9 +102,8 @@ class _UpdateEmailPageState extends State<UpdateEmailPage> {
   }
 
   void _updateEmail() async {
-    final String memberId = await Storage.getMemberId();
     final HttpResponse response =
-        await _memberService.updateEmail(memberId, _email.text);
+        await _memberService.updateEmail(_email.text.trim());
 
     if (response.success()) {
       showSuccessSnackBar(context, response.message());

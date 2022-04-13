@@ -11,6 +11,7 @@ import 'package:url_strategy/url_strategy.dart';
 // TODO: suggest components with user components
 // TODO: check if icon are all empty or full
 // TODO: check brand length server side and front
+// TODO: check token
 
 void main() {
   setPathUrlStrategy();

@@ -2,7 +2,6 @@ import 'package:bike_life/models/bike.dart';
 import 'package:bike_life/models/http_response.dart';
 import 'package:bike_life/styles/animations.dart';
 import 'package:bike_life/utils/constants.dart';
-import 'package:bike_life/utils/storage.dart';
 import 'package:bike_life/utils/validator.dart';
 import 'package:bike_life/services/bike_service.dart';
 import 'package:bike_life/styles/styles.dart';
@@ -156,7 +155,6 @@ class _AddBikeFormState extends State<AddBikeForm> {
   }
 
   void _addBike() async {
-    final String memberId = await Storage.getMemberId();
     final Bike bike = Bike(
         '',
         _name.text,
@@ -167,7 +165,7 @@ class _AddBikeFormState extends State<AddBikeForm> {
         0,
         _automatic,
         double.parse(_price.text));
-    final HttpResponse response = await BikeService().create(memberId, bike);
+    final HttpResponse response = await BikeService().create(bike);
 
     if (response.success()) {
       _onMemberHomePage();

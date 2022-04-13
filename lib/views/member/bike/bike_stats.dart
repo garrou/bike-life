@@ -41,6 +41,7 @@ class _BikeStatsPageState extends State<BikeStatsPage> {
       Column(children: [
         Expanded(
           child: GridView.count(
+            controller: ScrollController(),
             crossAxisCount: constraints.maxWidth > maxWidth + 400
                 ? 3
                 : constraints.maxWidth > maxWidth

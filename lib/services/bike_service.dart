@@ -13,10 +13,9 @@ class BikeService {
     HttpAccountInterceptor(),
   ]);
 
-  Future<HttpResponse> create(String memberId, Bike bike) async {
-    final Response response = await client.post(
-        Uri.parse('$endpoint/members/$memberId/bikes'),
-        body: jsonEncode(bike));
+  Future<HttpResponse> create(Bike bike) async {
+    final Response response = await client
+        .post(Uri.parse('$endpoint/member/bikes'), body: jsonEncode(bike));
     return HttpResponse(response);
   }
 
@@ -26,9 +25,9 @@ class BikeService {
     return HttpResponse(response);
   }
 
-  Future<HttpResponse> getByMember(String memberId) async {
+  Future<HttpResponse> getByMember() async {
     final Response response =
-        await client.get(Uri.parse('$endpoint/members/$memberId/bikes'));
+        await client.get(Uri.parse('$endpoint/member/bikes'));
     return HttpResponse(response);
   }
 
