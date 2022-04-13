@@ -3,24 +3,26 @@ import 'package:bike_life/views/member/home.dart';
 import 'package:bike_life/views/member/profile/profile.dart';
 import 'package:bike_life/views/member/statistics/statistics.dart';
 import 'package:bike_life/styles/styles.dart';
+import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
 
 class MemberHomePage extends StatefulWidget {
-  final int initialPage;
-  const MemberHomePage({Key? key, required this.initialPage}) : super(key: key);
+  final int initialIndex;
+  const MemberHomePage({Key? key, this.initialIndex = 0}) : super(key: key);
 
   @override
   _MemberHomePageState createState() => _MemberHomePageState();
 }
 
 class _MemberHomePageState extends State<MemberHomePage> {
-  late PageController _pageController;
   late int _pageIndex;
+  late PageController _pageController;
+  final GlobalKey<CurvedNavigationBarState> _bottomNavigationKey = GlobalKey();
 
   @override
   void initState() {
     super.initState();
-    _pageIndex = widget.initialPage;
+    _pageIndex = widget.initialIndex;
     _pageController = PageController(initialPage: _pageIndex);
   }
 
@@ -34,7 +36,7 @@ class _MemberHomePageState extends State<MemberHomePage> {
   Widget build(BuildContext context) => Scaffold(
         body: PageView(
           children: const <Widget>[
-            AllBikesPage(),
+            HomPage(),
             StatisticsPage(),
             HelpPage(),
             ProfilePage()
@@ -44,31 +46,22 @@ class _MemberHomePageState extends State<MemberHomePage> {
           },
           controller: _pageController,
         ),
-        bottomNavigationBar: BottomNavigationBar(
-          type: BottomNavigationBarType.fixed,
-          showSelectedLabels: false,
-          showUnselectedLabels: false,
-          currentIndex: _pageIndex,
-          onTap: _onTabTapped,
-          backgroundColor: primaryColor,
-          selectedItemColor: Colors.white,
-          items: const <BottomNavigationBarItem>[
-            BottomNavigationBarItem(
-                icon: Icon(Icons.directions_bike),
-                label: 'Vélos',
-                backgroundColor: primaryColor),
-            BottomNavigationBarItem(
-                icon: Icon(Icons.bar_chart),
-                label: 'Statistiques',
-                backgroundColor: primaryColor),
-            BottomNavigationBarItem(
-                icon: Icon(Icons.help),
-                label: 'Aide et conseils',
-                backgroundColor: primaryColor),
-            BottomNavigationBarItem(
-                icon: Icon(Icons.person),
-                label: 'Profil',
-                backgroundColor: primaryColor)
+        bottomNavigationBar: CurvedNavigationBar(
+          key: _bottomNavigationKey,
+          index: _pageIndex,
+          color: primaryColor,
+          backgroundColor: colorFollowTheme(context),
+          buttonBackgroundColor: colorFollowTheme(context),
+          onTap: (index) {
+            setState(() => _pageIndex = index);
+            _onTabTapped(index);
+          },
+          letIndexChange: (index) => true,
+          items: <Widget>[
+            Icon(Icons.directions_bike, size: 30, color: colorByTheme(context)),
+            Icon(Icons.bar_chart, size: 30, color: colorByTheme(context)),
+            Icon(Icons.help, size: 30, color: colorByTheme(context)),
+            Icon(Icons.person, size: 30, color: colorByTheme(context)),
           ],
         ),
       );

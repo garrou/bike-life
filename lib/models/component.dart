@@ -40,7 +40,7 @@ class Component {
 
   String formatKm() => totalKm.toStringAsFixed(2);
 
-  String formatPrice() => totalKm.toStringAsFixed(2);
+  String formatPrice() => '${price.toStringAsFixed(2)} €';
 }
 
 List<Component> createComponents(List<dynamic> records) =>

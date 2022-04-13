@@ -34,23 +34,23 @@ class MemberService {
     return HttpResponse(response);
   }
 
-  Future<HttpResponse> updatePassword(String memberId, String password) async {
+  Future<HttpResponse> updatePassword(String password) async {
     final Response response = await client.patch(
-        Uri.parse('$endpoint/members/$memberId/password'),
+        Uri.parse('$endpoint/member/password'),
         body: jsonEncode(<String, String>{'password': password}));
     return HttpResponse(response);
   }
 
-  Future<HttpResponse> updateEmail(String memberId, String email) async {
+  Future<HttpResponse> updateEmail(String email) async {
     final Response response = await client.patch(
-        Uri.parse('$endpoint/members/$memberId/email'),
+        Uri.parse('$endpoint/member/email'),
         body: jsonEncode(<String, String>{'email': email}));
     return HttpResponse(response);
   }
 
-  Future<HttpResponse> getEmail(String id) async {
+  Future<HttpResponse> getEmail() async {
     final Response response =
-        await client.get(Uri.parse('$endpoint/members/$id/email'));
+        await client.get(Uri.parse('$endpoint/member/email'));
     return HttpResponse(response);
   }
 }

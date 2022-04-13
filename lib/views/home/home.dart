@@ -31,26 +31,32 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) => Scaffold(
       body: AuthGuard(
           authStream: _authState.stream,
-          signedIn: const MemberHomePage(initialPage: 0),
+          signedIn: const MemberHomePage(),
           signedOut: _layout()));
 
   Widget _layout() => ListView(
         children: <Widget>[
-          Row(children: <Widget>[
-            Padding(
-                padding: const EdgeInsets.fromLTRB(firstSize, firstSize, 0, 0),
-                child: Text(title, style: secondTextStyle)),
-          ]),
+          Center(
+            child: Padding(
+              child: Text(title, style: mainTextStyle),
+              padding: const EdgeInsets.only(top: 10.0),
+            ),
+          ),
           Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               Padding(
                   padding: const EdgeInsets.all(thirdSize),
-                  child: Lottie.asset('assets/bike.json')),
+                  child: Lottie.asset('assets/bike.json', fit: BoxFit.contain)),
               Padding(
-                  padding: const EdgeInsets.symmetric(vertical: thirdSize),
-                  child: Text("La santé de votre vélo se surveille de près.",
-                      style: italicTextStyle)),
+                padding: const EdgeInsets.symmetric(vertical: thirdSize),
+                child: Center(
+                  child: Text(
+                    "La santé de votre vélo se surveille de près.",
+                    style: italicTextStyle,
+                  ),
+                ),
+              ),
               const AppNavButton(
                   text: 'Découvrir',
                   destination: DiscoverPage(),

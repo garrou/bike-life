@@ -1,12 +1,12 @@
 import 'package:bike_life/models/http_response.dart';
 import 'package:bike_life/services/member_service.dart';
 import 'package:bike_life/utils/constants.dart';
-import 'package:bike_life/utils/storage.dart';
 import 'package:bike_life/utils/validator.dart';
 import 'package:bike_life/widgets/buttons/button.dart';
 import 'package:bike_life/widgets/buttons/top_left_button.dart';
 import 'package:bike_life/widgets/error.dart';
 import 'package:bike_life/widgets/loading.dart';
+import 'package:bike_life/widgets/snackbar.dart';
 import 'package:bike_life/widgets/textfield.dart';
 import 'package:flutter/material.dart';
 
@@ -33,8 +33,7 @@ class _UpdateEmailPageState extends State<UpdateEmailPage> {
   }
 
   Future<String> _load() async {
-    final String memberId = await Storage.getMemberId();
-    final HttpResponse response = await _memberService.getEmail(memberId);
+    final HttpResponse response = await _memberService.getEmail();
 
     if (response.success()) {
       return response.email();
@@ -71,8 +70,7 @@ class _UpdateEmailPageState extends State<UpdateEmailPage> {
                 future: _userEmail,
                 builder: (_, snapshot) {
                   if (snapshot.hasError) {
-                    return const AppError(
-                        message: 'Erreur de connexion avec le serveur');
+                    return const AppError(message: 'Erreur serveur');
                   } else if (snapshot.hasData) {
                     _email.text = snapshot.data.toString();
                     return AppTextField(
@@ -104,13 +102,13 @@ class _UpdateEmailPageState extends State<UpdateEmailPage> {
   }
 
   void _updateEmail() async {
-    final String memberId = await Storage.getMemberId();
     final HttpResponse response =
-        await _memberService.updateEmail(memberId, _email.text);
+        await _memberService.updateEmail(_email.text.trim());
 
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: Text(response.message(),
-            style: const TextStyle(color: Colors.white)),
-        backgroundColor: response.color()));
+    if (response.success()) {
+      showSuccessSnackBar(context, response.message());
+    } else {
+      showErrorSnackBar(context, response.message());
+    }
   }
 }

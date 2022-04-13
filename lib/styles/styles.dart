@@ -18,9 +18,9 @@ TextStyle linkStyle = const TextStyle(
     fontSize: secondSize);
 
 TextStyle setStyle(BuildContext context, double size) =>
-    GoogleFonts.abel(fontSize: size, color: colorByTheme(context));
+    GoogleFonts.roboto(fontSize: size, color: colorByTheme(context));
 
-TextStyle setBoldStyle(BuildContext context, double size) => GoogleFonts.abel(
+TextStyle setBoldStyle(BuildContext context, double size) => GoogleFonts.roboto(
     fontSize: size, color: colorByTheme(context), fontWeight: FontWeight.bold);
 
 charts.Color chartColorByTheme(BuildContext context) =>
@@ -31,13 +31,18 @@ charts.Color chartColorByTheme(BuildContext context) =>
 Color colorByTheme(BuildContext context) =>
     context.watch<ThemeModel>().isDark ? Colors.white : Colors.black;
 
-TextStyle mainTextStyle = GoogleFonts.abel(fontSize: firstSize);
-TextStyle secondTextStyle = GoogleFonts.abel(fontSize: secondSize);
-TextStyle thirdTextStyle = GoogleFonts.abel(fontSize: intermediateSize);
+Color colorFollowTheme(BuildContext context) =>
+    context.watch<ThemeModel>().isDark
+        ? const Color.fromARGB(255, 48, 48, 48)
+        : Colors.white;
+
+TextStyle mainTextStyle = GoogleFonts.roboto(fontSize: firstSize);
+TextStyle secondTextStyle = GoogleFonts.roboto(fontSize: secondSize);
+TextStyle thirdTextStyle = GoogleFonts.roboto(fontSize: intermediateSize);
 TextStyle boldTextStyle =
-    GoogleFonts.abel(fontSize: secondSize, fontWeight: FontWeight.bold);
+    GoogleFonts.roboto(fontSize: secondSize, fontWeight: FontWeight.bold);
 TextStyle italicTextStyle =
-    GoogleFonts.abel(fontSize: 20.0, fontStyle: FontStyle.italic);
+    GoogleFonts.roboto(fontSize: 20.0, fontStyle: FontStyle.italic);
 
 ButtonStyle roundedButtonStyle(Color colorToSet) => ButtonStyle(
     shape: MaterialStateProperty.all<RoundedRectangleBorder>(

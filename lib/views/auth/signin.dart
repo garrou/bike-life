@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:bike_life/models/http_response.dart';
-import 'package:bike_life/styles/animations.dart';
+import 'package:bike_life/utils/redirects.dart';
 import 'package:bike_life/styles/styles.dart';
 import 'package:bike_life/utils/constants.dart';
 import 'package:bike_life/utils/storage.dart';
@@ -11,6 +11,7 @@ import 'package:bike_life/views/auth/signup.dart';
 import 'package:bike_life/views/member/member_home.dart';
 import 'package:bike_life/widgets/link_page.dart';
 import 'package:bike_life/widgets/buttons/button.dart';
+import 'package:bike_life/widgets/snackbar.dart';
 import 'package:bike_life/widgets/textfield.dart';
 import 'package:bike_life/widgets/title.dart';
 import 'package:flutter/material.dart';
@@ -46,7 +47,7 @@ class _SigninPageState extends State<SigninPage> {
   Widget build(BuildContext context) => Scaffold(
         body: AuthGuard(
           authStream: _authState.stream,
-          signedIn: const MemberHomePage(initialPage: 0),
+          signedIn: const MemberHomePage(),
           signedOut: LayoutBuilder(builder: (context, constraints) {
             if (constraints.maxWidth > maxWidth) {
               return narrowLayout(context);
@@ -82,7 +83,7 @@ class _SigninPageState extends State<SigninPage> {
                         hintText: 'Entrer votre mot de passe',
                         focusNode: _passwordFocus,
                         textfieldController: _password,
-                        validator: passwordValidator,
+                        validator: fieldValidator,
                         obscureText: true,
                         icon: Icons.password),
                     AppButton(
@@ -117,21 +118,14 @@ class _SigninPageState extends State<SigninPage> {
 
   void _authUser(BuildContext context) async {
     final HttpResponse response =
-        await _memberService.login(_email.text, _password.text);
+        await _memberService.login(_email.text.trim(), _password.text.trim());
 
     if (response.success()) {
       Storage.setString('jwt', response.token());
-      Storage.setString('id', response.memberId());
-      Navigator.pushAndRemoveUntil(
-          context,
-          animationRightLeft(const MemberHomePage(initialPage: 0)),
-          (Route<dynamic> route) => false);
+      pushAndRemove(context, const MemberHomePage());
     } else {
       _password.text = '';
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-          content: Text(response.message(),
-              style: const TextStyle(color: Colors.white)),
-          backgroundColor: red));
+      showErrorSnackBar(context, response.message());
     }
   }
 }

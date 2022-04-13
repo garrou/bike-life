@@ -3,7 +3,7 @@ import 'package:bike_life/models/component.dart';
 import 'package:bike_life/models/http_response.dart';
 import 'package:bike_life/services/component_service.dart';
 import 'package:bike_life/utils/constants.dart';
-import 'package:bike_life/styles/animations.dart';
+import 'package:bike_life/utils/redirects.dart';
 import 'package:bike_life/styles/styles.dart';
 import 'package:bike_life/views/member/bike/components/component_details.dart';
 import 'package:bike_life/widgets/error.dart';
@@ -59,14 +59,16 @@ class _BikeComponentsPageState extends State<BikeComponentsPage> {
       future: _components,
       builder: (context, snapshot) {
         if (snapshot.hasError) {
-          return const AppError(message: 'Erreur de connexion avec le serveur');
+          return const AppError(message: 'Erreur serveur');
         } else if (snapshot.hasData) {
           return ListView.builder(
               physics: const ScrollPhysics(),
               itemCount: snapshot.data!.length,
               shrinkWrap: true,
-              itemBuilder: (_, index) =>
-                  AppComponentCard(component: snapshot.data![index]));
+              itemBuilder: (_, index) => AppComponentCard(
+                    component: snapshot.data![index],
+                    bike: widget.bike,
+                  ));
         }
         return const AppLoading();
       });
@@ -74,12 +76,16 @@ class _BikeComponentsPageState extends State<BikeComponentsPage> {
 
 class AppComponentCard extends StatelessWidget {
   final Component component;
-  const AppComponentCard({Key? key, required this.component}) : super(key: key);
+  final Bike bike;
+  const AppComponentCard(
+      {Key? key, required this.component, required this.bike})
+      : super(key: key);
 
   @override
-  Widget build(BuildContext context) => InkWell(
-        onTap: () => _onComponentDetailsPage(context),
-        child: Card(
+  Widget build(BuildContext context) => Card(
+        child: InkWell(
+          onTap: () => push(
+              context, ComponentDetailsPage(component: component, bike: bike)),
           child: Padding(
             padding: const EdgeInsets.all(10),
             child: Column(
@@ -96,6 +102,22 @@ class AppComponentCard extends StatelessWidget {
                     ],
                   ),
                   padding: const EdgeInsets.all(10),
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 10),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      Text(
+                        component.brand,
+                        style: setStyle(context, 14),
+                      ),
+                      Text(
+                        component.formatPrice(),
+                        style: setStyle(context, 14),
+                      ),
+                    ],
+                  ),
                 ),
                 Padding(
                     child: _buildPercentBar(context),
@@ -152,11 +174,4 @@ class AppComponentCard extends StatelessWidget {
       barRadius: const Radius.circular(50),
     );
   }
-
-  void _onComponentDetailsPage(BuildContext context) => Navigator.push(
-        context,
-        animationRightLeft(
-          ComponentDetailsPage(component: component),
-        ),
-      );
 }

@@ -20,15 +20,9 @@ class Storage {
     return prefs.getString('jwt') ?? "";
   }
 
-  static Future<String> getMemberId() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    return prefs.getString('id') ?? "";
-  }
-
   static disconnect() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.remove('jwt');
-    prefs.remove('id');
   }
 
   static setString(String key, String value) async {
@@ -38,6 +32,7 @@ class Storage {
 
   static checkIfLogged(StreamController streamController) async {
     String token = await getToken();
+
     streamController.add(token.isNotEmpty);
   }
 }

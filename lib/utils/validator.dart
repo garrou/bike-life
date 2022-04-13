@@ -31,6 +31,6 @@ String? positiveValidator(String? value) {
 
 String? lengthValidator(String? value) {
   if (value == null || value.isEmpty || value.length > maxBikeName) {
-    return 'Saisie invalide, le nom doit faire entre 1 et $maxBikeName caractères';
+    return 'Saisie invalide, le champ doit faire entre 1 et $maxBikeName caractères';
   }
 }

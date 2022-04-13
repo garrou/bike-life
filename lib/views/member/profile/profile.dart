@@ -1,4 +1,4 @@
-import 'package:bike_life/styles/animations.dart';
+import 'package:bike_life/utils/redirects.dart';
 import 'package:bike_life/providers/theme_provider.dart';
 import 'package:bike_life/utils/constants.dart';
 import 'package:bike_life/utils/storage.dart';
@@ -75,10 +75,7 @@ class ProfilePage extends StatelessWidget {
 
   void _onDisconnect(BuildContext context) {
     Storage.disconnect();
-    Navigator.pushAndRemoveUntil(
-        context,
-        animationRightLeft(const SigninPage()),
-        (Route<dynamic> route) => false);
+    pushAndRemove(context, const SigninPage());
   }
 }
 
@@ -104,10 +101,7 @@ class AppClickCard extends StatelessWidget {
               style: secondTextStyle,
             ),
           ),
-          onTap: () => Navigator.push(
-            context,
-            animationRightLeft(destination),
-          ),
+          onTap: () => push(context, destination),
         ),
       );
 }

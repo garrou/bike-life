@@ -28,9 +28,11 @@ environment:
 # versions available, run `flutter pub outdated`.
 dependencies:
   charts_flutter: ^0.12.0
+  curved_navigation_bar: ^1.0.3
   flutter:
     sdk: flutter
-  youtube_player_flutter: ^8.0.0
+  top_snackbar_flutter: ^1.0.2
+  url_strategy: ^0.2.0
   youtube_player_iframe: ^2.2.2
 
 dependency_overrides:
@@ -43,7 +45,6 @@ dependency_overrides:
   http: ^0.13.3
   http_interceptor: ^1.0.2
   syncfusion_flutter_datepicker: ^19.3.44
-  carousel_slider: ^4.0.0
   flutter_guards: ^0.0.2
   shared_preferences: ^2.0.12
   introduction_screen: ^2.1.0

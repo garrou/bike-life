@@ -1,11 +1,9 @@
 import 'package:bike_life/models/tip.dart';
 import 'package:bike_life/styles/styles.dart';
 import 'package:bike_life/utils/constants.dart';
-import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:bike_life/widgets/buttons/top_left_button.dart';
-import 'package:youtube_player_flutter/youtube_player_flutter.dart';
-import 'package:youtube_player_iframe/youtube_player_iframe.dart' as iframe;
+import 'package:youtube_player_iframe/youtube_player_iframe.dart';
 
 class TipDetailsPage extends StatelessWidget {
   final Tip tip;
@@ -26,17 +24,14 @@ class TipDetailsPage extends StatelessWidget {
           horizontal: MediaQuery.of(context).size.width / 12),
       child: _wideLayout(context));
 
-  Widget _wideLayout(BuildContext context) => ScrollConfiguration(
-        behavior: const ScrollBehavior().copyWith(overscroll: false),
-        child: ListView(
-          padding: const EdgeInsets.symmetric(horizontal: thirdSize),
-          children: <Widget>[
-            AppTopLeftButton(title: 'Conseils', callback: () => _back(context)),
-            buildText(tip.title, boldTextStyle, TextAlign.center),
-            buildText(tip.content, thirdTextStyle, TextAlign.center),
-            if (tip.videoUrl != null) VideoPlayer(video: tip.videoUrl!)
-          ],
-        ),
+  Widget _wideLayout(BuildContext context) => ListView(
+        padding: const EdgeInsets.symmetric(horizontal: thirdSize),
+        children: <Widget>[
+          AppTopLeftButton(title: 'Conseils', callback: () => _back(context)),
+          buildText(tip.title, boldTextStyle, TextAlign.center),
+          buildText(tip.content, thirdTextStyle, TextAlign.center),
+          if (tip.videoUrl != null) VideoPlayer(video: tip.videoUrl!)
+        ],
       );
 
   Padding buildText(String text, TextStyle style, TextAlign textAlign) =>
@@ -57,65 +52,29 @@ class VideoPlayer extends StatefulWidget {
 
 class _VideoPlayerState extends State<VideoPlayer> {
   late YoutubePlayerController _controller;
-  late iframe.YoutubePlayerController _webController;
 
   @override
   void initState() {
     super.initState();
-
-    if (kIsWeb) {
-      _webController = iframe.YoutubePlayerController(
-        initialVideoId: widget.video,
-        params: const iframe.YoutubePlayerParams(
-          autoPlay: false,
-          showFullscreenButton: true,
-        ),
-      );
-    } else {
-      _controller = YoutubePlayerController(
-        initialVideoId: widget.video,
-        flags: const YoutubePlayerFlags(
-          autoPlay: false,
-        ),
-      );
-    }
-  }
-
-  @override
-  void dispose() {
-    _controller.dispose();
-    super.dispose();
+    _controller = YoutubePlayerController(
+      initialVideoId: widget.video,
+      params: const YoutubePlayerParams(
+        showControls: true,
+        showFullscreenButton: true,
+      ),
+    );
   }
 
   @override
   Widget build(BuildContext context) {
-    return kIsWeb ? _buildWebPlayer() : _buildMobilePlayer();
+    return _buildWebPlayer();
   }
-
-  Widget _buildMobilePlayer() => Padding(
-        padding: const EdgeInsets.only(bottom: 50.0),
-        child: YoutubePlayerBuilder(
-          player: YoutubePlayer(
-            controller: _controller,
-            showVideoProgressIndicator: true,
-            progressColors: const ProgressBarColors(
-              playedColor: primaryColor,
-              handleColor: primaryColor,
-            ),
-            progressIndicatorColor: primaryColor,
-            onReady: () {
-              _controller.addListener(() {});
-            },
-          ),
-          builder: (context, player) => player,
-        ),
-      );
 
   Widget _buildWebPlayer() => Padding(
         padding: const EdgeInsets.symmetric(vertical: 10.0),
-        child: iframe.YoutubePlayerControllerProvider(
-          controller: _webController,
-          child: const iframe.YoutubePlayerIFrame(),
+        child: YoutubePlayerIFrame(
+          controller: _controller,
+          aspectRatio: 16 / 9,
         ),
       );
 }

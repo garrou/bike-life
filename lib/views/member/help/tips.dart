@@ -1,7 +1,7 @@
 import 'package:bike_life/models/http_response.dart';
 import 'package:bike_life/models/tip.dart';
 import 'package:bike_life/services/tip_service.dart';
-import 'package:bike_life/styles/animations.dart';
+import 'package:bike_life/utils/redirects.dart';
 import 'package:bike_life/styles/styles.dart';
 import 'package:bike_life/utils/constants.dart';
 import 'package:bike_life/views/member/help/tip_details.dart';
@@ -54,20 +54,18 @@ class _TipsPageState extends State<TipsPage> {
       future: _loadTips(_topic),
       builder: (_, snapshot) {
         if (snapshot.hasError) {
-          return const AppError(message: 'Erreur de connexion avec le serveur');
+          return const AppError(message: 'Erreur serveur');
         } else if (snapshot.hasData) {
-          return ScrollConfiguration(
-            behavior: const ScrollBehavior().copyWith(overscroll: false),
-            child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: <Widget>[
-                  _buildDropdownButton(),
-                  Expanded(
-                    child: ListView(children: <Widget>[
-                      for (Tip tip in snapshot.data!) _buildTip(tip)
-                    ]),
-                  )
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: <Widget>[
+              _buildDropdownButton(),
+              Expanded(
+                child: ListView(children: <Widget>[
+                  for (Tip tip in snapshot.data!) _buildTip(tip)
                 ]),
+              )
+            ],
           );
         }
         return const AppLoading();
@@ -75,8 +73,7 @@ class _TipsPageState extends State<TipsPage> {
 
   Widget _buildTip(Tip tip) => Card(
         child: InkWell(
-          onTap: () => Navigator.push(
-              context, animationRightLeft(TipDetailsPage(tip: tip))),
+          onTap: () => push(context, TipDetailsPage(tip: tip)),
           child: Padding(
             padding: const EdgeInsets.fromLTRB(5.0, 10.0, 5.0, 10.0),
             child: Column(children: <Widget>[

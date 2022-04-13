@@ -1,13 +1,13 @@
 import 'package:bike_life/models/bike.dart';
 import 'package:bike_life/models/http_response.dart';
-import 'package:bike_life/styles/animations.dart';
+import 'package:bike_life/utils/redirects.dart';
 import 'package:bike_life/utils/constants.dart';
-import 'package:bike_life/utils/storage.dart';
 import 'package:bike_life/utils/validator.dart';
 import 'package:bike_life/services/bike_service.dart';
 import 'package:bike_life/styles/styles.dart';
 import 'package:bike_life/views/member/member_home.dart';
 import 'package:bike_life/widgets/buttons/button.dart';
+import 'package:bike_life/widgets/snackbar.dart';
 import 'package:bike_life/widgets/textfield.dart';
 import 'package:bike_life/widgets/buttons/top_left_button.dart';
 import 'package:flutter/material.dart';
@@ -78,7 +78,7 @@ class _AddBikeFormState extends State<AddBikeForm> {
               keyboardType: TextInputType.text,
               focusNode: _nameFocus,
               textfieldController: _name,
-              validator: fieldValidator,
+              validator: lengthValidator,
               hintText: 'Nom du vélo',
               label: 'Nom du vélo',
               icon: Icons.pedal_bike,
@@ -155,7 +155,6 @@ class _AddBikeFormState extends State<AddBikeForm> {
   }
 
   void _addBike() async {
-    final String memberId = await Storage.getMemberId();
     final Bike bike = Bike(
         '',
         _name.text,
@@ -166,22 +165,13 @@ class _AddBikeFormState extends State<AddBikeForm> {
         0,
         _automatic,
         double.parse(_price.text));
-    final HttpResponse response = await BikeService().create(memberId, bike);
+    final HttpResponse response = await BikeService().create(bike);
 
     if (response.success()) {
-      _onMemberHomePage();
+      pushAndRemove(context, const MemberHomePage());
+      showSuccessSnackBar(context, response.message());
+    } else {
+      showErrorSnackBar(context, response.message());
     }
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(response.message(),
-            style: const TextStyle(color: Colors.white)),
-        backgroundColor: response.color(),
-      ),
-    );
   }
-
-  void _onMemberHomePage() => Navigator.pushAndRemoveUntil(
-      context,
-      animationRightLeft(const MemberHomePage(initialPage: 0)),
-      (Route<dynamic> route) => false);
 }

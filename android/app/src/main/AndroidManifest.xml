@@ -2,7 +2,7 @@
     package="com.example.bike_life">
    <uses-permission android:name="android.permission.INTERNET"/>
    <application
-        android:label="bike_life"
+        android:label="Bike's life"
         android:icon="@mipmap/ic_launcher">
         <activity
             android:name=".MainActivity"

@@ -46,17 +46,16 @@ class _ComponentsPicturesPageState extends State<ComponentsPicturesPage> {
           child: _wideLayout(context, constraints));
 
   Widget _wideLayout(BuildContext context, BoxConstraints constraints) =>
-      ScrollConfiguration(
-          behavior: const ScrollBehavior().copyWith(overscroll: false),
-          child: GridView.count(
-              crossAxisCount: constraints.maxWidth > maxWidth + 400
-                  ? 3
-                  : constraints.maxWidth > maxWidth
-                      ? 2
-                      : 1,
-              children: <Widget>[
-                for (Picture picture in _pictures) _buildImageContainer(picture)
-              ]));
+      GridView.count(
+        crossAxisCount: constraints.maxWidth > maxWidth + 400
+            ? 3
+            : constraints.maxWidth > maxWidth
+                ? 2
+                : 1,
+        children: <Widget>[
+          for (Picture picture in _pictures) _buildImageContainer(picture)
+        ],
+      );
 
   Widget _buildImageContainer(Picture picture) => Column(
         children: <Widget>[
