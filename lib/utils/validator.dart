@@ -20,6 +20,8 @@ String? fieldValidator(String? value) {
   }
 }
 
+String? noneValidator(String? value) {}
+
 String? positiveValidator(String? value) {
   if (value == null ||
       value.isEmpty ||
@@ -29,8 +31,8 @@ String? positiveValidator(String? value) {
   }
 }
 
-String? lengthValidator(String? value) {
-  if (value == null || value.isEmpty || value.length > maxBikeName) {
-    return 'Saisie invalide, le champ doit faire entre 1 et $maxBikeName caractères';
+String? lengthValidator(String? value, int max) {
+  if (value == null || value.isEmpty || value.length > max) {
+    return 'Saisie invalide, le champ doit faire entre 1 et $max caractères';
   }
 }

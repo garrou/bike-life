@@ -14,18 +14,18 @@ import 'package:bike_life/widgets/snackbar.dart';
 import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 
-class ChangeComponentPage extends StatefulWidget {
+class ComponentChangePage extends StatefulWidget {
   final Component component;
   final Bike bike;
-  const ChangeComponentPage(
+  const ComponentChangePage(
       {Key? key, required this.component, required this.bike})
       : super(key: key);
 
   @override
-  _ChangeComponentPageState createState() => _ChangeComponentPageState();
+  _ComponentChangePageState createState() => _ComponentChangePageState();
 }
 
-class _ChangeComponentPageState extends State<ChangeComponentPage> {
+class _ComponentChangePageState extends State<ComponentChangePage> {
   DateTime _changedDate = DateTime.now();
 
   @override
@@ -54,10 +54,10 @@ class _ChangeComponentPageState extends State<ChangeComponentPage> {
                 selectedDate: _changedDate,
                 text: 'Date du changement',
                 visible: true),
-            padding: const EdgeInsets.all(20),
+            padding: const EdgeInsets.all(10),
           ),
           AppButton(
-            text: 'Changer le composant',
+            text: 'Enregistrer',
             callback: _change,
             icon: const Icon(Icons.save),
           )

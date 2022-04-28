@@ -225,8 +225,7 @@ class _BikeCardState extends State<BikeCard> {
               focusNode: _kmFocus,
               textfieldController: _km,
               validator: positiveValidator,
-              hintText: 'Kilomètres à ajouter',
-              label: 'Kilomètres',
+              label: 'Kilomètres à ajouter',
               icon: Icons.add_road,
               keyboardType: TextInputType.number,
             )

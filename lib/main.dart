@@ -6,12 +6,13 @@ import 'package:provider/provider.dart';
 import 'package:url_strategy/url_strategy.dart';
 
 // TODO: Fix bug date when update components
-// TODO: store km change
 // TODO; inactive when change email
 // TODO: suggest components with user components
 // TODO: check if icon are all empty or full
 // TODO: check brand length server side and front
 // TODO: check token
+// TODO: add message before change component to update brand and price
+// TODO; friend system
 
 void main() {
   setPathUrlStrategy();

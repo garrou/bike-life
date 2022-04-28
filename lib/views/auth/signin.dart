@@ -72,7 +72,6 @@ class _SigninPageState extends State<SigninPage> {
                     AppTextField(
                         keyboardType: TextInputType.emailAddress,
                         label: 'Email',
-                        hintText: 'Entrer un email valide',
                         focusNode: _emailFocus,
                         textfieldController: _email,
                         validator: emailValidator,
@@ -80,7 +79,6 @@ class _SigninPageState extends State<SigninPage> {
                     AppTextField(
                         keyboardType: TextInputType.text,
                         label: 'Mot de passe',
-                        hintText: 'Entrer votre mot de passe',
                         focusNode: _passwordFocus,
                         textfieldController: _password,
                         validator: fieldValidator,

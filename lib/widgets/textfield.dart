@@ -6,7 +6,6 @@ class AppTextField extends StatelessWidget {
   final FocusNode focusNode;
   final TextEditingController textfieldController;
   final String? Function(String?)? validator;
-  final String hintText;
   final String label;
   final bool obscureText;
   final IconData icon;
@@ -18,7 +17,6 @@ class AppTextField extends StatelessWidget {
       required this.focusNode,
       required this.textfieldController,
       required this.validator,
-      required this.hintText,
       required this.label,
       required this.icon,
       required this.keyboardType,
@@ -38,16 +36,14 @@ class AppTextField extends StatelessWidget {
             controller: textfieldController,
             obscureText: obscureText,
             decoration: InputDecoration(
-                focusedBorder: textFieldBorder(firstSize, primaryColor),
-                prefixIcon: Icon(icon,
-                    color:
-                        focusNode.hasFocus ? intermediateColor : primaryColor),
-                border: textFieldBorder(firstSize, intermediateColor),
-                labelText: label,
-                labelStyle: TextStyle(
-                    color:
-                        focusNode.hasFocus ? intermediateColor : primaryColor),
-                hintText: hintText),
+              focusedBorder: textFieldBorder(firstSize, primaryColor),
+              prefixIcon: Icon(icon,
+                  color: focusNode.hasFocus ? intermediateColor : primaryColor),
+              border: textFieldBorder(firstSize, intermediateColor),
+              labelText: label,
+              labelStyle: TextStyle(
+                  color: focusNode.hasFocus ? intermediateColor : primaryColor),
+            ),
             cursorColor: primaryColor,
             validator: validator),
       );
