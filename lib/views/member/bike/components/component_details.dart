@@ -1,9 +1,10 @@
 import 'package:bike_life/models/bike.dart';
 import 'package:bike_life/models/component.dart';
 import 'package:bike_life/styles/styles.dart';
-import 'package:bike_life/views/member/bike/components/component_historic_change.dart';
+import 'package:bike_life/views/member/bike/components/component_historic_changes.dart';
 import 'package:bike_life/views/member/bike/components/component_historic_repairs.dart';
 import 'package:bike_life/views/member/bike/components/component_settings.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
 class ComponentDetailsPage extends StatelessWidget {
@@ -30,7 +31,7 @@ class ComponentDetailsPage extends StatelessWidget {
             ),
           ),
           body: TabBarView(children: [
-            ComponentHistoricChangePage(component: component, bike: bike),
+            ComponentHistoricChangesPage(component: component, bike: bike),
             ComponentHistoricRepairsPage(component: component, bike: bike),
             ComponentSettingsPage(component: component, bike: bike),
           ]),

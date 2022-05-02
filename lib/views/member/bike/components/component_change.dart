@@ -3,6 +3,7 @@ import 'package:bike_life/models/component.dart';
 import 'package:bike_life/models/component_change.dart';
 import 'package:bike_life/models/http_response.dart';
 import 'package:bike_life/services/component_service.dart';
+import 'package:bike_life/styles/styles.dart';
 import 'package:bike_life/utils/redirects.dart';
 import 'package:bike_life/utils/constants.dart';
 import 'package:bike_life/views/member/bike/bike_details.dart';
@@ -58,10 +59,28 @@ class _ComponentChangePageState extends State<ComponentChangePage> {
           ),
           AppButton(
             text: 'Enregistrer',
-            callback: _change,
+            callback: () => _showChangeDialog(context),
             icon: const Icon(Icons.save),
           )
         ],
+      );
+
+  Future _showChangeDialog(BuildContext context) async => showDialog(
+        context: context,
+        builder: (BuildContext context) => AlertDialog(
+          shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(secondSize)),
+          title: const Text('Petit rappel'),
+          content: const Text(
+              "Pensez à modifier la marque et le prix du composant que vous allez changer dans l'onglet paramètres du composant."),
+          actions: <Widget>[
+            TextButton(
+              child: const Text('Changer le composant',
+                  style: TextStyle(color: primaryColor)),
+              onPressed: _change,
+            )
+          ],
+        ),
       );
 
   void _onDateChanged(DateRangePickerSelectionChangedArgs args) {

@@ -11,10 +11,10 @@ import 'package:bike_life/widgets/error.dart';
 import 'package:bike_life/widgets/loading.dart';
 import 'package:flutter/material.dart';
 
-class ComponentHistoricChangePage extends StatefulWidget {
+class ComponentHistoricChangesPage extends StatefulWidget {
   final Component component;
   final Bike bike;
-  const ComponentHistoricChangePage(
+  const ComponentHistoricChangesPage(
       {Key? key, required this.component, required this.bike})
       : super(key: key);
 
@@ -22,7 +22,7 @@ class ComponentHistoricChangePage extends StatefulWidget {
   _ComponentHistoricPageState createState() => _ComponentHistoricPageState();
 }
 
-class _ComponentHistoricPageState extends State<ComponentHistoricChangePage> {
+class _ComponentHistoricPageState extends State<ComponentHistoricChangesPage> {
   late Future<List<ComponentChange>> _historic;
 
   Future<List<ComponentChange>> _load() async {
@@ -81,7 +81,7 @@ class _ComponentHistoricPageState extends State<ComponentHistoricChangePage> {
                   children: [
                     Padding(
                         child: Text(
-                          '${snapshot.data!.length} changement$s',
+                          '$nb changement$s',
                           style: thirdTextStyle,
                         ),
                         padding: const EdgeInsets.all(10.0)),
@@ -111,19 +111,26 @@ class _ComponentHistoricPageState extends State<ComponentHistoricChangePage> {
                 padding: const EdgeInsets.only(bottom: 5),
               ),
               Padding(
-                  child: Text(
-                    'Date de changement : ${change.formatChangedAt()}',
-                    style: setStyle(context, 16),
-                  ),
-                  padding: const EdgeInsets.only(bottom: 5)),
+                child: Text(
+                  'Date de changement : ${change.formatChangedAt()}',
+                  style: setStyle(context, 16),
+                ),
+                padding: const EdgeInsets.only(bottom: 5),
+              ),
               Padding(
-                  padding: const EdgeInsets.only(bottom: 5),
-                  child: Text('Parcourus : ${change.formatKm()} km',
-                      style: setStyle(context, 16))),
+                padding: const EdgeInsets.only(bottom: 5),
+                child: Text(
+                  'Parcourus : ${change.formatKm()} km',
+                  style: setStyle(context, 16),
+                ),
+              ),
               Padding(
-                  padding: const EdgeInsets.only(bottom: 5),
-                  child: Text('Prix du composant : ${change.formatPrice()}',
-                      style: setStyle(context, 16))),
+                padding: const EdgeInsets.only(bottom: 5),
+                child: Text(
+                  'Prix du composant : ${change.formatPrice()}',
+                  style: setStyle(context, 16),
+                ),
+              ),
             ],
           ),
         ),

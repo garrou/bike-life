@@ -12,7 +12,6 @@ import 'package:url_strategy/url_strategy.dart';
 // TODO: check brand length server side and front
 // TODO: check token
 // TODO: add message before change component to update brand and price
-// TODO; friend system
 
 void main() {
   setPathUrlStrategy();

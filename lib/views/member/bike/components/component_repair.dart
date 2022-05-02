@@ -1,10 +1,17 @@
 import 'package:bike_life/models/bike.dart';
 import 'package:bike_life/models/component.dart';
+import 'package:bike_life/models/http_response.dart';
+import 'package:bike_life/models/repair.dart';
+import 'package:bike_life/services/repair_service.dart';
 import 'package:bike_life/utils/constants.dart';
+import 'package:bike_life/utils/redirects.dart';
 import 'package:bike_life/utils/validator.dart';
+import 'package:bike_life/views/member/bike/components/component_details.dart';
+import 'package:bike_life/views/member/member_home.dart';
 import 'package:bike_life/widgets/buttons/button.dart';
 import 'package:bike_life/widgets/buttons/top_left_button.dart';
 import 'package:bike_life/widgets/calendar.dart';
+import 'package:bike_life/widgets/snackbar.dart';
 import 'package:bike_life/widgets/textfield.dart';
 import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
@@ -29,7 +36,7 @@ class _ComponentRepairPageState extends State<ComponentRepairPage> {
   final _priceFocus = FocusNode();
   final _price = TextEditingController();
 
-  DateTime _changedDate = DateTime.now();
+  DateTime _repairDate = DateTime.now();
 
   @override
   Widget build(BuildContext context) => Scaffold(
@@ -71,7 +78,7 @@ class _ComponentRepairPageState extends State<ComponentRepairPage> {
               child: AppCalendar(
                   minDate: widget.bike.addedAt,
                   callback: _onDateChanged,
-                  selectedDate: _changedDate,
+                  selectedDate: _repairDate,
                   text: 'Date de la réparation',
                   visible: true),
               padding: const EdgeInsets.all(10),
@@ -86,7 +93,7 @@ class _ComponentRepairPageState extends State<ComponentRepairPage> {
       );
 
   void _onDateChanged(DateRangePickerSelectionChangedArgs args) {
-    _changedDate = args.value;
+    _repairDate = args.value;
   }
 
   void _back() => Navigator.pop(context);
@@ -98,5 +105,17 @@ class _ComponentRepairPageState extends State<ComponentRepairPage> {
     }
   }
 
-  void _addRepair() {}
+  void _addRepair() async {
+    final Repair repair = Repair(0, _repairDate, _reason.text,
+        double.parse(_price.text), widget.component.id);
+    final HttpResponse response = await RepairService().addRepair(repair);
+
+    if (response.success()) {
+      doublePush(context, const MemberHomePage(),
+          ComponentDetailsPage(component: widget.component, bike: widget.bike));
+      showSuccessSnackBar(context, response.message());
+    } else {
+      showErrorSnackBar(context, response.message());
+    }
+  }
 }
