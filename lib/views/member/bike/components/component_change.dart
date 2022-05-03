@@ -3,6 +3,7 @@ import 'package:bike_life/models/component.dart';
 import 'package:bike_life/models/component_change.dart';
 import 'package:bike_life/models/http_response.dart';
 import 'package:bike_life/services/component_service.dart';
+import 'package:bike_life/styles/styles.dart';
 import 'package:bike_life/utils/redirects.dart';
 import 'package:bike_life/utils/constants.dart';
 import 'package:bike_life/views/member/bike/bike_details.dart';
@@ -14,18 +15,18 @@ import 'package:bike_life/widgets/snackbar.dart';
 import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 
-class ChangeComponentPage extends StatefulWidget {
+class ComponentChangePage extends StatefulWidget {
   final Component component;
   final Bike bike;
-  const ChangeComponentPage(
+  const ComponentChangePage(
       {Key? key, required this.component, required this.bike})
       : super(key: key);
 
   @override
-  _ChangeComponentPageState createState() => _ChangeComponentPageState();
+  _ComponentChangePageState createState() => _ComponentChangePageState();
 }
 
-class _ChangeComponentPageState extends State<ChangeComponentPage> {
+class _ComponentChangePageState extends State<ComponentChangePage> {
   DateTime _changedDate = DateTime.now();
 
   @override
@@ -54,14 +55,32 @@ class _ChangeComponentPageState extends State<ChangeComponentPage> {
                 selectedDate: _changedDate,
                 text: 'Date du changement',
                 visible: true),
-            padding: const EdgeInsets.all(20),
+            padding: const EdgeInsets.all(10),
           ),
           AppButton(
-            text: 'Changer le composant',
-            callback: _change,
+            text: 'Enregistrer',
+            callback: () => _showChangeDialog(context),
             icon: const Icon(Icons.save),
           )
         ],
+      );
+
+  Future _showChangeDialog(BuildContext context) async => showDialog(
+        context: context,
+        builder: (BuildContext context) => AlertDialog(
+          shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(secondSize)),
+          title: const Text('Petit rappel'),
+          content: const Text(
+              "Pensez à modifier la marque et le prix du composant que vous allez changer dans l'onglet paramètres du composant."),
+          actions: <Widget>[
+            TextButton(
+              child: const Text('Changer le composant',
+                  style: TextStyle(color: primaryColor)),
+              onPressed: _change,
+            )
+          ],
+        ),
       );
 
   void _onDateChanged(DateRangePickerSelectionChangedArgs args) {

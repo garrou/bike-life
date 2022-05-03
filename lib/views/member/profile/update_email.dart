@@ -76,7 +76,6 @@ class _UpdateEmailPageState extends State<UpdateEmailPage> {
                     return AppTextField(
                       keyboardType: TextInputType.emailAddress,
                       label: 'Email',
-                      hintText: 'Entrer un email valide',
                       focusNode: _emailFocus,
                       textfieldController: _email,
                       validator: emailValidator,

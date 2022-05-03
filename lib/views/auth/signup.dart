@@ -73,16 +73,14 @@ class _SignupPageState extends State<SignupPage> {
                     AppTextField(
                         keyboardType: TextInputType.emailAddress,
                         label: 'Email',
-                        hintText: 'Entrer un email valide',
                         focusNode: _emailFocus,
                         textfieldController: _email,
                         validator: emailValidator,
                         icon: Icons.alternate_email),
                     AppTextField(
                         keyboardType: TextInputType.text,
-                        label: 'Mot de passe',
-                        hintText:
-                            'Mot de passe, $minPasswordSize caractères minimum',
+                        label:
+                            'Mot de passe ($minPasswordSize caractères minimum)',
                         focusNode: _passwordFocus,
                         textfieldController: _password,
                         validator: passwordValidator,
@@ -91,8 +89,6 @@ class _SignupPageState extends State<SignupPage> {
                     AppTextField(
                         keyboardType: TextInputType.text,
                         label: 'Confirmer le mot de passe',
-                        hintText:
-                            'Mot de passe, $minPasswordSize caractères minimum',
                         focusNode: _confirmPasswordFocus,
                         textfieldController: _confirmPassword,
                         // ignore: body_might_complete_normally_nullable

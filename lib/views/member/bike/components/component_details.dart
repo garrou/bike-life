@@ -1,7 +1,8 @@
 import 'package:bike_life/models/bike.dart';
 import 'package:bike_life/models/component.dart';
 import 'package:bike_life/styles/styles.dart';
-import 'package:bike_life/views/member/bike/components/component_historic.dart';
+import 'package:bike_life/views/member/bike/components/component_historic_changes.dart';
+import 'package:bike_life/views/member/bike/components/component_historic_repairs.dart';
 import 'package:bike_life/views/member/bike/components/component_settings.dart';
 import 'package:flutter/material.dart';
 
@@ -14,7 +15,7 @@ class ComponentDetailsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => DefaultTabController(
-        length: 2,
+        length: 3,
         child: Scaffold(
           appBar: AppBar(
             backgroundColor: primaryColor,
@@ -23,12 +24,14 @@ class ComponentDetailsPage extends StatelessWidget {
               indicatorColor: primaryColor,
               tabs: [
                 Tab(icon: Icon(Icons.history)),
+                Tab(icon: Icon(Icons.auto_stories_outlined)),
                 Tab(icon: Icon(Icons.settings)),
               ],
             ),
           ),
           body: TabBarView(children: [
-            ComponentHistoricPage(component: component, bike: bike),
+            ComponentHistoricChangesPage(component: component, bike: bike),
+            ComponentHistoricRepairsPage(component: component, bike: bike),
             ComponentSettingsPage(component: component, bike: bike),
           ]),
         ),

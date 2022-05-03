@@ -11,10 +11,10 @@ import 'package:bike_life/widgets/error.dart';
 import 'package:bike_life/widgets/loading.dart';
 import 'package:flutter/material.dart';
 
-class ComponentHistoricPage extends StatefulWidget {
+class ComponentHistoricChangesPage extends StatefulWidget {
   final Component component;
   final Bike bike;
-  const ComponentHistoricPage(
+  const ComponentHistoricChangesPage(
       {Key? key, required this.component, required this.bike})
       : super(key: key);
 
@@ -22,7 +22,7 @@ class ComponentHistoricPage extends StatefulWidget {
   _ComponentHistoricPageState createState() => _ComponentHistoricPageState();
 }
 
-class _ComponentHistoricPageState extends State<ComponentHistoricPage> {
+class _ComponentHistoricPageState extends State<ComponentHistoricChangesPage> {
   late Future<List<ComponentChange>> _historic;
 
   Future<List<ComponentChange>> _load() async {
@@ -45,11 +45,11 @@ class _ComponentHistoricPageState extends State<ComponentHistoricPage> {
   @override
   Widget build(BuildContext context) => Scaffold(
         floatingActionButton: FloatingActionButton(
-          child: const Icon(Icons.restart_alt, color: Colors.white),
+          child: const Icon(Icons.add, color: Colors.white),
           backgroundColor: primaryColor,
           onPressed: () => push(
             context,
-            ChangeComponentPage(component: widget.component, bike: widget.bike),
+            ComponentChangePage(component: widget.component, bike: widget.bike),
           ),
         ),
         body: LayoutBuilder(builder: (context, constraints) {
@@ -77,22 +77,24 @@ class _ComponentHistoricPageState extends State<ComponentHistoricPage> {
                 final int nb = snapshot.data!.length;
                 final String s = nb > 1 ? 's' : '';
 
-                return Column(children: [
-                  Padding(
-                      child: Text(
-                        '${snapshot.data!.length} changement$s',
-                        style: thirdTextStyle,
+                return Column(
+                  children: [
+                    Padding(
+                        child: Text(
+                          '$nb changement$s',
+                          style: thirdTextStyle,
+                        ),
+                        padding: const EdgeInsets.all(thirdSize)),
+                    Flexible(
+                      child: ListView.builder(
+                        itemCount: nb,
+                        shrinkWrap: true,
+                        itemBuilder: (_, index) =>
+                            _buildCard(snapshot.data![index]),
                       ),
-                      padding: const EdgeInsets.all(10.0)),
-                  Flexible(
-                    child: ListView.builder(
-                      itemCount: nb,
-                      shrinkWrap: true,
-                      itemBuilder: (_, index) =>
-                          _buildCard(snapshot.data![index]),
                     ),
-                  ),
-                ]);
+                  ],
+                );
               }
               return const AppLoading();
             }),
@@ -109,19 +111,26 @@ class _ComponentHistoricPageState extends State<ComponentHistoricPage> {
                 padding: const EdgeInsets.only(bottom: 5),
               ),
               Padding(
-                  child: Text(
-                    'Date de changement : ${change.formatChangedAt()}',
-                    style: setStyle(context, 16),
-                  ),
-                  padding: const EdgeInsets.only(bottom: 5)),
+                child: Text(
+                  'Date de changement : ${change.formatChangedAt()}',
+                  style: setStyle(context, 16),
+                ),
+                padding: const EdgeInsets.only(bottom: 5),
+              ),
               Padding(
-                  padding: const EdgeInsets.only(bottom: 5),
-                  child: Text('Parcourus : ${change.formatKm()} km',
-                      style: setStyle(context, 16))),
+                padding: const EdgeInsets.only(bottom: 5),
+                child: Text(
+                  'Parcourus : ${change.formatKm()} km',
+                  style: setStyle(context, 16),
+                ),
+              ),
               Padding(
-                  padding: const EdgeInsets.only(bottom: 5),
-                  child: Text('Prix du composant : ${change.formatPrice()}',
-                      style: setStyle(context, 16))),
+                padding: const EdgeInsets.only(bottom: 5),
+                child: Text(
+                  'Prix du composant : ${change.formatPrice()}',
+                  style: setStyle(context, 16),
+                ),
+              ),
             ],
           ),
         ),

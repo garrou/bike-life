@@ -75,7 +75,7 @@ class _TipsPageState extends State<TipsPage> {
         child: InkWell(
           onTap: () => push(context, TipDetailsPage(tip: tip)),
           child: Padding(
-            padding: const EdgeInsets.fromLTRB(5.0, 10.0, 5.0, 10.0),
+            padding: const EdgeInsets.fromLTRB(5.0, thirdSize, 5.0, thirdSize),
             child: Column(children: <Widget>[
               Padding(
                 padding: const EdgeInsets.only(bottom: 5.0),
@@ -107,7 +107,7 @@ class _TipsPageState extends State<TipsPage> {
         ].map<DropdownMenuItem<String>>((String value) {
           return DropdownMenuItem<String>(
             value: value == 'Tout' ? '%' : value,
-            child: Text(value),
+            child: Text(value, style: secondTextStyle),
           );
         }).toList(),
       );

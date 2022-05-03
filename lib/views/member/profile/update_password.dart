@@ -52,9 +52,7 @@ class _UpdatePasswordPageState extends State<UpdatePasswordPage> {
               ),
               AppTextField(
                   keyboardType: TextInputType.text,
-                  label: 'Mot de passe',
-                  hintText:
-                      'Entrer un mot de passe de $minPasswordSize caractères minimum',
+                  label: 'Mot de passe ($minPasswordSize caractères minimum)',
                   focusNode: _passwordFocus,
                   textfieldController: _password,
                   validator: passwordValidator,
@@ -63,7 +61,6 @@ class _UpdatePasswordPageState extends State<UpdatePasswordPage> {
               AppTextField(
                   keyboardType: TextInputType.text,
                   label: 'Confirmer le mot de passe',
-                  hintText: 'Confirmer le mot de passe',
                   focusNode: _confirmPassFocus,
                   textfieldController: _confirmPass,
                   // ignore: body_might_complete_normally_nullable

@@ -81,8 +81,7 @@ class _UpdateBikeFormState extends State<UpdateBikeForm> {
                 keyboardType: TextInputType.text,
                 focusNode: _nameFocus,
                 textfieldController: _name,
-                validator: lengthValidator,
-                hintText: 'Nom du vélo',
+                validator: (value) => lengthValidator(value, maxBikeName),
                 label: 'Nom du vélo',
                 icon: Icons.pedal_bike),
             AppTextField(
@@ -90,7 +89,6 @@ class _UpdateBikeFormState extends State<UpdateBikeForm> {
                 focusNode: _kmWeekFocus,
                 textfieldController: _kmWeek,
                 validator: positiveValidator,
-                hintText: 'Kilomètres par semaine',
                 label: 'Kilomètres par semaine',
                 icon: Icons.add_road),
             AppTextField(
@@ -98,7 +96,6 @@ class _UpdateBikeFormState extends State<UpdateBikeForm> {
                 focusNode: _priceFocus,
                 textfieldController: _price,
                 validator: positiveValidator,
-                hintText: 'Prix du vélo',
                 label: 'Prix du vélo',
                 icon: Icons.euro),
             Row(mainAxisAlignment: MainAxisAlignment.center, children: <Widget>[

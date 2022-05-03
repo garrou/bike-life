@@ -1,4 +1,5 @@
 import 'package:bike_life/styles/styles.dart';
+import 'package:bike_life/utils/constants.dart';
 import 'package:flutter/material.dart';
 
 class AppTopLeftButton extends StatelessWidget {
@@ -14,7 +15,7 @@ class AppTopLeftButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Padding(
-        padding: const EdgeInsets.only(top: 30),
+        padding: const EdgeInsets.only(top: secondSize),
         child: Row(
           children: <Widget>[
             Visibility(

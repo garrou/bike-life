@@ -80,7 +80,8 @@ class _HomPageState extends State<HomPage> {
       future: _bikes,
       builder: (context, snapshot) {
         if (snapshot.hasError) {
-          return const AppError(message: 'Erreur serveur');
+          Storage.disconnect();
+          return const SigninPage();
         } else if (snapshot.hasData) {
           return snapshot.data!.isEmpty
               ? Center(
@@ -90,13 +91,13 @@ class _HomPageState extends State<HomPage> {
                         'Aucun vélo ajouté ! Pour en ajouter un, cliquer sur le +',
                         style: secondTextStyle,
                       ),
-                      padding: const EdgeInsets.only(top: 20.0),
+                      padding: const EdgeInsets.only(top: secondSize),
                     ),
                     Lottie.asset('assets/empty.json')
                   ]),
                 )
               : GridView.count(
-                  childAspectRatio: 0.7,
+                  childAspectRatio: 0.65,
                   controller: ScrollController(),
                   crossAxisCount: constraints.maxWidth > maxWidth + 400
                       ? 3
@@ -136,10 +137,11 @@ class _BikeCardState extends State<BikeCard> {
             child: Column(
               children: <Widget>[
                 Padding(
-                    child: Text(widget.bike.name, style: setStyle(context, 20)),
-                    padding: const EdgeInsets.all(10.0)),
+                    child: Text(widget.bike.name,
+                        style: setStyle(context, secondSize)),
+                    padding: const EdgeInsets.all(thirdSize)),
                 Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 10.0),
+                  padding: const EdgeInsets.symmetric(vertical: thirdSize),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: <Widget>[
@@ -187,7 +189,7 @@ class _BikeCardState extends State<BikeCard> {
                     label: Text('Ajouter des km', style: thirdTextStyle),
                     icon: const Icon(
                       Icons.add_road,
-                      size: 20,
+                      size: secondSize,
                     ),
                     onPressed: () => showDialog(
                       context: context,
@@ -199,7 +201,7 @@ class _BikeCardState extends State<BikeCard> {
                           colorByTheme(context)),
                       shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                         RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(20.0),
+                          borderRadius: BorderRadius.circular(secondSize),
                           side: BorderSide(color: colorByTheme(context)),
                         ),
                       ),
@@ -225,8 +227,7 @@ class _BikeCardState extends State<BikeCard> {
               focusNode: _kmFocus,
               textfieldController: _km,
               validator: positiveValidator,
-              hintText: 'Kilomètres à ajouter',
-              label: 'Kilomètres',
+              label: 'Kilomètres à ajouter',
               icon: Icons.add_road,
               keyboardType: TextInputType.number,
             )
@@ -318,7 +319,7 @@ class _ComponentsAlertsState extends State<ComponentsAlerts> {
                     foregroundColor: MaterialStateProperty.all<Color>(orange),
                     shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                       RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(20.0),
+                        borderRadius: BorderRadius.circular(secondSize),
                         side: const BorderSide(color: orange),
                       ),
                     ),

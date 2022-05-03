@@ -143,6 +143,15 @@ class AppComponentCard extends StatelessWidget {
                       ),
                     ],
                   ),
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: const <Widget>[
+                    Icon(
+                      Icons.arrow_circle_right_outlined,
+                      size: 30,
+                    )
+                  ],
                 )
               ],
             ),
