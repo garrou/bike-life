@@ -107,7 +107,7 @@ class _TipsPageState extends State<TipsPage> {
         ].map<DropdownMenuItem<String>>((String value) {
           return DropdownMenuItem<String>(
             value: value == 'Tout' ? '%' : value,
-            child: Text(value),
+            child: Text(value, style: secondTextStyle),
           );
         }).toList(),
       );

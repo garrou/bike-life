@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:bike_life/models/http_response.dart';
 import 'package:bike_life/utils/constants.dart';
 import 'package:bike_life/utils/http_account_interceptor.dart';
@@ -15,9 +17,10 @@ class DiagnosticService {
     return HttpResponse(response);
   }
 
-  Future<HttpResponse> sendDiagnostic(Map<int, bool> toSend) async {
-    final Response response = await client
-        .post(Uri.parse('$endpoint/diagnostics/check'), body: toSend);
+  Future<HttpResponse> sendDiagnostic(Map<String, bool> toSend) async {
+    final Response response = await client.post(
+        Uri.parse('$endpoint/diagnostics/check'),
+        body: jsonEncode(<String, Map<String, bool>>{'data': toSend}));
     return HttpResponse(response);
   }
 }

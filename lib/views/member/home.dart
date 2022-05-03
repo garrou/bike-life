@@ -80,7 +80,8 @@ class _HomPageState extends State<HomPage> {
       future: _bikes,
       builder: (context, snapshot) {
         if (snapshot.hasError) {
-          return const AppError(message: 'Erreur serveur');
+          Storage.disconnect();
+          return const SigninPage();
         } else if (snapshot.hasData) {
           return snapshot.data!.isEmpty
               ? Center(
@@ -96,7 +97,7 @@ class _HomPageState extends State<HomPage> {
                   ]),
                 )
               : GridView.count(
-                  childAspectRatio: 0.7,
+                  childAspectRatio: 0.65,
                   controller: ScrollController(),
                   crossAxisCount: constraints.maxWidth > maxWidth + 400
                       ? 3

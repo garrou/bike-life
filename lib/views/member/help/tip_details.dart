@@ -5,6 +5,24 @@ import 'package:flutter/material.dart';
 import 'package:bike_life/widgets/buttons/top_left_button.dart';
 import 'package:youtube_player_iframe/youtube_player_iframe.dart';
 
+Widget buildTipDetails(BuildContext context, Tip tip) => ListView(
+      shrinkWrap: true,
+      padding: const EdgeInsets.symmetric(horizontal: thirdSize),
+      children: <Widget>[
+        AppTopLeftButton(
+            title: 'Conseils', callback: () => Navigator.pop(context)),
+        Padding(
+            padding: const EdgeInsets.symmetric(vertical: thirdSize),
+            child: Text(tip.title,
+                textAlign: TextAlign.center, style: boldTextStyle)),
+        Padding(
+            padding: const EdgeInsets.symmetric(vertical: thirdSize),
+            child: Text(tip.content,
+                textAlign: TextAlign.center, style: thirdTextStyle)),
+        if (tip.videoUrl != null) VideoPlayer(video: tip.videoUrl!)
+      ],
+    );
+
 class TipDetailsPage extends StatelessWidget {
   final Tip tip;
   const TipDetailsPage({Key? key, required this.tip}) : super(key: key);
@@ -24,22 +42,7 @@ class TipDetailsPage extends StatelessWidget {
           horizontal: MediaQuery.of(context).size.width / 12),
       child: _wideLayout(context));
 
-  Widget _wideLayout(BuildContext context) => ListView(
-        padding: const EdgeInsets.symmetric(horizontal: thirdSize),
-        children: <Widget>[
-          AppTopLeftButton(title: 'Conseils', callback: () => _back(context)),
-          buildText(tip.title, boldTextStyle, TextAlign.center),
-          buildText(tip.content, thirdTextStyle, TextAlign.center),
-          if (tip.videoUrl != null) VideoPlayer(video: tip.videoUrl!)
-        ],
-      );
-
-  Padding buildText(String text, TextStyle style, TextAlign textAlign) =>
-      Padding(
-          padding: const EdgeInsets.symmetric(vertical: thirdSize),
-          child: Text(text, textAlign: textAlign, style: style));
-
-  void _back(BuildContext context) => Navigator.pop(context);
+  Widget _wideLayout(BuildContext context) => buildTipDetails(context, tip);
 }
 
 class VideoPlayer extends StatefulWidget {
