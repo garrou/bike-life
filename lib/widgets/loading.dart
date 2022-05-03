@@ -6,11 +6,13 @@ class AppLoading extends StatelessWidget {
   const AppLoading({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) => Column(
-        children: const <Widget>[
-          Padding(
-              padding: EdgeInsets.all(firstSize),
-              child: CircularProgressIndicator(color: primaryColor))
-        ],
+  Widget build(BuildContext context) => Center(
+        child: Column(
+          children: const <Widget>[
+            Padding(
+                padding: EdgeInsets.all(firstSize),
+                child: CircularProgressIndicator(color: primaryColor))
+          ],
+        ),
       );
 }

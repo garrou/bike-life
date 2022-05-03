@@ -4,7 +4,6 @@ import 'package:bike_life/styles/styles.dart';
 import 'package:bike_life/views/member/bike/components/component_historic_changes.dart';
 import 'package:bike_life/views/member/bike/components/component_historic_repairs.dart';
 import 'package:bike_life/views/member/bike/components/component_settings.dart';
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
 class ComponentDetailsPage extends StatelessWidget {

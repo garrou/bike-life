@@ -84,7 +84,7 @@ class _ComponentHistoricPageState extends State<ComponentHistoricChangesPage> {
                           '$nb changement$s',
                           style: thirdTextStyle,
                         ),
-                        padding: const EdgeInsets.all(10.0)),
+                        padding: const EdgeInsets.all(thirdSize)),
                     Flexible(
                       child: ListView.builder(
                         itemCount: nb,

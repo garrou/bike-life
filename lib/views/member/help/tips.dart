@@ -75,7 +75,7 @@ class _TipsPageState extends State<TipsPage> {
         child: InkWell(
           onTap: () => push(context, TipDetailsPage(tip: tip)),
           child: Padding(
-            padding: const EdgeInsets.fromLTRB(5.0, 10.0, 5.0, 10.0),
+            padding: const EdgeInsets.fromLTRB(5.0, thirdSize, 5.0, thirdSize),
             child: Column(children: <Widget>[
               Padding(
                 padding: const EdgeInsets.only(bottom: 5.0),

@@ -31,8 +31,6 @@ class _ComponentHistoricRepairsPageState
     final HttpResponse response =
         await RepairService().getRepairs(widget.component.id);
 
-    print(response.body());
-
     if (response.success()) {
       return createRepairs(response.body());
     } else {
@@ -88,7 +86,7 @@ class _ComponentHistoricRepairsPageState
                           '$nb réparation$s',
                           style: thirdTextStyle,
                         ),
-                        padding: const EdgeInsets.all(10.0)),
+                        padding: const EdgeInsets.all(thirdSize)),
                     Flexible(
                       child: ListView.builder(
                         itemCount: nb,

@@ -14,4 +14,10 @@ class DiagnosticService {
         await client.get(Uri.parse('$endpoint/diagnostics/$type'));
     return HttpResponse(response);
   }
+
+  Future<HttpResponse> sendDiagnostic(Map<int, bool> toSend) async {
+    final Response response = await client
+        .post(Uri.parse('$endpoint/diagnostics/check'), body: toSend);
+    return HttpResponse(response);
+  }
 }

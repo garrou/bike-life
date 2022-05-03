@@ -18,7 +18,6 @@ class BikeDiagnosticPage extends StatefulWidget {
 
 class _BikeDiagnosticPageState extends State<BikeDiagnosticPage> {
   late Future<List<Diagnostic>> _diagnostics;
-  late Map<int, bool> _responses;
 
   @override
   void initState() {
@@ -57,63 +56,111 @@ class _BikeDiagnosticPageState extends State<BikeDiagnosticPage> {
         future: _diagnostics,
         builder: (context, snapshot) {
           if (snapshot.hasData) {
-            _responses = {for (Diagnostic d in snapshot.data!) d.id: false};
-
-            return Column(children: [
-              Expanded(
-                child: ListView.builder(
-                  controller: ScrollController(),
-                  itemCount: snapshot.data!.length,
-                  itemBuilder: ((context, index) =>
-                      _buildCard(snapshot.data![index])),
-                ),
-              ),
-              AppButton(
-                  text: 'Envoyer',
-                  callback: () {/* TODO: diagnostic */},
-                  icon: const Icon(Icons.arrow_forward))
-            ]);
+            return DisplayDiagnostics(diagnostics: snapshot.data!);
           } else if (snapshot.hasError) {
             return Text(snapshot.error.toString());
           }
           return const AppLoading();
         },
       );
+}
+
+class DisplayDiagnostics extends StatefulWidget {
+  final List<Diagnostic> diagnostics;
+  const DisplayDiagnostics({Key? key, required this.diagnostics})
+      : super(key: key);
+
+  @override
+  State<DisplayDiagnostics> createState() => _DisplayDiagnosticsState();
+}
+
+class _DisplayDiagnosticsState extends State<DisplayDiagnostics> {
+  int _index = 0;
+  late Map<int, bool> _responses;
+
+  @override
+  void initState() {
+    super.initState();
+    _responses = {for (Diagnostic d in widget.diagnostics) d.id: false};
+  }
+
+  @override
+  Widget build(BuildContext context) => Column(
+        children: <Widget>[
+          IndexedStack(
+            index: _index,
+            children: <Widget>[
+              for (Diagnostic diagnostic in widget.diagnostics)
+                _buildCard(diagnostic),
+            ],
+          ),
+          AbsorbPointer(
+            absorbing: _index != _responses.length,
+            child: AppButton(
+              text: 'Valider',
+              color: _index == _responses.length ? primaryColor : Colors.grey,
+              callback: () {},
+              icon: const Icon(Icons.arrow_forward),
+            ),
+          )
+        ],
+      );
 
   Widget _buildCard(Diagnostic diagnostic) => Card(
+        shape: RoundedRectangleBorder(
+          side: const BorderSide(color: primaryColor, width: 2.0),
+          borderRadius: BorderRadius.circular(secondSize),
+        ),
         elevation: 5,
-        child: Padding(
-          padding: const EdgeInsets.all(20.0),
-          child: Column(
-            children: <Widget>[
-              Padding(
-                child: Text(diagnostic.title, style: boldTextStyle),
-                padding: const EdgeInsets.all(20.0),
-              ),
-              Text(diagnostic.content, style: secondTextStyle),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: <Widget>[
-                  IconButton(
-                    color: Colors.red[900],
-                    iconSize: 40,
-                    onPressed: () {
-                      _responses[diagnostic.id] = true;
-                    },
-                    icon: const Icon(Icons.cancel_outlined),
-                  ),
-                  IconButton(
-                    color: primaryColor,
-                    iconSize: 40,
-                    onPressed: () {
-                      _responses[diagnostic.id] = true;
-                    },
-                    icon: const Icon(Icons.check),
-                  ),
-                ],
-              )
-            ],
+        child: SizedBox(
+          height: 300,
+          child: Padding(
+            padding: const EdgeInsets.all(secondSize),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Align(
+                  alignment: Alignment.topRight,
+                  child: Text('${_index + 1}', style: boldTextStyle),
+                ),
+                Padding(
+                    child: Text(diagnostic.title, style: boldTextStyle),
+                    padding: const EdgeInsets.all(secondSize)),
+                Padding(
+                  child: Text(diagnostic.content, style: secondTextStyle),
+                  padding: const EdgeInsets.only(bottom: secondSize),
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: <Widget>[
+                    IconButton(
+                      color: Colors.red[900],
+                      iconSize: 40,
+                      onPressed: () {
+                        _responses[diagnostic.id] = false;
+                        setState(() => _index++);
+                      },
+                      icon: const Icon(Icons.cancel_outlined),
+                    ),
+                    IconButton(
+                      color: primaryColor,
+                      iconSize: 40,
+                      onPressed: () {
+                        _responses[diagnostic.id] = true;
+                        setState(() => _index++);
+                      },
+                      icon: const Icon(Icons.check),
+                    ),
+                  ],
+                ),
+              ],
+            ),
           ),
         ),
       );
+
+  void _onSend() async {
+    final HttpResponse response =
+        await DiagnosticService().sendDiagnostic(_responses);
+  }
 }

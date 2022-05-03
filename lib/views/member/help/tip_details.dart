@@ -71,7 +71,7 @@ class _VideoPlayerState extends State<VideoPlayer> {
   }
 
   Widget _buildWebPlayer() => Padding(
-        padding: const EdgeInsets.symmetric(vertical: 10.0),
+        padding: const EdgeInsets.symmetric(vertical: thirdSize),
         child: YoutubePlayerIFrame(
           controller: _controller,
           aspectRatio: 16 / 9,

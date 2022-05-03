@@ -39,7 +39,7 @@ class _HomePageState extends State<HomePage> {
           Center(
             child: Padding(
               child: Text(title, style: mainTextStyle),
-              padding: const EdgeInsets.only(top: 10.0),
+              padding: const EdgeInsets.only(top: thirdSize),
             ),
           ),
           Column(

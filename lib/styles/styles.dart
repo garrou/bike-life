@@ -42,7 +42,7 @@ TextStyle thirdTextStyle = GoogleFonts.roboto(fontSize: intermediateSize);
 TextStyle boldTextStyle =
     GoogleFonts.roboto(fontSize: secondSize, fontWeight: FontWeight.bold);
 TextStyle italicTextStyle =
-    GoogleFonts.roboto(fontSize: 20.0, fontStyle: FontStyle.italic);
+    GoogleFonts.roboto(fontSize: secondSize, fontStyle: FontStyle.italic);
 
 ButtonStyle roundedButtonStyle(Color colorToSet) => ButtonStyle(
     shape: MaterialStateProperty.all<RoundedRectangleBorder>(
