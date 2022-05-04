@@ -81,19 +81,21 @@ class _HomPageState extends State<HomPage> {
       builder: (context, snapshot) {
         if (snapshot.hasError) {
           Storage.disconnect();
-          return const SigninPage();
+          return const HomPage();
         } else if (snapshot.hasData) {
           return snapshot.data!.isEmpty
               ? Center(
                   child: Column(children: <Widget>[
+                    Lottie.asset('assets/empty.json'),
                     Padding(
                       child: Text(
-                        'Aucun vélo ajouté ! Pour en ajouter un, cliquer sur le +',
+                        'Aucun vélo ! Pour en ajouter un, cliquer sur le +',
                         style: secondTextStyle,
+                        textAlign: TextAlign.center,
                       ),
-                      padding: const EdgeInsets.only(top: secondSize),
-                    ),
-                    Lottie.asset('assets/empty.json')
+                      padding:
+                          const EdgeInsets.symmetric(horizontal: secondSize),
+                    )
                   ]),
                 )
               : GridView.count(

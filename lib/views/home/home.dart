@@ -54,6 +54,7 @@ class _HomePageState extends State<HomePage> {
                   child: Text(
                     "La santé de votre vélo se surveille de près.",
                     style: italicTextStyle,
+                    textAlign: TextAlign.center,
                   ),
                 ),
               ),
