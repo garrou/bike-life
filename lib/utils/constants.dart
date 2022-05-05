@@ -22,4 +22,5 @@ const double intermediateSize = 18.0;
 const double thirdSize = 10.0;
 
 const int minPasswordSize = 8;
+const int maxPasswordSize = 50;
 const int maxBikeName = 50;

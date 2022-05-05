@@ -83,7 +83,8 @@ class _SignupPageState extends State<SignupPage> {
                             'Mot de passe ($minPasswordSize caractères minimum)',
                         focusNode: _passwordFocus,
                         textfieldController: _password,
-                        validator: passwordValidator,
+                        validator: (value) => passwordValidator(
+                            value, minPasswordSize, maxPasswordSize),
                         obscureText: true,
                         icon: Icons.password),
                     AppTextField(
