@@ -1,10 +1,11 @@
 // ignore_for_file: body_might_complete_normally_nullable
 
-import 'package:bike_life/utils/constants.dart';
-
-String? passwordValidator(String? value) {
-  if (value == null || value.isEmpty || value.length < minPasswordSize) {
-    return 'Mot de passe invalide, la taille mininum est $minPasswordSize';
+String? passwordValidator(String? value, int min, int max) {
+  if (value == null ||
+      value.isEmpty ||
+      value.length < min ||
+      value.length > max) {
+    return 'Mot de passe invalide, la taille mininum est $min';
   }
 }
 
@@ -19,8 +20,6 @@ String? fieldValidator(String? value) {
     return 'Saisie invalide';
   }
 }
-
-String? noneValidator(String? value) {}
 
 String? positiveValidator(String? value) {
   if (value == null ||
