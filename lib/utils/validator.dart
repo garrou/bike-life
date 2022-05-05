@@ -20,8 +20,6 @@ String? fieldValidator(String? value) {
   }
 }
 
-String? noneValidator(String? value) {}
-
 String? positiveValidator(String? value) {
   if (value == null ||
       value.isEmpty ||

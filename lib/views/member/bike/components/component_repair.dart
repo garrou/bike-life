@@ -63,7 +63,7 @@ class _ComponentRepairPageState extends State<ComponentRepairPage> {
                 keyboardType: TextInputType.text,
                 focusNode: _reasonFocus,
                 textfieldController: _reason,
-                validator: noneValidator,
+                validator: (value) => lengthValidator(value, 1000),
                 label: 'Raison de la réparation',
                 icon: Icons.text_fields,
                 maxLines: 10),

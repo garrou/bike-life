@@ -9,7 +9,6 @@ import 'package:url_strategy/url_strategy.dart';
 // TODO: Fix bug date when update components
 // TODO: suggest components with user components
 // TODO: check brand length server side and front
-// TODO: add message before change component to update brand and price
 
 void main() {
   setPathUrlStrategy();

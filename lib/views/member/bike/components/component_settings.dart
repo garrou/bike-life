@@ -75,7 +75,7 @@ class _UpdateComponentFormState extends State<UpdateComponentForm> {
         AppTextField(
           focusNode: _brandFocus,
           textfieldController: _brand,
-          validator: fieldValidator,
+          validator: (value) => lengthValidator(value, 50),
           label: 'Marque du composant',
           icon: Icons.branding_watermark,
           keyboardType: TextInputType.text,
