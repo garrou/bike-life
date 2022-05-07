@@ -108,7 +108,7 @@ class _TotalChangesState extends State<TotalChanges> {
       future: _totalChangeStats,
       builder: (context, snapshot) {
         if (snapshot.hasError) {
-          return const AppError(message: 'Erreur serveur');
+          return const AppError(message: 'Problème de connexion');
         } else if (snapshot.hasData) {
           return snapshot.data!.isEmpty
               ? AppTitle(

@@ -13,6 +13,7 @@ class AppError extends StatelessWidget {
       padding: EdgeInsets.symmetric(
           horizontal: MediaQuery.of(context).size.width / 12),
       child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
           Lottie.asset('assets/network-error.json'),
           Container(

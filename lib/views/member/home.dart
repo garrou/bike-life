@@ -6,9 +6,7 @@ import 'package:bike_life/services/component_service.dart';
 import 'package:bike_life/utils/redirects.dart';
 import 'package:bike_life/utils/constants.dart';
 import 'package:bike_life/services/bike_service.dart';
-import 'package:bike_life/utils/storage.dart';
 import 'package:bike_life/utils/validator.dart';
-import 'package:bike_life/views/auth/signin.dart';
 import 'package:bike_life/views/member/bike/bike_details.dart';
 import 'package:bike_life/views/member/bike/bike_add.dart';
 import 'package:bike_life/styles/styles.dart';
@@ -19,8 +17,9 @@ import 'package:bike_life/widgets/loading.dart';
 import 'package:bike_life/widgets/snackbar.dart';
 import 'package:bike_life/widgets/textfield.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_guards/flutter_guards.dart';
 import 'package:lottie/lottie.dart';
+
+enum ConnectionError { auth, connection }
 
 class HomPage extends StatefulWidget {
   const HomPage({Key? key}) : super(key: key);
@@ -30,38 +29,37 @@ class HomPage extends StatefulWidget {
 }
 
 class _HomPageState extends State<HomPage> {
-  final StreamController<bool> _authState = StreamController();
   late Future<List<Bike>> _bikes;
 
   @override
   void initState() {
     super.initState();
-    Storage.checkIfLogged(_authState);
     _bikes = _loadBikes();
   }
 
   Future<List<Bike>> _loadBikes() async {
-    final HttpResponse response = await BikeService().getByMember();
+    try {
+      final HttpResponse response = await BikeService().getByMember();
 
-    if (response.success()) {
-      return createBikes(response.body());
-    } else {
-      throw Exception(response.message());
+      if (response.success()) {
+        return createBikes(response.body());
+      } else {
+        throw Exception(ConnectionError.auth);
+      }
+    } on Exception catch (_) {
+      throw Exception(ConnectionError.connection);
     }
   }
 
   @override
   Widget build(BuildContext context) => Scaffold(
-        body: AuthGuard(
-            authStream: _authState.stream,
-            signedIn: LayoutBuilder(builder: (context, constraints) {
-              if (constraints.maxWidth > maxWidth) {
-                return _narrowLayout(constraints);
-              } else {
-                return _wideLayout(constraints);
-              }
-            }),
-            signedOut: const SigninPage()),
+        body: LayoutBuilder(builder: (context, constraints) {
+          if (constraints.maxWidth > maxWidth) {
+            return _narrowLayout(constraints);
+          } else {
+            return _wideLayout(constraints);
+          }
+        }),
         floatingActionButton: FloatingActionButton(
           backgroundColor: primaryColor,
           onPressed: () => push(context, const AddBikePage()),
@@ -80,8 +78,10 @@ class _HomPageState extends State<HomPage> {
       future: _bikes,
       builder: (context, snapshot) {
         if (snapshot.hasError) {
-          Storage.disconnect();
-          return const HomPage();
+          if (snapshot.error == ConnectionError.auth) {
+            disconnectAndRedirect(context);
+          }
+          return const AppError(message: 'Problème de connexion');
         } else if (snapshot.hasData) {
           return snapshot.data!.isEmpty
               ? Center(
@@ -299,7 +299,8 @@ class _ComponentsAlertsState extends State<ComponentsAlerts> {
       future: _totalAlerts,
       builder: (context, snapshot) {
         if (snapshot.hasError) {
-          return const AppError(message: 'Erreur serveur');
+          return const Text(
+              'Impossible de récupérer le nombre de composants à changer');
         } else if (snapshot.hasData) {
           final int nb = snapshot.data!;
           final String s = nb > 1 ? 's' : '';

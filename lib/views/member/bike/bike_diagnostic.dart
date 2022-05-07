@@ -10,6 +10,7 @@ import 'package:bike_life/views/member/bike/bike_details.dart';
 import 'package:bike_life/views/member/bike/bike_diagnostic_result.dart';
 import 'package:bike_life/views/member/member_home.dart';
 import 'package:bike_life/widgets/buttons/button.dart';
+import 'package:bike_life/widgets/error.dart';
 import 'package:bike_life/widgets/loading.dart';
 import 'package:bike_life/widgets/snackbar.dart';
 import 'package:flutter/material.dart';
@@ -64,82 +65,95 @@ class _BikeDiagnosticPageState extends State<BikeDiagnosticPage> {
   Widget _wideLayout(BuildContext context) => FutureBuilder<List<Diagnostic>>(
         future: _diagnostics,
         builder: (context, snapshot) {
-          if (snapshot.hasData) {
+          if (snapshot.hasError) {
+            return const AppError(message: 'Problème de connexion');
+          } else if (snapshot.hasData) {
             _cards = snapshot.data!
                 .map((diagnostic) => _buildDiagnosticCard(diagnostic))
                 .toList();
             _cards.add(_buildLastCard(snapshot.data!));
 
-            return IndexedStack(index: _index, children: _cards);
-          } else if (snapshot.hasError) {
-            return Text(snapshot.error.toString());
+            return Column(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: <Widget>[
+                  Padding(
+                    padding: const EdgeInsets.all(secondSize),
+                    child: Text(
+                      'Diagnostique du vélo',
+                      style: boldTextStyle,
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(
+                        secondSize, 0, secondSize, secondSize),
+                    child: Text('$_index / ${snapshot.data!.length}',
+                        style: secondTextStyle, textAlign: TextAlign.center),
+                  ),
+                  Expanded(child: IndexedStack(index: _index, children: _cards))
+                ]);
           }
           return const AppLoading();
         },
       );
 
-  Widget _buildDiagnosticCard(Diagnostic diagnostic) => Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Card(
-            shape: RoundedRectangleBorder(
-              side: const BorderSide(color: primaryColor, width: 2.0),
-              borderRadius: BorderRadius.circular(secondSize),
-            ),
-            elevation: 5,
-            child: SizedBox(
-              height: 300,
-              child: Padding(
-                padding: const EdgeInsets.all(secondSize),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    Padding(
-                        child: Text(
-                          diagnostic.title,
-                          style: boldTextStyle,
-                          textAlign: TextAlign.center,
-                        ),
-                        padding: const EdgeInsets.all(secondSize)),
-                    Padding(
-                      child: Text(
-                        diagnostic.content,
-                        style: secondTextStyle,
-                        textAlign: TextAlign.center,
-                      ),
-                      padding: const EdgeInsets.only(bottom: secondSize),
+  Widget _buildDiagnosticCard(Diagnostic diagnostic) => Card(
+        shape: RoundedRectangleBorder(
+          side: const BorderSide(color: primaryColor, width: 2.0),
+          borderRadius: BorderRadius.circular(secondSize),
+        ),
+        elevation: 5,
+        child: SizedBox(
+          height: 300,
+          child: Padding(
+            padding: const EdgeInsets.all(secondSize),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Padding(
+                    child: Text(
+                      diagnostic.title,
+                      style: boldTextStyle,
+                      textAlign: TextAlign.center,
                     ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: <Widget>[
-                        IconButton(
-                          color: Colors.red[900],
-                          iconSize: 40,
-                          onPressed: () {
-                            _responses[diagnostic.id] = false;
-                            setState(() => _index++);
-                          },
-                          icon: const Icon(Icons.cancel_outlined),
-                        ),
-                        IconButton(
-                          color: primaryColor,
-                          iconSize: 40,
-                          onPressed: () {
-                            setState(() {
-                              _responses[diagnostic.id] = true;
-                              _index++;
-                            });
-                          },
-                          icon: const Icon(Icons.check),
-                        ),
-                      ],
+                    padding: const EdgeInsets.all(secondSize)),
+                Padding(
+                  child: Text(
+                    diagnostic.content,
+                    style: secondTextStyle,
+                    textAlign: TextAlign.center,
+                  ),
+                  padding: const EdgeInsets.only(bottom: secondSize),
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: <Widget>[
+                    IconButton(
+                      color: Colors.red[900],
+                      iconSize: 40,
+                      onPressed: () {
+                        _responses[diagnostic.id] = false;
+                        setState(() => _index++);
+                      },
+                      icon: const Icon(Icons.cancel_outlined),
+                    ),
+                    IconButton(
+                      color: primaryColor,
+                      iconSize: 40,
+                      onPressed: () {
+                        setState(() {
+                          _responses[diagnostic.id] = true;
+                          _index++;
+                        });
+                      },
+                      icon: const Icon(Icons.check),
                     ),
                   ],
                 ),
-              ),
+              ],
             ),
-          )
-        ],
+          ),
+        ),
       );
 
   Widget _buildLastCard(List<Diagnostic> diagnostics) => Column(

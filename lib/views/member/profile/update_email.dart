@@ -70,7 +70,7 @@ class _UpdateEmailPageState extends State<UpdateEmailPage> {
                 future: _userEmail,
                 builder: (_, snapshot) {
                   if (snapshot.hasError) {
-                    return const AppError(message: 'Erreur serveur');
+                    return const AppError(message: 'Problème de connexion');
                   } else if (snapshot.hasData) {
                     _email.text = snapshot.data.toString();
                     return AppTextField(

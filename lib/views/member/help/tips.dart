@@ -1,5 +1,6 @@
 import 'package:bike_life/models/http_response.dart';
 import 'package:bike_life/models/tip.dart';
+import 'package:bike_life/models/topic.dart';
 import 'package:bike_life/services/tip_service.dart';
 import 'package:bike_life/utils/redirects.dart';
 import 'package:bike_life/styles/styles.dart';
@@ -17,11 +18,23 @@ class TipsPage extends StatefulWidget {
 }
 
 class _TipsPageState extends State<TipsPage> {
+  late Future<List<Topic>> _topics;
   String _topic = '%';
 
   @override
   void initState() {
     super.initState();
+    _topics = _loadTopics();
+  }
+
+  Future<List<Topic>> _loadTopics() async {
+    final HttpResponse response = await TipService().getTopics();
+
+    if (response.success()) {
+      return createTopics(response.body());
+    } else {
+      throw Exception(response.message());
+    }
   }
 
   Future<List<Tip>> _loadTips(String topic) async {
@@ -54,7 +67,7 @@ class _TipsPageState extends State<TipsPage> {
       future: _loadTips(_topic),
       builder: (_, snapshot) {
         if (snapshot.hasError) {
-          return const AppError(message: 'Erreur serveur');
+          return const AppError(message: 'Problème de connexion');
         } else if (snapshot.hasData) {
           return Column(
             crossAxisAlignment: CrossAxisAlignment.center,
@@ -87,28 +100,27 @@ class _TipsPageState extends State<TipsPage> {
         ),
       );
 
-  Widget _buildDropdownButton() => DropdownButton<String>(
-        value: _topic,
-        icon: const Icon(Icons.arrow_drop_down),
-        elevation: 16,
-        onChanged: (String? newValue) {
-          setState(() => _topic = newValue!);
-        },
-        items: <String>[
-          'Tout',
-          'Chaîne',
-          'Batterie',
-          'Pneus',
-          'Freins',
-          'Plaquettes',
-          'Dérailleurs',
-          'Cassette',
-          'Transmission'
-        ].map<DropdownMenuItem<String>>((String value) {
-          return DropdownMenuItem<String>(
-            value: value == 'Tout' ? '%' : value,
-            child: Text(value, style: secondTextStyle),
+  Widget _buildDropdownButton() => FutureBuilder<List<Topic>>(
+      future: _topics,
+      builder: (context, snapshot) {
+        if (snapshot.hasError) {
+          return const Text('Erreur de connexion');
+        } else if (snapshot.hasData) {
+          return DropdownButton<String>(
+            value: _topic,
+            icon: const Icon(Icons.arrow_drop_down),
+            elevation: 16,
+            onChanged: (String? newValue) {
+              setState(() => _topic = newValue!);
+            },
+            items: snapshot.data!.map<DropdownMenuItem<String>>((Topic topic) {
+              return DropdownMenuItem<String>(
+                value: topic.name == 'Tout' ? '%' : topic.name,
+                child: Text(topic.name, style: secondTextStyle),
+              );
+            }).toList(),
           );
-        }).toList(),
-      );
+        }
+        return const AppLoading();
+      });
 }

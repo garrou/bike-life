@@ -74,7 +74,7 @@ class _ComponentHistoricRepairsPageState
             future: _repairs,
             builder: (context, snapshot) {
               if (snapshot.hasError) {
-                return const AppError(message: 'Erreur serveur');
+                return const AppError(message: 'Problème de connexion');
               } else if (snapshot.hasData) {
                 final int nb = snapshot.data!.length;
                 final String s = nb > 1 ? 's' : '';
