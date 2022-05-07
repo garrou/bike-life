@@ -1,9 +1,5 @@
 # bike_life
 
-[![Node.js CI](https://github.com/1-irdA/bike-life-services/actions/workflows/node.js.yml/badge.svg)](https://github.com/1-irdA/bike-life-services/actions/workflows/node.js.yml)
-
-[![docker compose build](https://github.com/1-irdA/bike-life-services/actions/workflows/docker-image.yml/badge.svg)](https://github.com/1-irdA/bike-life-services/actions/workflows/docker-image.yml)
-
 Frontend of [bike-life-services](https://github.com/1-irdA/bike-life-services)    
 
 ## Check devices

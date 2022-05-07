@@ -19,4 +19,9 @@ class TipService {
         await client.get(Uri.parse('$endpoint/topics/$topic/tips'));
     return HttpResponse(response);
   }
+
+  Future<HttpResponse> getTopics() async {
+    final Response response = await client.get(Uri.parse('$endpoint/topics'));
+    return HttpResponse(response);
+  }
 }
