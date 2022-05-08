@@ -115,15 +115,19 @@ class _SigninPageState extends State<SigninPage> {
   }
 
   void _authUser(BuildContext context) async {
-    final HttpResponse response =
-        await _memberService.login(_email.text.trim(), _password.text.trim());
+    try {
+      final HttpResponse response =
+          await _memberService.login(_email.text.trim(), _password.text.trim());
 
-    if (response.success()) {
-      Storage.setString('jwt', response.token());
-      pushAndRemove(context, const MemberHomePage());
-    } else {
-      _password.text = '';
-      showErrorSnackBar(context, response.message());
+      if (response.success()) {
+        Storage.setString('jwt', response.token());
+        pushAndRemove(context, const MemberHomePage());
+      } else {
+        _password.text = '';
+        showErrorSnackBar(context, response.message());
+      }
+    } on Exception catch (_) {
+      showErrorSnackBar(context, 'Impossible de se connecter au serveur');
     }
   }
 }

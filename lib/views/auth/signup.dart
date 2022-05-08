@@ -131,14 +131,18 @@ class _SignupPageState extends State<SignupPage> {
   }
 
   void _createUser(BuildContext context) async {
-    final HttpResponse response =
-        await _memberService.signup(_email.text.trim(), _password.text.trim());
+    try {
+      final HttpResponse response = await _memberService.signup(
+          _email.text.trim(), _password.text.trim());
 
-    if (response.success()) {
-      pushAndRemove(context, const SigninPage());
-      showSuccessSnackBar(context, response.message());
-    } else {
-      showErrorSnackBar(context, response.message());
+      if (response.success()) {
+        pushAndRemove(context, const SigninPage());
+        showSuccessSnackBar(context, response.message());
+      } else {
+        showErrorSnackBar(context, response.message());
+      }
+    } on Exception catch (_) {
+      showErrorSnackBar(context, 'Impossible de se connecter au serveur');
     }
   }
 }
