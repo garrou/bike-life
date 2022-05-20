@@ -32,9 +32,9 @@ class _HomePageState extends State<HomePage> {
       body: AuthGuard(
           authStream: _authState.stream,
           signedIn: const MemberHomePage(),
-          signedOut: _layout()));
+          signedOut: _layout(context)));
 
-  Widget _layout() => ListView(
+  Widget _layout(BuildContext context) => ListView(
         children: <Widget>[
           Center(
             child: Padding(
@@ -45,19 +45,15 @@ class _HomePageState extends State<HomePage> {
           Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              Padding(
-                  padding: const EdgeInsets.all(thirdSize),
-                  child: Lottie.asset('assets/bike.json', fit: BoxFit.contain)),
-              Padding(
-                padding: const EdgeInsets.symmetric(vertical: thirdSize),
-                child: Center(
-                  child: Text(
-                    "La santé de votre vélo se surveille de près.",
-                    style: italicTextStyle,
-                    textAlign: TextAlign.center,
-                  ),
-                ),
+              SizedBox(
+                child: Lottie.asset('assets/bike.json'), 
+                height: MediaQuery.of(context).size.height / 1.5,
               ),
+              Text(
+                "La santé de votre vélo se surveille de près.",
+                style: italicTextStyle,
+                textAlign: TextAlign.center,
+              ),      
               const AppNavButton(
                   text: 'Découvrir',
                   destination: DiscoverPage(),

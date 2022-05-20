@@ -28,7 +28,7 @@ class _DiscoverPageState extends State<DiscoverPage> {
             PageViewModel(
                 title: 'Gestion de vos vélos',
                 body: """
-Une application permettant de gérer l'utilisation des composants de votre vélo... mais pas que.
+Un service permettant de gérer l'utilisation des composants de votre vélo... mais pas que.
                  """,
                 image: Lottie.asset('assets/manage.json')),
             PageViewModel(
