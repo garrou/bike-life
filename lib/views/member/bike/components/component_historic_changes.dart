@@ -23,7 +23,7 @@ class ComponentHistoricChangesPage extends StatefulWidget {
 }
 
 class _ComponentHistoricPageState extends State<ComponentHistoricChangesPage> {
-  late Future<List<ComponentChange>> _historic;
+  late final Future<List<ComponentChange>> _historic;
 
   Future<List<ComponentChange>> _load() async {
     final HttpResponse response =

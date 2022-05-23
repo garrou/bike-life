@@ -28,13 +28,15 @@ class HomPage extends StatefulWidget {
   _HomPageState createState() => _HomPageState();
 }
 
-class _HomPageState extends State<HomPage> {
-  late Future<List<Bike>> _bikes;
+class _HomPageState extends State<HomPage> with TickerProviderStateMixin {
+  late final Future<List<Bike>> _bikes;
+  late final AnimationController _controller;
 
   @override
   void initState() {
     super.initState();
     _bikes = _loadBikes();
+    _controller = AnimationController(vsync: this);
   }
 
   Future<List<Bike>> _loadBikes() async {
@@ -86,7 +88,15 @@ class _HomPageState extends State<HomPage> {
           return snapshot.data!.isEmpty
               ? Center(
                   child: Column(children: <Widget>[
-                    Lottie.asset('assets/empty.json'),
+                    Lottie.asset('assets/empty.json',
+                        height: 300,
+                        width: 300,
+                        fit: BoxFit.fill,
+                        controller: _controller, onLoaded: (composition) {
+                      _controller
+                        ..duration = composition.duration
+                        ..forward();
+                    }),
                     Padding(
                       child: Text(
                         'Aucun vélo ! Pour en ajouter un, cliquer sur le +',
@@ -275,7 +285,7 @@ class ComponentsAlerts extends StatefulWidget {
 }
 
 class _ComponentsAlertsState extends State<ComponentsAlerts> {
-  late Future<int> _totalAlerts;
+  late final Future<int> _totalAlerts;
 
   Future<int> _loadNbAlerts() async {
     final HttpResponse response =

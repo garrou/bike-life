@@ -67,7 +67,7 @@ class NbChangeStats extends StatefulWidget {
 }
 
 class _NbChangeStatsState extends State<NbChangeStats> {
-  late Future<List<ComponentStat>> _nbChangeStats;
+  late final Future<List<ComponentStat>> _nbChangeStats;
 
   @override
   void initState() {
@@ -117,7 +117,7 @@ class AvgChangeComponentsBike extends StatefulWidget {
 }
 
 class _AvgChangeComponentsBikeState extends State<AvgChangeComponentsBike> {
-  late Future<List<ComponentStat>> _nbChangeStats;
+  late final Future<List<ComponentStat>> _nbChangeStats;
 
   @override
   void initState() {
@@ -163,7 +163,7 @@ class NbChange extends StatefulWidget {
 }
 
 class _NbChangeState extends State<NbChange> {
-  late Future<List<ComponentStat>> _nbChangeStats;
+  late final Future<List<ComponentStat>> _nbChangeStats;
 
   @override
   void initState() {
@@ -210,7 +210,7 @@ class SumPriceBikeComponents extends StatefulWidget {
 }
 
 class _SumPriceBikeComponentsState extends State<SumPriceBikeComponents> {
-  late Future<List<ComponentStat>> _sumPriceCompoStats;
+  late final Future<List<ComponentStat>> _sumPriceCompoStats;
 
   @override
   void initState() {

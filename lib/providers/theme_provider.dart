@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 
 class ThemeModel extends ChangeNotifier {
   bool _isDark = false;
-  late Storage _preferences;
+  late final Storage _preferences;
   bool get isDark => _isDark;
 
   ThemeModel() {

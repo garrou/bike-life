@@ -43,6 +43,7 @@ flutter run -d [platform]
 ## Release
 
 ```sh
-flutter build [platform] --release
+flutter build apk --release
+flutter build windows --release
 flutter build web --release --web-renderer canvaskit
 ```

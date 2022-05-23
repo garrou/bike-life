@@ -59,8 +59,8 @@ class _UpdateBikeFormState extends State<UpdateBikeForm> {
 
   final List<String> _types = ['VTT', 'Ville', 'Route'];
 
-  late bool _automatic;
-  late String? _type;
+  late final bool _automatic;
+  late final String? _type;
 
   @override
   void initState() {

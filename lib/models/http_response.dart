@@ -2,8 +2,8 @@ import 'dart:convert';
 import 'package:http/http.dart';
 
 class HttpResponse {
-  late dynamic _body;
-  late bool _success;
+  late final dynamic _body;
+  late final bool _success;
 
   HttpResponse(Response response) {
     _success = [200, 201].contains(response.statusCode);

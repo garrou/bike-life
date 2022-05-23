@@ -24,7 +24,7 @@ class AppCalendar extends StatefulWidget {
 }
 
 class _AppCalendarState extends State<AppCalendar> {
-  late bool _isVisible;
+  late final bool _isVisible;
   final DateTime _maxDate = DateTime.now();
 
   @override
