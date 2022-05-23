@@ -2,4 +2,4 @@
 
 Frontend of [bike-life-services](https://github.com/1-irdA/bike-life-services)    
 
-![Logo](./assets/logo.png =300x300)
+<img src="./assets/logo.png" alt="Logo" width="300" height="300" />
