@@ -7,7 +7,8 @@ import 'package:provider/provider.dart';
 import 'package:url_strategy/url_strategy.dart';
 
 // TODO: Fix bug date when update components
-// TODO: suggest components with user components
+// TODO: delete account
+// TODO: forgot password
 
 void main() {
   setPathUrlStrategy();

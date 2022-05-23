@@ -15,8 +15,8 @@ class MemberHomePage extends StatefulWidget {
 }
 
 class _MemberHomePageState extends State<MemberHomePage> {
-  late int _pageIndex;
-  late PageController _pageController;
+  late final int _pageIndex;
+  late final PageController _pageController;
   final GlobalKey<CurvedNavigationBarState> _bottomNavigationKey = GlobalKey();
 
   @override

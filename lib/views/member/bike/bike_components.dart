@@ -20,7 +20,7 @@ class BikeComponentsPage extends StatefulWidget {
 }
 
 class _BikeComponentsPageState extends State<BikeComponentsPage> {
-  late Future<List<Component>> _components;
+  late final Future<List<Component>> _components;
 
   @override
   void initState() {

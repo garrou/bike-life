@@ -8,9 +8,9 @@ import 'package:bike_life/widgets/charts/bar_chart.dart';
 import 'package:bike_life/widgets/charts/pie_chart.dart';
 import 'package:bike_life/widgets/error.dart';
 import 'package:bike_life/widgets/loading.dart';
-import 'package:bike_life/widgets/title.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:lottie/lottie.dart';
 
 class StatisticsPage extends StatelessWidget {
   const StatisticsPage({Key? key}) : super(key: key);
@@ -84,8 +84,10 @@ class TotalChanges extends StatefulWidget {
   _TotalChangesState createState() => _TotalChangesState();
 }
 
-class _TotalChangesState extends State<TotalChanges> {
-  late Future<List<ComponentStat>> _totalChangeStats;
+class _TotalChangesState extends State<TotalChanges>
+    with TickerProviderStateMixin {
+  late final Future<List<ComponentStat>> _totalChangeStats;
+  late final AnimationController _controller;
 
   Future<List<ComponentStat>> _loadTotalChanges() async {
     final HttpResponse response = await ComponentService().getTotalChanges();
@@ -101,6 +103,7 @@ class _TotalChangesState extends State<TotalChanges> {
   void initState() {
     super.initState();
     _totalChangeStats = _loadTotalChanges();
+    _controller = AnimationController(vsync: this);
   }
 
   @override
@@ -111,10 +114,28 @@ class _TotalChangesState extends State<TotalChanges> {
           return const AppError(message: 'Problème de connexion');
         } else if (snapshot.hasData) {
           return snapshot.data!.isEmpty
-              ? AppTitle(
-                  text: 'Aucune statistique',
-                  paddingTop: 10,
-                  style: thirdTextStyle)
+              ? Center(
+                  child: Column(children: <Widget>[
+                    Lottie.asset('assets/empty.json',
+                        height: 300,
+                        width: 300,
+                        fit: BoxFit.fill,
+                        controller: _controller, onLoaded: (composition) {
+                      _controller
+                        ..duration = composition.duration
+                        ..forward();
+                    }),
+                    Padding(
+                      child: Text(
+                        'Aucune statistique disponible pour le moment',
+                        style: secondTextStyle,
+                        textAlign: TextAlign.center,
+                      ),
+                      padding:
+                          const EdgeInsets.symmetric(horizontal: secondSize),
+                    )
+                  ]),
+                )
               : AppPieChart(
                   series: snapshot.data!, text: 'Composants changés par année');
         }

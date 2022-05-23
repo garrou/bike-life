@@ -25,7 +25,7 @@ class ComponentHistoricRepairsPage extends StatefulWidget {
 
 class _ComponentHistoricRepairsPageState
     extends State<ComponentHistoricRepairsPage> {
-  late Future<List<Repair>> _repairs;
+  late final Future<List<Repair>> _repairs;
 
   Future<List<Repair>> _load() async {
     final HttpResponse response =

@@ -24,7 +24,7 @@ class _UpdateEmailPageState extends State<UpdateEmailPage> {
   final _email = TextEditingController();
 
   final _memberService = MemberService();
-  late Future<String> _userEmail;
+  late final Future<String> _userEmail;
 
   @override
   void initState() {

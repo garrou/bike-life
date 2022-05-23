@@ -18,7 +18,7 @@ class TipsPage extends StatefulWidget {
 }
 
 class _TipsPageState extends State<TipsPage> {
-  late Future<List<Topic>> _topics;
+  late final Future<List<Topic>> _topics;
   String _topic = '%';
 
   @override

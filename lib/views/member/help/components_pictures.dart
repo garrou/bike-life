@@ -10,7 +10,7 @@ class ComponentsPicturesPage extends StatefulWidget {
 }
 
 class _ComponentsPicturesPageState extends State<ComponentsPicturesPage> {
-  late List<Picture> _pictures;
+  late final List<Picture> _pictures;
 
   @override
   void initState() {
