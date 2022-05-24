@@ -1,14 +1,15 @@
 import 'dart:async';
 
 import 'package:bike_life/models/http_response.dart';
+import 'package:bike_life/services/auth_service.dart';
 import 'package:bike_life/utils/redirects.dart';
 import 'package:bike_life/styles/styles.dart';
 import 'package:bike_life/utils/constants.dart';
 import 'package:bike_life/utils/storage.dart';
 import 'package:bike_life/utils/validator.dart';
-import 'package:bike_life/services/member_service.dart';
 import 'package:bike_life/views/auth/signup.dart';
 import 'package:bike_life/views/member/member_home.dart';
+import 'package:bike_life/widgets/card.dart';
 import 'package:bike_life/widgets/link_page.dart';
 import 'package:bike_life/widgets/buttons/button.dart';
 import 'package:bike_life/widgets/snackbar.dart';
@@ -35,8 +36,6 @@ class _SigninPageState extends State<SigninPage> {
   final _passwordFocus = FocusNode();
   final _password = TextEditingController();
 
-  final MemberService _memberService = MemberService();
-
   @override
   void initState() {
     super.initState();
@@ -60,50 +59,58 @@ class _SigninPageState extends State<SigninPage> {
 
   Widget wideLayout() => Center(
         child: SingleChildScrollView(
-          child: Column(
-            children: <Widget>[
-              AppTitle(
-                  text: 'Se connecter', paddingTop: 0, style: mainTextStyle),
-              Form(
-                key: _keyForm,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    AppTextField(
-                        keyboardType: TextInputType.emailAddress,
-                        label: 'Email',
-                        focusNode: _emailFocus,
-                        textfieldController: _email,
-                        validator: emailValidator,
-                        icon: Icons.alternate_email),
-                    AppTextField(
-                        keyboardType: TextInputType.text,
-                        label: 'Mot de passe',
-                        focusNode: _passwordFocus,
-                        textfieldController: _password,
-                        validator: fieldValidator,
-                        obscureText: true,
-                        icon: Icons.password),
-                    AppButton(
-                        text: 'Connexion',
-                        callback: () => _onSignin(context),
-                        icon: const Icon(Icons.login))
-                  ],
+          child: AppCard(
+            child: Column(
+              children: <Widget>[
+                AppTitle(
+                    text: 'Se connecter',
+                    paddingBottom: secondSize,
+                    style: mainTextStyle),
+                Form(
+                  key: _keyForm,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      AppTextField(
+                          keyboardType: TextInputType.emailAddress,
+                          label: 'Email',
+                          focusNode: _emailFocus,
+                          textfieldController: _email,
+                          validator: emailValidator,
+                          icon: Icons.alternate_email),
+                      AppTextField(
+                          keyboardType: TextInputType.text,
+                          label: 'Mot de passe',
+                          focusNode: _passwordFocus,
+                          textfieldController: _password,
+                          validator: fieldValidator,
+                          obscureText: true,
+                          icon: Icons.password),
+                      AppButton(
+                          text: 'Connexion',
+                          callback: () => _onSignin(context),
+                          icon: const Icon(Icons.login))
+                    ],
+                  ),
                 ),
-              ),
-              AppLinkToPage(
-                padding: firstSize,
-                child: Text('Nouveau ? Créer un compte', style: linkStyle),
-                destination: const SignupPage(),
-              )
-            ],
+                TextButton(
+                  child: Text('Mot de passe oublié ?', style: linkStyle),
+                  onPressed: () => _onForgotPassword(context),
+                ),
+                AppLinkToPage(
+                  padding: thirdSize,
+                  child: Text('Nouveau ? Créer un compte.', style: linkStyle),
+                  destination: const SignupPage(),
+                )
+              ],
+            ),
           ),
         ),
       );
 
   Padding narrowLayout(BuildContext context) => Padding(
         padding: EdgeInsets.symmetric(
-            horizontal: MediaQuery.of(context).size.width / 8),
+            horizontal: MediaQuery.of(context).size.width / 4),
         child: wideLayout(),
       );
 
@@ -117,7 +124,7 @@ class _SigninPageState extends State<SigninPage> {
   void _authUser(BuildContext context) async {
     try {
       final HttpResponse response =
-          await _memberService.login(_email.text.trim(), _password.text.trim());
+          await AuthService().login(_email.text.trim(), _password.text.trim());
 
       if (response.success()) {
         Storage.setString('jwt', response.token());
@@ -129,5 +136,64 @@ class _SigninPageState extends State<SigninPage> {
     } on Exception catch (_) {
       showErrorSnackBar(context, 'Impossible de se connecter au serveur');
     }
+  }
+
+  void _onForgotPassword(BuildContext context) async {
+    final _key = GlobalKey<FormState>();
+
+    final _emailFocusFp = FocusNode();
+    final _emailFp = TextEditingController();
+
+    void _sendEmail() async {
+      final HttpResponse response =
+          await AuthService().forgotPassword(_emailFp.text.trim());
+
+      if (response.success()) {
+        showSuccessSnackBar(context, response.message());
+      } else {
+        showErrorSnackBar(context, response.message());
+      }
+    }
+
+    void _onSendEmail() {
+      if (_key.currentState!.validate()) {
+        _key.currentState!.save();
+        _sendEmail();
+      }
+    }
+
+    return await showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return SimpleDialog(
+            title: Text('Entrez votre adresse mail', style: thirdTextStyle),
+            contentPadding: const EdgeInsets.all(firstSize),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(firstSize),
+            ),
+            children: <Widget>[
+              Form(
+                key: _key,
+                child: Column(
+                  children: [
+                    AppTextField(
+                        keyboardType: TextInputType.emailAddress,
+                        label: 'Email',
+                        focusNode: _emailFocusFp,
+                        textfieldController: _emailFp,
+                        validator: emailValidator,
+                        icon: Icons.alternate_email),
+                    AppButton(
+                      width: buttonWidth * 1.5,
+                      text: 'Recevoir un mail de récupération',
+                      callback: _onSendEmail,
+                      icon: const Icon(Icons.send),
+                    )
+                  ],
+                ),
+              ),
+            ],
+          );
+        });
   }
 }

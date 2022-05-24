@@ -16,12 +16,13 @@ class TipService {
 
   Future<HttpResponse> getByTopic(String topic) async {
     final Response response =
-        await client.get(Uri.parse('$endpoint/topics/$topic/tips'));
+        await client.get(Uri.parse('$endpoint/tips/$topic'));
     return HttpResponse(response);
   }
 
   Future<HttpResponse> getTopics() async {
-    final Response response = await client.get(Uri.parse('$endpoint/topics'));
+    final Response response =
+        await client.get(Uri.parse('$endpoint/tips/topics'));
     return HttpResponse(response);
   }
 }

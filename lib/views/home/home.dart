@@ -36,24 +36,28 @@ class _HomePageState extends State<HomePage> {
 
   Widget _layout(BuildContext context) => ListView(
         children: <Widget>[
-          Center(
-            child: Padding(
-              child: Text(title, style: mainTextStyle),
-              padding: const EdgeInsets.only(top: thirdSize),
-            ),
-          ),
           Column(
-            mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               SizedBox(
-                child: Lottie.asset('assets/bike.json'), 
-                height: MediaQuery.of(context).size.height / 1.5,
+                child: Lottie.asset('assets/bike.json', fit: BoxFit.scaleDown),
+                height: MediaQuery.of(context).size.height / 2,
               ),
-              Text(
-                "La santé de votre vélo se surveille de près.",
-                style: italicTextStyle,
-                textAlign: TextAlign.center,
-              ),      
+              Padding(
+                child: Text(
+                  "Bike's life",
+                  style: mainTextStyle,
+                  textAlign: TextAlign.center,
+                ),
+                padding: const EdgeInsets.only(bottom: secondSize),
+              ),
+              Padding(
+                child: Text(
+                  "La santé de votre vélo se surveille de près.",
+                  style: italicTextStyle,
+                  textAlign: TextAlign.center,
+                ),
+                padding: const EdgeInsets.only(bottom: secondSize),
+              ),
               const AppNavButton(
                   text: 'Découvrir',
                   destination: DiscoverPage(),

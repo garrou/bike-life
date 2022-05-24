@@ -7,8 +7,6 @@ String endpoint =
 */
 String endpoint = 'https://bikelifeservices.alwaysdata.net';
 
-const String title = "Bike's life";
-
 const double ratio = 200.0;
 
 const double buttonWidth = 180.0;

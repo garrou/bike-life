@@ -14,8 +14,8 @@ class BikeService {
   ]);
 
   Future<HttpResponse> create(Bike bike) async {
-    final Response response = await client
-        .post(Uri.parse('$endpoint/member/bikes'), body: jsonEncode(bike));
+    final Response response =
+        await client.post(Uri.parse('$endpoint/bikes'), body: jsonEncode(bike));
     return HttpResponse(response);
   }
 
@@ -26,8 +26,7 @@ class BikeService {
   }
 
   Future<HttpResponse> getByMember() async {
-    final Response response =
-        await client.get(Uri.parse('$endpoint/member/bikes'));
+    final Response response = await client.get(Uri.parse('$endpoint/bikes'));
     return HttpResponse(response);
   }
 

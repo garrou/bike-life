@@ -227,6 +227,25 @@ class _BikeCardState extends State<BikeCard> {
       );
 
   Widget _buildAddKmPopup(BuildContext context, Bike bike) {
+    void _addKm() async {
+      final HttpResponse response =
+          await BikeService().addKm(widget.bike.id, double.parse(_km.text));
+
+      if (response.success()) {
+        pushAndRemove(context, const MemberHomePage());
+        showSuccessSnackBar(context, response.message());
+      } else {
+        showErrorSnackBar(context, response.message());
+      }
+    }
+
+    void _onAddKm() {
+      if (_keyForm.currentState!.validate()) {
+        _keyForm.currentState!.save();
+        _addKm();
+      }
+    }
+
     return AlertDialog(
       title: Text("Ajouter des kilomètres à '${bike.name}'"),
       content: Form(
@@ -254,25 +273,6 @@ class _BikeCardState extends State<BikeCard> {
         )
       ],
     );
-  }
-
-  void _onAddKm() {
-    if (_keyForm.currentState!.validate()) {
-      _keyForm.currentState!.save();
-      _addKm();
-    }
-  }
-
-  void _addKm() async {
-    final HttpResponse response =
-        await BikeService().addKm(widget.bike.id, double.parse(_km.text));
-
-    if (response.success()) {
-      pushAndRemove(context, const MemberHomePage());
-      showSuccessSnackBar(context, response.message());
-    } else {
-      showErrorSnackBar(context, response.message());
-    }
   }
 }
 

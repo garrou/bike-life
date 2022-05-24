@@ -25,7 +25,7 @@ class BikeDiagnosticPage extends StatefulWidget {
 
 class _BikeDiagnosticPageState extends State<BikeDiagnosticPage> {
   late final Future<List<Diagnostic>> _diagnostics;
-  late final List<Widget> _cards;
+  late List<Widget> _cards;
   final Map<int, bool> _responses = {};
   int _index = 0;
 

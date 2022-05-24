@@ -65,7 +65,7 @@ class _ComponentChangePageState extends State<ComponentChangePage> {
         ],
       );
 
-  Future _showChangeDialog(BuildContext context) async => showDialog(
+  Future _showChangeDialog(BuildContext context) async => await showDialog(
         context: context,
         builder: (BuildContext context) => AlertDialog(
           shape: RoundedRectangleBorder(
