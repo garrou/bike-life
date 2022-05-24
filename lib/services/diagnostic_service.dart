@@ -12,15 +12,17 @@ class DiagnosticService {
   ]);
 
   Future<HttpResponse> getDiagnosticsByBikeType(String type) async {
-    final Response response =
-        await client.get(Uri.parse('$endpoint/diagnostics/$type'));
+    final Response response = await client.get(
+      Uri.parse('$endpoint/diagnostics/$type'),
+    );
     return HttpResponse(response);
   }
 
   Future<HttpResponse> sendDiagnostic(Map<String, bool> toSend) async {
     final Response response = await client.post(
-        Uri.parse('$endpoint/diagnostics/check'),
-        body: jsonEncode(<String, Map<String, bool>>{'data': toSend}));
+      Uri.parse('$endpoint/diagnostics/check'),
+      body: jsonEncode(<String, Map<String, bool>>{'data': toSend}),
+    );
     return HttpResponse(response);
   }
 }

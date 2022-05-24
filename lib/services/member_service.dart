@@ -13,21 +13,41 @@ class MemberService {
 
   Future<HttpResponse> updatePassword(String password) async {
     final Response response = await client.patch(
-        Uri.parse('$endpoint/member/password'),
-        body: jsonEncode(<String, String>{'password': password}));
+      Uri.parse('$endpoint/member/password'),
+      body: jsonEncode(<String, String>{'password': password}),
+    );
     return HttpResponse(response);
   }
 
   Future<HttpResponse> updateEmail(String email) async {
     final Response response = await client.patch(
-        Uri.parse('$endpoint/member/email'),
-        body: jsonEncode(<String, String>{'email': email}));
+      Uri.parse('$endpoint/member/email'),
+      body: jsonEncode(<String, String>{'email': email}),
+    );
     return HttpResponse(response);
   }
 
   Future<HttpResponse> getEmail() async {
-    final Response response =
-        await client.get(Uri.parse('$endpoint/member/email'));
+    final Response response = await client.get(
+      Uri.parse('$endpoint/member/email'),
+    );
+    return HttpResponse(response);
+  }
+
+  Future<HttpResponse> authMember(String password) async {
+    final Response response = await client.post(
+      Uri.parse('$endpoint/member/auth'),
+      body: jsonEncode(
+        <String, String>{'password': password},
+      ),
+    );
+    return HttpResponse(response);
+  }
+
+  Future<HttpResponse> deleteAccount() async {
+    final Response response = await client.delete(
+      Uri.parse('$endpoint/member'),
+    );
     return HttpResponse(response);
   }
 }

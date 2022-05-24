@@ -6,7 +6,6 @@ import 'package:provider/provider.dart';
 import 'package:url_strategy/url_strategy.dart';
 
 // TODO: Fix bug date when update components
-// TODO: delete account
 
 void main() {
   setPathUrlStrategy();

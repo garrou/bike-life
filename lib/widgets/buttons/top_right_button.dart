@@ -5,21 +5,21 @@ import 'package:flutter/material.dart';
 class AppTopRightButton extends StatelessWidget {
   final VoidCallback onPressed;
   final Icon icon;
-  final double padding;
+  final double paddingTop;
   final Color color;
   const AppTopRightButton(
       {Key? key,
       this.color = primaryColor,
       required this.onPressed,
       required this.icon,
-      required this.padding})
+      required this.paddingTop})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) => Align(
         alignment: Alignment.topRight,
         child: Padding(
-          padding: EdgeInsets.fromLTRB(0.0, padding, padding, 0.0),
+          padding: EdgeInsets.only(top: paddingTop),
           child: IconButton(
               onPressed: onPressed,
               icon: icon,

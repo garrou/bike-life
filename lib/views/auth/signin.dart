@@ -165,34 +165,39 @@ class _SigninPageState extends State<SigninPage> {
     return await showDialog(
         context: context,
         builder: (BuildContext context) {
-          return SimpleDialog(
+          return AlertDialog(
             title: Text('Entrez votre adresse mail', style: thirdTextStyle),
             contentPadding: const EdgeInsets.all(firstSize),
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(firstSize),
             ),
-            children: <Widget>[
-              Form(
-                key: _key,
-                child: Column(
-                  children: [
-                    AppTextField(
-                        keyboardType: TextInputType.emailAddress,
-                        label: 'Email',
-                        focusNode: _emailFocusFp,
-                        textfieldController: _emailFp,
-                        validator: emailValidator,
-                        icon: Icons.alternate_email),
-                    AppButton(
-                      width: buttonWidth * 1.5,
-                      text: 'Recevoir un mail de récupération',
-                      callback: _onSendEmail,
-                      icon: const Icon(Icons.send),
-                    )
-                  ],
+            actions: <Widget>[
+              IconButton(
+                onPressed: _onSendEmail,
+                icon: const Icon(
+                  Icons.send,
+                  color: primaryColor,
                 ),
               ),
             ],
+            content: Builder(builder: (context) {
+              double width = MediaQuery.of(context).size.width;
+
+              return SizedBox(
+                width: width > maxWidth ? width / 3 : width,
+                child: Form(
+                  key: _key,
+                  child: AppTextField(
+                    keyboardType: TextInputType.emailAddress,
+                    label: 'Email',
+                    focusNode: _emailFocusFp,
+                    textfieldController: _emailFp,
+                    validator: emailValidator,
+                    icon: Icons.alternate_email,
+                  ),
+                ),
+              );
+            }),
           );
         });
   }

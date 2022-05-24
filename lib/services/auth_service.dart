@@ -30,11 +30,13 @@ class AuthService {
   }
 
   Future<HttpResponse> forgotPassword(String email) async {
-    final Response response = await http.post(Uri.parse('$endpoint/forgot'),
-        headers: <String, String>{
-          'Content-Type': 'application/json; charset=UTF-8'
-        },
-        body: jsonEncode(<String, String>{'email': email}));
+    final Response response = await http.post(
+      Uri.parse('$endpoint/forgot'),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8'
+      },
+      body: jsonEncode(<String, String>{'email': email}),
+    );
     return HttpResponse(response);
   }
 }

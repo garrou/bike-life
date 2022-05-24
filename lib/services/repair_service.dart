@@ -14,14 +14,17 @@ class RepairService {
   ]);
 
   Future<HttpResponse> addRepair(Repair repair) async {
-    final Response response = await client.post(Uri.parse('$endpoint/repairs'),
-        body: jsonEncode(repair));
+    final Response response = await client.post(
+      Uri.parse('$endpoint/repairs'),
+      body: jsonEncode(repair),
+    );
     return HttpResponse(response);
   }
 
   Future<HttpResponse> getRepairs(String componentId) async {
-    final Response response =
-        await client.get(Uri.parse('$endpoint/repairs/$componentId'));
+    final Response response = await client.get(
+      Uri.parse('$endpoint/repairs/$componentId'),
+    );
     return HttpResponse(response);
   }
 }
