@@ -188,7 +188,7 @@ class _UpdateBikeFormState extends State<UpdateBikeForm> {
     }
   }
 
-  Future _showDeleteDialog(BuildContext context) async => showDialog(
+  Future _showDeleteDialog(BuildContext context) async => await showDialog(
         context: context,
         builder: (BuildContext context) => AlertDialog(
           shape: RoundedRectangleBorder(

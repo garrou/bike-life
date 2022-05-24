@@ -107,6 +107,12 @@ class _TotalChangesState extends State<TotalChanges>
   }
 
   @override
+  void dispose() {
+    super.dispose();
+    _controller.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) => FutureBuilder<List<ComponentStat>>(
       future: _totalChangeStats,
       builder: (context, snapshot) {
@@ -120,6 +126,7 @@ class _TotalChangesState extends State<TotalChanges>
                         height: 300,
                         width: 300,
                         fit: BoxFit.fill,
+                        animate: false,
                         controller: _controller, onLoaded: (composition) {
                       _controller
                         ..duration = composition.duration

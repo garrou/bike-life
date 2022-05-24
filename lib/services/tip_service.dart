@@ -10,18 +10,23 @@ class TipService {
   ]);
 
   Future<HttpResponse> getAll() async {
-    final Response response = await client.get(Uri.parse('$endpoint/tips'));
+    final Response response = await client.get(
+      Uri.parse('$endpoint/tips'),
+    );
     return HttpResponse(response);
   }
 
   Future<HttpResponse> getByTopic(String topic) async {
-    final Response response =
-        await client.get(Uri.parse('$endpoint/topics/$topic/tips'));
+    final Response response = await client.get(
+      Uri.parse('$endpoint/tips/topics/$topic'),
+    );
     return HttpResponse(response);
   }
 
   Future<HttpResponse> getTopics() async {
-    final Response response = await client.get(Uri.parse('$endpoint/topics'));
+    final Response response = await client.get(
+      Uri.parse('$endpoint/tips/topics'),
+    );
     return HttpResponse(response);
   }
 }

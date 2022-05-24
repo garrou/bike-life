@@ -1,14 +1,11 @@
 import 'package:bike_life/providers/theme_provider.dart';
 import 'package:bike_life/providers/year_provider.dart';
-import 'package:bike_life/utils/constants.dart';
 import 'package:bike_life/views/home/home.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:url_strategy/url_strategy.dart';
 
 // TODO: Fix bug date when update components
-// TODO: delete account
-// TODO: forgot password
 
 void main() {
   setPathUrlStrategy();
@@ -26,7 +23,7 @@ class App extends StatelessWidget {
         child: Consumer<ThemeModel>(
             builder: (context, ThemeModel themeNotifier, child) {
           return MaterialApp(
-            title: title,
+            title: "Bike's life",
             theme: themeNotifier.isDark ? ThemeData.dark() : ThemeData.light(),
             home: const HomePage(),
           );
