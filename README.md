@@ -16,4 +16,4 @@ Get Bike's life application
 
 IOS (Not released, build on [Codemagic](https://codemagic.io/))
     
-[![Codemagic build status](https://api.codemagic.io/apps/6287d4e3d441389bdea4b662/6287d4e3d441389bdea4b661/status_badge.svg)](https://codemagic.io/apps/6287d4e3d441389bdea4b662/6287d4e3d441389bdea4b661/latest_build))
+[![Codemagic build status](https://api.codemagic.io/apps/6287d4e3d441389bdea4b662/6287d4e3d441389bdea4b661/status_badge.svg)](https://codemagic.io/apps/6287d4e3d441389bdea4b662/6287d4e3d441389bdea4b661/latest_build)

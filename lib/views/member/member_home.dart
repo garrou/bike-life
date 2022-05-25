@@ -1,4 +1,4 @@
-import 'package:bike_life/views/member/help/help.dart';
+import 'package:bike_life/views/member/help/tips.dart';
 import 'package:bike_life/views/member/home.dart';
 import 'package:bike_life/views/member/profile/profile.dart';
 import 'package:bike_life/views/member/statistics/statistics.dart';
@@ -36,7 +36,7 @@ class _MemberHomePageState extends State<MemberHomePage> {
           children: const <Widget>[
             HomPage(),
             StatisticsPage(),
-            HelpPage(),
+            TipsPage(),
             ProfilePage()
           ],
           onPageChanged: (page) {
@@ -49,7 +49,7 @@ class _MemberHomePageState extends State<MemberHomePage> {
           backgroundColor: primaryColor,
           currentIndex: _pageIndex,
           selectedItemColor: Colors.white,
-          showSelectedLabels: false,
+          showSelectedLabels: true,
           showUnselectedLabels: true,
           onTap: _onTabTapped,
           items: const <BottomNavigationBarItem>[
