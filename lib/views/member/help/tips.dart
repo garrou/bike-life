@@ -106,19 +106,23 @@ class _TipsPageState extends State<TipsPage> {
         if (snapshot.hasError) {
           return const Text('Erreur de connexion');
         } else if (snapshot.hasData) {
-          return DropdownButton<String>(
-            value: _topic,
-            icon: const Icon(Icons.arrow_drop_down),
-            elevation: 16,
-            onChanged: (String? newValue) {
-              setState(() => _topic = newValue!);
-            },
-            items: snapshot.data!.map<DropdownMenuItem<String>>((Topic topic) {
-              return DropdownMenuItem<String>(
-                value: topic.name == 'Tout' ? '%' : topic.name,
-                child: Text(topic.name, style: secondTextStyle),
-              );
-            }).toList(),
+          return Padding(
+            padding: const EdgeInsets.only(top: firstSize),
+            child: DropdownButton<String>(
+              value: _topic,
+              icon: const Icon(Icons.arrow_drop_down),
+              elevation: 16,
+              onChanged: (String? newValue) {
+                setState(() => _topic = newValue!);
+              },
+              items:
+                  snapshot.data!.map<DropdownMenuItem<String>>((Topic topic) {
+                return DropdownMenuItem<String>(
+                  value: topic.name == 'Tout' ? '%' : topic.name,
+                  child: Text(topic.name, style: secondTextStyle),
+                );
+              }).toList(),
+            ),
           );
         }
         return const AppLoading();

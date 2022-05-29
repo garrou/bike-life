@@ -38,7 +38,7 @@ class ProfilePage extends StatelessWidget {
   Widget _wideLayout() =>
       Consumer<ThemeModel>(builder: (context, ThemeModel themeNotifier, child) {
         return Padding(
-          padding: const EdgeInsets.only(top: 30),
+          padding: const EdgeInsets.only(top: firstSize),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
@@ -61,7 +61,7 @@ class ProfilePage extends StatelessWidget {
                     icon: Icon(themeNotifier.isDark
                         ? Icons.nightlight_round_outlined
                         : Icons.wb_sunny),
-                    iconSize: 30,
+                    iconSize: firstSize,
                   )
                 ],
               ),

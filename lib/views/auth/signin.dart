@@ -9,7 +9,6 @@ import 'package:bike_life/utils/storage.dart';
 import 'package:bike_life/utils/validator.dart';
 import 'package:bike_life/views/auth/signup.dart';
 import 'package:bike_life/views/member/member_home.dart';
-import 'package:bike_life/widgets/card.dart';
 import 'package:bike_life/widgets/link_page.dart';
 import 'package:bike_life/widgets/buttons/button.dart';
 import 'package:bike_life/widgets/snackbar.dart';
@@ -59,51 +58,57 @@ class _SigninPageState extends State<SigninPage> {
 
   Widget wideLayout() => Center(
         child: SingleChildScrollView(
-          child: AppCard(
-            child: Column(
-              children: <Widget>[
-                AppTitle(
-                    text: 'Se connecter',
-                    paddingBottom: secondSize,
-                    style: mainTextStyle),
-                Form(
-                  key: _keyForm,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      AppTextField(
-                          keyboardType: TextInputType.emailAddress,
-                          label: 'Email',
-                          focusNode: _emailFocus,
-                          textfieldController: _email,
-                          validator: emailValidator,
-                          icon: Icons.alternate_email),
-                      AppTextField(
-                          keyboardType: TextInputType.text,
-                          label: 'Mot de passe',
-                          focusNode: _passwordFocus,
-                          textfieldController: _password,
-                          validator: fieldValidator,
-                          obscureText: true,
-                          icon: Icons.password),
-                      AppButton(
-                          text: 'Connexion',
-                          callback: () => _onSignin(context),
-                          icon: const Icon(Icons.login))
-                    ],
-                  ),
+          child: Column(
+            children: <Widget>[
+              SizedBox(
+                height: 200,
+                width: 200,
+                child: Image.asset(
+                  'assets/logo_png.png',
+                  fit: BoxFit.scaleDown,
                 ),
-                TextButton(
-                  child: Text('Mot de passe oublié ?', style: linkStyle),
-                  onPressed: () => _onForgotPassword(context),
+              ),
+              AppTitle(
+                  text: 'Se connecter',
+                  paddingBottom: secondSize,
+                  style: mainTextStyle),
+              Form(
+                key: _keyForm,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    AppTextField(
+                        keyboardType: TextInputType.emailAddress,
+                        label: 'Email',
+                        focusNode: _emailFocus,
+                        textfieldController: _email,
+                        validator: emailValidator,
+                        icon: Icons.alternate_email),
+                    AppTextField(
+                        keyboardType: TextInputType.text,
+                        label: 'Mot de passe',
+                        focusNode: _passwordFocus,
+                        textfieldController: _password,
+                        validator: fieldValidator,
+                        obscureText: true,
+                        icon: Icons.password),
+                    AppButton(
+                        text: 'Connexion',
+                        callback: () => _onSignin(context),
+                        icon: const Icon(Icons.login))
+                  ],
                 ),
-                AppLinkToPage(
-                  padding: thirdSize,
-                  child: Text('Nouveau ? Créer un compte.', style: linkStyle),
-                  destination: const SignupPage(),
-                )
-              ],
-            ),
+              ),
+              TextButton(
+                child: Text('Mot de passe oublié ?', style: linkStyle),
+                onPressed: () => _onForgotPassword(context),
+              ),
+              AppLinkToPage(
+                padding: thirdSize,
+                child: Text('Nouveau ? Créer un compte.', style: linkStyle),
+                destination: const SignupPage(),
+              )
+            ],
           ),
         ),
       );
