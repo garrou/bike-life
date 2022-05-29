@@ -4,6 +4,7 @@ import 'package:bike_life/views/home/home.dart';
 import 'package:flutter/material.dart';
 import 'package:introduction_screen/introduction_screen.dart';
 import 'package:lottie/lottie.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class DiscoverPage extends StatefulWidget {
   const DiscoverPage({Key? key}) : super(key: key);
@@ -26,24 +27,68 @@ class _DiscoverPageState extends State<DiscoverPage> {
           key: _introKey,
           pages: <PageViewModel>[
             PageViewModel(
-                title: 'Gestion de vos vélos',
-                body: """
+              title: 'Gestion de vos vélos',
+              body: """
 Un service permettant de gérer l'utilisation des composants de votre vélo... mais pas que.
                  """,
-                image: Lottie.asset('assets/manage.json')),
+              image: Lottie.asset('assets/manage.json'),
+            ),
             PageViewModel(
-                title: 'Une démarche écologique',
-                body: """
+              title: 'Une démarche écologique',
+              body: """
 Profitez d'un suivi de l'utilisation de votre vélo, de ses composants. 
 Prendre soin de son vélo, une garantie de le garder longtemps et en bon état mais aussi de moins le remplacer.
 Un bon point pour votre tirelire mais également pour la planète !
                       """,
-                image: Lottie.asset('assets/ecolo.json')),
+              image: Lottie.asset('assets/ecolo.json'),
+            ),
             PageViewModel(
-                title: 'Une démarche économique',
-                body:
-                    "Ayez un suivi de l'utilisation de votre vélo, de l'usure des composants et de votre budget vélo au fil des années.",
-                image: Lottie.asset('assets/pig.json'))
+              title: 'Une démarche économique',
+              body:
+                  "Ayez un suivi de l'utilisation de votre vélo, de l'usure des composants et de votre budget vélo au fil des années.",
+              image: Lottie.asset('assets/pig.json'),
+            ),
+            PageViewModel(
+              title: 'Un service adapté à toutes et à tous',
+              body: "Ce service est disponible sur le web, android et windows.",
+              footer: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: <Widget>[
+                  IconButton(
+                    onPressed: () => _launch(
+                      Uri.parse('https://bikeslife.fr'),
+                    ),
+                    color: primaryColor,
+                    icon: const Icon(
+                      Icons.web,
+                      size: firstSize,
+                    ),
+                  ),
+                  IconButton(
+                    onPressed: () => _launch(
+                      Uri.parse(
+                          'https://github.com/1-irdA/bike-life/releases/tag/v1.0.0_android'),
+                    ),
+                    color: primaryColor,
+                    icon: const Icon(
+                      Icons.android,
+                      size: firstSize,
+                    ),
+                  ),
+                  IconButton(
+                    onPressed: () => _launch(
+                      Uri.parse(
+                          'https://github.com/1-irdA/bike-life/releases/tag/v1.0.0_windows'),
+                    ),
+                    color: primaryColor,
+                    icon: const Icon(
+                      Icons.laptop,
+                      size: firstSize,
+                    ),
+                  )
+                ],
+              ),
+            )
           ],
           showSkipButton: true,
           skip: const Text('Passer', style: TextStyle(color: primaryColor)),
@@ -63,4 +108,13 @@ Un bon point pour votre tirelire mais également pour la planète !
           onSkip: () => _onIntroEnd(context),
         ),
       );
+
+  Future<void> _launch(Uri url) async {
+    if (!await launchUrl(
+      url,
+      mode: LaunchMode.externalApplication,
+    )) {
+      throw 'Could not launch $url';
+    }
+  }
 }

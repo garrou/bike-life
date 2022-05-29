@@ -8,7 +8,6 @@ import 'package:bike_life/utils/validator.dart';
 import 'package:bike_life/styles/styles.dart';
 import 'package:bike_life/views/member/member_home.dart';
 import 'package:bike_life/widgets/buttons/button.dart';
-import 'package:bike_life/widgets/card.dart';
 import 'package:bike_life/widgets/link_page.dart';
 import 'package:bike_life/views/auth/signin.dart';
 import 'package:bike_life/utils/constants.dart';
@@ -62,61 +61,67 @@ class _SignupPageState extends State<SignupPage> {
 
   Widget wideLayout() => Center(
         child: SingleChildScrollView(
-          child: AppCard(
-            child: Column(
-              children: <Widget>[
-                AppTitle(
-                    text: "S'inscrire",
-                    paddingBottom: secondSize,
-                    style: mainTextStyle),
-                Form(
-                  key: _keyForm,
-                  child: Column(
-                    children: <Widget>[
-                      AppTextField(
-                          keyboardType: TextInputType.emailAddress,
-                          label: 'Email',
-                          focusNode: _emailFocus,
-                          textfieldController: _email,
-                          validator: emailValidator,
-                          icon: Icons.alternate_email),
-                      AppTextField(
-                          keyboardType: TextInputType.text,
-                          label:
-                              'Mot de passe ($minPasswordSize caractères minimum)',
-                          focusNode: _passwordFocus,
-                          textfieldController: _password,
-                          validator: (value) => passwordValidator(
-                              value, minPasswordSize, maxPasswordSize),
-                          obscureText: true,
-                          icon: Icons.password),
-                      AppTextField(
-                          keyboardType: TextInputType.text,
-                          label: 'Confirmer le mot de passe',
-                          focusNode: _confirmPasswordFocus,
-                          textfieldController: _confirmPassword,
-                          // ignore: body_might_complete_normally_nullable
-                          validator: (value) {
-                            if (_password.text != value || value!.isEmpty) {
-                              return 'Mot de passe incorrect';
-                            }
-                          },
-                          obscureText: true,
-                          icon: Icons.password),
-                      AppButton(
-                          text: "S'inscrire",
-                          callback: () => _onSignup(context),
-                          icon: const Icon(Icons.person_add_alt_1))
-                    ],
-                  ),
+          child: Column(
+            children: <Widget>[
+              SizedBox(
+                height: 200,
+                width: 200,
+                child: Image.asset(
+                  'assets/logo_png.png',
+                  fit: BoxFit.scaleDown,
                 ),
-                AppLinkToPage(
-                  padding: firstSize,
-                  child: Text('Déjà membre ? Se connecter', style: linkStyle),
-                  destination: const SigninPage(),
+              ),
+              AppTitle(
+                  text: "S'inscrire",
+                  paddingBottom: secondSize,
+                  style: mainTextStyle),
+              Form(
+                key: _keyForm,
+                child: Column(
+                  children: <Widget>[
+                    AppTextField(
+                        keyboardType: TextInputType.emailAddress,
+                        label: 'Email',
+                        focusNode: _emailFocus,
+                        textfieldController: _email,
+                        validator: emailValidator,
+                        icon: Icons.alternate_email),
+                    AppTextField(
+                        keyboardType: TextInputType.text,
+                        label:
+                            'Mot de passe ($minPasswordSize caractères minimum)',
+                        focusNode: _passwordFocus,
+                        textfieldController: _password,
+                        validator: (value) => passwordValidator(
+                            value, minPasswordSize, maxPasswordSize),
+                        obscureText: true,
+                        icon: Icons.password),
+                    AppTextField(
+                        keyboardType: TextInputType.text,
+                        label: 'Confirmer le mot de passe',
+                        focusNode: _confirmPasswordFocus,
+                        textfieldController: _confirmPassword,
+                        // ignore: body_might_complete_normally_nullable
+                        validator: (value) {
+                          if (_password.text != value || value!.isEmpty) {
+                            return 'Mot de passe incorrect';
+                          }
+                        },
+                        obscureText: true,
+                        icon: Icons.password),
+                    AppButton(
+                        text: "S'inscrire",
+                        callback: () => _onSignup(context),
+                        icon: const Icon(Icons.person_add_alt_1))
+                  ],
                 ),
-              ],
-            ),
+              ),
+              AppLinkToPage(
+                padding: firstSize,
+                child: Text('Déjà membre ? Se connecter', style: linkStyle),
+                destination: const SigninPage(),
+              ),
+            ],
           ),
         ),
       );
