@@ -2,6 +2,7 @@ import 'package:bike_life/models/tip.dart';
 import 'package:bike_life/styles/styles.dart';
 import 'package:bike_life/utils/constants.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart';
 import 'package:bike_life/widgets/buttons/top_left_button.dart';
 import 'package:youtube_player_iframe/youtube_player_iframe.dart';
 
@@ -59,23 +60,28 @@ class _VideoPlayerState extends State<VideoPlayer> {
   @override
   void initState() {
     super.initState();
-    _controller = YoutubePlayerController(
-      initialVideoId: widget.video,
-      params: const YoutubePlayerParams(
-        showControls: true,
-        showFullscreenButton: true,
-      ),
-    );
+
+    if (TargetPlatform.windows != defaultTargetPlatform) {
+      _controller = YoutubePlayerController(
+        initialVideoId: widget.video,
+        params: const YoutubePlayerParams(
+          showControls: true,
+          showFullscreenButton: true,
+        ),
+      );
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: thirdSize),
-      child: YoutubePlayerIFrame(
-        controller: _controller,
-        aspectRatio: 16 / 9,
-      ),
-    );
+    return TargetPlatform.windows != defaultTargetPlatform
+        ? Padding(
+            padding: const EdgeInsets.symmetric(vertical: thirdSize),
+            child: YoutubePlayerIFrame(
+              controller: _controller,
+              aspectRatio: 16 / 9,
+            ),
+          )
+        : Container();
   }
 }
