@@ -1,6 +1,7 @@
 import 'package:bike_life/styles/styles.dart';
 import 'package:bike_life/utils/constants.dart';
 import 'package:bike_life/views/home/home.dart';
+import 'package:bike_life/widgets/snackbar.dart';
 import 'package:flutter/material.dart';
 import 'package:introduction_screen/introduction_screen.dart';
 import 'package:lottie/lottie.dart';
@@ -51,6 +52,8 @@ Un bon point pour votre tirelire mais également pour la planète !
             PageViewModel(
               title: 'Un service adapté à toutes et à tous',
               body: "Ce service est disponible sur le web, android et windows.",
+              image:
+                  Image.asset('assets/logo_png.png', height: 300, width: 300),
               footer: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: <Widget>[
@@ -114,7 +117,7 @@ Un bon point pour votre tirelire mais également pour la planète !
       url,
       mode: LaunchMode.externalApplication,
     )) {
-      throw 'Could not launch $url';
+      showErrorSnackBar(context, "Impossible d'accéder à $url");
     }
   }
 }
