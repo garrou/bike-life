@@ -9,7 +9,6 @@ import 'package:bike_life/views/member/member_home.dart';
 import 'package:bike_life/widgets/buttons/nav_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_guards/flutter_guards.dart';
-import 'package:lottie/lottie.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -38,17 +37,9 @@ class _HomePageState extends State<HomePage> {
         children: <Widget>[
           Column(
             children: <Widget>[
-              SizedBox(
-                child: Lottie.asset('assets/bike.json', fit: BoxFit.scaleDown),
-                height: MediaQuery.of(context).size.height / 2,
-              ),
-              Padding(
-                child: Text(
-                  "Bike's life",
-                  style: mainTextStyle,
-                  textAlign: TextAlign.center,
-                ),
-                padding: const EdgeInsets.only(bottom: secondSize),
+              Image.asset(
+                'assets/logo_png.png',
+                width: MediaQuery.of(context).size.width / 1.4,
               ),
               Padding(
                 child: Text(
