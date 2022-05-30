@@ -63,13 +63,11 @@ class _SignupPageState extends State<SignupPage> {
         child: SingleChildScrollView(
           child: Column(
             children: <Widget>[
-              SizedBox(
+              Image.asset(
+                'assets/logo_png.png',
+                fit: BoxFit.scaleDown,
                 height: 200,
                 width: 200,
-                child: Image.asset(
-                  'assets/logo_png.png',
-                  fit: BoxFit.scaleDown,
-                ),
               ),
               AppTitle(
                   text: "S'inscrire",
