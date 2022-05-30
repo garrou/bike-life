@@ -40,6 +40,7 @@ class _HomePageState extends State<HomePage> {
               Image.asset(
                 'assets/logo_png.png',
                 width: MediaQuery.of(context).size.width / 1.4,
+                height: MediaQuery.of(context).size.height / 1.4,
               ),
               Padding(
                 child: Text(
