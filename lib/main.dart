@@ -1,5 +1,6 @@
 import 'package:bike_life/providers/theme_provider.dart';
 import 'package:bike_life/providers/year_provider.dart';
+import 'package:bike_life/styles/styles.dart';
 import 'package:bike_life/views/home/home.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -9,9 +10,14 @@ import 'package:url_strategy/url_strategy.dart';
 
 void main() {
   setPathUrlStrategy();
-  runApp(MultiProvider(providers: [
-    ChangeNotifierProvider(create: (_) => Year(DateTime.now().year))
-  ], child: const App()));
+  runApp(
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => Year(DateTime.now().year))
+      ],
+      child: const App(),
+    ),
+  );
 }
 
 class App extends StatelessWidget {
@@ -24,6 +30,7 @@ class App extends StatelessWidget {
             builder: (context, ThemeModel themeNotifier, child) {
           return MaterialApp(
             title: "Bike's life",
+            color: primaryColor,
             theme: themeNotifier.isDark ? ThemeData.dark() : ThemeData.light(),
             home: const HomePage(),
           );

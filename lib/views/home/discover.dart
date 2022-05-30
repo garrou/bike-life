@@ -41,7 +41,7 @@ Profitez d'un suivi de l'utilisation de votre vélo, de ses composants.
 Prendre soin de son vélo, une garantie de le garder longtemps et en bon état mais aussi de moins le remplacer.
 Un bon point pour votre tirelire mais également pour la planète !
                       """,
-              image: Lottie.asset('assets/ecolo.json'),
+              image: Lottie.asset('assets/bike.json'),
             ),
             PageViewModel(
               title: 'Une démarche économique',
