@@ -3,8 +3,8 @@ import 'package:bike_life/utils/constants.dart';
 import 'package:bike_life/views/home/home.dart';
 import 'package:bike_life/widgets/snackbar.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:introduction_screen/introduction_screen.dart';
-import 'package:lottie/lottie.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class DiscoverPage extends StatefulWidget {
@@ -32,7 +32,10 @@ class _DiscoverPageState extends State<DiscoverPage> {
               body: """
 Un service permettant de gérer l'utilisation des composants de votre vélo... mais pas que.
                  """,
-              image: Lottie.asset('assets/manage.json'),
+              image: Padding(
+                child: SvgPicture.asset('assets/manage.svg'),
+                padding: const EdgeInsets.all(secondSize),
+              ),
             ),
             PageViewModel(
               title: 'Une démarche écologique',
@@ -41,13 +44,19 @@ Profitez d'un suivi de l'utilisation de votre vélo, de ses composants.
 Prendre soin de son vélo, une garantie de le garder longtemps et en bon état mais aussi de moins le remplacer.
 Un bon point pour votre tirelire mais également pour la planète !
                       """,
-              image: Lottie.asset('assets/bike.json'),
+              image: Padding(
+                child: SvgPicture.asset('assets/environment.svg'),
+                padding: const EdgeInsets.all(secondSize),
+              ),
             ),
             PageViewModel(
               title: 'Une démarche économique',
               body:
                   "Ayez un suivi de l'utilisation de votre vélo, de l'usure des composants et de votre budget vélo au fil des années.",
-              image: Lottie.asset('assets/pig.json'),
+              image: Padding(
+                child: SvgPicture.asset('assets/credit_card.svg'),
+                padding: const EdgeInsets.all(secondSize),
+              ),
             ),
             PageViewModel(
               title: 'Un service adapté à toutes et à tous',

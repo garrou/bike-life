@@ -9,8 +9,8 @@ import 'package:bike_life/widgets/charts/pie_chart.dart';
 import 'package:bike_life/widgets/error.dart';
 import 'package:bike_life/widgets/loading.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
-import 'package:lottie/lottie.dart';
 
 class StatisticsPage extends StatelessWidget {
   const StatisticsPage({Key? key}) : super(key: key);
@@ -84,10 +84,8 @@ class TotalChanges extends StatefulWidget {
   _TotalChangesState createState() => _TotalChangesState();
 }
 
-class _TotalChangesState extends State<TotalChanges>
-    with TickerProviderStateMixin {
+class _TotalChangesState extends State<TotalChanges> {
   late final Future<List<ComponentStat>> _totalChangeStats;
-  late final AnimationController _controller;
 
   Future<List<ComponentStat>> _loadTotalChanges() async {
     final HttpResponse response = await ComponentService().getTotalChanges();
@@ -101,15 +99,8 @@ class _TotalChangesState extends State<TotalChanges>
 
   @override
   void initState() {
-    super.initState();
     _totalChangeStats = _loadTotalChanges();
-    _controller = AnimationController(vsync: this);
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-    _controller.dispose();
+    super.initState();
   }
 
   @override
@@ -122,24 +113,22 @@ class _TotalChangesState extends State<TotalChanges>
           return snapshot.data!.isEmpty
               ? Center(
                   child: Column(children: <Widget>[
-                    Lottie.asset('assets/empty.json',
-                        height: 300,
-                        width: 300,
+                    Padding(
+                      child: SvgPicture.asset(
+                        'assets/no-stat.svg',
+                        height: MediaQuery.of(context).size.height / 3,
+                        width: MediaQuery.of(context).size.width,
                         fit: BoxFit.fill,
-                        animate: false,
-                        controller: _controller, onLoaded: (composition) {
-                      _controller
-                        ..duration = composition.duration
-                        ..forward();
-                    }),
+                      ),
+                      padding: const EdgeInsets.all(secondSize),
+                    ),
                     Padding(
                       child: Text(
-                        'Aucune statistique disponible pour le moment',
+                        'Aucune statistique disponible pour le moment, elles seront disponibles quand vous aurez changé au moins un composant.',
                         style: secondTextStyle,
                         textAlign: TextAlign.center,
                       ),
-                      padding:
-                          const EdgeInsets.symmetric(horizontal: secondSize),
+                      padding: const EdgeInsets.all(secondSize),
                     )
                   ]),
                 )
