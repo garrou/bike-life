@@ -7,7 +7,6 @@ import 'package:bike_life/utils/storage.dart';
 import 'package:bike_life/utils/validator.dart';
 import 'package:bike_life/views/auth/signin.dart';
 import 'package:bike_life/styles/styles.dart';
-import 'package:bike_life/views/member/profile/update_email.dart';
 import 'package:bike_life/views/member/profile/update_password.dart';
 import 'package:bike_life/widgets/buttons/button.dart';
 import 'package:bike_life/widgets/buttons/top_right_button.dart';
@@ -64,11 +63,6 @@ class ProfilePage extends StatelessWidget {
                     iconSize: firstSize,
                   )
                 ],
-              ),
-              const AppClickCard(
-                icon: Icon(Icons.alternate_email),
-                text: 'Changer votre email',
-                destination: UpdateEmailPage(),
               ),
               const AppClickCard(
                 icon: Icon(Icons.password),

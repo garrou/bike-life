@@ -17,7 +17,7 @@ import 'package:bike_life/widgets/loading.dart';
 import 'package:bike_life/widgets/snackbar.dart';
 import 'package:bike_life/widgets/textfield.dart';
 import 'package:flutter/material.dart';
-import 'package:lottie/lottie.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 enum ConnectionError { auth, connection }
 
@@ -28,15 +28,13 @@ class HomPage extends StatefulWidget {
   _HomPageState createState() => _HomPageState();
 }
 
-class _HomPageState extends State<HomPage> with TickerProviderStateMixin {
+class _HomPageState extends State<HomPage> {
   late final Future<List<Bike>> _bikes;
-  late final AnimationController _controller;
 
   @override
   void initState() {
-    super.initState();
     _bikes = _loadBikes();
-    _controller = AnimationController(vsync: this);
+    super.initState();
   }
 
   Future<List<Bike>> _loadBikes() async {
@@ -87,26 +85,24 @@ class _HomPageState extends State<HomPage> with TickerProviderStateMixin {
         } else if (snapshot.hasData) {
           return snapshot.data!.isEmpty
               ? Center(
-                  child: Column(children: <Widget>[
-                    Lottie.asset('assets/empty.json',
-                        height: 300,
-                        width: 300,
-                        fit: BoxFit.fill,
-                        controller: _controller, onLoaded: (composition) {
-                      _controller
-                        ..duration = composition.duration
-                        ..forward();
-                    }),
-                    Padding(
-                      child: Text(
-                        'Aucun vélo ! Pour en ajouter un, cliquer sur le +',
-                        style: secondTextStyle,
-                        textAlign: TextAlign.center,
-                      ),
-                      padding:
-                          const EdgeInsets.symmetric(horizontal: secondSize),
-                    )
-                  ]),
+                  child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        SvgPicture.asset(
+                          'assets/bike.svg',
+                          height: MediaQuery.of(context).size.height / 2,
+                          width: MediaQuery.of(context).size.width,
+                          fit: BoxFit.fill,
+                        ),
+                        Padding(
+                          child: Text(
+                            'Aucun vélo ! Pour en ajouter un, cliquer sur le +',
+                            style: secondTextStyle,
+                            textAlign: TextAlign.center,
+                          ),
+                          padding: const EdgeInsets.all(secondSize),
+                        )
+                      ]),
                 )
               : GridView.count(
                   childAspectRatio: 0.65,

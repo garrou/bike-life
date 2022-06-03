@@ -47,5 +47,5 @@ flutter run -d [platform]
 ```sh
 flutter build apk --release
 flutter build windows --release
-flutter build web --release --web-renderer canvaskit
+flutter build web --release [--web-renderer html|canvaskit]
 ```
