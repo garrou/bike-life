@@ -15,7 +15,7 @@ class AppError extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
-          SvgPicture.asset('assets/error.json'),
+          SvgPicture.asset('assets/error.svg'),
           Container(
             padding: const EdgeInsets.all(thirdSize),
             decoration: const BoxDecoration(
