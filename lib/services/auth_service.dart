@@ -18,13 +18,18 @@ class AuthService {
     return HttpResponse(response);
   }
 
-  Future<HttpResponse> signup(String email, String password) async {
+  Future<HttpResponse> signup(
+      String email, String password, String confirm) async {
     final Response response = await http.post(
       Uri.parse('$endpoint/signup'),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8'
       },
-      body: jsonEncode(<String, String>{'email': email, 'password': password}),
+      body: jsonEncode(<String, String>{
+        'email': email,
+        'password': password,
+        'confirm': confirm
+      }),
     );
     return HttpResponse(response);
   }
