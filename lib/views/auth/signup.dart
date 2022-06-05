@@ -139,8 +139,11 @@ class _SignupPageState extends State<SignupPage> {
 
   void _createUser(BuildContext context) async {
     try {
-      final HttpResponse response =
-          await AuthService().signup(_email.text.trim(), _password.text.trim());
+      final HttpResponse response = await AuthService().signup(
+        _email.text.trim(),
+        _password.text.trim(),
+        _confirmPassword.text.trim(),
+      );
 
       if (response.success()) {
         pushAndRemove(context, const SigninPage());
