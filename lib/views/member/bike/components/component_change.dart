@@ -32,7 +32,8 @@ class _ComponentChangePageState extends State<ComponentChangePage> {
   Widget build(BuildContext context) => Scaffold(
         appBar: AppBar(
           backgroundColor: primaryColor,
-          title: Text('Changement de composant', style: secondTextStyle),
+          title: Text("Changement pour ${widget.component.type.toLowerCase()}",
+              style: secondTextStyle),
         ),
         body: LayoutBuilder(builder: (context, constraints) {
           if (constraints.maxWidth > maxWidth) {

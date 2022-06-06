@@ -96,18 +96,15 @@ class _TipsPageState extends State<TipsPage> {
 
   Widget _buildTip(Tip tip) => Card(
         elevation: 10,
-        child: ListTile(
-          title: Text(
-            tip.componentType ?? 'Vélo',
-            style: boldTextStyle,
-          ),
-          subtitle: Text(tip.title, style: secondTextStyle),
-          trailing: IconButton(
-            icon: const Icon(Icons.keyboard_arrow_right_outlined, size: 30),
-            onPressed: () => push(
-              context,
-              TipDetailsPage(tip: tip),
+        child: InkWell(
+          onTap: () => push(context, TipDetailsPage(tip: tip)),
+          child: ListTile(
+            title: Text(
+              tip.componentType ?? 'Vélo',
+              style: boldTextStyle,
             ),
+            subtitle: Text(tip.title, style: secondTextStyle),
+            trailing: const Icon(Icons.keyboard_arrow_right_outlined, size: 30),
           ),
         ),
       );

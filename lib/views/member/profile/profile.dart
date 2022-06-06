@@ -52,11 +52,8 @@ class ProfilePage extends StatelessWidget {
                   leading: const Icon(Icons.settings_outlined),
                   title: Text('Thème', style: secondTextStyle),
                   trailing: IconButton(
-                    onPressed: () {
-                      themeNotifier.isDark
-                          ? themeNotifier.isDark = false
-                          : themeNotifier.isDark = true;
-                    },
+                    onPressed: () =>
+                        themeNotifier.isDark = !themeNotifier.isDark,
                     icon: Icon(themeNotifier.isDark
                         ? Icons.nightlight_round_outlined
                         : Icons.wb_sunny_outlined),
@@ -66,16 +63,13 @@ class ProfilePage extends StatelessWidget {
               ),
               Card(
                 elevation: 10,
-                child: ListTile(
-                  leading: const Icon(Icons.password_outlined),
-                  title: Text('Changer votre mot de passe',
-                      style: secondTextStyle),
-                  trailing: IconButton(
-                    icon: const Icon(Icons.arrow_forward_ios_outlined),
-                    onPressed: () => push(
-                      context,
-                      const UpdatePasswordPage(),
-                    ),
+                child: InkWell(
+                  onTap: () => push(context, const UpdatePasswordPage()),
+                  child: ListTile(
+                    leading: const Icon(Icons.password_outlined),
+                    title: Text('Changer votre mot de passe',
+                        style: secondTextStyle),
+                    trailing: const Icon(Icons.arrow_forward_ios_outlined),
                   ),
                 ),
               ),

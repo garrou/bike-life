@@ -83,12 +83,10 @@ class _ComponentHistoricRepairsPageState
                 final String s = nb > 1 ? 's' : '';
 
                 return Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Padding(
-                      child: Text(
-                        '$nb réparation$s',
-                        style: thirdTextStyle,
-                      ),
+                      child: Text('$nb réparation$s', style: thirdTextStyle),
                       padding: const EdgeInsets.all(thirdSize),
                     ),
                     Column(

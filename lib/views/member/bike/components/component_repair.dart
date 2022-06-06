@@ -42,7 +42,8 @@ class _ComponentRepairPageState extends State<ComponentRepairPage> {
   Widget build(BuildContext context) => Scaffold(
         appBar: AppBar(
           backgroundColor: primaryColor,
-          title: Text('Ajouter un vélo', style: secondTextStyle),
+          title: Text('Réparation pour ${widget.component.type.toLowerCase()}',
+              style: secondTextStyle),
         ),
         body: LayoutBuilder(builder: (context, constraints) {
           if (constraints.maxWidth > maxWidth) {
