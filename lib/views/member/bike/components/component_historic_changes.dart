@@ -45,7 +45,7 @@ class _ComponentHistoricPageState extends State<ComponentHistoricChangesPage> {
   @override
   Widget build(BuildContext context) => Scaffold(
         floatingActionButton: FloatingActionButton(
-          child: const Icon(Icons.add, color: Colors.white),
+          child: const Icon(Icons.add_outlined, color: Colors.white),
           backgroundColor: primaryColor,
           onPressed: () => push(
             context,

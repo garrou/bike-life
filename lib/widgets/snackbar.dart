@@ -12,7 +12,8 @@ void showErrorSnackBar(BuildContext context, String message) {
       CustomSnackBar.error(
         iconRotationAngle: iconRotation,
         message: message,
-        icon: const Icon(Icons.error, color: Colors.white, size: iconSize),
+        icon: const Icon(Icons.error_outlined,
+            color: Colors.white, size: iconSize),
       ));
 }
 
@@ -23,6 +24,7 @@ void showSuccessSnackBar(BuildContext context, String message) {
         iconRotationAngle: iconRotation,
         message: message,
         backgroundColor: primaryColor,
-        icon: const Icon(Icons.error, color: Colors.white, size: iconSize),
+        icon: const Icon(Icons.error_outlined,
+            color: Colors.white, size: iconSize),
       ));
 }

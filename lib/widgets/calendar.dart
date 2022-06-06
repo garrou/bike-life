@@ -39,12 +39,16 @@ class _AppCalendarState extends State<AppCalendar> {
         child: Column(
           children: <Widget>[
             GestureDetector(
-              child:
-                  Row(mainAxisAlignment: MainAxisAlignment.center, children: <
-                      Widget>[
-                Text(widget.text, style: secondTextStyle),
-                Icon(_isVisible ? Icons.arrow_drop_up : Icons.arrow_drop_down)
-              ]),
+              child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Text(widget.text, style: secondTextStyle),
+                    Icon(
+                      _isVisible
+                          ? Icons.arrow_drop_up_outlined
+                          : Icons.arrow_drop_down_outlined,
+                    )
+                  ]),
               onTap: () {
                 setState(() => _isVisible = !_isVisible);
               },

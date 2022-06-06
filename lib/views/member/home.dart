@@ -53,17 +53,23 @@ class _HomPageState extends State<HomPage> {
 
   @override
   Widget build(BuildContext context) => Scaffold(
-        body: LayoutBuilder(builder: (context, constraints) {
-          if (constraints.maxWidth > maxWidth) {
-            return _narrowLayout(constraints);
-          } else {
-            return _wideLayout(constraints);
-          }
-        }),
+        body: ListView(
+          children: <Widget>[
+            LayoutBuilder(
+              builder: (context, constraints) {
+                if (constraints.maxWidth > maxWidth) {
+                  return _narrowLayout(constraints);
+                } else {
+                  return _wideLayout(constraints);
+                }
+              },
+            ),
+          ],
+        ),
         floatingActionButton: FloatingActionButton(
           backgroundColor: primaryColor,
           onPressed: () => push(context, const AddBikePage()),
-          child: const Icon(Icons.add, color: Colors.white),
+          child: const Icon(Icons.add_outlined, color: Colors.white),
         ),
       );
 
@@ -105,8 +111,8 @@ class _HomPageState extends State<HomPage> {
                       ]),
                 )
               : GridView.count(
+                  shrinkWrap: true,
                   childAspectRatio: 0.65,
-                  controller: ScrollController(),
                   crossAxisCount: constraints.maxWidth > maxWidth + 400
                       ? 3
                       : constraints.maxWidth > maxWidth
@@ -156,8 +162,8 @@ class _BikeCardState extends State<BikeCard> {
                       Text(widget.bike.type, style: setStyle(context, 18)),
                       const VerticalDivider(thickness: 2, width: 2),
                       widget.bike.electric
-                          ? const Icon(Icons.electric_bike)
-                          : const Icon(Icons.pedal_bike)
+                          ? const Icon(Icons.electric_bike_outlined)
+                          : const Icon(Icons.pedal_bike_outlined)
                     ],
                   ),
                 ),
@@ -195,10 +201,7 @@ class _BikeCardState extends State<BikeCard> {
                   padding: const EdgeInsets.only(top: 10),
                   child: TextButton.icon(
                     label: Text('Ajouter des km', style: thirdTextStyle),
-                    icon: const Icon(
-                      Icons.add_road,
-                      size: secondSize,
-                    ),
+                    icon: const Icon(Icons.add_road_outlined, size: secondSize),
                     onPressed: () => showDialog(
                       context: context,
                       builder: (BuildContext context) =>
@@ -255,7 +258,7 @@ class _BikeCardState extends State<BikeCard> {
               textfieldController: _km,
               validator: positiveValidator,
               label: 'Kilomètres à ajouter',
-              icon: Icons.add_road,
+              icon: Icons.add_road_outlined,
               keyboardType: TextInputType.number,
             )
           ],
@@ -265,7 +268,7 @@ class _BikeCardState extends State<BikeCard> {
         AppButton(
           text: 'Ajouter',
           callback: _onAddKm,
-          icon: const Icon(Icons.add),
+          icon: const Icon(Icons.add_outlined),
         )
       ],
     );
@@ -323,7 +326,7 @@ class _ComponentsAlertsState extends State<ComponentsAlerts> {
                     nb > 0 ? '$nb composant$s à changer' : '',
                     style: thirdTextStyle,
                   ),
-                  icon: const Icon(Icons.warning_amber),
+                  icon: const Icon(Icons.warning_amber_outlined),
                   style: ButtonStyle(
                     foregroundColor: MaterialStateProperty.all<Color>(orange),
                     shape: MaterialStateProperty.all<RoundedRectangleBorder>(

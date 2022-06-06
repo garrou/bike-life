@@ -146,7 +146,7 @@ class _BikeDiagnosticPageState extends State<BikeDiagnosticPage> {
                           _index++;
                         });
                       },
-                      icon: const Icon(Icons.check),
+                      icon: const Icon(Icons.check_outlined),
                     ),
                   ],
                 ),
@@ -167,7 +167,8 @@ class _BikeDiagnosticPageState extends State<BikeDiagnosticPage> {
                   child: ListTile(
                     title: Text(diagnostic.title, style: secondTextStyle),
                     trailing: _responses[diagnostic.id] == true
-                        ? const Icon(Icons.check, color: primaryColor, size: 40)
+                        ? const Icon(Icons.check_outlined,
+                            color: primaryColor, size: 40)
                         : Icon(Icons.cancel_outlined,
                             color: Colors.red[900], size: 40),
                   ),
@@ -178,7 +179,7 @@ class _BikeDiagnosticPageState extends State<BikeDiagnosticPage> {
             text: 'Valider',
             color: primaryColor,
             callback: _onSend,
-            icon: const Icon(Icons.arrow_forward),
+            icon: const Icon(Icons.arrow_forward_outlined),
           ),
         ],
       );

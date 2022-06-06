@@ -81,7 +81,7 @@ class _SigninPageState extends State<SigninPage> {
                         focusNode: _emailFocus,
                         textfieldController: _email,
                         validator: emailValidator,
-                        icon: Icons.alternate_email),
+                        icon: Icons.alternate_email_outlined),
                     AppTextField(
                         keyboardType: TextInputType.text,
                         label: 'Mot de passe',
@@ -89,11 +89,11 @@ class _SigninPageState extends State<SigninPage> {
                         textfieldController: _password,
                         validator: fieldValidator,
                         obscureText: true,
-                        icon: Icons.password),
+                        icon: Icons.password_outlined),
                     AppButton(
                         text: 'Connexion',
                         callback: () => _onSignin(context),
-                        icon: const Icon(Icons.login))
+                        icon: const Icon(Icons.login_outlined))
                   ],
                 ),
               ),
@@ -178,7 +178,7 @@ class _SigninPageState extends State<SigninPage> {
               IconButton(
                 onPressed: _onSendEmail,
                 icon: const Icon(
-                  Icons.send,
+                  Icons.send_outlined,
                   color: primaryColor,
                 ),
               ),
@@ -196,7 +196,7 @@ class _SigninPageState extends State<SigninPage> {
                     focusNode: _emailFocusFp,
                     textfieldController: _emailFp,
                     validator: emailValidator,
-                    icon: Icons.alternate_email,
+                    icon: Icons.alternate_email_outlined,
                   ),
                 ),
               );
