@@ -4,6 +4,7 @@ import 'package:bike_life/providers/year_provider.dart';
 import 'package:bike_life/services/component_service.dart';
 import 'package:bike_life/styles/styles.dart';
 import 'package:bike_life/utils/constants.dart';
+import 'package:bike_life/views/member/drawer/drawer.dart';
 import 'package:bike_life/widgets/charts/bar_chart.dart';
 import 'package:bike_life/widgets/charts/pie_chart.dart';
 import 'package:bike_life/widgets/error.dart';
@@ -17,14 +18,22 @@ class StatisticsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Scaffold(
-        body: LayoutBuilder(builder: (context, constraints) {
-          if (constraints.maxWidth > maxWidth) {
-            return _narrowLayout(context, constraints);
-          } else {
-            return _wideLayout(context, constraints);
-          }
-        }),
-      );
+      appBar: AppBar(
+        backgroundColor: primaryColor,
+        title: Text('Statistiques', style: secondTextStyle),
+      ),
+      drawer: const AppDrawer(),
+      body: SingleChildScrollView(
+        child: LayoutBuilder(
+          builder: (context, constraints) {
+            if (constraints.maxWidth > maxWidth) {
+              return _narrowLayout(context, constraints);
+            } else {
+              return _wideLayout(context, constraints);
+            }
+          },
+        ),
+      ));
 
   Widget _narrowLayout(
           BuildContext context, BoxConstraints constraints) =>
@@ -36,22 +45,21 @@ class StatisticsPage extends StatelessWidget {
   Widget _wideLayout(BuildContext context, BoxConstraints constraints) =>
       Column(
         children: [
-          Expanded(
-            child: GridView.count(
-              controller: ScrollController(),
-              crossAxisCount: constraints.maxWidth > maxWidth + 400
-                  ? 3
-                  : constraints.maxWidth > maxWidth
-                      ? 2
-                      : 1,
-              children: const <Widget>[
-                TotalChanges(),
-                SumPriceComponent(),
-                AveragePercentChanges(),
-                AverageKmBeforeChange(),
-                NbComponentsChangeYear(),
-              ],
-            ),
+          GridView.count(
+            shrinkWrap: true,
+            controller: ScrollController(),
+            crossAxisCount: constraints.maxWidth > maxWidth + 400
+                ? 3
+                : constraints.maxWidth > maxWidth
+                    ? 2
+                    : 1,
+            children: const <Widget>[
+              TotalChanges(),
+              SumPriceComponent(),
+              AveragePercentChanges(),
+              AverageKmBeforeChange(),
+              NbComponentsChangeYear(),
+            ],
           ),
           Card(
             child: Column(

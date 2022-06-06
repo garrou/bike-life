@@ -7,9 +7,9 @@ import 'package:bike_life/utils/storage.dart';
 import 'package:bike_life/utils/validator.dart';
 import 'package:bike_life/views/auth/signin.dart';
 import 'package:bike_life/styles/styles.dart';
+import 'package:bike_life/views/member/drawer/drawer.dart';
 import 'package:bike_life/views/member/profile/update_password.dart';
 import 'package:bike_life/widgets/buttons/button.dart';
-import 'package:bike_life/widgets/buttons/top_right_button.dart';
 import 'package:bike_life/widgets/snackbar.dart';
 import 'package:bike_life/widgets/textfield.dart';
 import 'package:flutter/material.dart';
@@ -20,6 +20,11 @@ class ProfilePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Scaffold(
+        appBar: AppBar(
+          backgroundColor: primaryColor,
+          title: Text('Mon profil', style: secondTextStyle),
+        ),
+        drawer: const AppDrawer(),
         body: LayoutBuilder(builder: (context, constraints) {
           if (constraints.maxWidth > maxWidth) {
             return _narrowLayout(context);
@@ -41,15 +46,10 @@ class ProfilePage extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
-              AppTopRightButton(
-                paddingTop: 10,
-                color: Colors.red[900]!,
-                onPressed: () => _onDisconnect(context),
-                icon: const Icon(Icons.logout_outlined),
-              ),
               Card(
                 elevation: 10,
                 child: ListTile(
+                  leading: const Icon(Icons.settings_outlined),
                   title: Text('Thème', style: secondTextStyle),
                   trailing: IconButton(
                     onPressed: () {
@@ -64,10 +64,20 @@ class ProfilePage extends StatelessWidget {
                   ),
                 ),
               ),
-              const AppClickCard(
-                icon: Icon(Icons.password_outlined),
-                text: 'Changer votre mot de passe',
-                destination: UpdatePasswordPage(),
+              Card(
+                elevation: 10,
+                child: ListTile(
+                  leading: const Icon(Icons.password_outlined),
+                  title: Text('Changer votre mot de passe',
+                      style: secondTextStyle),
+                  trailing: IconButton(
+                    icon: const Icon(Icons.arrow_forward_ios_outlined),
+                    onPressed: () => push(
+                      context,
+                      const UpdatePasswordPage(),
+                    ),
+                  ),
+                ),
               ),
               AppButton(
                 height: buttonHeight * 1.2,
@@ -81,11 +91,6 @@ class ProfilePage extends StatelessWidget {
           ),
         );
       });
-
-  void _onDisconnect(BuildContext context) {
-    Storage.disconnect();
-    pushAndRemove(context, const SigninPage());
-  }
 
   void _onDeleteAccount(BuildContext context) async {
     final _key = GlobalKey<FormState>();
@@ -104,7 +109,8 @@ class ProfilePage extends StatelessWidget {
 
         if (response.success()) {
           showSuccessSnackBar(context, response.message());
-          _onDisconnect(context);
+          Storage.disconnect();
+          pushAndRemove(context, const SigninPage());
         } else {
           showErrorSnackBar(context, response.message());
         }
@@ -161,31 +167,4 @@ class ProfilePage extends StatelessWidget {
           );
         });
   }
-}
-
-class AppClickCard extends StatelessWidget {
-  final String text;
-  final Widget destination;
-  final Icon icon;
-  const AppClickCard(
-      {Key? key,
-      required this.text,
-      required this.destination,
-      required this.icon})
-      : super(key: key);
-
-  @override
-  Widget build(BuildContext context) => Card(
-        elevation: 5,
-        child: InkWell(
-          child: ListTile(
-            leading: icon,
-            title: Text(
-              text,
-              style: secondTextStyle,
-            ),
-          ),
-          onTap: () => push(context, destination),
-        ),
-      );
 }

@@ -3,15 +3,10 @@ import 'package:bike_life/styles/styles.dart';
 import 'package:bike_life/utils/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
-import 'package:bike_life/widgets/buttons/top_left_button.dart';
 import 'package:youtube_player_iframe/youtube_player_iframe.dart';
 
-Widget buildTipDetails(BuildContext context, Tip tip) => ListView(
-      shrinkWrap: true,
-      padding: const EdgeInsets.symmetric(horizontal: thirdSize),
+Widget buildTipDetails(BuildContext context, Tip tip) => Column(
       children: <Widget>[
-        AppTopLeftButton(
-            title: 'Conseils', callback: () => Navigator.pop(context)),
         Padding(
             padding: const EdgeInsets.symmetric(vertical: thirdSize),
             child: Text(tip.title,
@@ -29,14 +24,23 @@ class TipDetailsPage extends StatelessWidget {
   const TipDetailsPage({Key? key, required this.tip}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) =>
-      Scaffold(body: LayoutBuilder(builder: (context, constraints) {
-        if (constraints.maxWidth > maxWidth) {
-          return _narrowLayout(context);
-        } else {
-          return _wideLayout(context);
-        }
-      }));
+  Widget build(BuildContext context) => Scaffold(
+        appBar: AppBar(
+          title: Text('Conseils', style: secondTextStyle),
+          backgroundColor: primaryColor,
+        ),
+        body: SingleChildScrollView(
+          child: LayoutBuilder(
+            builder: (context, constraints) {
+              if (constraints.maxWidth > maxWidth) {
+                return _narrowLayout(context);
+              } else {
+                return _wideLayout(context);
+              }
+            },
+          ),
+        ),
+      );
 
   Widget _narrowLayout(BuildContext context) => Padding(
       padding: EdgeInsets.symmetric(

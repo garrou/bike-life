@@ -10,7 +10,7 @@ import 'package:bike_life/utils/validator.dart';
 import 'package:bike_life/views/member/bike/bike_details.dart';
 import 'package:bike_life/views/member/bike/bike_add.dart';
 import 'package:bike_life/styles/styles.dart';
-import 'package:bike_life/views/member/member_home.dart';
+import 'package:bike_life/views/member/drawer/drawer.dart';
 import 'package:bike_life/widgets/buttons/button.dart';
 import 'package:bike_life/widgets/error.dart';
 import 'package:bike_life/widgets/loading.dart';
@@ -21,14 +21,14 @@ import 'package:flutter_svg/flutter_svg.dart';
 
 enum ConnectionError { auth, connection }
 
-class HomPage extends StatefulWidget {
-  const HomPage({Key? key}) : super(key: key);
+class MemberHomePage extends StatefulWidget {
+  const MemberHomePage({Key? key}) : super(key: key);
 
   @override
-  _HomPageState createState() => _HomPageState();
+  _MemberHomePageState createState() => _MemberHomePageState();
 }
 
-class _HomPageState extends State<HomPage> {
+class _MemberHomePageState extends State<MemberHomePage> {
   late final Future<List<Bike>> _bikes;
 
   @override
@@ -53,6 +53,11 @@ class _HomPageState extends State<HomPage> {
 
   @override
   Widget build(BuildContext context) => Scaffold(
+        appBar: AppBar(
+          backgroundColor: primaryColor,
+          title: Text('Accueil', style: secondTextStyle),
+        ),
+        drawer: const AppDrawer(),
         body: ListView(
           children: <Widget>[
             LayoutBuilder(
@@ -111,6 +116,7 @@ class _HomPageState extends State<HomPage> {
                       ]),
                 )
               : GridView.count(
+                  controller: ScrollController(),
                   shrinkWrap: true,
                   childAspectRatio: 0.65,
                   crossAxisCount: constraints.maxWidth > maxWidth + 400

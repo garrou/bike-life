@@ -5,7 +5,7 @@ import 'package:bike_life/utils/storage.dart';
 import 'package:bike_life/views/auth/signin.dart';
 import 'package:bike_life/views/home/discover.dart';
 import 'package:bike_life/styles/styles.dart';
-import 'package:bike_life/views/member/member_home.dart';
+import 'package:bike_life/views/member/home.dart';
 import 'package:bike_life/widgets/buttons/nav_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_guards/flutter_guards.dart';

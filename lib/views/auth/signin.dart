@@ -8,7 +8,7 @@ import 'package:bike_life/utils/constants.dart';
 import 'package:bike_life/utils/storage.dart';
 import 'package:bike_life/utils/validator.dart';
 import 'package:bike_life/views/auth/signup.dart';
-import 'package:bike_life/views/member/member_home.dart';
+import 'package:bike_life/views/member/home.dart';
 import 'package:bike_life/widgets/link_page.dart';
 import 'package:bike_life/widgets/buttons/button.dart';
 import 'package:bike_life/widgets/snackbar.dart';

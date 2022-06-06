@@ -5,11 +5,10 @@ import 'package:bike_life/utils/constants.dart';
 import 'package:bike_life/utils/validator.dart';
 import 'package:bike_life/services/bike_service.dart';
 import 'package:bike_life/styles/styles.dart';
-import 'package:bike_life/views/member/member_home.dart';
+import 'package:bike_life/views/member/home.dart';
 import 'package:bike_life/widgets/buttons/button.dart';
 import 'package:bike_life/widgets/snackbar.dart';
 import 'package:bike_life/widgets/textfield.dart';
-import 'package:bike_life/widgets/buttons/top_left_button.dart';
 import 'package:flutter/material.dart';
 
 class AddBikePage extends StatelessWidget {
@@ -17,6 +16,10 @@ class AddBikePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Scaffold(
+        appBar: AppBar(
+          backgroundColor: primaryColor,
+          title: Text('Ajouter un vélo', style: secondTextStyle),
+        ),
         body: LayoutBuilder(builder: (context, constraints) {
           if (constraints.maxWidth > maxWidth) {
             return _narrowLayout(context);
@@ -31,14 +34,7 @@ class AddBikePage extends StatelessWidget {
           horizontal: MediaQuery.of(context).size.width / 12),
       child: _wideLayout(context));
 
-  Widget _wideLayout(BuildContext context) => ListView(
-        padding: const EdgeInsets.symmetric(horizontal: thirdSize),
-        children: <Widget>[
-          AppTopLeftButton(
-              title: 'Ajouter un vélo', callback: () => Navigator.pop(context)),
-          const AddBikeForm()
-        ],
-      );
+  Widget _wideLayout(BuildContext context) => const AddBikeForm();
 }
 
 class AddBikeForm extends StatefulWidget {

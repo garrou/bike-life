@@ -40,15 +40,17 @@ class _BikeComponentsPageState extends State<BikeComponentsPage> {
   }
 
   @override
-  Widget build(BuildContext context) => Scaffold(
-        body: LayoutBuilder(builder: (context, constraints) {
-          if (constraints.maxWidth > maxWidth) {
-            return _narrowLayout(context);
-          } else {
-            return _wideLayout();
-          }
-        }),
-      );
+  Widget build(BuildContext context) => Scaffold(body: SingleChildScrollView(
+        child: LayoutBuilder(
+          builder: (context, constraints) {
+            if (constraints.maxWidth > maxWidth) {
+              return _narrowLayout(context);
+            } else {
+              return _wideLayout();
+            }
+          },
+        ),
+      ));
 
   Widget _narrowLayout(BuildContext context) => Padding(
       padding: EdgeInsets.symmetric(
@@ -61,14 +63,12 @@ class _BikeComponentsPageState extends State<BikeComponentsPage> {
         if (snapshot.hasError) {
           return const AppError(message: 'Problème de connexion');
         } else if (snapshot.hasData) {
-          return ListView.builder(
-              physics: const ScrollPhysics(),
-              itemCount: snapshot.data!.length,
-              shrinkWrap: true,
-              itemBuilder: (_, index) => AppComponentCard(
-                    component: snapshot.data![index],
-                    bike: widget.bike,
-                  ));
+          return Column(
+            children: <Widget>[
+              for (Component component in snapshot.data!)
+                AppComponentCard(component: component, bike: widget.bike)
+            ],
+          );
         }
         return const AppLoading();
       });

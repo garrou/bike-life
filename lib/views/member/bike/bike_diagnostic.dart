@@ -8,7 +8,7 @@ import 'package:bike_life/utils/constants.dart';
 import 'package:bike_life/utils/redirects.dart';
 import 'package:bike_life/views/member/bike/bike_details.dart';
 import 'package:bike_life/views/member/bike/bike_diagnostic_result.dart';
-import 'package:bike_life/views/member/member_home.dart';
+import 'package:bike_life/views/member/home.dart';
 import 'package:bike_life/widgets/buttons/button.dart';
 import 'package:bike_life/widgets/error.dart';
 import 'package:bike_life/widgets/loading.dart';

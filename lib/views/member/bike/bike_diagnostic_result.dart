@@ -3,8 +3,6 @@ import 'package:bike_life/styles/styles.dart';
 import 'package:bike_life/utils/constants.dart';
 import 'package:bike_life/utils/redirects.dart';
 import 'package:bike_life/views/member/help/tip_details.dart';
-import 'package:bike_life/views/member/member_home.dart';
-import 'package:bike_life/widgets/buttons/top_left_button.dart';
 import 'package:flutter/material.dart';
 
 class BikeDiagnosticResultPage extends StatefulWidget {
@@ -20,6 +18,10 @@ class BikeDiagnosticResultPage extends StatefulWidget {
 class _BikeDiagnosticResultPageState extends State<BikeDiagnosticResultPage> {
   @override
   Widget build(BuildContext context) => Scaffold(
+        appBar: AppBar(
+          backgroundColor: primaryColor,
+          title: Text('Résultat', style: secondTextStyle),
+        ),
         body: LayoutBuilder(builder: (context, constraints) {
           if (constraints.maxWidth > maxWidth) {
             return _narrowLayout(context);
@@ -36,10 +38,6 @@ class _BikeDiagnosticResultPageState extends State<BikeDiagnosticResultPage> {
 
   Widget _wideLayout(BuildContext context) => Column(
         children: <Widget>[
-          AppTopLeftButton(
-            title: 'Accueil',
-            callback: () => pushAndRemove(context, const MemberHomePage()),
-          ),
           Padding(
             padding: const EdgeInsets.fromLTRB(10, 0, 10, 10),
             child: Text(

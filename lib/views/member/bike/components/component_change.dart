@@ -7,10 +7,9 @@ import 'package:bike_life/styles/styles.dart';
 import 'package:bike_life/utils/redirects.dart';
 import 'package:bike_life/utils/constants.dart';
 import 'package:bike_life/views/member/bike/bike_details.dart';
-import 'package:bike_life/views/member/member_home.dart';
+import 'package:bike_life/views/member/home.dart';
 import 'package:bike_life/widgets/buttons/button.dart';
 import 'package:bike_life/widgets/calendar.dart';
-import 'package:bike_life/widgets/buttons/top_left_button.dart';
 import 'package:bike_life/widgets/snackbar.dart';
 import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
@@ -31,6 +30,10 @@ class _ComponentChangePageState extends State<ComponentChangePage> {
 
   @override
   Widget build(BuildContext context) => Scaffold(
+        appBar: AppBar(
+          backgroundColor: primaryColor,
+          title: Text('Changement de composant', style: secondTextStyle),
+        ),
         body: LayoutBuilder(builder: (context, constraints) {
           if (constraints.maxWidth > maxWidth) {
             return _narrowLayout(context);
@@ -47,7 +50,6 @@ class _ComponentChangePageState extends State<ComponentChangePage> {
 
   Widget _wideLayout() => ListView(
         children: <Widget>[
-          AppTopLeftButton(title: 'Changement de composant', callback: _back),
           Padding(
             child: AppCalendar(
                 minDate: widget.component.changedAt,
@@ -86,8 +88,6 @@ class _ComponentChangePageState extends State<ComponentChangePage> {
   void _onDateChanged(DateRangePickerSelectionChangedArgs args) {
     _changedDate = args.value;
   }
-
-  void _back() => Navigator.pop(context);
 
   void _change() async {
     final HttpResponse response = await ComponentService().changeComponent(
