@@ -78,26 +78,29 @@ class _UpdateBikeFormState extends State<UpdateBikeForm> {
         child: Column(
           children: <Widget>[
             AppTextField(
-                keyboardType: TextInputType.text,
-                focusNode: _nameFocus,
-                textfieldController: _name,
-                validator: (value) => lengthValidator(value, maxBikeName),
-                label: 'Nom du vélo',
-                icon: Icons.pedal_bike),
+              keyboardType: TextInputType.text,
+              focusNode: _nameFocus,
+              textfieldController: _name,
+              validator: (value) => lengthValidator(value, maxBikeName),
+              label: 'Nom du vélo',
+              icon: Icons.pedal_bike_outlined,
+            ),
             AppTextField(
-                keyboardType: TextInputType.number,
-                focusNode: _kmWeekFocus,
-                textfieldController: _kmWeek,
-                validator: positiveValidator,
-                label: 'Kilomètres par semaine',
-                icon: Icons.add_road),
+              keyboardType: TextInputType.number,
+              focusNode: _kmWeekFocus,
+              textfieldController: _kmWeek,
+              validator: positiveValidator,
+              label: 'Kilomètres par semaine',
+              icon: Icons.add_road_outlined,
+            ),
             AppTextField(
-                keyboardType: TextInputType.number,
-                focusNode: _priceFocus,
-                textfieldController: _price,
-                validator: positiveValidator,
-                label: 'Prix du vélo',
-                icon: Icons.euro),
+              keyboardType: TextInputType.number,
+              focusNode: _priceFocus,
+              textfieldController: _price,
+              validator: positiveValidator,
+              label: 'Prix du vélo',
+              icon: Icons.euro_outlined,
+            ),
             Row(mainAxisAlignment: MainAxisAlignment.center, children: <Widget>[
               Text('Ajout automatique des kilomètres', style: thirdTextStyle),
               Switch(
@@ -123,12 +126,13 @@ class _UpdateBikeFormState extends State<UpdateBikeForm> {
             AppButton(
                 text: 'Enregistrer',
                 callback: _onUpdate,
-                icon: const Icon(Icons.save)),
+                icon: const Icon(Icons.save_outlined)),
             AppButton(
-                text: 'Supprimer',
-                callback: () => _showDeleteDialog(context),
-                icon: const Icon(Icons.delete),
-                color: Colors.red[900]!)
+              text: 'Supprimer',
+              callback: () => _showDeleteDialog(context),
+              icon: const Icon(Icons.delete_outlined),
+              color: Colors.red[900]!,
+            )
           ],
         ),
       );

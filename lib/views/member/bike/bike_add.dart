@@ -80,7 +80,7 @@ class _AddBikeFormState extends State<AddBikeForm> {
               textfieldController: _name,
               validator: (value) => lengthValidator(value, maxBikeName),
               label: 'Nom du vélo',
-              icon: Icons.pedal_bike,
+              icon: Icons.pedal_bike_outlined,
             ),
             AppTextField(
               keyboardType: TextInputType.number,
@@ -88,7 +88,7 @@ class _AddBikeFormState extends State<AddBikeForm> {
               textfieldController: _kmWeek,
               validator: positiveValidator,
               label: 'Kilomètres par semaine',
-              icon: Icons.add_road,
+              icon: Icons.add_road_outlined,
             ),
             AppTextField(
               keyboardType: TextInputType.number,
@@ -96,7 +96,7 @@ class _AddBikeFormState extends State<AddBikeForm> {
               textfieldController: _price,
               validator: positiveValidator,
               label: 'Prix du vélo',
-              icon: Icons.euro,
+              icon: Icons.euro_outlined,
             ),
             Row(mainAxisAlignment: MainAxisAlignment.center, children: <Widget>[
               Text('Ajout quotidien des km ?', style: thirdTextStyle),
@@ -120,7 +120,7 @@ class _AddBikeFormState extends State<AddBikeForm> {
             AppButton(
                 text: 'Ajouter',
                 callback: _onAddBike,
-                icon: const Icon(Icons.add))
+                icon: const Icon(Icons.add_outlined))
           ],
         ),
       );

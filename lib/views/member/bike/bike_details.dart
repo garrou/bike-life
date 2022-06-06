@@ -21,9 +21,9 @@ class BikeDetailsPage extends StatelessWidget {
               indicatorColor: primaryColor,
               tabs: [
                 Tab(icon: Icon(Icons.amp_stories_outlined)),
-                Tab(icon: Icon(Icons.bar_chart)),
+                Tab(icon: Icon(Icons.bar_chart_outlined)),
                 Tab(icon: Icon(Icons.checklist_outlined)),
-                Tab(icon: Icon(Icons.settings)),
+                Tab(icon: Icon(Icons.settings_outlined)),
               ],
             ),
           ),

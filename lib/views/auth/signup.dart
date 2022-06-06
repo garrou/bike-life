@@ -83,34 +83,36 @@ class _SignupPageState extends State<SignupPage> {
                         focusNode: _emailFocus,
                         textfieldController: _email,
                         validator: emailValidator,
-                        icon: Icons.alternate_email),
+                        icon: Icons.alternate_email_outlined),
                     AppTextField(
-                        keyboardType: TextInputType.text,
-                        label:
-                            'Mot de passe ($minPasswordSize caractères minimum)',
-                        focusNode: _passwordFocus,
-                        textfieldController: _password,
-                        validator: (value) => passwordValidator(
-                            value, minPasswordSize, maxPasswordSize),
-                        obscureText: true,
-                        icon: Icons.password),
+                      keyboardType: TextInputType.text,
+                      label:
+                          'Mot de passe ($minPasswordSize caractères minimum)',
+                      focusNode: _passwordFocus,
+                      textfieldController: _password,
+                      validator: (value) => passwordValidator(
+                          value, minPasswordSize, maxPasswordSize),
+                      obscureText: true,
+                      icon: Icons.password_outlined,
+                    ),
                     AppTextField(
-                        keyboardType: TextInputType.text,
-                        label: 'Confirmer le mot de passe',
-                        focusNode: _confirmPasswordFocus,
-                        textfieldController: _confirmPassword,
-                        // ignore: body_might_complete_normally_nullable
-                        validator: (value) {
-                          if (_password.text != value || value!.isEmpty) {
-                            return 'Mot de passe incorrect';
-                          }
-                        },
-                        obscureText: true,
-                        icon: Icons.password),
+                      keyboardType: TextInputType.text,
+                      label: 'Confirmer le mot de passe',
+                      focusNode: _confirmPasswordFocus,
+                      textfieldController: _confirmPassword,
+                      // ignore: body_might_complete_normally_nullable
+                      validator: (value) {
+                        if (_password.text != value || value!.isEmpty) {
+                          return 'Mot de passe incorrect';
+                        }
+                      },
+                      obscureText: true,
+                      icon: Icons.password_outlined,
+                    ),
                     AppButton(
                         text: "S'inscrire",
                         callback: () => _onSignup(context),
-                        icon: const Icon(Icons.person_add_alt_1))
+                        icon: const Icon(Icons.person_add_alt_1_outlined))
                   ],
                 ),
               ),

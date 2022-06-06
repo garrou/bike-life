@@ -23,9 +23,9 @@ class ComponentDetailsPage extends StatelessWidget {
             bottom: const TabBar(
               indicatorColor: primaryColor,
               tabs: [
-                Tab(icon: Icon(Icons.history)),
+                Tab(icon: Icon(Icons.history_outlined)),
                 Tab(icon: Icon(Icons.auto_stories_outlined)),
-                Tab(icon: Icon(Icons.settings)),
+                Tab(icon: Icon(Icons.settings_outlined)),
               ],
             ),
           ),

@@ -45,13 +45,13 @@ class ProfilePage extends StatelessWidget {
                 paddingTop: 10,
                 color: Colors.red[900]!,
                 onPressed: () => _onDisconnect(context),
-                icon: const Icon(Icons.logout),
+                icon: const Icon(Icons.logout_outlined),
               ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  Text('Thème', style: secondTextStyle),
-                  IconButton(
+              Card(
+                elevation: 10,
+                child: ListTile(
+                  title: Text('Thème', style: secondTextStyle),
+                  trailing: IconButton(
                     onPressed: () {
                       themeNotifier.isDark
                           ? themeNotifier.isDark = false
@@ -59,13 +59,13 @@ class ProfilePage extends StatelessWidget {
                     },
                     icon: Icon(themeNotifier.isDark
                         ? Icons.nightlight_round_outlined
-                        : Icons.wb_sunny),
+                        : Icons.wb_sunny_outlined),
                     iconSize: firstSize,
-                  )
-                ],
+                  ),
+                ),
               ),
               const AppClickCard(
-                icon: Icon(Icons.password),
+                icon: Icon(Icons.password_outlined),
                 text: 'Changer votre mot de passe',
                 destination: UpdatePasswordPage(),
               ),
@@ -75,7 +75,7 @@ class ProfilePage extends StatelessWidget {
                 text: 'Supprimer mon compte',
                 color: Colors.red[900]!,
                 callback: () => _onDeleteAccount(context),
-                icon: const Icon(Icons.delete),
+                icon: const Icon(Icons.delete_outlined),
               ),
             ],
           ),
@@ -134,7 +134,7 @@ class ProfilePage extends StatelessWidget {
                 text: 'Supprimer',
                 color: Colors.red[900]!,
                 callback: _onDelete,
-                icon: const Icon(Icons.delete),
+                icon: const Icon(Icons.delete_outlined),
               ),
             ],
             content: Builder(builder: (context) {
@@ -152,7 +152,7 @@ class ProfilePage extends StatelessWidget {
                     focusNode: _passwordFocus,
                     textfieldController: _password,
                     validator: fieldValidator,
-                    icon: Icons.password,
+                    icon: Icons.password_outlined,
                     obscureText: true,
                   ),
                 ),

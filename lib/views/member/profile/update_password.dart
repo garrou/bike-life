@@ -51,31 +51,36 @@ class _UpdatePasswordPageState extends State<UpdatePasswordPage> {
                 callback: () => Navigator.pop(context),
               ),
               AppTextField(
-                  keyboardType: TextInputType.text,
-                  label: 'Mot de passe ($minPasswordSize caractères minimum)',
-                  focusNode: _passwordFocus,
-                  textfieldController: _password,
-                  validator: (value) => passwordValidator(
-                      value, minPasswordSize, maxPasswordSize),
-                  obscureText: true,
-                  icon: Icons.password),
+                keyboardType: TextInputType.text,
+                label: 'Mot de passe ($minPasswordSize caractères minimum)',
+                focusNode: _passwordFocus,
+                textfieldController: _password,
+                validator: (value) =>
+                    passwordValidator(value, minPasswordSize, maxPasswordSize),
+                obscureText: true,
+                icon: Icons.password_outlined,
+              ),
               AppTextField(
-                  keyboardType: TextInputType.text,
-                  label: 'Confirmer le mot de passe',
-                  focusNode: _confirmPassFocus,
-                  textfieldController: _confirmPass,
-                  // ignore: body_might_complete_normally_nullable
-                  validator: (value) {
-                    if (_password.text != value || value!.isEmpty) {
-                      return 'Mot de passe incorrect';
-                    }
-                  },
-                  obscureText: true,
-                  icon: Icons.password),
+                keyboardType: TextInputType.text,
+                label: 'Confirmer le mot de passe',
+                focusNode: _confirmPassFocus,
+                textfieldController: _confirmPass,
+                // ignore: body_might_complete_normally_nullable
+                validator: (value) {
+                  if (_password.text != value || value!.isEmpty) {
+                    return 'Mot de passe incorrect';
+                  }
+                },
+                obscureText: true,
+                icon: Icons.password_outlined,
+              ),
               AppButton(
-                  text: "Modifier",
-                  callback: () => _onUpdate(context),
-                  icon: const Icon(Icons.save))
+                text: "Modifier",
+                callback: () => _onUpdate(context),
+                icon: const Icon(
+                  Icons.save_outlined,
+                ),
+              )
             ],
           ),
         ),

@@ -72,7 +72,7 @@ Un bon point pour votre tirelire mais également pour la planète !
                     ),
                     color: primaryColor,
                     icon: const Icon(
-                      Icons.web,
+                      Icons.web_outlined,
                       size: firstSize,
                     ),
                   ),
@@ -82,10 +82,7 @@ Un bon point pour votre tirelire mais également pour la planète !
                           'https://github.com/1-irdA/bike-life/releases/tag/v1.0.0_android'),
                     ),
                     color: primaryColor,
-                    icon: const Icon(
-                      Icons.android,
-                      size: firstSize,
-                    ),
+                    icon: const Icon(Icons.android_outlined, size: firstSize),
                   ),
                   IconButton(
                     onPressed: () => _launch(
@@ -93,10 +90,7 @@ Un bon point pour votre tirelire mais également pour la planète !
                           'https://github.com/1-irdA/bike-life/releases/tag/v1.0.0_windows'),
                     ),
                     color: primaryColor,
-                    icon: const Icon(
-                      Icons.laptop,
-                      size: firstSize,
-                    ),
+                    icon: const Icon(Icons.laptop_outlined, size: firstSize),
                   )
                 ],
               ),
@@ -104,7 +98,7 @@ Un bon point pour votre tirelire mais également pour la planète !
           ],
           showSkipButton: true,
           skip: const Text('Passer', style: TextStyle(color: primaryColor)),
-          next: const Icon(Icons.arrow_forward, color: primaryColor),
+          next: const Icon(Icons.arrow_forward_outlined, color: primaryColor),
           done: const Text('Compris', style: TextStyle(color: primaryColor)),
           curve: Curves.easeIn,
           dotsDecorator: const DotsDecorator(

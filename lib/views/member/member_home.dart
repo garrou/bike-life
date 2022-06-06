@@ -54,19 +54,19 @@ class _MemberHomePageState extends State<MemberHomePage> {
           onTap: _onTabTapped,
           items: const <BottomNavigationBarItem>[
             BottomNavigationBarItem(
-              icon: Icon(Icons.directions_bike, size: 30),
+              icon: Icon(Icons.directions_bike_outlined, size: 30),
               label: 'Mes vélos',
             ),
             BottomNavigationBarItem(
-              icon: Icon(Icons.bar_chart, size: 30),
+              icon: Icon(Icons.bar_chart_outlined, size: 30),
               label: 'Statistiques',
             ),
             BottomNavigationBarItem(
-              icon: Icon(Icons.help, size: 30),
+              icon: Icon(Icons.help_outlined, size: 30),
               label: 'Conseils',
             ),
             BottomNavigationBarItem(
-              icon: Icon(Icons.person, size: 30),
+              icon: Icon(Icons.person_outlined, size: 30),
               label: 'Profil',
             ),
           ],

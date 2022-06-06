@@ -70,29 +70,32 @@ class _UpdateComponentFormState extends State<UpdateComponentForm> {
 
   @override
   Widget build(BuildContext context) => Form(
-      key: _keyForm,
-      child: Column(children: <Widget>[
-        AppTextField(
-          focusNode: _brandFocus,
-          textfieldController: _brand,
-          validator: (value) => lengthValidator(value, maxBrandName),
-          label: 'Marque du composant',
-          icon: Icons.branding_watermark,
-          keyboardType: TextInputType.text,
+        key: _keyForm,
+        child: Column(
+          children: <Widget>[
+            AppTextField(
+              focusNode: _brandFocus,
+              textfieldController: _brand,
+              validator: (value) => lengthValidator(value, maxBrandName),
+              label: 'Marque du composant',
+              icon: Icons.branding_watermark_outlined,
+              keyboardType: TextInputType.text,
+            ),
+            AppTextField(
+              focusNode: _priceFocus,
+              textfieldController: _price,
+              validator: positiveValidator,
+              label: 'Prix du composant',
+              icon: Icons.euro_outlined,
+              keyboardType: TextInputType.number,
+            ),
+            AppButton(
+                text: 'Enregistrer',
+                callback: _onUpdateComponent,
+                icon: const Icon(Icons.save_outlined))
+          ],
         ),
-        AppTextField(
-          focusNode: _priceFocus,
-          textfieldController: _price,
-          validator: positiveValidator,
-          label: 'Prix du composant',
-          icon: Icons.euro,
-          keyboardType: TextInputType.number,
-        ),
-        AppButton(
-            text: 'Enregistrer',
-            callback: _onUpdateComponent,
-            icon: const Icon(Icons.save))
-      ]));
+      );
 
   void _onUpdateComponent() {
     if (_keyForm.currentState!.validate()) {

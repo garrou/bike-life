@@ -60,7 +60,7 @@ class _ComponentChangePageState extends State<ComponentChangePage> {
           AppButton(
             text: 'Enregistrer',
             callback: () => _showChangeDialog(context),
-            icon: const Icon(Icons.save),
+            icon: const Icon(Icons.save_outlined),
           )
         ],
       );
