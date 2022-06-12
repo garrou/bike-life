@@ -5,7 +5,7 @@ import 'package:bike_life/utils/storage.dart';
 import 'package:bike_life/views/auth/signin.dart';
 import 'package:bike_life/views/home/discover.dart';
 import 'package:bike_life/styles/styles.dart';
-import 'package:bike_life/views/member/home.dart';
+import 'package:bike_life/views/member/nav.dart';
 import 'package:bike_life/widgets/buttons/nav_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_guards/flutter_guards.dart';
@@ -30,7 +30,7 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) => Scaffold(
       body: AuthGuard(
           authStream: _authState.stream,
-          signedIn: const MemberHomePage(),
+          signedIn: const MemberNav(),
           signedOut: _layout(context)));
 
   Widget _layout(BuildContext context) => ListView(

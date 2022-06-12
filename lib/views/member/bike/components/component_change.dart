@@ -7,7 +7,7 @@ import 'package:bike_life/styles/styles.dart';
 import 'package:bike_life/utils/redirects.dart';
 import 'package:bike_life/utils/constants.dart';
 import 'package:bike_life/views/member/bike/bike_details.dart';
-import 'package:bike_life/views/member/home.dart';
+import 'package:bike_life/views/member/nav.dart';
 import 'package:bike_life/widgets/buttons/button.dart';
 import 'package:bike_life/widgets/calendar.dart';
 import 'package:bike_life/widgets/snackbar.dart';
@@ -98,7 +98,7 @@ class _ComponentChangePageState extends State<ComponentChangePage> {
 
     if (response.success()) {
       doublePush(
-          context, const MemberHomePage(), BikeDetailsPage(bike: widget.bike));
+          context, const MemberNav(), BikeDetailsPage(bike: widget.bike));
       showSuccessSnackBar(context, response.message());
     } else {
       showErrorSnackBar(context, response.message());

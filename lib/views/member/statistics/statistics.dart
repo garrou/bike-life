@@ -4,7 +4,6 @@ import 'package:bike_life/providers/year_provider.dart';
 import 'package:bike_life/services/component_service.dart';
 import 'package:bike_life/styles/styles.dart';
 import 'package:bike_life/utils/constants.dart';
-import 'package:bike_life/views/member/drawer/drawer.dart';
 import 'package:bike_life/widgets/charts/bar_chart.dart';
 import 'package:bike_life/widgets/charts/pie_chart.dart';
 import 'package:bike_life/widgets/error.dart';
@@ -22,7 +21,6 @@ class StatisticsPage extends StatelessWidget {
         backgroundColor: primaryColor,
         title: Text('Statistiques', style: secondTextStyle),
       ),
-      drawer: const AppDrawer(),
       body: SingleChildScrollView(
         child: LayoutBuilder(
           builder: (context, constraints) {

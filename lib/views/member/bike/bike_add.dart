@@ -5,7 +5,7 @@ import 'package:bike_life/utils/constants.dart';
 import 'package:bike_life/utils/validator.dart';
 import 'package:bike_life/services/bike_service.dart';
 import 'package:bike_life/styles/styles.dart';
-import 'package:bike_life/views/member/home.dart';
+import 'package:bike_life/views/member/nav.dart';
 import 'package:bike_life/widgets/buttons/button.dart';
 import 'package:bike_life/widgets/snackbar.dart';
 import 'package:bike_life/widgets/textfield.dart';
@@ -161,7 +161,7 @@ class _AddBikeFormState extends State<AddBikeForm> {
     final HttpResponse response = await BikeService().create(bike);
 
     if (response.success()) {
-      pushAndRemove(context, const MemberHomePage());
+      pushAndRemove(context, const MemberNav());
       showSuccessSnackBar(context, response.message());
     } else {
       showErrorSnackBar(context, response.message());

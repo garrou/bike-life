@@ -8,7 +8,7 @@ import 'package:bike_life/utils/constants.dart';
 import 'package:bike_life/utils/redirects.dart';
 import 'package:bike_life/utils/validator.dart';
 import 'package:bike_life/views/member/bike/components/component_details.dart';
-import 'package:bike_life/views/member/home.dart';
+import 'package:bike_life/views/member/nav.dart';
 import 'package:bike_life/widgets/buttons/button.dart';
 import 'package:bike_life/widgets/calendar.dart';
 import 'package:bike_life/widgets/snackbar.dart';
@@ -116,7 +116,7 @@ class _ComponentRepairPageState extends State<ComponentRepairPage> {
     final HttpResponse response = await RepairService().addRepair(repair);
 
     if (response.success()) {
-      doublePush(context, const MemberHomePage(),
+      doublePush(context, const MemberNav(),
           ComponentDetailsPage(component: widget.component, bike: widget.bike));
       showSuccessSnackBar(context, response.message());
     } else {

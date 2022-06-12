@@ -10,7 +10,6 @@ import 'package:bike_life/utils/validator.dart';
 import 'package:bike_life/views/member/bike/bike_details.dart';
 import 'package:bike_life/views/member/bike/bike_add.dart';
 import 'package:bike_life/styles/styles.dart';
-import 'package:bike_life/views/member/drawer/drawer.dart';
 import 'package:bike_life/widgets/buttons/button.dart';
 import 'package:bike_life/widgets/error.dart';
 import 'package:bike_life/widgets/loading.dart';
@@ -57,7 +56,6 @@ class _MemberHomePageState extends State<MemberHomePage> {
           backgroundColor: primaryColor,
           title: Text('Accueil', style: secondTextStyle),
         ),
-        drawer: const AppDrawer(),
         body: ListView(
           children: <Widget>[
             LayoutBuilder(
@@ -91,8 +89,9 @@ class _MemberHomePageState extends State<MemberHomePage> {
         if (snapshot.hasError) {
           if (snapshot.error == ConnectionError.auth) {
             disconnectAndRedirect(context);
+          } else {
+            return const AppError(message: 'Problème de connexion');
           }
-          return const AppError(message: 'Problème de connexion');
         } else if (snapshot.hasData) {
           return snapshot.data!.isEmpty
               ? Center(
@@ -201,7 +200,10 @@ class _BikeCardState extends State<BikeCard> {
                 ),
                 Padding(
                   padding: const EdgeInsets.only(top: 10),
-                  child: Image.asset('assets/bike.jpg', fit: BoxFit.contain),
+                  child: Image.asset(
+                    'assets/bike.jpg',
+                    height: MediaQuery.of(context).size.height / 3.8,
+                  ),
                 ),
                 Padding(
                   padding: const EdgeInsets.only(top: 10),

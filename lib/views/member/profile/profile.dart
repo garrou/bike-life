@@ -7,7 +7,6 @@ import 'package:bike_life/utils/storage.dart';
 import 'package:bike_life/utils/validator.dart';
 import 'package:bike_life/views/auth/signin.dart';
 import 'package:bike_life/styles/styles.dart';
-import 'package:bike_life/views/member/drawer/drawer.dart';
 import 'package:bike_life/views/member/profile/update_password.dart';
 import 'package:bike_life/widgets/buttons/button.dart';
 import 'package:bike_life/widgets/snackbar.dart';
@@ -23,8 +22,16 @@ class ProfilePage extends StatelessWidget {
         appBar: AppBar(
           backgroundColor: primaryColor,
           title: Text('Mon profil', style: secondTextStyle),
+          actions: [
+            IconButton(
+              onPressed: () {
+                Storage.disconnect();
+                pushAndRemove(context, const SigninPage());
+              },
+              icon: const Icon(Icons.logout_outlined),
+            )
+          ],
         ),
-        drawer: const AppDrawer(),
         body: LayoutBuilder(builder: (context, constraints) {
           if (constraints.maxWidth > maxWidth) {
             return _narrowLayout(context);

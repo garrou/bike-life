@@ -5,7 +5,6 @@ import 'package:bike_life/services/tip_service.dart';
 import 'package:bike_life/utils/redirects.dart';
 import 'package:bike_life/styles/styles.dart';
 import 'package:bike_life/utils/constants.dart';
-import 'package:bike_life/views/member/drawer/drawer.dart';
 import 'package:bike_life/views/member/help/tip_details.dart';
 import 'package:bike_life/widgets/error.dart';
 import 'package:bike_life/widgets/loading.dart';
@@ -54,7 +53,6 @@ class _TipsPageState extends State<TipsPage> {
         backgroundColor: primaryColor,
         title: Text('Conseils', style: secondTextStyle),
       ),
-      drawer: const AppDrawer(),
       body: SingleChildScrollView(
         child: LayoutBuilder(
           builder: (context, constraints) {

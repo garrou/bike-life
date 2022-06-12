@@ -6,7 +6,7 @@ import 'package:bike_life/utils/redirects.dart';
 import 'package:bike_life/utils/storage.dart';
 import 'package:bike_life/utils/validator.dart';
 import 'package:bike_life/styles/styles.dart';
-import 'package:bike_life/views/member/home.dart';
+import 'package:bike_life/views/member/nav.dart';
 import 'package:bike_life/widgets/buttons/button.dart';
 import 'package:bike_life/widgets/link_page.dart';
 import 'package:bike_life/views/auth/signin.dart';
@@ -48,7 +48,7 @@ class _SignupPageState extends State<SignupPage> {
   Widget build(BuildContext context) => Scaffold(
         body: AuthGuard(
           authStream: _authState.stream,
-          signedIn: const MemberHomePage(),
+          signedIn: const MemberNav(),
           signedOut: LayoutBuilder(builder: (context, constraints) {
             if (constraints.maxWidth > maxWidth) {
               return narrowLayout(context);
