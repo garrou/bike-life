@@ -37,11 +37,11 @@ class _MemberNavState extends State<MemberNav> {
           items: const <BottomNavigationBarItem>[
             BottomNavigationBarItem(
               icon: Icon(Icons.directions_bike_outlined),
-              label: 'Mes vélos',
+              label: 'Vélos',
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.bar_chart_outlined),
-              label: 'Mes statistiques',
+              label: 'Statistiques',
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.help_outlined),
@@ -49,30 +49,9 @@ class _MemberNavState extends State<MemberNav> {
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.person_outlined),
-              label: 'Mon profil',
+              label: 'Profil',
             ),
           ],
         ),
       );
 }
-/*
-ListTile(
-              leading: const Icon(Icons.directions_bike_outlined),
-              title: const Text('Accueil'),
-              onTap: () => push(context, const HomePage()),
-            ),
-            ListTile(
-              leading: const Icon(Icons.bar_chart_outlined),
-              title: const Text('Statistiques'),
-              onTap: () => push(context, const StatisticsPage()),
-            ),
-            ListTile(
-              leading: const Icon(Icons.help_outlined),
-              title: const Text('Conseils'),
-              onTap: () => push(context, const TipsPage()),
-            ),
-            ListTile(
-              leading: const Icon(Icons.person_outlined),
-              title: const Text('Profil'),
-              onTap: () => push(context, const ProfilePage()),
-            ),*/
