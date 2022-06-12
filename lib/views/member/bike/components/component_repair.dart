@@ -3,13 +3,13 @@ import 'package:bike_life/models/component.dart';
 import 'package:bike_life/models/http_response.dart';
 import 'package:bike_life/models/repair.dart';
 import 'package:bike_life/services/repair_service.dart';
+import 'package:bike_life/styles/styles.dart';
 import 'package:bike_life/utils/constants.dart';
 import 'package:bike_life/utils/redirects.dart';
 import 'package:bike_life/utils/validator.dart';
 import 'package:bike_life/views/member/bike/components/component_details.dart';
-import 'package:bike_life/views/member/member_home.dart';
+import 'package:bike_life/views/member/nav.dart';
 import 'package:bike_life/widgets/buttons/button.dart';
-import 'package:bike_life/widgets/buttons/top_left_button.dart';
 import 'package:bike_life/widgets/calendar.dart';
 import 'package:bike_life/widgets/snackbar.dart';
 import 'package:bike_life/widgets/textfield.dart';
@@ -40,6 +40,11 @@ class _ComponentRepairPageState extends State<ComponentRepairPage> {
 
   @override
   Widget build(BuildContext context) => Scaffold(
+        appBar: AppBar(
+          backgroundColor: primaryColor,
+          title: Text('Réparation pour ${widget.component.type.toLowerCase()}',
+              style: secondTextStyle),
+        ),
         body: LayoutBuilder(builder: (context, constraints) {
           if (constraints.maxWidth > maxWidth) {
             return _narrowLayout(context);
@@ -58,7 +63,6 @@ class _ComponentRepairPageState extends State<ComponentRepairPage> {
         key: _keyForm,
         child: ListView(
           children: <Widget>[
-            AppTopLeftButton(title: 'Réparation du composant', callback: _back),
             AppTextField(
               keyboardType: TextInputType.text,
               focusNode: _reasonFocus,
@@ -99,8 +103,6 @@ class _ComponentRepairPageState extends State<ComponentRepairPage> {
     _repairDate = args.value;
   }
 
-  void _back() => Navigator.pop(context);
-
   void _onAddRepair() {
     if (_keyForm.currentState!.validate()) {
       _keyForm.currentState!.save();
@@ -114,7 +116,7 @@ class _ComponentRepairPageState extends State<ComponentRepairPage> {
     final HttpResponse response = await RepairService().addRepair(repair);
 
     if (response.success()) {
-      doublePush(context, const MemberHomePage(),
+      doublePush(context, const MemberNav(),
           ComponentDetailsPage(component: widget.component, bike: widget.bike));
       showSuccessSnackBar(context, response.message());
     } else {

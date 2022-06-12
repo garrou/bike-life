@@ -6,7 +6,7 @@ import 'package:bike_life/styles/styles.dart';
 import 'package:bike_life/utils/constants.dart';
 import 'package:bike_life/utils/validator.dart';
 import 'package:bike_life/views/member/bike/bike_details.dart';
-import 'package:bike_life/views/member/member_home.dart';
+import 'package:bike_life/views/member/nav.dart';
 import 'package:bike_life/widgets/buttons/button.dart';
 import 'package:bike_life/widgets/snackbar.dart';
 import 'package:bike_life/widgets/textfield.dart';
@@ -17,23 +17,27 @@ class BikeSettingsPage extends StatelessWidget {
   const BikeSettingsPage({Key? key, required this.bike}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) => Scaffold(
-        body: LayoutBuilder(builder: (context, constraints) {
-          if (constraints.maxWidth > maxWidth) {
-            return _narrowLayout(context);
-          } else {
-            return _wideLayout(context);
-          }
-        }),
-      );
+  Widget build(BuildContext context) => Scaffold(body: SingleChildScrollView(
+        child: LayoutBuilder(
+          builder: (context, constraints) {
+            if (constraints.maxWidth > maxWidth) {
+              return _narrowLayout(context);
+            } else {
+              return _wideLayout(context);
+            }
+          },
+        ),
+      ));
 
   Widget _narrowLayout(BuildContext context) => Padding(
       padding: EdgeInsets.symmetric(
           horizontal: MediaQuery.of(context).size.width / 8),
       child: _wideLayout(context));
 
-  Widget _wideLayout(BuildContext context) => ListView(
-        children: <Widget>[UpdateBikeForm(bike: bike)],
+  Widget _wideLayout(BuildContext context) => Column(
+        children: <Widget>[
+          UpdateBikeForm(bike: bike),
+        ],
       );
 }
 
@@ -177,15 +181,7 @@ class _UpdateBikeFormState extends State<UpdateBikeForm> {
     final HttpResponse response = await BikeService().update(bike);
 
     if (response.success()) {
-      Navigator.pushAndRemoveUntil(
-          context,
-          MaterialPageRoute(
-              builder: (BuildContext context) => const MemberHomePage()),
-          (Route<dynamic> route) => false);
-      Navigator.push(
-          context,
-          MaterialPageRoute(
-              builder: (BuildContext context) => BikeDetailsPage(bike: bike)));
+      doublePush(context, const MemberNav(), BikeDetailsPage(bike: bike));
       showSuccessSnackBar(context, response.message());
     } else {
       showErrorSnackBar(context, response.message());
@@ -205,7 +201,7 @@ class _UpdateBikeFormState extends State<UpdateBikeForm> {
                 child: const Text('Confirmer', style: TextStyle(color: red)),
                 onPressed: () {
                   _onDelete(context);
-                  pushAndRemove(context, const MemberHomePage());
+                  pushAndRemove(context, const MemberNav());
                 }),
             TextButton(
               child:
@@ -220,7 +216,7 @@ class _UpdateBikeFormState extends State<UpdateBikeForm> {
     final HttpResponse response = await BikeService().delete(widget.bike.id);
 
     if (response.success()) {
-      pushAndRemove(context, const MemberHomePage());
+      pushAndRemove(context, const MemberNav());
       showSuccessSnackBar(context, response.message());
     } else {
       showErrorSnackBar(context, response.message());

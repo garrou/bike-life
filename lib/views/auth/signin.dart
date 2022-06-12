@@ -8,7 +8,7 @@ import 'package:bike_life/utils/constants.dart';
 import 'package:bike_life/utils/storage.dart';
 import 'package:bike_life/utils/validator.dart';
 import 'package:bike_life/views/auth/signup.dart';
-import 'package:bike_life/views/member/member_home.dart';
+import 'package:bike_life/views/member/nav.dart';
 import 'package:bike_life/widgets/link_page.dart';
 import 'package:bike_life/widgets/buttons/button.dart';
 import 'package:bike_life/widgets/snackbar.dart';
@@ -45,7 +45,7 @@ class _SigninPageState extends State<SigninPage> {
   Widget build(BuildContext context) => Scaffold(
         body: AuthGuard(
           authStream: _authState.stream,
-          signedIn: const MemberHomePage(),
+          signedIn: const MemberNav(),
           signedOut: LayoutBuilder(builder: (context, constraints) {
             if (constraints.maxWidth > maxWidth) {
               return narrowLayout(context);
@@ -131,7 +131,7 @@ class _SigninPageState extends State<SigninPage> {
 
       if (response.success()) {
         Storage.setString('jwt', response.token());
-        pushAndRemove(context, const MemberHomePage());
+        pushAndRemove(context, const MemberNav());
       } else {
         _password.text = '';
         showErrorSnackBar(context, response.message());

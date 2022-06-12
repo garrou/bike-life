@@ -46,22 +46,25 @@ class _ComponentHistoricRepairsPageState
 
   @override
   Widget build(BuildContext context) => Scaffold(
-        floatingActionButton: FloatingActionButton(
-          child: const Icon(Icons.add_outlined, color: Colors.white),
-          backgroundColor: primaryColor,
-          onPressed: () => push(
-              context,
-              ComponentRepairPage(
-                  component: widget.component, bike: widget.bike)),
+      floatingActionButton: FloatingActionButton(
+        child: const Icon(Icons.add_outlined, color: Colors.white),
+        backgroundColor: primaryColor,
+        onPressed: () => push(
+            context,
+            ComponentRepairPage(
+                component: widget.component, bike: widget.bike)),
+      ),
+      body: SingleChildScrollView(
+        child: LayoutBuilder(
+          builder: (context, constraints) {
+            if (constraints.maxWidth > maxWidth) {
+              return _narrowLayout(context);
+            } else {
+              return _wideLayout();
+            }
+          },
         ),
-        body: LayoutBuilder(builder: (context, constraints) {
-          if (constraints.maxWidth > maxWidth) {
-            return _narrowLayout(context);
-          } else {
-            return _wideLayout();
-          }
-        }),
-      );
+      ));
 
   Widget _narrowLayout(BuildContext context) => Padding(
       padding: EdgeInsets.symmetric(
@@ -80,21 +83,17 @@ class _ComponentHistoricRepairsPageState
                 final String s = nb > 1 ? 's' : '';
 
                 return Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Padding(
-                        child: Text(
-                          '$nb réparation$s',
-                          style: thirdTextStyle,
-                        ),
-                        padding: const EdgeInsets.all(thirdSize)),
-                    Flexible(
-                      child: ListView.builder(
-                        itemCount: nb,
-                        shrinkWrap: true,
-                        itemBuilder: (_, index) =>
-                            _buildCard(snapshot.data![index]),
-                      ),
+                      child: Text('$nb réparation$s', style: thirdTextStyle),
+                      padding: const EdgeInsets.all(thirdSize),
                     ),
+                    Column(
+                      children: <Widget>[
+                        for (Repair repair in snapshot.data!) _buildCard(repair)
+                      ],
+                    )
                   ],
                 );
               }
@@ -103,30 +102,24 @@ class _ComponentHistoricRepairsPageState
       );
 
   Card _buildCard(Repair repair) => Card(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 10),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              Padding(
-                child: Text(repair.formatRepairAt(),
-                    style: setBoldStyle(context, 18)),
-                padding: const EdgeInsets.only(bottom: 5),
+        elevation: 10,
+        child: Column(
+          children: <Widget>[
+            ListTile(
+              title: Text(
+                repair.formatRepairAt(),
+                style: setBoldStyle(context, intermediateSize),
               ),
-              Padding(
-                child: Text(
-                  repair.reason,
-                  style: setStyle(context, 16),
-                ),
-                padding: const EdgeInsets.only(bottom: 5),
+              subtitle: Text(
+                repair.reason,
+                style: setStyle(context, intermediateSize),
               ),
-              Padding(
-                padding: const EdgeInsets.only(bottom: 5),
-                child: Text('Prix : ${repair.formatPrice()}',
-                    style: setStyle(context, 16)),
+              trailing: Text(
+                repair.formatPrice(),
+                style: setStyle(context, intermediateSize),
               ),
-            ],
-          ),
+            )
+          ],
         ),
       );
 }

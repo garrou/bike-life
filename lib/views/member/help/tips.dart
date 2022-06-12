@@ -49,18 +49,20 @@ class _TipsPageState extends State<TipsPage> {
 
   @override
   Widget build(BuildContext context) => Scaffold(
-          body: ListView(
-        children: [
-          LayoutBuilder(
-            builder: (context, constraints) {
-              if (constraints.maxWidth > maxWidth) {
-                return _narrowLayout(context);
-              } else {
-                return _wideLayout(context);
-              }
-            },
-          ),
-        ],
+      appBar: AppBar(
+        backgroundColor: primaryColor,
+        title: Text('Conseils', style: secondTextStyle),
+      ),
+      body: SingleChildScrollView(
+        child: LayoutBuilder(
+          builder: (context, constraints) {
+            if (constraints.maxWidth > maxWidth) {
+              return _narrowLayout(context);
+            } else {
+              return _wideLayout(context);
+            }
+          },
+        ),
       ));
 
   Widget _narrowLayout(BuildContext context) => Padding(
@@ -75,6 +77,7 @@ class _TipsPageState extends State<TipsPage> {
           return const AppError(message: 'Problème de connexion');
         } else if (snapshot.hasData) {
           return ListView(
+            controller: ScrollController(),
             shrinkWrap: true,
             children: <Widget>[
               _buildDropdownButton(),
@@ -89,17 +92,17 @@ class _TipsPageState extends State<TipsPage> {
         return const AppLoading();
       });
 
-  Widget _buildTip(Tip tip) => ListTile(
-        title: Text(
-          tip.componentType ?? 'Vélo',
-          style: boldTextStyle,
-        ),
-        subtitle: Text(tip.title, style: secondTextStyle),
-        trailing: IconButton(
-          icon: const Icon(Icons.keyboard_arrow_right_outlined, size: 30),
-          onPressed: () => push(
-            context,
-            TipDetailsPage(tip: tip),
+  Widget _buildTip(Tip tip) => Card(
+        elevation: 10,
+        child: InkWell(
+          onTap: () => push(context, TipDetailsPage(tip: tip)),
+          child: ListTile(
+            title: Text(
+              tip.componentType ?? 'Vélo',
+              style: boldTextStyle,
+            ),
+            subtitle: Text(tip.title, style: secondTextStyle),
+            trailing: const Icon(Icons.keyboard_arrow_right_outlined, size: 30),
           ),
         ),
       );
@@ -111,7 +114,7 @@ class _TipsPageState extends State<TipsPage> {
           return const Text('Erreur de connexion');
         } else if (snapshot.hasData) {
           return Padding(
-            padding: const EdgeInsets.only(top: firstSize),
+            padding: const EdgeInsets.all(intermediateSize),
             child: DropdownButton<String>(
               isExpanded: true,
               value: _topic,

@@ -20,42 +20,41 @@ class BikeStatsPage extends StatefulWidget {
 
 class _BikeStatsPageState extends State<BikeStatsPage> {
   @override
-  Widget build(BuildContext context) => Scaffold(
-        body: LayoutBuilder(builder: (context, constraints) {
-          if (constraints.maxWidth > maxWidth) {
-            return _narrowLayout(context, constraints);
-          } else {
-            return _wideLayout(context, constraints);
-          }
-        }),
+  Widget build(BuildContext context) => Scaffold(body: SingleChildScrollView(
+        child: LayoutBuilder(
+          builder: (context, constraints) {
+            if (constraints.maxWidth > maxWidth) {
+              return _narrowLayout(context, constraints);
+            } else {
+              return _wideLayout(context, constraints);
+            }
+          },
+        ),
+      ));
+
+  Widget _narrowLayout(BuildContext context, BoxConstraints constraints) =>
+      Padding(
+        padding: EdgeInsets.symmetric(
+            horizontal: MediaQuery.of(context).size.width / 12),
+        child: _wideLayout(context, constraints),
       );
 
-  Widget _narrowLayout(
-          BuildContext context, BoxConstraints constraints) =>
-      Padding(
-          padding: EdgeInsets.symmetric(
-              horizontal: MediaQuery.of(context).size.width / 12),
-          child: _wideLayout(context, constraints));
-
   Widget _wideLayout(BuildContext context, BoxConstraints constraints) =>
-      Column(children: [
-        Expanded(
-          child: GridView.count(
-            controller: ScrollController(),
-            crossAxisCount: constraints.maxWidth > maxWidth + 400
-                ? 3
-                : constraints.maxWidth > maxWidth
-                    ? 2
-                    : 1,
-            children: <Widget>[
-              NbChangeStats(bikeId: widget.bike.id),
-              SumPriceBikeComponents(bikeId: widget.bike.id),
-              AvgChangeComponentsBike(bikeId: widget.bike.id),
-              NbChange(bikeId: widget.bike.id),
-            ],
-          ),
-        )
-      ]);
+      GridView.count(
+        shrinkWrap: true,
+        controller: ScrollController(),
+        crossAxisCount: constraints.maxWidth > maxWidth + 400
+            ? 3
+            : constraints.maxWidth > maxWidth
+                ? 2
+                : 1,
+        children: <Widget>[
+          NbChangeStats(bikeId: widget.bike.id),
+          SumPriceBikeComponents(bikeId: widget.bike.id),
+          AvgChangeComponentsBike(bikeId: widget.bike.id),
+          NbChange(bikeId: widget.bike.id),
+        ],
+      );
 }
 
 class NbChangeStats extends StatefulWidget {

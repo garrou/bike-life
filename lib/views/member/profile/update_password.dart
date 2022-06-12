@@ -1,11 +1,11 @@
 import 'package:bike_life/models/http_response.dart';
 import 'package:bike_life/services/member_service.dart';
+import 'package:bike_life/styles/styles.dart';
 import 'package:bike_life/utils/constants.dart';
 import 'package:bike_life/utils/redirects.dart';
 import 'package:bike_life/utils/validator.dart';
-import 'package:bike_life/views/member/member_home.dart';
+import 'package:bike_life/views/member/profile/profile.dart';
 import 'package:bike_life/widgets/buttons/button.dart';
-import 'package:bike_life/widgets/buttons/top_left_button.dart';
 import 'package:bike_life/widgets/snackbar.dart';
 import 'package:bike_life/widgets/textfield.dart';
 import 'package:flutter/material.dart';
@@ -27,8 +27,15 @@ class _UpdatePasswordPageState extends State<UpdatePasswordPage> {
   final _confirmPass = TextEditingController();
 
   @override
-  Widget build(BuildContext context) =>
-      Scaffold(body: LayoutBuilder(builder: (context, constraints) {
+  Widget build(BuildContext context) => Scaffold(
+      appBar: AppBar(
+        title: Text(
+          'Changer le mot de passe',
+          style: secondTextStyle,
+        ),
+        backgroundColor: primaryColor,
+      ),
+      body: LayoutBuilder(builder: (context, constraints) {
         if (constraints.maxWidth > maxWidth) {
           return _narrowLayout(context);
         } else {
@@ -46,10 +53,6 @@ class _UpdatePasswordPageState extends State<UpdatePasswordPage> {
           key: _keyForm,
           child: Column(
             children: <Widget>[
-              AppTopLeftButton(
-                title: "Changer le mot de passe",
-                callback: () => Navigator.pop(context),
-              ),
               AppTextField(
                 keyboardType: TextInputType.text,
                 label: 'Mot de passe ($minPasswordSize caractères minimum)',
@@ -98,7 +101,7 @@ class _UpdatePasswordPageState extends State<UpdatePasswordPage> {
         await MemberService().updatePassword(_password.text.trim());
 
     if (response.success()) {
-      pushAndRemove(context, const MemberHomePage(initialIndex: 3));
+      pushAndRemove(context, const ProfilePage());
       showSuccessSnackBar(context, response.message());
     } else {
       showErrorSnackBar(context, response.message());

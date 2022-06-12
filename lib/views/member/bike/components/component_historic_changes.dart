@@ -44,27 +44,31 @@ class _ComponentHistoricPageState extends State<ComponentHistoricChangesPage> {
 
   @override
   Widget build(BuildContext context) => Scaffold(
-        floatingActionButton: FloatingActionButton(
-          child: const Icon(Icons.add_outlined, color: Colors.white),
-          backgroundColor: primaryColor,
-          onPressed: () => push(
-            context,
-            ComponentChangePage(component: widget.component, bike: widget.bike),
-          ),
+      floatingActionButton: FloatingActionButton(
+        child: const Icon(Icons.add_outlined, color: Colors.white),
+        backgroundColor: primaryColor,
+        onPressed: () => push(
+          context,
+          ComponentChangePage(component: widget.component, bike: widget.bike),
         ),
-        body: LayoutBuilder(builder: (context, constraints) {
-          if (constraints.maxWidth > maxWidth) {
-            return _narrowLayout(context);
-          } else {
-            return _wideLayout();
-          }
-        }),
-      );
+      ),
+      body: SingleChildScrollView(
+        child: LayoutBuilder(
+          builder: (context, constraints) {
+            if (constraints.maxWidth > maxWidth) {
+              return _narrowLayout(context);
+            } else {
+              return _wideLayout();
+            }
+          },
+        ),
+      ));
 
   Widget _narrowLayout(BuildContext context) => Padding(
-      padding: EdgeInsets.symmetric(
-          horizontal: MediaQuery.of(context).size.width / 8),
-      child: _wideLayout());
+        padding: EdgeInsets.symmetric(
+            horizontal: MediaQuery.of(context).size.width / 8),
+        child: _wideLayout(),
+      );
 
   Widget _wideLayout() => Padding(
         padding: const EdgeInsets.all(15),
@@ -80,18 +84,14 @@ class _ComponentHistoricPageState extends State<ComponentHistoricChangesPage> {
                 return Column(
                   children: [
                     Padding(
-                        child: Text(
-                          '$nb changement$s',
-                          style: thirdTextStyle,
-                        ),
-                        padding: const EdgeInsets.all(thirdSize)),
-                    Flexible(
-                      child: ListView.builder(
-                        itemCount: nb,
-                        shrinkWrap: true,
-                        itemBuilder: (_, index) =>
-                            _buildCard(snapshot.data![index]),
-                      ),
+                      child: Text('$nb changement$s', style: thirdTextStyle),
+                      padding: const EdgeInsets.all(thirdSize),
+                    ),
+                    Column(
+                      children: <Widget>[
+                        for (ComponentChange change in snapshot.data!)
+                          _buildCard(change)
+                      ],
                     ),
                   ],
                 );
@@ -100,39 +100,31 @@ class _ComponentHistoricPageState extends State<ComponentHistoricChangesPage> {
             }),
       );
 
-  Card _buildCard(ComponentChange change) => Card(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 10),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              Padding(
-                child: Text(change.brand, style: setBoldStyle(context, 18)),
-                padding: const EdgeInsets.only(bottom: 5),
+  Widget _buildCard(ComponentChange change) => Card(
+        elevation: 10,
+        child: Column(
+          children: [
+            ListTile(
+              title: Text(
+                change.brand,
+                style: setBoldStyle(context, intermediateSize),
               ),
-              Padding(
-                child: Text(
-                  'Date de changement : ${change.formatChangedAt()}',
-                  style: setStyle(context, 16),
-                ),
-                padding: const EdgeInsets.only(bottom: 5),
+            ),
+            ListTile(
+              title: Text(
+                'Parcourus : ${change.formatKm()} km',
+                style: setStyle(context, intermediateSize),
               ),
-              Padding(
-                padding: const EdgeInsets.only(bottom: 5),
-                child: Text(
-                  'Parcourus : ${change.formatKm()} km',
-                  style: setStyle(context, 16),
-                ),
+              subtitle: Text(
+                'Date de changement : ${change.formatChangedAt()}',
+                style: setStyle(context, intermediateSize),
               ),
-              Padding(
-                padding: const EdgeInsets.only(bottom: 5),
-                child: Text(
-                  'Prix du composant : ${change.formatPrice()}',
-                  style: setStyle(context, 16),
-                ),
+              trailing: Text(
+                change.formatPrice(),
+                style: setStyle(context, intermediateSize),
               ),
-            ],
-          ),
+            )
+          ],
         ),
       );
 }

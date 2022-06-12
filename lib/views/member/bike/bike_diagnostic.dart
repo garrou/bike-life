@@ -8,7 +8,7 @@ import 'package:bike_life/utils/constants.dart';
 import 'package:bike_life/utils/redirects.dart';
 import 'package:bike_life/views/member/bike/bike_details.dart';
 import 'package:bike_life/views/member/bike/bike_diagnostic_result.dart';
-import 'package:bike_life/views/member/member_home.dart';
+import 'package:bike_life/views/member/nav.dart';
 import 'package:bike_life/widgets/buttons/button.dart';
 import 'package:bike_life/widgets/error.dart';
 import 'package:bike_life/widgets/loading.dart';
@@ -196,8 +196,8 @@ class _BikeDiagnosticPageState extends State<BikeDiagnosticPage> {
       if (tips.isEmpty) {
         showSuccessSnackBar(
             context, 'Bravo ! Votre vélo est en parfaite santé !');
-        doublePush(context, const MemberHomePage(),
-            BikeDetailsPage(bike: widget.bike));
+        doublePush(
+            context, const MemberNav(), BikeDetailsPage(bike: widget.bike));
       } else {
         push(context, BikeDiagnosticResultPage(tips: tips));
       }
