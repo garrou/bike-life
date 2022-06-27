@@ -10,6 +10,7 @@ import 'package:bike_life/utils/validator.dart';
 import 'package:bike_life/views/member/bike/bike_details.dart';
 import 'package:bike_life/views/member/bike/bike_add.dart';
 import 'package:bike_life/styles/styles.dart';
+import 'package:bike_life/views/member/nav.dart';
 import 'package:bike_life/widgets/buttons/button.dart';
 import 'package:bike_life/widgets/error.dart';
 import 'package:bike_life/widgets/loading.dart';
@@ -239,7 +240,7 @@ class _BikeCardState extends State<BikeCard> {
           await BikeService().addKm(widget.bike.id, double.parse(_km.text));
 
       if (response.success()) {
-        pushAndRemove(context, const MemberHomePage());
+        pushAndRemove(context, const MemberNav());
         showSuccessSnackBar(context, response.message());
       } else {
         showErrorSnackBar(context, response.message());

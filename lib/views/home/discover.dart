@@ -79,7 +79,7 @@ Un bon point pour votre tirelire mais également pour la planète !
                   IconButton(
                     onPressed: () => _launch(
                       Uri.parse(
-                          'https://github.com/1-irdA/bike-life/releases/tag/v1.0.0_android'),
+                          'https://github.com/garrou/bike-life/releases/tag/v1.0.0_android'),
                     ),
                     color: primaryColor,
                     icon: const Icon(Icons.android_outlined, size: firstSize),
@@ -87,7 +87,7 @@ Un bon point pour votre tirelire mais également pour la planète !
                   IconButton(
                     onPressed: () => _launch(
                       Uri.parse(
-                          'https://github.com/1-irdA/bike-life/releases/tag/v1.0.0_windows'),
+                          'https://github.com/garrou/bike-life/releases/tag/v1.0.0_windows'),
                     ),
                     color: primaryColor,
                     icon: const Icon(Icons.laptop_outlined, size: firstSize),
